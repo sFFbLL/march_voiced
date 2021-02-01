@@ -1,0 +1,63 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/marchCircle/index",
+    "pages/message/index",
+    "pages/publish/index",
+    "pages/personalCenter/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "演示",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8",
+    "enablePullDownRefresh": true,
+    "renderingMode": "seperated",
+    "pageOrientation": "portrait",
+    "rpxCalcMaxDeviceWidth": 960,
+    "rpxCalcBaseDeviceWidth": 375,
+    "rpxCalcIncludeWidth": 750
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "height": "50px",
+    "fontSize": "10px",
+    "iconWidth": "24px",
+    "spacing": "3px",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/marchCircle/index",
+        "text": "三月圈"
+      },
+      {
+        "pagePath": "pages/publish/index",
+        "text": "发布"
+      },
+      {
+        "pagePath": "pages/message/index",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/personalCenter/index",
+        "text": "我的"
+      }
+    ],
+    "midButton": {
+      "width": "80px",
+      "height": "50px",
+      "text": "文字",
+      "iconPath": "static/image/midButton_iconPath.png",
+      "iconWidth": "24px",
+      "backgroundImage": "static/image/midButton_backgroundImage.png"
+    }
+  },
+  "usingComponents": {}
+}
