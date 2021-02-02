@@ -55,7 +55,9 @@
 			"path": "pages/attention/index",
 			"style": {
 				"navigationBarTitleText": "关注",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance":50
 			}
 		}, {
 			"path": "pages/collect/index",
