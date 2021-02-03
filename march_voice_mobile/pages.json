@@ -57,7 +57,7 @@
 				"navigationBarTitleText": "关注",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": true,
-				"onReachBottomDistance":50
+				"onReachBottomDistance": 50
 			}
 		}, {
 			"path": "pages/collect/index",
@@ -153,5 +153,9 @@
 				"text": "我的"
 			}
 		]
+	},
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
 	}
+
 }
