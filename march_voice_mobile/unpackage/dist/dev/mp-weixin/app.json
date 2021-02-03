@@ -4,12 +4,19 @@
     "pages/marchCircle/index",
     "pages/message/index",
     "pages/publish/index",
-    "pages/personalCenter/index"
+    "pages/personalCenter/index",
+    "pages/articleDetails/index",
+    "pages/ideaDetails/index",
+    "pages/personalInfo/index",
+    "pages/fans/index",
+    "pages/attention/index",
+    "pages/collect/index",
+    "pages/pcLogin/pcLogin",
+    "pages/pcPublish/pcPublish"
   ],
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "演示",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8",
     "enablePullDownRefresh": true,
@@ -21,7 +28,7 @@
   },
   "tabBar": {
     "color": "#7A7E83",
-    "selectedColor": "#3cc51f",
+    "selectedColor": "#1296db",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "height": "50px",
@@ -31,33 +38,35 @@
     "list": [
       {
         "pagePath": "pages/home/index",
+        "iconPath": "static/img/shouye.png",
+        "selectedIconPath": "static/img/shouye1.png",
         "text": "首页"
       },
       {
         "pagePath": "pages/marchCircle/index",
+        "iconPath": "static/img/circle.png",
+        "selectedIconPath": "static/img/circle1.png",
         "text": "三月圈"
       },
       {
         "pagePath": "pages/publish/index",
+        "iconPath": "static/img/publish.png",
+        "selectedIconPath": "static/img/publish1.png",
         "text": "发布"
       },
       {
         "pagePath": "pages/message/index",
+        "iconPath": "static/img/message.png",
+        "selectedIconPath": "static/img/message1.png",
         "text": "消息"
       },
       {
         "pagePath": "pages/personalCenter/index",
+        "iconPath": "static/img/my.png",
+        "selectedIconPath": "static/img/my1.png",
         "text": "我的"
       }
-    ],
-    "midButton": {
-      "width": "80px",
-      "height": "50px",
-      "text": "文字",
-      "iconPath": "static/image/midButton_iconPath.png",
-      "iconWidth": "24px",
-      "backgroundImage": "static/image/midButton_backgroundImage.png"
-    }
+    ]
   },
   "usingComponents": {}
 }

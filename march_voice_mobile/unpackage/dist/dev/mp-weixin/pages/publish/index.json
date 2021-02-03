@@ -1,4 +1,5 @@
 {
-  "navigationBarTitleText": "编辑器",
+  "navigationBarTitleText": "编辑",
+  "navigationStyle": "custom",
   "usingComponents": {}
 }
