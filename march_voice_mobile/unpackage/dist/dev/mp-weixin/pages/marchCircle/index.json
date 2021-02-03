@@ -1,4 +1,5 @@
 {
   "navigationBarTitleText": "三月圈",
+  "navigationStyle": "custom",
   "usingComponents": {}
 }

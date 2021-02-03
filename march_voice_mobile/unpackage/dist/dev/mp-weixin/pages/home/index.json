@@ -1,6 +1,5 @@
 {
   "navigationBarTitleText": "推荐",
-  "usingComponents": {
-    "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar"
-  }
+  "navigationStyle": "custom",
+  "usingComponents": {}
 }
