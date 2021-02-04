@@ -9,7 +9,7 @@
 			</view>
 		</view>
 		<view class="item-icon">
-			asd
+			<image class="inner-img" src="../static/img/my1.png" mode="heightFix"></image>
 		</view>
 	</view>
 </template>
@@ -20,19 +20,24 @@
 <style scoped>
 	.type-list-item{
 		display: flex;
-		flex-direction: row;
+		height: 110rpx;
 	}
 	.item-text{
-		display: flex;
-		flex: 7;
-		flex-direction: column;
+		/* display: flex; */
+		flex: 9;
+		/* flex-direction: column; */
 		background-color: #808080;
 	}
 	.item-icon{
-		flex: 3;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		background-color: #2C405A;
+		height: 110rpx;
+		flex: 1;
+		/* display: flex; */
+		/* flex-direction: column; */
+		/* align-items: center; */
+		/* display: inline-block; */
+		background-color: #5e8bc1;
+	}
+	.inner-img{
+		
 	}
 </style>
