@@ -58,7 +58,6 @@
 	.head-nav-item .center {
 		position: relative;
 		margin: auto;
-		width: 40%;
 	}
 
 
@@ -66,6 +65,9 @@
 		color: #404040;
 
 		.head-nav-bottom {
+			position: relative;
+			margin: auto;
+			width: 50%;
 			background-color: #404040;
 		}
 	}
