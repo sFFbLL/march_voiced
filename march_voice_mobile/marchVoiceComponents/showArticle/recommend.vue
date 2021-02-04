@@ -9,9 +9,11 @@
 	<view class="recommend-component">
 		<!-- 文章标题 -->
 		<articleTitle :articleTitle="article.title" />
+		<attentionAndFansCell :showDteial="false"></attentionAndFansCell>
 		<!-- 文章内容 -->
 		<articleContent :articleContent="article.content"
 		 :articleImg="article.articleImg" />
+		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="article.favourTotal"
 		 :commentTotal="article.commentTotal"
 		 :collectTotal="article.collectTotal"></articleInteract>
@@ -22,6 +24,7 @@
 	import articleTitle from "./childComponents/articleTitle.vue"
 	import articleContent from "./childComponents/artilceContent.vue"
 	import articleInteract from "./childComponents/articleInteract.vue"
+	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
 	export default {
 		data() {
 			return {
@@ -38,7 +41,8 @@
 		components: {
 			articleTitle,
 			articleContent,
-			articleInteract
+			articleInteract,
+			attentionAndFansCell
 		},
 		methods: {
 
@@ -56,5 +60,11 @@
 		margin: auto;
 		margin-bottom: 15rpx;
 		padding: 30rpx 30rpx;
+	}
+
+	>>>.attention-cell .flex-item {
+		border: none;
+		padding: 0;
+		margin-top: 17rpx;
 	}
 </style>

@@ -8,7 +8,7 @@
 			<view class="search">
 				<view class="search-icon">
 					<uni-icons type="search"
-					 size="30"
+					 size="25"
 					 color="#999"></uni-icons>
 				</view>
 			</view>
@@ -20,10 +20,9 @@
 				</view>
 			</view>
 			<view v-if="tabIndex">
-				<view>
-					<view v-for="(item,index) in attentionList">
-						<recommend :articleInfo="item" />
-					</view>
+				<view v-for="(item,index) in attentionList"
+				 :key="index">
+					<recommend :articleInfo="item" />
 				</view>
 			</view>
 		</view>
@@ -89,6 +88,40 @@
 						userImage: "",
 						isFollow: 1
 					}
+				}, {
+					article: {
+						id: 1,
+						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						articleImg: require('static/img/2.jpg'),
+						upDateTime: "更新时间",
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1
+					},
+					user: {
+						userId: 1,
+						userName: "张三",
+						userImage: "",
+						isFollow: 0
+					}
+				}, {
+					article: {
+						id: 1,
+						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						articleImg: require('static/img/2.jpg'),
+						upDateTime: "更新时间",
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1
+					},
+					user: {
+						userId: 1,
+						userName: "张三",
+						userImage: "",
+						isFollow: 0
+					}
 				}],
 				attentionList: [{
 					article: {
@@ -122,7 +155,6 @@
 					this.attention();
 				}
 				this.tabIndex = tabIndex;
-				console.log(this.tabIndex);
 			},
 			recommend() {
 				// console.log(1);

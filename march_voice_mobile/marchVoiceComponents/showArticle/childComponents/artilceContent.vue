@@ -1,7 +1,9 @@
 <template>
 	<!-- 文章内容显示 -->
 	<view class="article-content">
-		<view class="article-text">{{articleContent}}</view>
+		<view>
+			<view class="article-text">{{articleContent}}</view>
+		</view>
 		<view v-if="articleImg != ''"
 		 class="article-img">
 			<image :src="articleImg"
@@ -41,13 +43,18 @@
 	.article-content {
 		margin-top: 18rpx;
 		display: flex;
-		font-size: 27rpx;
+		font-size: 28rpx;
 		font-family: PingFangSC;
 		color: #404040;
 	}
 
 	.article-text {
-		display: inline-block;
+		overflow: hidden;
+		-webkit-line-clamp: 3;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		line-height: 150%;
 	}
 
 	.article-img {
@@ -57,7 +64,7 @@
 
 	.article-img image {
 		width: 170rpx;
-		height: 130rpx;
+		height: 100%;
 		background-color: rgba(238, 238, 238, 1);
 		border-radius: 4px;
 	}
