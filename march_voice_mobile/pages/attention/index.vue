@@ -120,10 +120,7 @@
 			},
 			// 按钮样式切换
 			change(index) {
-				// console.log(index)
-				// console.log(this.list[index])
 				this.list[index].isAttention = !this.list[index].isAttention
-				// console.log(this.list[index].isAttention)
 			}
 		}
 	}
