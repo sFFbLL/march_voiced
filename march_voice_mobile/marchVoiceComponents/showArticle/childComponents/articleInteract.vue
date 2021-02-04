@@ -1,0 +1,71 @@
+<template>
+	<!-- 文章互动 -->
+	<view class="article-interact">
+		<view class="interact-item">
+			{{favourTotal}}<text>赞</text><text class="point">·</text>
+			{{commentTotal}}<text>评论</text><text class="point">·</text>
+			{{collectTotal}}<text>收藏</text>
+			<view v-if="upDateTime != null"
+			 class="upDateTime">
+				<text class="point">·</text>
+				{{upDateTime}}
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+
+			};
+		},
+		props: {
+			favourTotal: {
+				type: Number,
+				default: 0
+			},
+			commentTotal: {
+				type: Number,
+				default: 0
+			},
+			collectTotal: {
+				type: Number,
+				default: 0
+			},
+			upDateTime: {
+				type: Number,
+				default: null
+			}
+		},
+		components: {
+
+		},
+		methods: {
+
+		},
+		mounted() {}
+	}
+</script>
+
+<style>
+	.article-interact {
+		margin-top: 19rpx;
+		color: rgba(153, 153, 153, 100);
+		font-size: 22rpx;
+		font-family: PingFangSC;
+	}
+
+	.interact-item uni-text {
+		margin-left: 8rpx;
+	}
+
+	.point {
+		margin: 0 8rpx;
+	}
+
+	.upDateTime {
+		display: inline;
+	}
+</style>

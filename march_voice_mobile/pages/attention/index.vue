@@ -1,7 +1,12 @@
 <template>
 	<uni-list class="list-item">
-		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="item.id" :id="item.id" :showDteial="showDteial"
-		 :isAttention="item.isAttention" @change="change(index)"></attentionAndFansCell>
+		<attentionAndFansCell class="item"
+		 v-for="(item, index) in list"
+		 :key="item.id"
+		 :id="item.id"
+		 :showDteial="showDteial"
+		 :isAttention="item.isAttention"
+		 @change="change(index)"></attentionAndFansCell>
 		<uniLoadMore></uniLoadMore>
 	</uni-list>
 </template>
@@ -87,7 +92,7 @@
 			uniLoadMore
 		},
 		// 进入时加载
-		onLoad: function(options) {
+		onLoad: function (options) {
 			let that = this;
 			this.list = [];
 			// setTimeout(function() {
@@ -98,7 +103,7 @@
 		// 下拉刷新
 		onPullDownRefresh() {
 			let that = this;
-			setTimeout(function() {
+			setTimeout(function () {
 				that.list = [];
 				that.list.push.apply(that.list, that.list1)
 				uni.stopPullDownRefresh();
