@@ -1,7 +1,6 @@
 <template>
 	<view class="content">
-		<view v-for="(item,index) in recommendList">
-			<attentionAndFansCell :showDteial="false" @change="change(index)"></attentionAndFansCell>
+		<view class="asd" v-for="(item,index) in recommendList">
 			<recommend :articleInfo="item" />
 		</view>
 	</view>
@@ -69,7 +68,7 @@
 </script>
 
 <style scoped>
-	::v-deep .attention-cell>.flex-item{
+	::v-deep .asd>.attention-cell>.flex-item {
 		border-bottom: none;
 		border-top: 1rpx #d9d9d9 solid;
 		padding: 20rpx 30rpx 0rpx 30rpx;

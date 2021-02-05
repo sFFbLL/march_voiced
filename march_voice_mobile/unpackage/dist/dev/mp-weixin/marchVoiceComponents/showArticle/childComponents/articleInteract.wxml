@@ -1,0 +1,1 @@
+<view class="article-interact"><view class="interact-item">{{''+favourTotal}}<text>赞</text><text class="point">·</text>{{''+commentTotal}}<text>评论</text><text class="point">·</text>{{''+collectTotal}}<text>收藏</text><block wx:if="{{upDateTime!=null}}"><view class="upDateTime"><text class="point">·</text>{{''+upDateTime+''}}</view></block></view></view>

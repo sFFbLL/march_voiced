@@ -1,0 +1,7 @@
+
+.data-v-4f224584 .asd>.attention-cell>.flex-item {
+	border-bottom: none;
+	border-top: 1rpx #d9d9d9 solid;
+	padding: 20rpx 30rpx 0rpx 30rpx;
+}
+

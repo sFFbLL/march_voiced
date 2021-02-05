@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "消息",
   "navigationStyle": "custom",
-  "usingComponents": {}
+  "usingComponents": {
+    "tabs": "/marchVoiceComponents/tabCard"
+  }
 }

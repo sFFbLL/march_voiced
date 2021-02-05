@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "三月圈",
   "navigationStyle": "custom",
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-icons": "/components/uni-icons/uni-icons"
+  }
 }

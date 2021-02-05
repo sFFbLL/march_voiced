@@ -1,0 +1,28 @@
+
+.home,
+.home .content {
+	background-color: rgba(241, 241, 241, 1);
+}
+.header {
+	height: 100rpx;
+	line-height: 100rpx;
+	background-color: #fff;
+	margin-bottom: 15rpx;
+}
+.tag-nav {
+	display: inline-block;
+	height: 100%;
+	width: 90%;
+}
+.search {
+	display: inline-block;
+	width: 8%;
+}
+.search .search-icon {
+	position: absolute;
+	top: 5rpx;
+}
+.content {
+	background-color: #fff;
+}
+

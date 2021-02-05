@@ -1,0 +1,9 @@
+
+.article-title {
+	color: #404040;
+	font-size: 32rpx;
+	font-family: PingFangSC;
+	text-align: left;
+	font-weight: bold;
+}
+
