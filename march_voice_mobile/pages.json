@@ -1,4 +1,7 @@
 {
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
 	"pages": [{
 			"path": "pages/home/index",
 			"style": {
@@ -153,9 +156,7 @@
 				"text": "我的"
 			}
 		]
-	},
-	"easycom": {
-		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
 	}
+
 
 }
