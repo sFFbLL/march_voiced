@@ -1,22 +1,17 @@
 <template>
 	<!-- 推荐页面文章展示组件 -->
-	<!-- 
-	 upDateTime: "更新时间",
-	 favourTotal: 1,
-	 collectTotal: 1,
-	 commentTotal: 1
-	 -->
 	<view class="recommend-component">
 		<!-- 文章标题 -->
-		<articleTitle :articleTitle="article.title" />
-		<attentionAndFansCell :showDteial="false"></attentionAndFansCell>
+		<articleTitle :articleTitle="articleInfo.title" />
+		<!-- 作者信息 -->
+		<attentionAndFansCell :userInfo = "articleInfo.user" :showDteial="false"></attentionAndFansCell>
 		<!-- 文章内容 -->
-		<articleContent :articleContent="article.content"
-		 :articleImg="article.articleImg" />
+		<articleContent :articleContent="articleInfo.content"
+		 :articleImg="articleInfo.articleImg" />
 		<!-- 文章互动数量-->
-		<articleInteract :favourTotal="article.favourTotal"
-		 :commentTotal="article.commentTotal"
-		 :collectTotal="article.collectTotal"></articleInteract>
+		<articleInteract :favourTotal="articleInfo.favourTotal"
+		 :commentTotal="articleInfo.commentTotal"
+		 :collectTotal="articleInfo.collectTotal"></articleInteract>
 	</view>
 </template>
 
@@ -28,8 +23,7 @@
 	export default {
 		data() {
 			return {
-				article: {},
-				userInfo: {}
+
 			};
 		},
 		props: {
@@ -48,8 +42,7 @@
 
 		},
 		mounted() {
-			this.article = this.articleInfo.article;
-			this.user = this.articleInfo.userInfo;
+
 		}
 	}
 </script>
