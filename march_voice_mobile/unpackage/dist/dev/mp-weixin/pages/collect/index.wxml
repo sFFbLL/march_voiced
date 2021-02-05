@@ -1,1 +1,1 @@
-<view class="_div"></view>
+<view class="content data-v-4f224584"><block wx:for="{{recommendList}}" wx:for-item="item" wx:for-index="index"><view class="asd data-v-4f224584"><attention-and-fans-cell vue-id="{{'d5b227fc-1-'+index}}" showDteial="{{false}}" data-event-opts="{{[['^change',[['change',[index]]]]]}}" bind:change="__e" class="data-v-4f224584" bind:__l="__l"></attention-and-fans-cell><recommend vue-id="{{'d5b227fc-2-'+index}}" articleInfo="{{item}}" class="data-v-4f224584" bind:__l="__l"></recommend></view></block></view>

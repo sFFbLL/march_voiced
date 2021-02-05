@@ -37,11 +37,7 @@
 				 :loading="isLoading"
 				 :disabled="isDisabled"
 				 @click.stop="changeBtn"><span>关 注</span></button>
-				<button v-show="isAttention === true"
-				 class="right-button"
-				 type="default"
-				 :loading="isLoading"
-				 :disabled="isDisabled"
+				<button v-show="isAttention === true" class="right-button" type="default" :loading="isLoading" :disabled="isDisabled"
 				 @click.stop="changeBtn">已关注</button>
 			</view>
 		</view>
@@ -100,7 +96,7 @@
 				this.isDisabled = true
 				this.isLoading = true
 				let that = this;
-				setTimeout(function () {
+				setTimeout(function() {
 					that.isDisabled = false
 					that.isLoading = false
 					that.$emit('change');
@@ -126,6 +122,8 @@
 
 	/* 左侧图片盒子样式 */
 	.left-img-box {
+		display: flex;
+		align-items: center;
 		flex: 1;
 		margin-right: 10rpx;
 		/* width: 112rpx; */
@@ -134,9 +132,14 @@
 	}
 
 	/* 内部盒子样式 */
-	.inner-box {
+
+	/* .inner-box {
 		display: inline-block;
-	}
+	} */
+
+	/* .inner-box {
+    display: inline-block;
+  } */
 
 	/* 图片样式 */
 	.inner-img {
@@ -181,7 +184,7 @@
 	.inner-text-selfintroduce {
 		padding-top: 4rpx;
 		font-size: 24rpx;
-		width: 360rpx;
+		width: 420rpx;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;

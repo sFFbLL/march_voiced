@@ -1,5 +1,9 @@
 {
   "navigationBarTitleText": "推荐",
   "navigationStyle": "custom",
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-icons": "/components/uni-icons/uni-icons",
+    "tabs": "/marchVoiceComponents/tabCard",
+    "recommend": "/marchVoiceComponents/showArticle/recommend"
+  }
 }

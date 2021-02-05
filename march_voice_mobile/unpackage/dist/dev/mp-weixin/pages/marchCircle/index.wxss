@@ -1,0 +1,155 @@
+
+.isDisplay {
+	display: none;
+}
+.oneemoji {
+	margin-left: 25rpx;
+}
+.addqingzhu {
+	width: 55rpx;
+	height: 50rpx;
+	top: 8rpx;
+}
+.addaixin {
+	width: 60rpx;
+	height: 42rpx;
+	top: 8rpx;
+}
+.addxiaoku {
+	width: 55rpx;
+	height: 50rpx;
+	top: 8rpx;
+}
+.visible {
+	visibility: hidden;
+}
+.arrow {
+	margin-left: 110rpx;
+}
+.clickEmoji {
+	background-color: #b8e3ff;
+}
+.allEmoji {
+	width: 260rpx;
+	height: 68rpx;
+	/* margin-left: 60rpx; */
+	border: 0.5rpx solid #e1e1e1;
+	border-radius: 15rpx 15rpx 15rpx 15rpx;
+	box-shadow: 1rpx 1rpx 10rpx 1rpx #e1e1e1;
+	z-index: 5;
+}
+.qingzhu {
+	width: 35rpx;
+	height: 30rpx;
+	top: 5rpx;
+}
+.aixin {
+	width: 45rpx;
+	height: 30rpx;
+	top: 5rpx;
+}
+.xiaoku {
+	width: 35rpx;
+	height: 30rpx;
+	top: 5rpx;
+}
+.addemoji {
+	width: 30rpx;
+	height: 30rpx;
+	top: 5rpx;
+}
+.add {
+	margin-left: 10rpx;
+}
+.emoji ._span {
+	margin-left: 10rpx;
+	top: 8rpx;
+}
+.emoji {
+	width: 92rpx;
+	height: 44rpx;
+	line-height: 40rpx;
+	border-radius: 10rpx 10rpx 10rpx 10rpx;
+	color: #999999;
+	font-size: 24rpx;
+	text-align: center;
+	font-family: Arial;
+	margin-left: 20rpx;
+	border: 2rpx solid #999999;
+}
+.content {
+	background-color: #F5F5F5;
+	height: 100vh;
+}
+.idea {
+	margin-top: 20rpx;
+	width: 100%;
+	height: 175rpx;
+	line-height: 20rpx;
+	color: #101010;
+	font-size: 14rpx;
+	text-align: center;
+	font-family: Arial;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	border: 1rpx solid rgba(255, 255, 255, 100);
+	background-color: #FFFFFF;
+}
+
+/* 头部样式 */
+.marchcicrle {
+	font-size: 36rpx;
+	width: 108rpx;
+	height: 46px;
+}
+.member {
+	font-size: 28rpx;
+	margin: 0 20rpx;
+}
+.info {
+	margin-top: 30rpx;
+	font-size: 32rpx;
+}
+.total {
+	font-size: 28rpx;
+	margin: 80rpx 20rpx;
+}
+.titlebg {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	width: 100%;
+	height: 320rpx;
+	background-image: url(/static/img/marchcicrlebg.jpg);
+	background-position: center;
+	background-size: 100% 100%;
+}
+.title {
+	margin: 72rpx 25rpx;
+	width: 416rpx;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+.wxlogo {
+	width: 70rpx;
+	height: 70rpx;
+	left: 50rpx;
+	top: 100rpx;
+}
+.join {
+	left: 143rpx;
+	top: 30rpx;
+	width: 120rpx;
+	height: 54rpx;
+
+	line-height: 55rpx;
+	border-radius: 28rpx 28rpx 28rpx 28rpx;
+	background-color: #404040;
+	color: #FFFFFF;
+	font-size: 28rpx;
+	text-align: center;
+	font-family: Arial;
+	border: 0.5rpx solid #101010 inset;
+}
+

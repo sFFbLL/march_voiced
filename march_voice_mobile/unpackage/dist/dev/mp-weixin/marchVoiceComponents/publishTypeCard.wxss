@@ -1,0 +1,29 @@
+
+.type-list-item.data-v-5ab63086{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	height: 110rpx;
+}
+.item-text.data-v-5ab63086{
+	/* display: flex; */
+	-webkit-box-flex: 9;
+	-webkit-flex: 9;
+	        flex: 9;
+	/* flex-direction: column; */
+	background-color: #808080;
+}
+.item-icon.data-v-5ab63086{
+	height: 110rpx;
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
+	/* display: flex; */
+	/* flex-direction: column; */
+	/* align-items: center; */
+	/* display: inline-block; */
+	background-color: #5e8bc1;
+}
+.inner-img.data-v-5ab63086{
+}
+

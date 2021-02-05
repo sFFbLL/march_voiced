@@ -5,6 +5,7 @@
 		 :key="item.id"
 		 :id="item.id"
 		 :showDteial="showDteial"
+		 :showDateAndNumber="showDateAndNumber"
 		 :isAttention="item.isAttention"
 		 @change="change(index)"></attentionAndFansCell>
 		<uniLoadMore></uniLoadMore>
@@ -18,6 +19,7 @@
 		data() {
 			return {
 				showDteial: true, //是否展示粉丝数关注数
+				showDateAndNumber:true,
 				list: [],
 				list1: [{
 						id: '1',

@@ -1,1 +1,1 @@
-<view><view>消息</view></view>
+<view><view class="header"><view class="head-nav-items"><tabs vue-id="7b605105-1" tabs="{{tablist}}" data-event-opts="{{[['^tabActive',[['tabActive']]]]}}" bind:tabActive="__e" bind:__l="__l"></tabs></view></view></view>
