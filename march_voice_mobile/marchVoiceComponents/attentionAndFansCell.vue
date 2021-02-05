@@ -192,16 +192,13 @@
 
 	/* 右侧按钮盒子 */
 	.right-button-box {
-		position: relative;
 		display: flex;
-		flex: 2;
-		align-items: center;
+		flex: 1;
+		align-items:center
 	}
 
 	/* 右侧按钮 */
 	.right-button {
-		position: absolute;
-		right: 0;
 		border-radius: 58rpx;
 		width: 130rpx;
 		height: 56rpx;
