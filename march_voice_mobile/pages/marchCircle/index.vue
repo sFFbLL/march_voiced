@@ -19,34 +19,53 @@
 		</view>
 
 		<!-- 三月圈内容 -->
-		<view class="content">
-			<!-- 添加表情上方提示框 -->
-			<view class="allEmoji" :class="{'visible':visible}" :style="{marginLeft:emojiPosition01+'px'}">
-				<image class="addxiaoku oneemoji" @click="addAEmoji('face')" src="../../static/img/xiaoku.png" mode=""></image>
-				<image class="addaixin oneemoji" @click="addAEmoji('like')" src="../../static/img/aixin.png" mode=""></image>
-				<image class="addqingzhu oneemoji" @click="addAEmoji('favour')" src="../../static/img/qingzhu.png" mode=""></image>
-				<uni-icons class="arrow" type="arrowdown" size="15" style="color: #e6e6e6; "></uni-icons>
-			</view>
-			<!-- 各种表情 -->
-			<view class="idea">
-				<view class="emoji" :class="{'clickEmoji':clickFace,'isDisplay':faceDisplay}" @click="clickAni('face')">
-					<image class=" xiaoku" src="../../static/img/xiaoku.png" mode=""></image>
-					<span>{{faceTotal}}</span>
-				</view>
-				<view class="emoji" :class="{'clickEmoji':clickLike}" @click="clickAni('like')">
-					<image class="aixin" src="../../static/img/aixin.png" mode=""></image>
-					<span>{{likeTotal}}</span>
-				</view>
-				<view class="emoji" :class="{'clickEmoji':clickFavour,'isDisplay':favourDisplay}" @click="clickAni('favour')">
-					<image class="qingzhu" src="../../static/img/qingzhu.png" mode=""></image>
-					<span>{{favourTotal}}</span>
-				</view>
+		<view class="wrap">
+			
+			<u-gap height="30" bg-color="#f5f5f5"></u-gap>
+			<view class="ideacontent">
 
+				<!-- 用户头像公共组件 -->
 
-				<!-- 添加表情 -->
-				<view class="emoji" @click="addEmoji()">
-					<image class="addemoji" src="../../static/img/emoji.png" mode=""></image>
-					<image class="addemoji add" src="../../static/img/add.png" mode=""></image>
+				<!-- 想法的文字部分 -->
+				<view>
+					<text class="content" space="ensp">{{content}}</text>
+				</view>
+				<!-- 想法的图片部分 -->
+				<view class="allImage">
+					<image class="oneimg" src="../../static/img/cat.jpg" mode=""></image>
+				</view>
+				<!-- 添加表情上方提示框 -->
+				<view class="allEmoji" :class="{'visible':visible}" :style="{marginLeft:emojiPosition01+'px'}">
+					<image class="addxiaoku oneemoji" @click="addAEmoji('face')" src="../../static/img/xiaoku.png" mode=""></image>
+					<image class="addaixin oneemoji" @click="addAEmoji('like')" src="../../static/img/aixin.png" mode=""></image>
+					<image class="addqingzhu oneemoji" @click="addAEmoji('favour')" src="../../static/img/qingzhu.png" mode=""></image>
+					<uni-icons class="arrow" type="arrowdown" size="15" style="color: #e6e6e6; "></uni-icons>
+				</view>
+				<!-- 各种表情 -->
+				<view class="idea">
+					<view class="emoji" :class="{'clickEmoji':clickFace,'isDisplay':faceDisplay}" @click="clickAni('face')">
+						<image class=" xiaoku" src="../../static/img/xiaoku.png" mode=""></image>
+						<span>{{faceTotal}}</span>
+					</view>
+					<view class="emoji" :class="{'clickEmoji':clickLike}" @click="clickAni('like')">
+						<image class="aixin" src="../../static/img/aixin.png" mode=""></image>
+						<span>{{likeTotal}}</span>
+					</view>
+					<view class="emoji" :class="{'clickEmoji':clickFavour,'isDisplay':favourDisplay}" @click="clickAni('favour')">
+						<image class="qingzhu" src="../../static/img/qingzhu.png" mode=""></image>
+						<span>{{favourTotal}}</span>
+					</view>
+					<!-- 添加表情 -->
+					<view class="emoji" @click="addEmoji()">
+						<image class="addemoji" src="../../static/img/emoji.png" mode=""></image>
+						<image class="addemoji add" src="../../static/img/add.png" mode=""></image>
+					</view>
+					<!-- 评论+评论数量 -->
+					<view class="comment">
+						<u-icon name="chat" color="#999999" size="40" class="chat"></u-icon>
+						<span class="commentTotal">{{commentTotal}}</span>
+
+					</view>
 				</view>
 			</view>
 		</view>
@@ -68,8 +87,8 @@
 				faceDisplay: true,
 				favourDisplay: true,
 				emojiPosition01: 30,
-				emojiPosition02: false,
-				emojiPosition03: false,
+				content: '今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...'
+
 
 			}
 		},
@@ -168,6 +187,42 @@
 </script>
 
 <style>
+	.allImage {
+		display: flex;
+		margin-top: 10rpx;
+	}
+.oneimg{
+	width: 774rpx;
+	height: 300rpx;
+}
+	.content {
+		overflow: hidden;
+		-webkit-line-clamp: 3;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		font-size: 32rpx;
+		color: #404040;
+		text-align: left;
+		line-height: 1.5;
+		
+	}
+
+	.comment {
+		position: absolute;
+		left: 650rpx;
+	}
+
+	.commentTotal {
+		font-size: 24rpx;
+		color: #999999;
+		margin-left: 10rpx;
+	}
+
+	.chat {
+		transform: rotateY(180deg);
+	}
+
 	.isDisplay {
 		display: none;
 	}
@@ -262,23 +317,28 @@
 		border: 2rpx solid #999999;
 	}
 
-	.content {
-		background-color: #F5F5F5;
-		height: 100vh;
+	.ideacontent {
+		background-color: #FFFFFF;
+		padding:26rpx;
+
 	}
 
 	.idea {
-		margin-top: 20rpx;
+		/* margin-top: 20rpx; */
 		width: 100%;
-		height: 175rpx;
-		line-height: 20rpx;
+		/* height: 75rpx; */
+		/* line-height: 20rpx; */
 		color: #101010;
 		font-size: 14rpx;
 		text-align: center;
 		font-family: Arial;
 		display: flex;
 		border: 1rpx solid rgba(255, 255, 255, 100);
-		background-color: #FFFFFF;
+	}
+
+	.wrap {
+		background-color: #F5F5F5;
+		height: 100vh;
 	}
 
 	/* 头部样式 */
