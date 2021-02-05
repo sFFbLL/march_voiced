@@ -23,7 +23,7 @@
 
 		},
 		mounted() {
-
+			
 		}
 	}
 </script>
@@ -32,8 +32,14 @@
 	.article-title {
 		color: #404040;
 		font-size: 32rpx;
-		font-family: PingFangSC;
+		font-family: "微软雅黑";
 		text-align: left;
 		font-weight: bold;
+		overflow: hidden;
+		-webkit-line-clamp: 2;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		line-height: 150%;
 	}
 </style>
