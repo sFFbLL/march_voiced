@@ -1,2 +1,2 @@
-import Axios from './request.js';
+import Axios from '../request.js';
 
