@@ -5,7 +5,7 @@
 	"pages": [{
 			"path": "pages/home/index",
 			"style": {
-				"navigationBarTitleText": "推荐",
+				"navigationBarTitleText": "三月之声",
 				"navigationStyle": "custom"
 			}
 		}, {
