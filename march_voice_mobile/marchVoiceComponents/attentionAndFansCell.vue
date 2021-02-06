@@ -3,35 +3,34 @@
 		<view class="flex-item">
 			<!-- 左侧头像盒子 -->
 			<a @click="inToPageMine" class="left-img-box inner-box">
-				<image class="inner-img" :src=imgUrl mode="aspectFill"></image>
+				<image class="inner-img" :src=user.imgUrl mode="aspectFill"></image>
 			</a>
 			<!-- 中部文字 -->
 			<view class="middle-text-box inner-box" @click="inToPageMine">
 				<view class="inner-middle-box inner-box">
 					<!-- 昵称盒子 -->
 					<view class="inner-text-name">
-						{{title}}
+						{{user.name}}<slot name="doSomeThing"></slot>
 					</view>
 					<!-- 关注数粉丝数文章数盒子 -->
 					<view v-if="showDteial" class="inner-text-message greay-text">
-						<span class="inner-text">关注 {{message}}</span><span class="inner-text">粉丝 {{message}}</span><span class="inner-text">文章
-							{{message}}</span>
+						<span class="inner-text">关注 {{user.count}}</span><span class="inner-text">粉丝 {{user.count}}</span><span class="inner-text">文章
+							{{user.count}}</span>
 					</view>
-					<!-- 个人介绍盒子 -->
-					<view v-if="showDteial" class="inner-text-selfintroduce greay-text">
-						{{selfIntrouduce}}
+					<!-- 个人介绍盒子 (单行文本)-->
+					<view v-if="showIntrouduce" class="inner-text-selfintroduce greay-text">
+						{{user.selfIntrouduce}}
 					</view>
-					<!-- 单行文本插槽 -->
-					<view class="inner-text-selfintroduce greay-text">
-						<slot name="showSingleLineText"></slot>
+					<view v-if="showDate" class="inner-text-selfintroduce greay-text">
+						{{user.date}}
 					</view>
 				</view>
 			</view>
 			<!-- 按钮盒子 -->
 			<view class="right-button-box">
-				<button v-show="isAttention === false" class="right-button" type="default-green" :disabled="isDisabled"
+				<button v-show="user.follow === false" class="right-button" type="default-green" :disabled="isDisabled"
 				 iconType="circle" @click.stop="changeBtn"><span>关 注</span></button>
-				<button v-show="isAttention === true" class="right-button" type="default" :disabled="isDisabled"
+				<button v-show="user.follow === true" class="right-button" type="default" :disabled="isDisabled"
 				 @click.stop="changeBtn" iconType="circle">
 					<slot name="hasAttention"></slot>
 				</button>
@@ -43,38 +42,31 @@
 <script>
 	export default {
 		props: {
-			// 用于事件
-			id: {
-				type: String,
-				default: ""
-			},
-			// 显示头像
-			imgUrl: {
-				type: String,
-				default: require('../static/img/1.jpg')
-			},
-			// 显示昵称
-			title: {
-				type: String,
-				default: "吴胜科"
-			},
-			// 显示各种详情，格式待改动
-			message: {
-				type: String,
-				default: "0"
+			user:{
+				type:Object,
+				default(){
+					return{
+						id: "",// 用于事件
+						imgUrl: require('../static/img/1.jpg'),// 显示头像
+						name:"昵称",// 显示昵称
+						count:"0",// 关注数粉丝数文章数
+						selfIntrouduce:"",// 个人简介
+						follow:true,// 判断是否互相关注
+						date:"2021-02-07 11:59"
+					}
+				}
 			},
 			// 显示个人简介
-			selfIntrouduce: {
-				type: String,
-				default: "此处为个人奥术大师大大所多所多所大所简介"
-			},
-			// 判断是否互相关注
-			isAttention: {
+			showIntrouduce: {
 				type: Boolean,
-				default: false
+				default: true
 			},
-			// 是否展示其余细节，默认展示
+			// 是否展示关注粉丝文章数
 			showDteial: {
+				type: Boolean,
+				default: true
+			},
+			showDate:{
 				type: Boolean,
 				default: true
 			}
@@ -95,7 +87,7 @@
 					that.isDisabled = false
 					that.isLoading = false
 					that.$emit('change');
-				}, 2000);
+				}, 1000);
 			},
 			// 进入其他页面
 			inToPageMine() {
@@ -217,7 +209,7 @@
 
 	/* 修改点击按钮后的样式 */
 	.button-hover[type=default-green] {
-		background-color: rgba(49, 49, 49, 1.0);
+		background-color: rgba(26, 26, 26, 1.0);
 	}
 
 	/* 修改按钮样式 */

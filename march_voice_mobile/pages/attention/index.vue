@@ -1,13 +1,8 @@
 <template>
 	<uni-list class="list-item">
-		<attentionAndFansCell class="item"
-		 v-for="(item, index) in list"
-		 :key="item.id"
-		 :id="item.id"
-		 :showDteial="showDteial"
-		 :showDateAndNumber="showDateAndNumber"
-		 :isAttention="item.isAttention"
-		 @change="change(index)"><span slot="hasAttention">已关注</span></attentionAndFansCell>
+		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="item.id" :showDteial="showDteial"
+		 :showSelfIntrouduce="showSelfIntrouduce" :showDate="showDate" :user="list1[index]" @change="change(index)"><span
+			 slot="doSomeThing">关注了你</span><span slot="hasAttention">已关注</span></attentionAndFansCell>
 		<uniLoadMore></uniLoadMore>
 	</uni-list>
 </template>
@@ -19,74 +14,19 @@
 		data() {
 			return {
 				showDteial: true, //是否展示粉丝数关注数
-				showDateAndNumber:true,
+				showSelfIntrouduce: true,
+				showDate: true,
 				list: [],
 				list1: [{
-						id: '1',
-						isAttention: true
-					},
-					{
-						id: '2',
-						isAttention: true
-					},
-					{
-						id: '3',
-						isAttention: true
-					},
-					{
-						id: '4',
-						isAttention: true,
-
-					},
-					{
-						id: '5',
-						isAttention: true
-					},
-					{
-						id: '6',
-						isAttention: true
-					},
-					{
-						id: '7',
-						isAttention: true
-					},
-					{
-						id: '8',
-						isAttention: true
-					},
-					{
-						id: '9',
-						isAttention: true
-					},
-					{
-						id: '10',
-						isAttention: true
-					},
-					{
-						id: '11',
-						isAttention: true
-					},
-					{
-						id: '12',
-						isAttention: true
-					},
-					{
-						id: '13',
-						isAttention: true
-					},
-					{
-						id: '14',
-						isAttention: true
-					},
-					{
-						id: '15',
-						isAttention: true
-					},
-					{
-						id: '16',
-						isAttention: true
-					}
-				]
+					id: "", // 用于事件
+					imgUrl: require('../../static/img/1.jpg'), // 显示头像
+					name: "昵称", // 显示昵称
+					count: "0", //关注数等
+					selfIntrouduce: "阿萨德",
+					follow: true, // 判断是否互相关注
+					count: "1",
+					date: "2020-20-01"
+				}]
 			}
 		},
 		components: {
@@ -94,7 +34,7 @@
 			uniLoadMore
 		},
 		// 进入时加载
-		onLoad: function (options) {
+		onLoad: function(options) {
 			let that = this;
 			this.list = [];
 			// setTimeout(function() {
@@ -105,7 +45,7 @@
 		// 下拉刷新
 		onPullDownRefresh() {
 			let that = this;
-			setTimeout(function () {
+			setTimeout(function() {
 				that.list = [];
 				that.list.push.apply(that.list, that.list1)
 				uni.stopPullDownRefresh();
@@ -122,7 +62,7 @@
 			},
 			// 按钮样式切换
 			change(index) {
-				this.list[index].isAttention = !this.list[index].isAttention
+				this.list[index].follow = !this.list[index].follow
 			}
 		}
 	}
