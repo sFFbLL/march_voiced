@@ -2,6 +2,7 @@
 .home,
 .home .content {
 	background-color: rgba(241, 241, 241, 1);
+	margin-bottom: 30rpx;
 }
 .header {
 	height: 100rpx;
@@ -24,5 +25,15 @@
 }
 .content {
 	background-color: #fff;
+}
+.loading {
+	background-color: #fff;
+}
+ .uni-load-more .uni-load-more__text {
+	font-size: 28rpx;
+}
+ .uni-load-more .uni-load-more__img {
+	height: 30rpx !important;
+	width: 30rpx !important;
 }
 
