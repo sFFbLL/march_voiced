@@ -21,6 +21,10 @@
 					<view v-if="showDteial" class="inner-text-selfintroduce greay-text">
 						{{selfIntrouduce}}
 					</view>
+					<!-- 单行文本插槽 -->
+					<view class="inner-text-selfintroduce greay-text">
+						<slot name="showSingleLineText"></slot>
+					</view>
 				</view>
 			</view>
 			<!-- 按钮盒子 -->

@@ -12,7 +12,7 @@
 	export default {
 		data() {
 			return {
-				showDteial: true,
+				showDteial: false,
 				list: [],
 				list1: [{
 						id: '1',
@@ -120,7 +120,7 @@
 </script>
 
 <style scoped>
-	::v-deep .right-button{
+	::v-deep .right-button {
 		width: 160rpx;
-	}	
+	}
 </style>
