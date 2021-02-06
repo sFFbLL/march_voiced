@@ -12,7 +12,7 @@
 	export default {
 		data() {
 			return {
-				showDteial: false,
+				showDteial: true,
 				list: [],
 				list1: [{
 						id: '1',

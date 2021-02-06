@@ -1,45 +1,9 @@
-<!-- <template>
-	<view class="type-box">
-		<publishTypeCard>
-			<template v-slot:title>
-				写文章
-			</template>
-			<template v-slot:describe>
-				记录我的生活，酸甜苦辣，喜怒哀乐
-			</template>
-		</publishTypeCard>
-	</view>
-</template>
-
-<script>
-	import publishTypeCard from '../../marchVoiceComponents/publishTypeCard.vue';
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		components:{
-			publishTypeCard
-		},
-		methods: {
-			
-		}
-	}
-</script>
-
-<style scoped>
-	.type-box{
-		
-	}
-</style>
- -->
  <template>
  	<view class="content" :class="{'active':active}">
  		<view class="tabbar-box-wrap">
  			<view class="tabbar-box">
  				<view class="tabbar-box-item" @click="goToPage('/pages/publish/tabbar-3/tabbar-3-detial/tabbar-3-release/tabbar-3-release')">
- 					<publishTypeCard>
+ 					<publishTypeCard :type="type">
  						<template v-slot:title>
  							写文章
  						</template>
@@ -68,7 +32,8 @@
 	 
  	data() {
  		return {
- 			active: false
+ 			active: false,
+			type:"asdasd"
  		};
  	},
 	components:{

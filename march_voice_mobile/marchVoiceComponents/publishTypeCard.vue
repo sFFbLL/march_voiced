@@ -16,15 +16,24 @@
 
 <script>
 	export default {
+			props:{
+				type:{
+					type:String,
+					default:"text"
+				},
+				
+			},
 			data() {
 				return {
 					src: require('../static/img/1.jpg'),
-					fade:false
+					fade:false,
 				}
 			},
 			methods:{
 				toPublishPage(){
-					this.$router.push()
+					uni.navigateTo({
+						url:"richTextEditor?type="+this.type,
+					})
 				}
 			}
 		}

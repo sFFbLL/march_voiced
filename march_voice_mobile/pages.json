@@ -72,6 +72,12 @@
 				"enablePullDownRefresh": true,
 				"onReachBottomDistance": 50
 			}
+		}, {
+			"path": "pages/publish/richTextEditor",
+			"style": {
+				"navigationBarTitleText": "富文本编辑器",
+				"navigationStyle": "custom"
+			}
 		}
 
 
