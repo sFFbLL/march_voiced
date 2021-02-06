@@ -2,47 +2,42 @@
 	<view class="attention-cell">
 		<view class="flex-item">
 			<!-- 左侧头像盒子 -->
-			<a @click="inToPageMine"
-			 class="left-img-box inner-box">
-				<image class="inner-img"
-				 :src=imgUrl
-				 mode="aspectFill"></image>
+			<a @click="inToPageMine" class="left-img-box inner-box">
+				<image class="inner-img" :src=imgUrl mode="aspectFill"></image>
 			</a>
 			<!-- 中部文字 -->
-			<view class="middle-text-box inner-box"
-			 @click="inToPageMine">
+			<view class="middle-text-box inner-box" @click="inToPageMine">
 				<view class="inner-middle-box inner-box">
 					<!-- 昵称盒子 -->
 					<view class="inner-text-name">
 						{{title}}
 					</view>
 					<!-- 关注数粉丝数文章数盒子 -->
-					<view v-if="showDteial"
-					 class="inner-text-message greay-text">
+					<view v-if="showDteial" class="inner-text-message greay-text">
 						<span class="inner-text">关注 {{message}}</span><span class="inner-text">粉丝 {{message}}</span><span class="inner-text">文章
 							{{message}}</span>
 					</view>
 					<!-- 个人介绍盒子 -->
-					<view v-if="showDteial"
-					 class="inner-text-selfintroduce greay-text">
+					<view v-if="showDteial" class="inner-text-selfintroduce greay-text">
 						{{selfIntrouduce}}
+					</view>
+					<!-- 单行文本插槽 -->
+					<view class="inner-text-selfintroduce greay-text">
+						<slot name="showSingleLineText"></slot>
 					</view>
 				</view>
 			</view>
 			<!-- 按钮盒子 -->
 			<view class="right-button-box">
-				<button v-show="isAttention === false"
-				 class="right-button"
-				 type="default-green"
-				 :loading="isLoading"
-				 :disabled="isDisabled"
-				 @click.stop="changeBtn"><span>关 注</span></button>
-				<button v-show="isAttention === true" class="right-button" type="default" :loading="isLoading" :disabled="isDisabled"
-				 @click.stop="changeBtn">已关注</button>
+				<button v-show="isAttention === false" class="right-button" type="default-green" :disabled="isDisabled"
+				 iconType="circle" @click.stop="changeBtn"><span>关 注</span></button>
+				<button v-show="isAttention === true" class="right-button" type="default" :disabled="isDisabled"
+				 @click.stop="changeBtn" iconType="circle">
+					<slot name="hasAttention"></slot>
+				</button>
 			</view>
 		</view>
 	</view>
-
 </template>
 
 <script>
