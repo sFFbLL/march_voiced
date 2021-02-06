@@ -7,7 +7,7 @@
 		 :showDteial="showDteial"
 		 :showDateAndNumber="showDateAndNumber"
 		 :isAttention="item.isAttention"
-		 @change="change(index)"></attentionAndFansCell>
+		 @change="change(index)"><span slot="hasAttention">已关注</span></attentionAndFansCell>
 		<uniLoadMore></uniLoadMore>
 	</uni-list>
 </template>
@@ -23,68 +23,68 @@
 				list: [],
 				list1: [{
 						id: '1',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '2',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '3',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '4',
-						isAttention: false,
+						isAttention: true,
 
 					},
 					{
 						id: '5',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '6',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '7',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '8',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '9',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '10',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '11',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '12',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '13',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '14',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '15',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '16',
-						isAttention: false
+						isAttention: true
 					}
 				]
 			}
