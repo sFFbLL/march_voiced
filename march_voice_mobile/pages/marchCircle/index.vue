@@ -10,8 +10,8 @@
 			</view>
 			<view>
 				<image class="wxlogo" src="../../static/img/wxlogo.png"></image>
-				<button class="join">加入</button>
-
+				<button v-if="sanyueMumber" class="join" :disabled="disabledJoin" :style="{fontSize:fontSize+'rpx'}" @click="join()">{{isjoin}}</button>
+				<u-toast ref="uToast" />
 
 			</view>
 
@@ -20,20 +20,23 @@
 
 		<!-- 三月圈内容 -->
 		<view class="wrap">
-			
+
 			<u-gap height="30" bg-color="#f5f5f5"></u-gap>
 			<view class="ideacontent">
 
 				<!-- 用户头像公共组件 -->
-
+				<attentionAndFansCell :showDteial="false"></attentionAndFansCell>
 				<!-- 想法的文字部分 -->
-				<view>
+				<view class="wordscontent">
 					<text class="content" space="ensp">{{content}}</text>
 				</view>
 				<!-- 想法的图片部分 -->
 				<view class="allImage">
-					<image class="oneimg" src="../../static/img/cat.jpg" mode=""></image>
+					<view class="images" v-for="(item,index) in imgList" :key="index">
+						<image class="oneimg" :src="item" mode="aspectFill" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx'}"></image>
+					</view>
 				</view>
+
 				<!-- 添加表情上方提示框 -->
 				<view class="allEmoji" :class="{'visible':visible}" :style="{marginLeft:emojiPosition01+'px'}">
 					<image class="addxiaoku oneemoji" @click="addAEmoji('face')" src="../../static/img/xiaoku.png" mode=""></image>
@@ -45,6 +48,7 @@
 				<view class="idea">
 					<view class="emoji" :class="{'clickEmoji':clickFace,'isDisplay':faceDisplay}" @click="clickAni('face')">
 						<image class=" xiaoku" src="../../static/img/xiaoku.png" mode=""></image>
+
 						<span>{{faceTotal}}</span>
 					</view>
 					<view class="emoji" :class="{'clickEmoji':clickLike}" @click="clickAni('like')">
@@ -73,9 +77,14 @@
 </template>
 
 <script>
+	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
 	export default {
 		data() {
 			return {
+				sanyueMumber:true,
+				isjoin: '加入',
+				disabledJoin: false,
+				fontSize: 28,
 				clickFace: false,
 				clickLike: false,
 				clickFavour: false,
@@ -87,12 +96,39 @@
 				faceDisplay: true,
 				favourDisplay: true,
 				emojiPosition01: 30,
+				imgWidth: 702,
+				imgHeight: 300,
+				imgDisplay: 'flex',
+				imgList: [ 
+					'../../static/img/cat.jpg', '../../static/img/cat.jpg','../../static/img/cat.jpg', '../../static/img/cat.jpg','../../static/img/cat.jpg', '../../static/img/cat.jpg','../../static/img/cat.jpg', '../../static/img/cat.jpg','../../static/img/cat.jpg'
+				],
 				content: '今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...'
 
 
 			}
 		},
+		components: {
+
+			attentionAndFansCell
+		},
+		mounted() {
+			this.judgeImg()
+		},
 		methods: {
+			judgeImg() {
+				if (this.imgList == null) {
+					this.imgDisplay = 'none';
+				} else if (this.imgList.length == 1) {
+					this.imgHeight = 300;
+					this.imgWidth = 702;
+				} else if (this.imgList.length == 2 || this.imgList.length == 4) {
+					this.imgWidth = 321;
+					this.imgHeight = 280;
+				} else {
+					this.imgWidth = 220;
+					this.imgHeight = 220;
+				}
+			},
 			addEmoji() {
 				this.visible = !this.visible;
 				// 当展示三个表情时
@@ -181,20 +217,52 @@
 				this.clickAni(emoji);
 
 				this.visible = !this.visible;
+			},
+			join() {
+				this.$refs.uToast.show({
+					title: '操作成功,请等待审核',
+					type: 'primaty'
+
+				})
+				this.isjoin = '审核中';
+				this.fontSize = 21;
+				this.disabledJoin = true;
+				// 调接口
 			}
 		}
 	}
 </script>
 
 <style>
+	/* 想法文字部分样式 */
+	.wordscontent {
+		margin-top: 20rpx;
+	}
+
+	/* 公共头像组件样式 */
+	>>>.attention-cell .flex-item {
+		border: none;
+		padding: 0;
+		margin-top: 17rpx;
+	}
+
+	/* 想法图片排列样式 */
+
 	.allImage {
 		display: flex;
 		margin-top: 10rpx;
+		flex-wrap: wrap;
+		justify-content: flex-start;
 	}
-.oneimg{
-	width: 774rpx;
-	height: 300rpx;
-}
+
+	.images:not(:nth-child(3n)) {
+		/* margin-right: 10rpx; */
+	}
+	.images{
+		margin-right: 10rpx;
+	}
+
+
 	.content {
 		overflow: hidden;
 		-webkit-line-clamp: 3;
@@ -205,9 +273,10 @@
 		color: #404040;
 		text-align: left;
 		line-height: 1.5;
-		
+
 	}
 
+	/* 评论图标样式 */
 	.comment {
 		position: absolute;
 		left: 650rpx;
@@ -223,6 +292,7 @@
 		transform: rotateY(180deg);
 	}
 
+	/* 表情的样式 */
 	.isDisplay {
 		display: none;
 	}
@@ -319,7 +389,7 @@
 
 	.ideacontent {
 		background-color: #FFFFFF;
-		padding:26rpx;
+		padding: 26rpx;
 
 	}
 
