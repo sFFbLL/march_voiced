@@ -2,7 +2,7 @@
 	<!-- 文章内容显示 -->
 	<view class="article-content">
 		<view>
-			<view class="article-text">{{articleContent}}</view>
+			<text class="article-text" v-html="articleContent"></text>
 		</view>
 		<view v-if="articleImg != ''"
 		 class="article-img">
