@@ -1,8 +1,8 @@
 <template>
 	<uni-list class="list-item">
 		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="item.id" :showDteial="showDteial"
-		 :showSelfIntrouduce="showSelfIntrouduce" :showDate="showDate" :user="list1[index]" @change="change(index)"><span
-			 slot="doSomeThing">关注了你</span><span slot="hasAttention">已关注</span></attentionAndFansCell>
+		 :showIntrouduce="showSelfIntrouduce" :showDate="showDate" :user="list1[index]" @change="change(index)"><span
+			 slot="doSomeThing">关注了你</span><span slot="underDoSomeThing">asd</span><span slot="hasAttention">已关注</span></attentionAndFansCell>
 		<uniLoadMore></uniLoadMore>
 	</uni-list>
 </template>
@@ -13,9 +13,9 @@
 	export default {
 		data() {
 			return {
-				showDteial: true, //是否展示粉丝数关注数
-				showSelfIntrouduce: true,
-				showDate: true,
+				showDteial: false, //是否展示粉丝数关注数
+				showSelfIntrouduce: false,
+				showDate: false,
 				list: [],
 				list1: [{
 					id: "", // 用于事件

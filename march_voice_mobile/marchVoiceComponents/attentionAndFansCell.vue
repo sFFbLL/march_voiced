@@ -21,8 +21,12 @@
 					<view v-if="showIntrouduce" class="inner-text-selfintroduce greay-text">
 						{{user.selfIntrouduce}}
 					</view>
+					<!-- 是否显示日期 -->
 					<view v-if="showDate" class="inner-text-selfintroduce greay-text">
 						{{user.date}}
+					</view>
+					<view class="inner-text-selfintroduce greay-text">
+						<slot name="underDoSomeThing"></slot>
 					</view>
 				</view>
 			</view>
