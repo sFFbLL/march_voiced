@@ -1,7 +1,7 @@
 <template>
 	<uni-list class="cell-box">
 		<attentionAndFansCell v-for="(item, index) in list" :key="item.id" :id="item.id" :showDteial="showDteial"
-		 :isAttention="item.isAttention" @change="change(index)"></attentionAndFansCell>
+		 :isAttention="item.isAttention" @change="change(index)"><span slot="hasAttention">互相关注</span></attentionAndFansCell>
 		<uniLoadMore></uniLoadMore>
 	</uni-list>
 </template>
@@ -12,72 +12,72 @@
 	export default {
 		data() {
 			return {
-				showDteial: false,
+				showDteial: true,
 				list: [],
 				list1: [{
 						id: '1',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '2',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '3',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '4',
-						isAttention: false,
+						isAttention: true,
 
 					},
 					{
 						id: '5',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '6',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '7',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '8',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '9',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '10',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '11',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '12',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '13',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '14',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '15',
-						isAttention: false
+						isAttention: true
 					},
 					{
 						id: '16',
-						isAttention: false
+						isAttention: true
 					}
 				]
 			}
@@ -120,7 +120,7 @@
 </script>
 
 <style scoped>
-	.cell-box {
-		/* padding: 20rpx; */
+	::v-deep .right-button {
+		width: 160rpx;
 	}
 </style>
