@@ -40,6 +40,7 @@
 		}, {
 			"path": "pages/ideaDetails/index",
 			"style": {
+				"navigationBarTitleText": "详情",
 				"navigationStyle": "custom"
 			}
 		}, {
@@ -93,6 +94,13 @@
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/ideaPublish/index",
+			"style": {
+				"navigationBarTitleText": "编辑想法",
+				"navigationStyle": "custom"
 			}
 
 		}

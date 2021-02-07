@@ -40,3 +40,18 @@ export function getScanCode(params){
 		params:params,
 	})
 }
+
+
+// 三月圈详情页调用
+export function ideaDetail(params){
+	return  Axios.get(baseUrl+'/api/march-artcle/:id',{
+		params:params,
+	})
+}
+
+// 三月圈详情页发布评论
+export function publishComment(params){
+	return  Axios.post(baseUrl+'/api/march/comment',{
+		params:params,
+	})
+}

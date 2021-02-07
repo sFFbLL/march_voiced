@@ -1,7 +1,8 @@
+<!-- 底部弹窗（分享） -->
+
 <template>
-	<view v-if="showPopup" class="uni-popup" :class="[popupstyle]" @touchmove.stop.prevent="clear">
-		<uni-transition v-if="maskShow" class="uni-mask--hook" :mode-class="['fade']" :styles="maskClass" :duration="duration" :show="showTrans"
-		 @click="onTap" />
+	<view v-if="showPopup" class="uni-popup" @touchmove.stop.prevent="clear">
+		<uni-transition :mode-class="['fade']" :styles="maskClass" :duration="duration" :show="showTrans" @click="onTap" />
 		<uni-transition :mode-class="ani" :styles="transClass" :duration="duration" :show="showTrans" @click="onTap">
 			<view class="uni-popup__wrapper-box" @click.stop="clear">
 				<slot />
@@ -12,7 +13,7 @@
 
 <script>
 	import uniTransition from '../uni-transition/uni-transition.vue'
-	import popup from './popup.js'
+
 	/**
 	 * PopUp 弹出层
 	 * @description 弹出层组件，为了解决遮罩弹层的问题
@@ -21,9 +22,6 @@
 	 * 	@value top 顶部弹出
 	 * 	@value center 中间弹出
 	 * 	@value bottom 底部弹出
-	 * 	@value message 消息提示
-	 * 	@value dialog 对话框
-	 * 	@value share 底部分享示例
 	 * @property {Boolean} animation = [ture|false] 是否开启动画
 	 * @property {Boolean} maskClick = [ture|false] 蒙版点击是否关闭弹窗
 	 * @event {Function} change 打开关闭弹窗触发，e={show: false}
@@ -41,7 +39,6 @@
 				default: true
 			},
 			// 弹出层类型，可选值，top: 顶部弹出层；bottom：底部弹出层；center：全屏弹出层
-			// message: 消息提示 ; dialog : 对话框
 			type: {
 				type: String,
 				default: 'center'
@@ -50,33 +47,6 @@
 			maskClick: {
 				type: Boolean,
 				default: true
-			}
-		},
-		provide() {
-			return {
-				popup: this
-			}
-		},
-		mixins: [popup],
-		watch: {
-			/**
-			 * 监听type类型
-			 */
-			type: {
-				handler: function(newVal) {
-					this[this.config[newVal]]()
-				},
-				immediate: true
-			},
-			/**
-			 * 监听遮罩是否可点击
-			 * @param {Object} val
-			 */
-			maskClick: {
-				handler: function(val) {
-					this.mkclick = val
-				},
-				immediate: true
 			}
 		},
 		data() {
@@ -97,14 +67,53 @@
 					'position': 'fixed',
 					'left': 0,
 					'right': 0,
+				}
+			}
+		},
+		watch: {
+			type: {
+				handler: function(newVal) {
+					switch (this.type) {
+						case 'top':
+							this.ani = ['slide-top']
+							this.transClass = {
+								'position': 'fixed',
+								'left': 0,
+								'right': 0,
+							}
+							break
+						case 'bottom':
+							this.ani = ['slide-bottom']
+							this.transClass = {
+								'position': 'fixed',
+								'left': 0,
+								'right': 0,
+								'bottom': 0
+							}
+							break
+						case 'center':
+							this.ani = ['zoom-out', 'fade']
+							this.transClass = {
+								'position': 'fixed',
+								/* #ifndef APP-NVUE */
+								'display': 'flex',
+								'flexDirection': 'column',
+								/* #endif */
+								'bottom': 0,
+								'left': 0,
+								'right': 0,
+								'top': 0,
+								'justifyContent': 'center',
+								'alignItems': 'center'
+							}
+
+							break
+					}
 				},
-				maskShow: true,
-				mkclick: true,
-				popupstyle: 'top'
+				immediate: true
 			}
 		},
 		created() {
-			this.mkclick = this.maskClick
 			if (this.animation) {
 				this.duration = 300
 			} else {
@@ -119,91 +128,30 @@
 			open() {
 				this.showPopup = true
 				this.$nextTick(() => {
-					new Promise(resolve => {
-						clearTimeout(this.timer)
-						this.timer = setTimeout(() => {
-							this.showTrans = true
-							// fixed by mehaotian 兼容 app 端
-							this.$nextTick(() => {
-								resolve();
-							})
-						}, 50);
-					}).then(res => {
-						// 自定义打开事件
-						clearTimeout(this.msgtimer)
-						this.msgtimer = setTimeout(() => {
-							this.customOpen && this.customOpen()
-						}, 100)
-						this.$emit('change', {
-							show: true,
-							type: this.type
-						})
-					})
+					clearTimeout(this.timer)
+					this.timer = setTimeout(() => {
+						this.showTrans = true
+					}, 50);
+				})
+				this.$emit('change', {
+					show: true
 				})
 			},
 			close(type) {
 				this.showTrans = false
 				this.$nextTick(() => {
-					this.$emit('change', {
-						show: false,
-						type: this.type
-					})
 					clearTimeout(this.timer)
-					// 自定义关闭事件
-					this.customOpen && this.customClose()
 					this.timer = setTimeout(() => {
+						this.$emit('change', {
+							show: false
+						})
 						this.showPopup = false
 					}, 300)
 				})
 			},
 			onTap() {
-				if (!this.mkclick) return
+				if (!this.maskClick) return
 				this.close()
-			},
-			/**
-			 * 顶部弹出样式处理
-			 */
-			top() {
-				this.popupstyle = 'top'
-				this.ani = ['slide-top']
-				this.transClass = {
-					'position': 'fixed',
-					'left': 0,
-					'right': 0,
-				}
-			},
-			/**
-			 * 底部弹出样式处理
-			 */
-			bottom() {
-				this.popupstyle = 'bottom'
-				this.ani = ['slide-bottom']
-				this.transClass = {
-					'position': 'fixed',
-					'left': 0,
-					'right': 0,
-					'bottom': 0
-				}
-			},
-			/**
-			 * 中间弹出样式处理
-			 */
-			center() {
-				this.popupstyle = 'center'
-				this.ani = ['zoom-out', 'fade']
-				this.transClass = {
-					'position': 'fixed',
-					/* #ifndef APP-NVUE */
-					'display': 'flex',
-					'flexDirection': 'column',
-					/* #endif */
-					'bottom': 0,
-					'left': 0,
-					'right': 0,
-					'top': 0,
-					'justifyContent': 'center',
-					'alignItems': 'center'
-				}
 			}
 		}
 	}
@@ -211,8 +159,17 @@
 <style lang="scss" scoped>
 	.uni-popup {
 		position: fixed;
+		/* #ifdef H5 */
+		top: var(--window-top);
+		/* #endif */
+		/* #ifndef H5 */
+		top: 0;
+		/* #endif */
+		bottom: 0;
+		left: 0;
+		right: 0;
 		/* #ifndef APP-NVUE */
-		z-index: 99;
+		z-index: 99999999999;
 		/* #endif */
 	}
 
@@ -251,16 +208,32 @@
 	}
 
 	.top {
-		/* #ifdef H5 */
-		top: var(--window-top);
-		/* #endif */
-		/* #ifndef H5 */
 		top: 0;
-		/* #endif */
+		left: 0;
+		right: 0;
+		transform: translateY(-500px);
 	}
 
 	.bottom {
 		bottom: 0;
+		left: 0;
+		right: 0;
+		transform: translateY(500px);
+	}
+
+	.center {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		flex-direction: column;
+		/* #endif */
+		bottom: 0;
+		left: 0;
+		right: 0;
+		top: 0;
+		justify-content: center;
+		align-items: center;
+		transform: scale(1.2);
+		opacity: 0;
 	}
 
 	.uni-popup__wrapper-box {
@@ -268,11 +241,6 @@
 		display: block;
 		/* #endif */
 		position: relative;
-		/* iphonex 等安全区设置，底部安全区适配 */
-		/* #ifndef APP-NVUE */
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
-		/* #endif */
 	}
 
 	.content-ani {
