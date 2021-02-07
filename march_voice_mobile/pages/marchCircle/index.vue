@@ -4,12 +4,12 @@
 		<view class="titlebg">
 			<view class="title">
 				<span class="marchcicrle">三月圈</span>
-				<span class="member">成员：</span><span class="total">条数：</span>
+				<span class="member">成员:{{marchCircleInfo.people}}</span><span class="total">条数:{{marchCircleInfo.articles}}</span>
 
-				<p class="info">简介：</p>
+				<p class="info">简介: {{marchCircleInfo.brief}}</p>
 			</view>
 			<view>
-				<image class="wxlogo" src="../../static/img/wxlogo.png"></image>
+				<image @click="share()" class="wxlogo" src="../../static/img/wxlogo.png"></image>
 				<button v-if="sanyueMumber" class="join" :disabled="disabledJoin" :style="{fontSize:fontSize+'rpx'}" @click="join()">{{isjoin}}</button>
 				<u-toast ref="uToast" />
 
@@ -28,196 +28,122 @@
 				<attentionAndFansCell :showDteial="false"></attentionAndFansCell>
 				<!-- 想法的文字部分 -->
 				<view class="wordscontent">
-					<text class="content" space="ensp">{{content}}</text>
+					<text class="content" space="ensp" v-html="ideasList.content"></text>
+
 				</view>
-				<!-- 想法的图片部分 -->
-				<view class="allImage">
-					<view class="images" v-for="(item,index) in imgList" :key="index">
+				<!-- 想法的图片部分组件 -->
+				<imageAdaptation :imgList="imgList"></imageAdaptation>
+		<!-- 		<view class="allImage">
+					<view class="images" v-for="(item,index) in ideasList.imgList" :key="index">
 						<image class="oneimg" :src="item" mode="aspectFill" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx'}"></image>
 					</view>
-				</view>
-
-				<!-- 添加表情上方提示框 -->
-				<view class="allEmoji" :class="{'visible':visible}" :style="{marginLeft:emojiPosition01+'px'}">
-					<image class="addxiaoku oneemoji" @click="addAEmoji('face')" src="../../static/img/xiaoku.png" mode=""></image>
-					<image class="addaixin oneemoji" @click="addAEmoji('like')" src="../../static/img/aixin.png" mode=""></image>
-					<image class="addqingzhu oneemoji" @click="addAEmoji('favour')" src="../../static/img/qingzhu.png" mode=""></image>
-					<uni-icons class="arrow" type="arrowdown" size="15" style="color: #e6e6e6; "></uni-icons>
-				</view>
-				<!-- 各种表情 -->
-				<view class="idea">
-					<view class="emoji" :class="{'clickEmoji':clickFace,'isDisplay':faceDisplay}" @click="clickAni('face')">
-						<image class=" xiaoku" src="../../static/img/xiaoku.png" mode=""></image>
-
-						<span>{{faceTotal}}</span>
-					</view>
-					<view class="emoji" :class="{'clickEmoji':clickLike}" @click="clickAni('like')">
-						<image class="aixin" src="../../static/img/aixin.png" mode=""></image>
-						<span>{{likeTotal}}</span>
-					</view>
-					<view class="emoji" :class="{'clickEmoji':clickFavour,'isDisplay':favourDisplay}" @click="clickAni('favour')">
-						<image class="qingzhu" src="../../static/img/qingzhu.png" mode=""></image>
-						<span>{{favourTotal}}</span>
-					</view>
-					<!-- 添加表情 -->
-					<view class="emoji" @click="addEmoji()">
-						<image class="addemoji" src="../../static/img/emoji.png" mode=""></image>
-						<image class="addemoji add" src="../../static/img/add.png" mode=""></image>
-					</view>
-					<!-- 评论+评论数量 -->
-					<view class="comment">
-						<u-icon name="chat" color="#999999" size="40" class="chat"></u-icon>
-						<span class="commentTotal">{{commentTotal}}</span>
-
-					</view>
-				</view>
+				</view> -->
+				
+				<!-- 点赞表情组件 -->
+				<emojiControl :emojiList="emojiList"></emojiControl>
 			</view>
 		</view>
+
+		<!-- 发布三月圈悬浮按钮 -->
+		<uni-fab v-if="sanyueMumber" :pattern="pattern" horizontal="right" @fabClick="publish()" class="publishbtn"></uni-fab>
 	</view>
 </template>
 
 <script>
+	import {
+		getMarchCircleInfo,
+		marchCircleList,
+		joinMarchCircle
+	} from '../../utils/api/marchCircle-api.js'
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
+	import emojiControl from '../../marchVoiceComponents/marchCircle/emojiControl.vue'
+	import imageAdaptation from '../../marchVoiceComponents/marchCircle/imageAdaptation.vue'
+	import *as jwx from '../../utils/jws.js'
 	export default {
 		data() {
 			return {
-				sanyueMumber:true,
+				sanyueMumber: true,
 				isjoin: '加入',
 				disabledJoin: false,
 				fontSize: 28,
-				clickFace: false,
-				clickLike: false,
-				clickFavour: false,
-				visible: true,
-				faceTotal: 0,
-				likeTotal: 0,
-				favourTotal: 0,
-				commentTotal: 0,
-				faceDisplay: true,
-				favourDisplay: true,
 				emojiPosition01: 30,
-				imgWidth: 702,
-				imgHeight: 300,
-				imgDisplay: 'flex',
-				imgList: [ 
-					'../../static/img/cat.jpg', '../../static/img/cat.jpg','../../static/img/cat.jpg', '../../static/img/cat.jpg','../../static/img/cat.jpg', '../../static/img/cat.jpg','../../static/img/cat.jpg', '../../static/img/cat.jpg','../../static/img/cat.jpg'
+				pattern: {
+					buttonColor: '#2a82e4',
+					width: '100rpx',
+					height: '100rpx'
+				},
+				marchCircleInfo: {
+					people: 1222,
+					articles: 2048,
+					ismarch: 1,
+					brief: "啊士大夫艰苦的萨拉就",
+				},
+				emojiList: {
+					faceTotal:3,
+					likeTotal: 6,
+					favourTotal: 10,
+					commentTotal: 0,
+				},
+				imgList:[
+					'../../static/img/cat.jpg', '../../static/img/cat.jpg'
 				],
-				content: '今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...'
+				ideasList: {
+					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+					upDateTime: '2020/12/12',
+					faceTotal: 2,
+					likeTotal: 3,
+					favourTotal: 42,
+					commentTotal: 0,
+					imgList:[
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg'
+					],
+					user: {
+						userName: "xianer",
+						userId: 0,
+						userImage: '',
+						isFollow: 0
+					}
+				}
 
 
 			}
 		},
 		components: {
+			emojiControl,
+			attentionAndFansCell,
+			imageAdaptation
+		},
+		created() {
+			// 获取三月基本信息接口
+			// getMarchCircleInfo().then(res=>{
+			// 	this.marchCircleInfo=res.data;
+			// })
+			if (this.marchCircleInfo.ismarch == 0) {
+				this.sanyueMumber = false;
+			}
 
-			attentionAndFansCell
+			// 获取想法列表接口
+			// marchCircleList().then(res=>{
+			// 	this.ideasList=res.data;
+			// 	this.emojiList.faceTotal=this.ideasList.faceTotal;
+			// 	this.emojiList.favourTotal=this.ideasList.favourTotal;
+			// 	this.emojiList.likeTotal=this.ideasList.likeTotal;
+			// 	this.emojiList.commentTotal=this.ideasList.commentTotal;
+			// 	this.imgList=this.ideasList.imgList;
+
+			// })
+
+		
+
 		},
 		mounted() {
-			this.judgeImg()
 		},
 		methods: {
-			judgeImg() {
-				if (this.imgList == null) {
-					this.imgDisplay = 'none';
-				} else if (this.imgList.length == 1) {
-					this.imgHeight = 300;
-					this.imgWidth = 702;
-				} else if (this.imgList.length == 2 || this.imgList.length == 4) {
-					this.imgWidth = 321;
-					this.imgHeight = 280;
-				} else {
-					this.imgWidth = 220;
-					this.imgHeight = 220;
-				}
+			// 调用微信接口分享内容
+			share(){
+				jwx.configWeiXin()
 			},
-			addEmoji() {
-				this.visible = !this.visible;
-				// 当展示三个表情时
-				if (this.faceTotal > 0 && this.favourTotal > 0) {
-					this.emojiPosition01 = 140;
-				}
-				// 当展示两个表情时
-				if (this.faceTotal > 0 || this.favourTotal > 0) {
-					this.emojiPosition01 = 85;
-				}
-				// 当展示一个表情时
-				if (this.faceTotal <= 0 && this.favourTotal <= 0) {
-					this.emojiPosition01 = 30;
-				}
-
-			},
-			clickAni(emoji) {
-				switch (emoji) {
-					case 'face':
-						this.clickFace = !this.clickFace;
-						if (this.clickFace) {
-							this.faceTotal++;
-						} else {
-							this.faceTotal--;
-							if (this.faceTotal == 0)
-								this.faceDisplay = true;
-						}
-						this.clickFavour = false;
-						this.clickLike = false;
-						this.likeTotal > 0 ? this.likeTotal-- : 0;
-						this.favourTotal > 0 ? this.favourTotal-- : 0;
-						if (this.favourTotal == 0)
-							this.favourDisplay = true;
-						break
-
-					case 'like':
-						this.clickLike = !this.clickLike;
-						if (this.clickLike) {
-							this.likeTotal++;
-						} else {
-							this.likeTotal--;
-						}
-						this.clickFavour = false;
-						this.clickFace = false;
-						this.faceTotal > 0 ? this.faceTotal-- : 0;
-						this.favourTotal > 0 ? this.favourTotal-- : 0;
-						if (this.faceTotal == 0)
-							this.faceDisplay = true;
-						if (this.favourTotal == 0)
-							this.favourDisplay = true;
-						break
-					case 'favour':
-						this.clickFavour = !this.clickFavour;
-						if (this.clickFavour) {
-							this.favourTotal++;
-						} else {
-							this.favourTotal--;
-							if (this.favourTotal == 0)
-								this.favourDisplay = true;
-						}
-						this.clickLike = false;
-						this.clickFace = false;
-						this.faceTotal > 0 ? this.faceTotal-- : 0;
-						this.likeTotal > 0 ? this.likeTotal-- : 0;
-						if (this.faceTotal == 0)
-							this.faceDisplay = true;
-						break
-
-					default:
-				}
-
-			},
-			addAEmoji(emoji) {
-				switch (emoji) {
-					case 'face':
-						if (this.faceTotal <= 0)
-							this.faceDisplay = false;
-						break
-					case 'favour':
-						if (this.favourTotal <= 0)
-							this.favourDisplay = false;
-						break
-
-					default:
-				}
-				this.clickAni(emoji);
-
-				this.visible = !this.visible;
-			},
+			// 申请加入三月圈
 			join() {
 				this.$refs.uToast.show({
 					title: '操作成功,请等待审核',
@@ -228,6 +154,12 @@
 				this.fontSize = 21;
 				this.disabledJoin = true;
 				// 调接口
+				joinMarchCircle().then(res=>{
+					console.log(res)
+				})
+			},
+			publish() {
+				// 跳转到编辑页面
 			}
 		}
 	}
@@ -246,23 +178,6 @@
 		margin-top: 17rpx;
 	}
 
-	/* 想法图片排列样式 */
-
-	.allImage {
-		display: flex;
-		margin-top: 10rpx;
-		flex-wrap: wrap;
-		justify-content: flex-start;
-	}
-
-	.images:not(:nth-child(3n)) {
-		/* margin-right: 10rpx; */
-	}
-	.images{
-		margin-right: 10rpx;
-	}
-
-
 	.content {
 		overflow: hidden;
 		-webkit-line-clamp: 3;
@@ -274,117 +189,6 @@
 		text-align: left;
 		line-height: 1.5;
 
-	}
-
-	/* 评论图标样式 */
-	.comment {
-		position: absolute;
-		left: 650rpx;
-	}
-
-	.commentTotal {
-		font-size: 24rpx;
-		color: #999999;
-		margin-left: 10rpx;
-	}
-
-	.chat {
-		transform: rotateY(180deg);
-	}
-
-	/* 表情的样式 */
-	.isDisplay {
-		display: none;
-	}
-
-	.oneemoji {
-		margin-left: 25rpx;
-	}
-
-	.addqingzhu {
-		width: 55rpx;
-		height: 50rpx;
-		top: 8rpx;
-	}
-
-	.addaixin {
-		width: 60rpx;
-		height: 42rpx;
-		top: 8rpx;
-	}
-
-	.addxiaoku {
-		width: 55rpx;
-		height: 50rpx;
-		top: 8rpx;
-	}
-
-	.visible {
-		visibility: hidden;
-	}
-
-	.arrow {
-		margin-left: 110rpx;
-	}
-
-	.clickEmoji {
-		background-color: #b8e3ff;
-	}
-
-	.allEmoji {
-		width: 260rpx;
-		height: 68rpx;
-		/* margin-left: 60rpx; */
-		border: 0.5rpx solid #e1e1e1;
-		border-radius: 15rpx 15rpx 15rpx 15rpx;
-		box-shadow: 1rpx 1rpx 10rpx 1rpx #e1e1e1;
-		z-index: 5;
-	}
-
-	.qingzhu {
-		width: 35rpx;
-		height: 30rpx;
-		top: 5rpx;
-	}
-
-	.aixin {
-		width: 45rpx;
-		height: 30rpx;
-		top: 5rpx;
-	}
-
-	.xiaoku {
-		width: 35rpx;
-		height: 30rpx;
-		top: 5rpx;
-	}
-
-	.addemoji {
-		width: 30rpx;
-		height: 30rpx;
-		top: 5rpx;
-	}
-
-	.add {
-		margin-left: 10rpx;
-	}
-
-	.emoji span {
-		margin-left: 10rpx;
-		top: 8rpx;
-	}
-
-	.emoji {
-		width: 92rpx;
-		height: 44rpx;
-		line-height: 40rpx;
-		border-radius: 10rpx 10rpx 10rpx 10rpx;
-		color: #999999;
-		font-size: 24rpx;
-		text-align: center;
-		font-family: Arial;
-		margin-left: 20rpx;
-		border: 2rpx solid #999999;
 	}
 
 	.ideacontent {
@@ -419,19 +223,15 @@
 		height: 46px;
 	}
 
-	.member {
+	.member,
+	.total {
 		font-size: 28rpx;
-		margin: 0 20rpx;
+		margin: 0 10rpx;
 	}
 
 	.info {
 		margin-top: 30rpx;
 		font-size: 32rpx;
-	}
-
-	.total {
-		font-size: 28rpx;
-		margin: 80rpx 20rpx;
 	}
 
 	.titlebg {
