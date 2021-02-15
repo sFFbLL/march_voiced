@@ -1,6 +1,7 @@
 <template>
 	<!-- 文章标题 -->
-	<view class="article-title">{{articleTitle}}</view>
+	<view class="article-title"
+	 @click="articleDetails">{{articleTitle}}</view>
 </template>
 
 <script>
@@ -11,6 +12,10 @@
 			};
 		},
 		props: {
+			articleId: {
+				type: Number,
+				default: null
+			},
 			articleTitle: {
 				type: String,
 				default: ""
@@ -20,10 +25,16 @@
 
 		},
 		methods: {
-
+			articleDetails() {
+				// console.log(1)
+				// 跳转到编辑页面
+				uni.navigateTo({
+					url: '../articleDetails/index?id='+this.articleId
+				})
+			}
 		},
 		mounted() {
-			
+
 		}
 	}
 </script>

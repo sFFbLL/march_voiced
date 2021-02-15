@@ -103,6 +103,12 @@
 				"navigationStyle": "custom"
 			}
 
+		}, {
+			"path": "pages/search/index",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"condition": { //模式配置，仅开发期间生效

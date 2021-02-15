@@ -2,12 +2,18 @@
 	<!-- 推荐页面文章展示组件 -->
 	<view class="recommend-component">
 		<!-- 文章标题 -->
-		<articleTitle :articleTitle="articleInfo.title" />
+		<articleTitle :articleTitle="articleInfo.title"
+		 :articleId="articleInfo.articleId" />
 		<!-- 作者信息 -->
-		<attentionAndFansCell :userInfo = "articleInfo.user" :showDteial="false"></attentionAndFansCell>
+		<attentionAndFansCell :userInfo="articleInfo.user"
+		 :showDteial="false"
+		 :showIntrouduce="false"
+		 :showDate="false"
+		 :user="articleInfo.user"><span slot="hasAttention">已关注</span></attentionAndFansCell>
 		<!-- 文章内容 -->
 		<articleContent :articleContent="articleInfo.content"
-		 :articleImg="articleInfo.articleImg" />
+		 :articleImg="articleInfo.articleImg"
+		 :articleId="articleInfo.articleId" />
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal"
 		 :commentTotal="articleInfo.commentTotal"
