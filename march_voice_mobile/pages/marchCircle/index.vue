@@ -27,10 +27,9 @@
 				<!-- 用户头像公共组件 -->
 				<attentionAndFansCell :showDteial="false" :showDate='false'></attentionAndFansCell>
 				<!-- 想法的文字部分 -->
-							<articleContent :articleContent="ideasList.content"></articleContent>
+				<articleContent :articleContent="ideasList.content"></articleContent>
 				<!-- 想法的图片部分组件 -->
 				<imageAdaptation :imgList="imgList" ></imageAdaptation>
-
 				<!-- 点赞表情组件 -->
 				<emojiControl :emojiList="emojiList"></emojiControl>
 			</view>
@@ -39,7 +38,9 @@
 			<image src="https://oscimg.oschina.net/oscnet/fd2170a448e37826ae9f4d7088f287b8f24.jpg" />
 		</view>
 		<!-- 发布三月圈悬浮按钮 -->
-		<uni-fab v-if="sanyueMumber" :pattern="pattern" horizontal="right" @fabClick="publish()" class="publishbtn"></uni-fab>
+		<view  v-if="sanyueMumber" @click="publish()" class="publishbtn">
+			<uni-icons class="addicon" type="plusempty" size="43" color="white"></uni-icons>
+		</view>
 	</view>
 </template>
 
@@ -65,8 +66,8 @@
 				mcoverDisplay: 'none',
 				pattern: {
 					buttonColor: '#2a82e4',
-					width: '100rpx',
-					height: '100rpx'
+					width: '50rpx',
+					height: '50rpx'
 				},
 				marchCircleInfo: {
 					people: 1222,
@@ -166,9 +167,9 @@
 				this.fontSize = 21;
 				this.disabledJoin = true;
 				// 调申请加入三月圈接口
-				joinMarchCircle().then(res => {
-					console.log(res)
-				})
+				// joinMarchCircle().then(res => {
+				// 	console.log(res)
+				// })
 			},
 			publish() {
 				// 跳转到编辑页面
@@ -181,6 +182,22 @@
 </script>
 
 <style>
+		/* 发布想法的按钮 */
+	.publishbtn{
+		border-radius: 50%;
+		width: 100rpx;
+		height: 100rpx;
+		display: flex;
+		position: fixed;
+		z-index: 222;
+		top: 980rpx;
+		right: 30rpx;
+		/* background-image: linear-gradient(to top, #4481eb 0%, #04befe 100%); */
+		background-image: linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%);
+		}
+		.addicon{
+			margin-left: 8rpx;
+		}
 	/* 微信分享 遮罩层*/
 	.mcover {
 		position: fixed;
