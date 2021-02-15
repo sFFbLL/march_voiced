@@ -249,21 +249,20 @@
 
 
 			/* 切换选项卡选项 */
-			// tabActive(tabIndex) {
-			// 	this.tablist.map((value, index) => {
-			// 		value.isActive = tabIndex == index ? true : false;
-			// 	})
-			// 	if (tabIndex==0) {
-			// 		this.recommend();
-			// 	} else if (tabIndex==1) {
-			// 		this.attention();
-			// 	}else{
-			// 		this.aaa();
-			// 	}
-			// 	this.tabIndex = tabIndex;
-			// },
-
-
+			tabActive(tabIndex) {
+				this.tablist.map((value, index) => {
+					value.isActive = tabIndex == index ? true : false;
+				})
+				if (tabIndex==0) {
+					this.recommend();
+				} else if (tabIndex==1) {
+					this.attention();
+				}else{
+					this.aaa();
+				}
+				this.tabIndex = tabIndex;
+			},
+			
 			recommend() {
 				// console.log("互动");
 			},
