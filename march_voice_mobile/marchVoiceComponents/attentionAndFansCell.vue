@@ -2,38 +2,58 @@
 	<view class="attention-cell">
 		<view class="flex-item">
 			<!-- 左侧头像盒子 -->
-			<a @click="inToPageMine" class="left-img-box inner-box">
-				<image class="inner-img" :src=user.imgUrl mode="aspectFill"></image>
+			<a @click="inToPageMine"
+			 class="left-img-box inner-box">
+				<image class="inner-img"
+				 :src=user.imgUrl
+				 mode="aspectFill"></image>
 			</a>
 			<!-- 中部文字 -->
-			<view class="middle-text-box inner-box" @click="inToPageMine">
+			<view class="middle-text-box inner-box"
+			 @click="inToPageMine">
 				<view class="inner-middle-box inner-box">
 					<!-- 昵称盒子 -->
 					<view class="inner-text-name">
-						{{user.name}}<slot name="doSomeThing"></slot>
+						{{user.name}}
+						<slot name="doSomeThing"></slot>
 					</view>
 					<!-- 关注数粉丝数文章数盒子 -->
-					<view v-if="showDteial" class="inner-text-message greay-text">
+					<view v-if="showDteial"
+					 class="inner-text-message greay-text">
 						<span class="inner-text">关注 {{user.count}}</span><span class="inner-text">粉丝 {{user.count}}</span><span class="inner-text">文章
 							{{user.count}}</span>
 					</view>
 					<!-- 个人介绍盒子 (单行文本)-->
-					<view v-if="showIntrouduce" class="inner-text-selfintroduce greay-text">
+					<view v-if="showIntrouduce"
+					 class="inner-text-selfintroduce greay-text">
 						{{user.selfIntrouduce}}
 					</view>
-					<view v-if="showDate" class="inner-text-selfintroduce greay-text">
+					<view v-if="showDate"
+					 class="inner-text-selfintroduce greay-text">
 						{{user.date}}
 					</view>
+					<slot name="followMessage"></slot>
 				</view>
 			</view>
 			<!-- 按钮盒子 -->
 			<view class="right-button-box">
-				<button v-show="user.follow === false" class="right-button" type="default-green" :disabled="isDisabled"
-				 iconType="circle" @click.stop="changeBtn"><span>关 注</span></button>
-				<button v-show="user.follow === true" class="right-button" type="default" :disabled="isDisabled"
-				 @click.stop="changeBtn" iconType="circle">
-					<slot name="hasAttention"></slot>
-				</button>
+				<!-- 无<view v-if="user.follow != null"> ================================================================== -->
+				<view v-if="user.follow != null">
+					<button v-show="user.follow === false"
+					 class="right-button"
+					 type="default-green"
+					 :disabled="isDisabled"
+					 iconType="circle"
+					 @click.stop="changeBtn"><span>关 注</span></button>
+					<button v-show="user.follow === true"
+					 class="right-button"
+					 type="default"
+					 :disabled="isDisabled"
+					 @click.stop="changeBtn"
+					 iconType="circle">
+						<slot name="hasAttention"></slot>
+					</button>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -42,17 +62,18 @@
 <script>
 	export default {
 		props: {
-			user:{
-				type:Object,
-				default(){
-					return{
-						id: "",// 用于事件
-						imgUrl: require('../static/img/1.jpg'),// 显示头像
-						name:"昵称",// 显示昵称
-						count:"0",// 关注数粉丝数文章数
-						selfIntrouduce:"",// 个人简介
-						follow:true,// 判断是否互相关注
-						date:"2021-02-07 11:59"
+			user: {
+				type: Object,
+				default () {
+					return {
+						id: "", // 用于事件
+						imgUrl: require('../static/img/1.jpg'), // 显示头像
+						name: "昵称", // 显示昵称
+						count: "0", // 关注数粉丝数文章数
+						selfIntrouduce: "", // 个人简介
+						//follow: true =======================================================
+						follow: null, // 判断是否互相关注
+						date: "2021-02-07 11:59"
 					}
 				}
 			},
@@ -66,7 +87,7 @@
 				type: Boolean,
 				default: true
 			},
-			showDate:{
+			showDate: {
 				type: Boolean,
 				default: true
 			}
@@ -83,7 +104,7 @@
 				this.isDisabled = true
 				this.isLoading = true
 				let that = this;
-				setTimeout(function() {
+				setTimeout(function () {
 					that.isDisabled = false
 					that.isLoading = false
 					that.$emit('change');
@@ -181,7 +202,7 @@
 	.right-button-box {
 		display: flex;
 		flex: 1;
-		align-items:center
+		align-items: center
 	}
 
 	/* 右侧按钮 */
