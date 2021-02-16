@@ -10,12 +10,46 @@
 				 @clear="clear()"></u-search>
 			</view>
 		</view>
-		<!-- 用户列表-->
-		<view class="searchUser">
-			<view class="userList"
-			 v-for="(item,index) in userList">
-				<image :src=item.image
-				 mode="aspectFill"></image>
+		<view class="content">
+			<view v-if="!userList.length">
+				<u-empty text="没有数据"
+				 mode="search"
+				 class="nodate"></u-empty>
+			</view>
+			<!-- 用户列表-->
+			<view class="search-user"
+			 v-if="userList.length">
+				<u-section title="相关用户"
+				 :show-line="false"
+				 :bold="false"
+				 color="#969696"
+				 sub-color="#969696" @click="moreUser()"></u-section>
+				<view class="user-list">
+					<view class="user-item"
+					 v-for="(item,index) in userList">
+						<image :src=item.avatarPath
+						 mode="aspectFill"
+						 class="user-img"></image>
+						<view class="username">{{item.nickname}}
+						</view>
+					</view>
+				</view>
+			</view>
+
+			<!-- 文章列表 -->
+			<view class="search-article"
+			 v-if="userList.length">
+				<view v-for="(item,index) in articleList"
+				 :key="index">
+					<searchArticle :articleInfo="item"/>
+				</view>
+			</view>
+
+			<!-- 下拉加载更多 -->
+			<view v-show="isLoadMore">
+				<uni-load-more class="loading"
+				 :status="loadStatus"
+				 iconType="circle"></uni-load-more>
 			</view>
 		</view>
 	</view>
@@ -25,61 +59,100 @@
 	import {
 		search
 	} from '@/utils/api/home-api.js'
+	import searchArticle from "@/marchVoiceComponents/showArticle/searchArticle.vue"
 	export default {
 		data() {
 			return {
 				searchText: "",
 				articleList: [],
 				userList: [],
-				articleList1: [{}],
+				loadStatus: 'loading', //加载样式：more-加载前样式，loading-加载中样式，nomore-没有数据样式
+				isLoadMore: false, //是否加载中
+				articleCurrent: 1, //关注当前页数
+				size: 10,
+				articleList1: [{
+						id: 1,
+						title: "所以监听用户的截图操作，提示<font color=red>用户</font>进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。<font color=red>在写作</font>一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈今年春天圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
+						createTime: "2021-02-16",
+						favourTotal: 0,
+						commentTotal: 0,
+						nickname:"张三"
+					},
+					{
+						id: 2,
+						title: "个大学生啊，我该怎么学编程？我还是个大学生啊我该怎么学编程",
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
+						createTime: "2021-02-16",
+						favourTotal: 0,
+						commentTotal: 0,
+						nickname:"张三"
+					},
+					{
+						id: 3,
+						title: "所以监听用户的截图操作，提示用户进生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
+						createTime: "2021-02-16",
+						favourTotal: 0,
+						commentTotal: 0,
+						nickname:"张三"
+					},
+					{
+						id: 4,
+						title: "所以监听用户的截图操怎么学编程？我还是个大学生啊，我该怎么学编程",
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
+						createTime: "2021-02-16",
+						favourTotal: 0,
+						commentTotal: 0,
+						nickname:"张三"
+					},
+					{
+						id: 5,
+						title: "所以监听用户的截图操怎么学编程？我还是个大学生啊，我该怎么学编程",
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
+						createTime: "2021-02-16",
+						favourTotal: 0,
+						commentTotal: 0,
+						nickname:"张三"
+					}
+				],
 				userList1: [{
-						userId: 1,
-						name: "张三",
-						image: require('static/img/2.jpg')
+						id: 1,
+						nickname: "张三",
+						avatarPath: require('static/img/2.jpg')
 					},
 					{
-						userId: 2,
-						name: "张四",
-						image: require('static/img/1.jpg')
+						id: 2,
+						nickname: "张四",
+						avatarPath: require('static/img/1.jpg')
 					},
 					{
-						userId: 3,
-						name: "张五",
-						image: require('static/img/2.jpg')
+						id: 3,
+						nickname: "张五",
+						avatarPath: require('static/img/2.jpg')
 					},
 					{
-						userId: 4,
-						name: "张六",
-						image: require('static/img/2.jpg')
-					},
-					{
-						userId: 5,
-						name: "张七",
-						image: require('static/img/1.jpg')
-					},
-					{
-						userId: 6,
-						name: "张八",
-						image: require('static/img/2.jpg')
-					},
-					{
-						userId: 7,
-						name: "张九",
-						image: require('static/img/1.jpg')
-					},
-					{
-						usersId: 8,
-						name: "张十",
-						image: require('static/img/2.jpg')
+						id: 4,
+						nickname: "张六",
+						avatarPath: require('static/img/2.jpg')
 					}
 				]
+			}
+		},
+		components: {
+			searchArticle
+		},
+		onReachBottom() { //上拉触底函数
+			if (!this.isLoadMore) {
+				this.isLoadMore = true
+				this.articleCurrent += 1
+				this.getList();
 			}
 		},
 		methods: {
 			search() {
 				// let _this = this;
 				if (this.searchText) {
-					let userList = this.userList1;
 					/* let _this = this;
 					let params = {
 						searchText: this.searchText,
@@ -88,14 +161,44 @@
 					}
 					search().then(res => {
 						_this.userList = userList;
+						_this.articleList = articleList;
 					}) */
-					this.userList = userList;
-					console.log(this.userList);
+					this.userList = this.userList1;
+					this.articleList = [...this.articleList, ...this.articleList1];
 				}
-
 			},
 			clear() {
 				this.searchText = "";
+			},
+			getList() {
+				// let _this = this;
+				if (this.searchText) {
+					/* let _this = this;
+					let params = {
+						searchText: this.searchText,
+						current: this.current,
+						size: this.size
+					}
+					search().then(res => {
+						_this.userList = userList;
+						_this.articleList = articleList;
+					}) */
+					this.userList = this.userList1;
+					let _this = this;
+					if (this.articleList.length > 16) {
+						_this.loadStatus = "nomore";
+					} else {
+						setTimeout(function () {
+							_this.isLoadMore = false;
+							_this.articleList = [..._this.articleList, ..._this.articleList1];
+						}, 2000);
+					}
+				}
+			},
+			moreUser(){
+				uni.navigateTo({
+					url:'../search/searchUser'
+				})
 			}
 
 		}
@@ -103,9 +206,21 @@
 </script>
 
 <style>
+	.search {
+		background-color: #f7f7f7;
+	}
+
+	.nodate,
+	.search-user,
+	.search-article {
+		background-color: #fff;
+	}
+
 	.search-header {
 		height: 110rpx;
 		line-height: 100rpx;
+		background-color: #fff;
+		border-bottom: 1px solid #f0f0f0;
 	}
 
 	.search-input {
@@ -113,12 +228,48 @@
 		margin: auto;
 	}
 
-	.searchUser {
-		width: 100%;
-		height: 100rpx;
+	.nodate {
+		min-height: 800rpx;
 	}
 
-	.userList {
+	.search-user {
+		width: 100%;
+		padding: 30rpx;
+		border-bottom: 1px solid #f0f0f0;
+	}
+
+	.user-list {
+		margin-top: 30rpx;
+	}
+
+	.user-item {
 		display: inline-block;
+		width: 25%;
+	}
+
+	.user-img {
+		display: flex;
+		width: 70rpx;
+		height: 70rpx;
+		margin: auto;
+		border-radius: 50%;
+	}
+
+	.search-article {
+		margin-top: 30rpx;
+		padding: 20rpx 30rpx 0 30rpx;
+		border-top: 1px solid #f0f0f0;
+	}
+
+	.user-item .username {
+		width: 60%;
+		margin: auto;
+		margin-top: 10rpx;
+		text-align: center;
+		font-size: 22rpx;
+		color: #303133;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 </style>

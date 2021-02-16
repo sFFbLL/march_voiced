@@ -1,7 +1,12 @@
 <template>
 	<!-- 文章标题 -->
 	<view class="article-title"
-	 @click="articleDetails">{{articleTitle}}</view>
+	 @click="articleDetails">
+		<view>
+			<text class="article-text"
+			 v-html="articleTitle"></text>
+		</view>
+	</view>
 </template>
 
 <script>
@@ -29,7 +34,7 @@
 				// console.log(1)
 				// 跳转到编辑页面
 				uni.navigateTo({
-					url: '../articleDetails/index?id='+this.articleId
+					url: '../articleDetails/index?id=' + this.articleId
 				})
 			}
 		},
@@ -40,7 +45,7 @@
 </script>
 
 <style>
-	.article-title {
+	.article-title .article-text{
 		color: #404040;
 		font-size: 32rpx;
 		font-family: "微软雅黑";
@@ -52,5 +57,10 @@
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		line-height: 150%;
+	}
+
+	.article-text {
+		display: inline-block;
+		width: 100%;
 	}
 </style>

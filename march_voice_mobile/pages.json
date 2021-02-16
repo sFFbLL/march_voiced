@@ -109,6 +109,13 @@
 				"navigationBarTitleText": "搜索",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/search/searchUser",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"condition": { //模式配置，仅开发期间生效
