@@ -2,66 +2,49 @@
 	<view class="attention-cell">
 		<view class="flex-item">
 			<!-- 左侧头像盒子 -->
-			<a @click="inToPageMine"
+			<a @click.stop="inToPageMine"
 			 class="left-img-box inner-box">
 				<image class="inner-img"
-				 :src=user.imgUrl
+				 :src="avatarPath"
 				 mode="aspectFill"></image>
 			</a>
 			<!-- 中部文字 -->
 			<view class="middle-text-box inner-box"
-			 @click="inToPageMine">
+			 @click.stop="inToPageMine">
 				<view class="inner-middle-box inner-box">
 					<!-- 昵称盒子 -->
 					<view class="inner-text-name">
-						{{user.name}}
-						<slot name="doSomeThing"></slot>
+						{{nickname}}
+						<!-- 昵称后跟随的文本内容 -->
+						<slot name="afterNicknameText"></slot>
 					</view>
-					<!-- 关注数粉丝数文章数盒子 -->
-					<view v-if="showDteial"
-					 class="inner-text-message greay-text">
-						<span class="inner-text">关注 {{user.count}}</span><span class="inner-text">粉丝 {{user.count}}</span><span class="inner-text">文章
-							{{user.count}}</span>
+					<!-- 中部添加文本（无长度限制，自动换行） -->
+					<view class="inner-text-message greay-text">
+						<slot name="middleText"></slot>
 					</view>
-					<!-- 个人介绍盒子 (单行文本)-->
-					<view v-if="showIntrouduce"
-					 class="inner-text-selfintroduce greay-text">
-						{{user.selfIntrouduce}}
-					</view>
-<<<<<<< HEAD
-					<!-- 是否显示日期 -->
-					<view v-if="showDate" class="inner-text-selfintroduce greay-text">
-						{{user.date}}
-					</view>
+					<!-- 底部添加文本（有长度限制，自动省略） -->
 					<view class="inner-text-selfintroduce greay-text">
-						<slot name="underDoSomeThing"></slot>
+						<slot name="underText"></slot>
 					</view>
-=======
-					<view v-if="showDate"
-					 class="inner-text-selfintroduce greay-text">
-						{{user.date}}
-					</view>
-					<slot name="followMessage"></slot>
->>>>>>> 0e4c5a2df90b68509b3e88aa9b173c97608c2b38
 				</view>
 			</view>
 			<!-- 按钮盒子 -->
 			<view class="right-button-box">
 				<!-- 无<view v-if="user.follow != null"> ================================================================== -->
-				<view v-if="user.follow != null">
-					<button v-show="user.follow === false"
+				<view v-if="isFollow != null">
+					<button v-show="isFollow === 1"
 					 class="right-button"
 					 type="default-green"
 					 :disabled="isDisabled"
 					 iconType="circle"
 					 @click.stop="changeBtn"><span>关 注</span></button>
-					<button v-show="user.follow === true"
+					<button v-show="isFollow === 0"
 					 class="right-button"
 					 type="default"
 					 :disabled="isDisabled"
 					 @click.stop="changeBtn"
 					 iconType="circle">
-						<slot name="hasAttention"></slot>
+						<span>已关注</span>
 					</button>
 				</view>
 			</view>
@@ -72,39 +55,29 @@
 <script>
 	export default {
 		props: {
-			user: {
-				type: Object,
-				default () {
-					return {
-						id: "", // 用于事件
-						imgUrl: require('../static/img/1.jpg'), // 显示头像
-						name: "昵称", // 显示昵称
-						count: "0", // 关注数粉丝数文章数
-						selfIntrouduce: "", // 个人简介
-						//follow: true =======================================================
-						follow: null, // 判断是否互相关注
-						date: "2021-02-07 11:59"
-					}
-				}
+			// 用于事件
+			id:{
+				type:String,
+				default:null
 			},
-			// 显示个人简介
-			showIntrouduce: {
-				type: Boolean,
-				default: true
+			// 显示昵称
+			nickname:{
+				type:String,
+				default:"昵称"
 			},
-			// 是否展示关注粉丝文章数
-			showDteial: {
-				type: Boolean,
-				default: true
+			// 显示头像
+			avatarPath:{
+				type:String,
+				default: null
 			},
-			showDate: {
-				type: Boolean,
-				default: true
-			}
+			// 是否关注
+			isFollow:{
+				type:Number,
+				default:null
+			},
 		},
 		data() {
 			return {
-				isLoading: false, // 是否为加载中
 				isDisabled: false // 是否禁用按钮点击
 			}
 		},
@@ -112,17 +85,15 @@
 			// 按钮切换显示
 			changeBtn() {
 				this.isDisabled = true
-				this.isLoading = true
 				let that = this;
 				setTimeout(function () {
 					that.isDisabled = false
-					that.isLoading = false
 					that.$emit('change');
 				}, 1000);
 			},
 			// 进入其他页面
 			inToPageMine() {
-				console.log(this.id)
+				this.$emit('inToPageMine')
 			}
 		}
 	}
@@ -189,13 +160,6 @@
 	.inner-text-message {
 		padding-top: 4rpx;
 		font-size: 24rpx;
-	}
-
-	/* 关注数粉丝数文章数去掉最后的 |  */
-	.inner-text-message span:not(:last-child) {
-		margin-right: 10rpx;
-		padding-right: 10rpx;
-		border-right: 1rpx solid #969696;
 	}
 
 	/* 自我介绍 */

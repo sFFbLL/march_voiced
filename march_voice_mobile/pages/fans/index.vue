@@ -1,7 +1,20 @@
 <template>
-	<uni-list class="cell-box">
-		<attentionAndFansCell v-for="(item, index) in list" :key="item.id" :id="item.id" :showDteial="showDteial"
-		 :isAttention="item.isAttention" @change="change(index)"><span slot="hasAttention">互相关注</span></attentionAndFansCell>
+	<uni-list class="list-item">
+		<attentionAndFansCell class="item" v-for="(item, index) in list" 
+		:key="item.id" 
+		@change="change(index)"
+		:nickname="item.nickname"
+		:isFollow="item.isFollow"
+		:avatarPath="item.avatarPath"
+		>
+			 <span slot="afterNicknameText">关注了你</span>
+			 <span slot="middleText">
+				<span class="inner-text">关注 {{item.fansNumber}}</span>
+				 <span class="inner-text">粉丝 {{item.followNumber}}</span>
+				 <span class="inner-text">文章 {{item.articleNumber}}</span>
+			 </span>
+			 <span slot="underText">{{item.signature}}</span>
+			 </attentionAndFansCell>
 		<uniLoadMore></uniLoadMore>
 	</uni-list>
 </template>
@@ -12,80 +25,27 @@
 	export default {
 		data() {
 			return {
-				showDteial: true,
+				// showDteial: false, //是否展示粉丝数关注数
+				// showSelfIntrouduce: false,
+				// showDate: false,
 				list: [],
 				list1: [{
-						id: '1',
-						isAttention: true
-					},
-					{
-						id: '2',
-						isAttention: true
-					},
-					{
-						id: '3',
-						isAttention: true
-					},
-					{
-						id: '4',
-						isAttention: true,
-
-					},
-					{
-						id: '5',
-						isAttention: true
-					},
-					{
-						id: '6',
-						isAttention: true
-					},
-					{
-						id: '7',
-						isAttention: true
-					},
-					{
-						id: '8',
-						isAttention: true
-					},
-					{
-						id: '9',
-						isAttention: true
-					},
-					{
-						id: '10',
-						isAttention: true
-					},
-					{
-						id: '11',
-						isAttention: true
-					},
-					{
-						id: '12',
-						isAttention: true
-					},
-					{
-						id: '13',
-						isAttention: true
-					},
-					{
-						id: '14',
-						isAttention: true
-					},
-					{
-						id: '15',
-						isAttention: true
-					},
-					{
-						id: '16',
-						isAttention: true
-					}
-				]
+					id: "0", // 用于事件
+					avatarPath: '../../static/img/1.jpg', // 显示头像
+					nickname: "吴胜科", // 显示昵称
+					signature: "阿萨德",
+					isFollow: 0, // 判断是否互相关注
+					fansNumber: "1", // 显示粉丝数
+					followNumber:"2", // 显示关注数
+					articleNumber:"3", // 显是文章数
+				}]
 			}
 		},
 		components: {
 			attentionAndFansCell,
 			uniLoadMore
 		},
+		// 进入时加载
 		onLoad: function(options) {
 			let that = this;
 			this.list = [];
@@ -94,6 +54,7 @@
 			// }, 1000);
 			uni.startPullDownRefresh();
 		},
+		// 下拉刷新
 		onPullDownRefresh() {
 			let that = this;
 			setTimeout(function() {
@@ -102,25 +63,28 @@
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},
+		// 触底加载
 		onReachBottom() {
 			this.list.push.apply(this.list, this.list1)
 		},
 		methods: {
+			// 跳转页面
 			inToMinePage(id) {
 				alert(id)
 			},
+			// 按钮样式切换
 			change(index) {
-				// console.log(index)
-				// console.log(this.list[index])
-				this.list[index].isAttention = !this.list[index].isAttention
-				// console.log(this.list[index].isAttention)
+				this.list[index].follow = !this.list[index].follow
 			}
 		}
 	}
 </script>
 
 <style scoped>
-	::v-deep .right-button {
-		width: 160rpx;
+/* 关注数粉丝数文章数去掉最后的 |  */
+	.inner-text-message span:not(:last-child) {
+		margin-right: 10rpx;
+		padding-right: 10rpx;
+		border-right: 1rpx solid #969696;
 	}
 </style>

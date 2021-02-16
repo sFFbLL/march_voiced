@@ -1,8 +1,22 @@
 <template>
 	<uni-list class="list-item">
-		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="item.id" :showDteial="showDteial"
-		 :showIntrouduce="showSelfIntrouduce" :showDate="showDate" :user="list1[index]" @change="change(index)"><span
-			 slot="doSomeThing">关注了你</span><span slot="underDoSomeThing">asd</span><span slot="hasAttention">已关注</span></attentionAndFansCell>
+		<attentionAndFansCell class="item" v-for="(item, index) in list" 
+		:key="item.id" 
+		@change="change(index)"
+		@inToPageMine="inToPageMine(index)"
+		:id="item.id"
+		:nickname="item.nickname"
+		:isFollow="item.isFollow"
+		:avatarPath="item.avatarPath"
+		>
+			 <span slot="afterNicknameText">关注了你</span>
+			 <span slot="middleText">
+				<span class="inner-text">关注 {{item.fansNumber}}</span>
+				 <span class="inner-text">粉丝 {{item.followNumber}}</span>
+				 <span class="inner-text">文章 {{item.articleNumber}}</span>
+			 </span>
+			 <span slot="underText">{{item.signature}}</span>
+			 </attentionAndFansCell>
 		<uniLoadMore></uniLoadMore>
 	</uni-list>
 </template>
@@ -13,19 +27,16 @@
 	export default {
 		data() {
 			return {
-				showDteial: false, //是否展示粉丝数关注数
-				showSelfIntrouduce: false,
-				showDate: false,
 				list: [],
 				list1: [{
-					id: "", // 用于事件
-					imgUrl: require('../../static/img/1.jpg'), // 显示头像
-					name: "昵称", // 显示昵称
-					count: "0", //关注数等
-					selfIntrouduce: "阿萨德",
-					follow: true, // 判断是否互相关注
-					count: "1",
-					date: "2020-20-01"
+					id: "0", // 用于事件
+					avatarPath: '../../static/img/1.jpg', // 显示头像
+					nickname: "吴胜科", // 显示昵称
+					signature: "阿萨德",
+					isFollow: 0, // 判断是否互相关注
+					fansNumber: "1", // 显示粉丝数
+					followNumber:"2", // 显示关注数
+					articleNumber:"3", // 显是文章数
 				}]
 			}
 		},
@@ -45,8 +56,8 @@
 		// 下拉刷新
 		onPullDownRefresh() {
 			let that = this;
+			that.list = [];
 			setTimeout(function() {
-				that.list = [];
 				that.list.push.apply(that.list, that.list1)
 				uni.stopPullDownRefresh();
 			}, 1000);
@@ -57,17 +68,30 @@
 		},
 		methods: {
 			// 跳转页面
-			inToMinePage(id) {
-				alert(id)
+			inToPageMine(index) {
+				console.log(index)
 			},
 			// 按钮样式切换
 			change(index) {
-				this.list[index].follow = !this.list[index].follow
+				
+				switch(this.list[index].isFollow){
+					case 0:
+						this.list[index].isFollow = 1;
+						break;
+					case 1:
+						this.list[index].isFollow = 0;
+						break;
+				}
 			}
 		}
 	}
 </script>
 
 <style scoped>
-
+/* 关注数粉丝数文章数去掉最后的 |  */
+	.inner-text-message span:not(:last-child) {
+		margin-right: 10rpx;
+		padding-right: 10rpx;
+		border-right: 1rpx solid #969696;
+	}
 </style>
