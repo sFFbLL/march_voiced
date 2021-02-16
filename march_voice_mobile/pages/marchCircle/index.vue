@@ -135,7 +135,9 @@
 			// 	this.imgList=this.ideasList.imgList;
 
 			// })
-
+uni.showTabBarRedDot({
+				index:3
+			})
 
 
 		},
