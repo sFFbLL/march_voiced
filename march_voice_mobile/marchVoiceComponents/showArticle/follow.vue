@@ -2,16 +2,42 @@
 	<!-- 推荐页面文章展示组件 -->
 	<view class="recommend-component">
 		<!-- 作者信息 -->
-		<attentionAndFansCell :userInfo = "articleInfo.user" :showDteial="false"></attentionAndFansCell>
+		<attentionAndFansCell :userInfo="articleInfo.user"
+		 :showDteial="false"
+		 :showIntrouduce="false"
+		 :showDate="false"
+		 :user="articleInfo.user">
+			<view slot="followMessage"
+			 class="followMessage">
+				<text v-if="articleInfo.status===0">
+					发布
+				</text>
+				<text v-if="articleInfo.status===1">
+					评论
+				</text>
+				<text v-if="articleInfo.status===2">
+					收藏
+				</text>
+				<text v-if="articleInfo.status===3">
+					转载
+				</text>
+				<text v-if="articleInfo.status===4">
+					赞
+				</text>
+				<text>了该内容</text>
+			</view>
+		</attentionAndFansCell>
 		<!-- 文章标题 -->
-		<articleTitle :articleTitle="articleInfo.title" />
+		<articleTitle :articleTitle="articleInfo.title"
+		 :articleId="articleInfo.articleId" />
 		<!-- 文章内容 -->
 		<articleContent :articleContent="articleInfo.content"
-		 :articleImg="articleInfo.articleImg" />
+		 :articleImg="articleInfo.articleImg"
+		 :articleId="articleInfo.articleId" />
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal"
 		 :commentTotal="articleInfo.commentTotal"
-		 :collectTotal="articleInfo.collectTotal"></articleInteract>
+		 :dateTime="articleInfo.createTime"></articleInteract>
 	</view>
 </template>
 
@@ -23,7 +49,7 @@
 	export default {
 		data() {
 			return {
-
+				dynamic: "null"
 			};
 		},
 		props: {
@@ -59,9 +85,15 @@
 		border: none;
 		padding: 0;
 	}
-	
-	>>>.article-title{
+
+	>>>.article-title {
 		margin-top: 17rpx;
 	}
-	
+
+	.followMessage {
+		padding-top: 6rpx;
+		font-size: 26rpx;
+		width: 420rpx;
+		color: #969696;
+	}
 </style>

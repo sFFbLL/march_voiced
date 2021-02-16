@@ -19,33 +19,28 @@
 		</view>
 
 		<!-- 三月圈内容 -->
-		<view class="wrap">
-
+		<view class="wrap" @click="toDetail()">
+			<!-- 间隔槽 -->
 			<u-gap height="30" bg-color="#f5f5f5"></u-gap>
 			<view class="ideacontent">
 
 				<!-- 用户头像公共组件 -->
-				<attentionAndFansCell :showDteial="false"></attentionAndFansCell>
+				<attentionAndFansCell :showDteial="false" :showDate='false'></attentionAndFansCell>
 				<!-- 想法的文字部分 -->
-				<view class="wordscontent">
-					<text class="content" space="ensp" v-html="ideasList.content"></text>
-
-				</view>
+				<articleContent :articleContent="ideasList.content"></articleContent>
 				<!-- 想法的图片部分组件 -->
-				<imageAdaptation :imgList="imgList"></imageAdaptation>
-		<!-- 		<view class="allImage">
-					<view class="images" v-for="(item,index) in ideasList.imgList" :key="index">
-						<image class="oneimg" :src="item" mode="aspectFill" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx'}"></image>
-					</view>
-				</view> -->
-				
+				<imageAdaptation :imgList="imgList" ></imageAdaptation>
 				<!-- 点赞表情组件 -->
 				<emojiControl :emojiList="emojiList"></emojiControl>
 			</view>
 		</view>
-
+		<view class="mcover" @click="isshow()" :style="{display:mcoverDisplay}">
+			<image src="https://oscimg.oschina.net/oscnet/fd2170a448e37826ae9f4d7088f287b8f24.jpg" />
+		</view>
 		<!-- 发布三月圈悬浮按钮 -->
-		<uni-fab v-if="sanyueMumber" :pattern="pattern" horizontal="right" @fabClick="publish()" class="publishbtn"></uni-fab>
+		<view  v-if="sanyueMumber" @click="publish()" class="publishbtn">
+			<uni-icons class="addicon" type="plusempty" size="43" color="white"></uni-icons>
+		</view>
 	</view>
 </template>
 
@@ -58,7 +53,8 @@
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
 	import emojiControl from '../../marchVoiceComponents/marchCircle/emojiControl.vue'
 	import imageAdaptation from '../../marchVoiceComponents/marchCircle/imageAdaptation.vue'
-	import *as jwx from '../../utils/jws.js'
+	import * as jwx from '../../utils/jws.js'
+	import articleContent from '../../marchVoiceComponents/showArticle/childComponents/artilceContent.vue'
 	export default {
 		data() {
 			return {
@@ -67,10 +63,11 @@
 				disabledJoin: false,
 				fontSize: 28,
 				emojiPosition01: 30,
+				mcoverDisplay: 'none',
 				pattern: {
 					buttonColor: '#2a82e4',
-					width: '100rpx',
-					height: '100rpx'
+					width: '50rpx',
+					height: '50rpx'
 				},
 				marchCircleInfo: {
 					people: 1222,
@@ -79,28 +76,33 @@
 					brief: "啊士大夫艰苦的萨拉就",
 				},
 				emojiList: {
-					faceTotal:3,
+					faceTotal: 3,
 					likeTotal: 6,
 					favourTotal: 10,
 					commentTotal: 0,
 				},
-				imgList:[
-					'../../static/img/cat.jpg', '../../static/img/cat.jpg'
+				imgList: [
+					'../../static/img/cat.jpg','../../static/img/cat.jpg',
+					'../../static/img/cat.jpg','../../static/img/cat.jpg',
+					'../../static/img/cat.jpg','../../static/img/cat.jpg',
+					'../../static/img/cat.jpg','../../static/img/cat.jpg',
+					'../../static/img/cat.jpg'
 				],
 				ideasList: {
+					id:6,
 					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
 					upDateTime: '2020/12/12',
 					faceTotal: 2,
 					likeTotal: 3,
 					favourTotal: 42,
 					commentTotal: 0,
-					imgList:[
+					imgList: [
 						'../../static/img/cat.jpg', '../../static/img/cat.jpg'
 					],
 					user: {
-						userName: "xianer",
-						userId: 0,
-						userImage: '',
+						nickname: "xianer",
+						id: 0,
+						avatarPath: '',
 						isFollow: 0
 					}
 				}
@@ -111,7 +113,8 @@
 		components: {
 			emojiControl,
 			attentionAndFansCell,
-			imageAdaptation
+			imageAdaptation,
+			articleContent
 		},
 		created() {
 			// 获取三月基本信息接口
@@ -133,15 +136,25 @@
 
 			// })
 
-		
+
 
 		},
-		mounted() {
-		},
+		mounted() {},
 		methods: {
+			// 跳转详情页面
+			toDetail() {
+				uni.navigateTo({
+					url: '../ideaDetails/index?id='+this.ideasList.id
+				})
+			},
 			// 调用微信接口分享内容
-			share(){
-				jwx.configWeiXin()
+			share() {
+				this.mcoverDisplay = 'block';
+				jwx.configWeiXin();
+			},
+			// 控制遮罩层显示
+			isshow() {
+				this.mcoverDisplay = 'none';
 			},
 			// 申请加入三月圈
 			join() {
@@ -153,19 +166,49 @@
 				this.isjoin = '审核中';
 				this.fontSize = 21;
 				this.disabledJoin = true;
-				// 调接口
-				joinMarchCircle().then(res=>{
-					console.log(res)
-				})
+				// 调申请加入三月圈接口
+				// joinMarchCircle().then(res => {
+				// 	console.log(res)
+				// })
 			},
 			publish() {
 				// 跳转到编辑页面
+				uni.navigateTo({
+					url: '../ideaPublish/index'
+				})
 			}
 		}
 	}
 </script>
 
 <style>
+		/* 发布想法的按钮 */
+	.publishbtn{
+		border-radius: 50%;
+		width: 100rpx;
+		height: 100rpx;
+		display: flex;
+		position: fixed;
+		z-index: 222;
+		top: 980rpx;
+		right: 30rpx;
+		/* background-image: linear-gradient(to top, #4481eb 0%, #04befe 100%); */
+		background-image: linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%);
+		}
+		.addicon{
+			margin-left: 8rpx;
+		}
+	/* 微信分享 遮罩层*/
+	.mcover {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.7);
+		z-index: 20;
+	}
+
 	/* 想法文字部分样式 */
 	.wordscontent {
 		margin-top: 20rpx;

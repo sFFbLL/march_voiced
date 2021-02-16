@@ -22,3 +22,15 @@ export function getFollow (params) {
 		params
 	})
 }
+
+/**
+ * 搜索接口
+ * @param {Object} params {搜索关键字 页码 页大小}
+ */
+export function search (params) {
+	return request({
+		url: '/api/base/search',
+		method: 'get',
+		params
+	})
+}

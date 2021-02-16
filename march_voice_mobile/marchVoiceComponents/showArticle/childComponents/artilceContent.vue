@@ -1,8 +1,10 @@
 <template>
 	<!-- 文章内容显示 -->
-	<view class="article-content">
+	<view class="article-content"
+	 @click="articleDetails">
 		<view>
-			<view class="article-text">{{articleContent}}</view>
+			<text class="article-text"
+			 v-html="articleContent"></text>
 		</view>
 		<view v-if="articleImg != ''"
 		 class="article-img">
@@ -20,6 +22,10 @@
 			};
 		},
 		props: {
+			articleId: {
+				type: Number,
+				default: null
+			},
 			articleContent: {
 				type: String,
 				default: ""
@@ -33,7 +39,13 @@
 
 		},
 		methods: {
-
+			articleDetails() {
+				// console.log(1)
+				// 跳转到编辑页面
+				uni.navigateTo({
+					url: '../articleDetails/index?id=' + this.articleId
+				})
+			}
 		},
 		mounted() {}
 	}

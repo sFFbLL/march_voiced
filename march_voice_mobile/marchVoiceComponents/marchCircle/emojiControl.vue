@@ -28,7 +28,7 @@
 				<image class="addemoji add" src="../../static/img/add.png" mode=""></image>
 			</view>
 			<!-- 评论+评论数量 -->
-			<view class="comment">
+			<view class="comment" v-if="isShow">
 				<u-icon name="chat" color="#999999" size="40" class="chat"></u-icon>
 				<span class="commentTotal">{{emojiList.commentTotal}}</span>
 
@@ -42,6 +42,10 @@
 		props: {
 			emojiList: {
 
+			},
+			isShow:{
+				type:Boolean,
+				default:true
 			}
 		},
 		data() {

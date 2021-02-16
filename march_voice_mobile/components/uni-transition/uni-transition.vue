@@ -1,3 +1,5 @@
+<!-- 底部弹窗需要组件（分享） -->
+
 <template>
 	<view v-if="isShow" ref="ani" class="uni-transition" :class="[ani.in]" :style="'transform:' +transform+';'+stylesObject"
 	 @click="change">

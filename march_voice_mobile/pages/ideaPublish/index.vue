@@ -1,5 +1,7 @@
 <template>
-	<view>文章详情</view>
+	<view>
+		发布想法
+	</view>
 </template>
 
 <script>

@@ -3,13 +3,17 @@
 	<view class="article-interact">
 		<view class="interact-item">
 			{{favourTotal}}<text>赞</text><text class="point">·</text>
-			{{commentTotal}}<text>评论</text><text class="point">·</text>
-			{{collectTotal}}<text>收藏</text>
-			<view v-if="upDateTime != null"
-			 class="upDateTime">
+			{{commentTotal}}<text>评论</text>
+			<text v-if="collectTotal != null"
+			 class="collectTotal">
 				<text class="point">·</text>
-				{{upDateTime}}
-			</view>
+				{{collectTotal}}<text>收藏</text>
+			</text>
+			<text v-if="dateTime != null"
+			 class="dateTime">
+				<text class="point">·</text>
+				{{dateTime}}
+			</text>
 		</view>
 	</view>
 </template>
@@ -32,10 +36,10 @@
 			},
 			collectTotal: {
 				type: Number,
-				default: 0
+				default: null
 			},
-			upDateTime: {
-				type: Number,
+			dateTime: {
+				type: String,
 				default: null
 			}
 		},

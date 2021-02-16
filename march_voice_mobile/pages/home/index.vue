@@ -1,11 +1,14 @@
 <template>
+	<!-- 首页 -->
 	<view class="home">
 		<view class="header">
+			<!-- 头部选项卡 -->
 			<tabs class="tag-nav"
 			 :tabs='tablist'
 			 v-on:tabActive='tabActive' />
-
-			<view class="search">
+			 <!-- 搜索图标 -->
+			<view class="search"
+			 @click="search()">
 				<view class="search-icon">
 					<uni-icons type="search"
 					 size="25"
@@ -14,17 +17,20 @@
 			</view>
 		</view>
 		<view class="content">
+			<!-- 推荐 -->
 			<view v-if="!tabIndex">
 				<view v-for="(item,index) in recommendList">
 					<recommend :articleInfo="item" />
 				</view>
 			</view>
+			<!-- 关注 -->
 			<view v-if="tabIndex">
-				<view v-for="(item,index) in attentionList"
+				<view v-for="(item,index) in followList"
 				 :key="index">
 					<follow :articleInfo="item" />
 				</view>
 			</view>
+			<!-- 下拉加载更多 -->
 			<view v-show="isLoadMore">
 				<uni-load-more class="loading"
 				 :status="loadStatus"
@@ -41,7 +47,8 @@
 	import follow from '../../marchVoiceComponents/showArticle/follow.vue'
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	import {
-		getRecommend
+		getRecommend,
+		getFollow
 	} from '@/utils/api/home-api.js'
 
 	export default {
@@ -55,7 +62,7 @@
 		data() {
 			return {
 				recommendCurrent: 1, //推荐当前页数，
-				attentionCurrent: 1, //关注当前页数
+				followCurrent: 1, //关注当前页数
 				size: 10,
 				tabIndex: '',
 				tablist: [{
@@ -70,7 +77,7 @@
 					}
 				],
 				recommendList: [],
-				attentionList: [],
+				followList: [],
 				loadStatus: 'loading', //加载样式：more-加载前样式，loading-加载中样式，nomore-没有数据样式
 				isLoadMore: false, //是否加载中
 			}
@@ -79,7 +86,7 @@
 			if (!this.tabIndex) {
 				this.recommend();
 			} else {
-				this.attention();
+				this.follow();
 			}
 		},
 
@@ -90,8 +97,8 @@
 				this.recommend();
 			} else if (!this.isLoadMore && this.tabIndex) {
 				this.isLoadMore = true
-				this.attentionCurrent += 1
-				this.attention();
+				this.followCurrent += 1
+				this.follow();
 			}
 		},
 		methods: {
@@ -103,13 +110,14 @@
 				if (!tabIndex) {
 					this.recommend();
 				} else if (tabIndex) {
-					this.attention();
+					this.follow();
 				}
 				this.tabIndex = tabIndex;
 			},
+			// 推荐
 			recommend() {
 				let recommendList = [{
-					id: 1,
+					articleId: 1,
 					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
 					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
 					articleImg: require('static/img/2.jpg'),
@@ -118,13 +126,13 @@
 					collectTotal: 1,
 					commentTotal: 1,
 					user: {
-						userId: 1,
-						userName: "张三",
-						userImage: "",
-						isFollow: 0
+						id: 1,
+						name: "张三",
+						imgUrl: require('../../static/img/1.jpg'),
+						follow: false
 					}
 				}, {
-					id: 2,
+					articleId: 2,
 					title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
 					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
 					articleImg: "",
@@ -133,13 +141,13 @@
 					collectTotal: 1,
 					commentTotal: 1,
 					user: {
-						userId: 2,
-						userName: "李四",
-						userImage: "",
-						isFollow: 1
+						id: 2,
+						name: "李四",
+						imgUrl: require('../../static/img/1.jpg'),
+						follow: true
 					}
 				}, {
-					id: 1,
+					articleId: 1,
 					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
 					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
 					articleImg: require('static/img/2.jpg'),
@@ -148,13 +156,13 @@
 					collectTotal: 1,
 					commentTotal: 1,
 					user: {
-						userId: 1,
-						userName: "张三",
+						id: 1,
+						name: "张三",
 						userImage: "",
-						isFollow: 0
+						follow: false
 					}
 				}, {
-					id: 1,
+					articleId: 1,
 					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
 					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
 					articleImg: require('static/img/2.jpg'),
@@ -163,10 +171,10 @@
 					collectTotal: 1,
 					commentTotal: 1,
 					user: {
-						userId: 1,
-						userName: "张三",
-						userImage: "",
-						isFollow: 0
+						id: 1,
+						name: "张三",
+						imgUrl: require('../../static/img/1.jpg'),
+						follow: false
 					}
 				}];
 				let _this = this;
@@ -189,57 +197,70 @@
 					}, 2000);
 				}
 			},
-			attention() {
+			// 关注
+			follow() {
 				// console.log(2);
-				let attentionList = [{
+				let followList = [{
 						articleId: 2,
 						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
 						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
 						articleImg: "",
-						upDateTime: "更新时间",
+						createTime: "2020-08-24",
 						favourTotal: 1,
 						collectTotal: 1,
 						commentTotal: 1,
-						userId: 2,
-						userName: "李四",
-						userImage: ""
+						status: 0,
+						user: {
+							id: 2,
+							name: "李四",
+							imgUrl: require('../../static/img/1.jpg')
+						}
 					}, {
 						articleId: 2,
 						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
 						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
 						articleImg: require('static/img/2.jpg'),
-						upDateTime: "更新时间",
+						createTime: "2020-08-24",
 						favourTotal: 1,
 						collectTotal: 1,
 						commentTotal: 1,
-						userId: 2,
-						userName: "李四",
-						userImage: ""
+						status: 1,
+						user: {
+							id: 2,
+							name: "李四",
+							imgUrl: require('../../static/img/1.jpg')
+						}
 					},
 					{
 						articleId: 2,
 						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
 						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
 						articleImg: "",
-						upDateTime: "更新时间",
+						createTime: "2020-08-24",
 						favourTotal: 1,
 						collectTotal: 1,
 						commentTotal: 1,
-						userId: 2,
-						userName: "李四",
-						userImage: ""
+						status: 2,
+						user: {
+							id: 2,
+							name: "李四",
+							imgUrl: require('../../static/img/1.jpg')
+						}
 					}, {
 						articleId: 2,
 						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
 						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
 						articleImg: require('static/img/2.jpg'),
-						upDateTime: "更新时间",
+						createTime: "2020-08-24",
 						favourTotal: 1,
 						collectTotal: 1,
 						commentTotal: 1,
-						userId: 2,
-						userName: "李四",
-						userImage: ""
+						status: 3,
+						user: {
+							id: 2,
+							name: "李四",
+							imgUrl: require('../../static/img/1.jpg')
+						}
 					}
 				];
 				let _this = this;
@@ -247,20 +268,25 @@
 					current: this.current,
 					size:this.size
 				}
-				getRecommend(params).then(res => {
+				getFollow(params).then(res => {
 					_this.recommendList = [..._this.recommend,...res.data];
 					if(res.data.length<=_this.size){
 						_this.loadStatus=nomore;
 					}
 				}) */
-				if (this.attentionList.length > 16) {
+				if (this.followList.length > 16) {
 					_this.loadStatus = "nomore";
 				} else {
 					setTimeout(function () {
 						_this.isLoadMore = false;
-						_this.attentionList = [..._this.attentionList, ...attentionList];
+						_this.followList = [..._this.followList, ...followList];
 					}, 2000);
 				}
+			},
+			search() {
+				uni.navigateTo({
+					url:'../search/index'
+				})
 			}
 		}
 	}
