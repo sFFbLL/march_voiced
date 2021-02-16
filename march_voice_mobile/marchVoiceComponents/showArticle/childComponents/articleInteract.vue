@@ -2,6 +2,7 @@
 	<!-- 文章互动 -->
 	<view class="article-interact">
 		<view class="interact-item">
+			<slot name="before"></slot>
 			{{favourTotal}}<text>赞</text><text class="point">·</text>
 			{{commentTotal}}<text>评论</text>
 			<text v-if="collectTotal != null"
@@ -14,6 +15,7 @@
 				<text class="point">·</text>
 				{{dateTime}}
 			</text>
+			<slot name="after"></slot>
 		</view>
 	</view>
 </template>
