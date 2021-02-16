@@ -18,7 +18,8 @@
 			"path": "pages/message/index",
 			"style": {
 				"navigationBarTitleText": "消息",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
 			}
 		}, {
 			"path": "pages/publish/index",

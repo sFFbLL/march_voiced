@@ -1,153 +1,33 @@
 <template>
 	<view class="message">
 		<view class="header">
-			<tabs class="tag-nav"
-			 :tabs='tablist'
-			 v-on:tabActive='tabActive' />
+			<tabs :attentionRead="attentionRead" :interactRead="interactRead" :otherRead="otherRead" class="tag-nav" :tabs='tablist' v-on:tabActive='tabActive' />
 		</view>
 		<view class="content">
-			<view v-if="tabIndex==0">
-				<view class="flex-item"
-				 v-for="(item,index) in interactList">
-					<!-- 评论者头像 -->
-					<a @click="inToPageMine"
-					 class="left-img-box inner-box">
-						<image class="inner-img"
-						 :src="interactList[index].user.avatar"
-						 mode="aspectFill"></image>
-					</a>
-					<!-- 中部文字 -->
-					<view class="middle-text-box inner-box"
-					 @click="inToPageMine">
-						<view class="inner-middle-box inner-box">
-							<!-- 昵称盒子 -->
-							<view>
-								<span class="inner-text-name">{{item.user.userName}}</span>
-								<span class="inner-text"
-								 v-if="item.article.type==0">
-									<span class="inner-text"
-									 v-if="item.article.status==1">评论</span>
-									<span class="inner-text"
-									 v-if="item.article.status==2">收藏</span>
-									<span class="inner-text"
-									 v-if="item.article.status==3">转发</span>
-									<span class="inner-text"
-									 v-if="item.article.status==4">赞</span>了你的文章</span>
-								<span class="inner-text"
-								 v-if="item.article.type==1">
-									<span class="inner-text"
-									 v-if="item.article.status==1">评论了你的三月圈</span>
-									<span class="inner-text"
-									 v-else>为你的三月圈贴了一个表情</span>
-								</span>
-							</view>
-							<!-- 评论时间 -->
-							<view class="inner-text-message greay-text">
-								<span>{{item.article.createTime}}</span>
-							</view>
-
-						</view>
-					</view>
-					<!-- 评论，文章简略 -->
-					<view class="comment-content">
-						<!-- 评论内容 -->
-						<view class="text-comment"
-						 v-if="item.article.status==1">{{item.article.commentId}}</view>
-						<!-- 文章内容 -->
-						<articleContent :articleContent="item.article.content"
-						 :articleImg="item.article.image" />
-					</view>
-				</view>
+			<view v-if="tabIndex==0" v-for="item in interactList">
+				<singleMessage :messageInfo="item"></singleMessage>
 			</view>
 
-			<view v-if="tabIndex==1">
-				<view>
-					<view class="flex-item"
-					 v-for="(item,index) in attentionList">
-
-
-
-
-
-
-
-
-						<!-- 关注者头像 -->
-						<a @click="inToPageMine"
-						 class="left-img-box inner-box">
-							<image class="inner-img"
-							 :src="attentionList[index].user.avatar"
-							 mode="aspectFill"></image>
-						</a>
-						<!-- 中部文字 -->
-						<view class="middle-text-box inner-box"
-						 @click="inToPageMine">
-							<view class="inner-middle-box inner-box">
-								<!-- 昵称盒子 -->
-
-
-								<view>
-									<span class="inner-text-name">{{item.user.username}}</span>
-									<span class="inner-text">关注了你</span>
-								</view>
-
-
-
-
-								<!-- 评论时间 -->
-								<view class="inner-text-message greay-text">
-									<span>{{item.user.createTime}}</span>
-								</view>
-
-							</view>
-						</view>
-
-						<!-- 按钮盒子 -->
-						<view class="right-button-box">
-							<button v-show="isAttention === false"
-							 class="right-button"
-							 type="default-green"
-							 :loading="isLoading"
-							 :disabled="isDisabled"
-							 @click.stop="changeBtn"><span>关 注</span></button>
-							<button v-show="isAttention === true"
-							 class="right-button"
-							 type="default"
-							 :loading="isLoading"
-							 :disabled="isDisabled"
-							 @click.stop="changeBtn">已关注</button>
-						</view>
-
-
-
-
-
-
-
-
-
-
-
-					</view>
-				</view>
+			<view v-if="tabIndex==1" v-for="item in attentionList">
+				<attentionAndFansCell :showDteial="false">
+					<template v-slot:doSomeThing>
+						<text class="slot">关注了你
+						</text>
+					</template>
+				</attentionAndFansCell>
 			</view>
 			<view v-if="tabIndex==2">
 				<view>
-					<view v-for="(item,index) in otherList">
+					<view>
 
-						<span class="inner-text"
-						 v-if="item.user.type==0">你投稿的文章审核
-							<span class="inner-text"
-							 v-if="item.user.status==0">已通过。</span>
-							<span class="inner-text"
-							 v-if="item.user.status==1">未通过！</span>
+						<span class="inner-text">你投稿的文章审核
+							<span class="inner-text">已通过。</span>
+							<span class="inner-text">未通过！</span>
 						</span>
 
-						<span v-else>
-							<span class="inner-text"
-							 v-if="item.user.status==0">您已加入三月圈</span>
-							<span class="inner-text"
-							 v-if="item.user.status==1">您加入三月圈请求被驳回</span>
+						<span>
+							<span class="inner-text">您已加入三月圈</span>
+							<span class="inner-text">您加入三月圈请求被驳回</span>
 						</span>
 
 
@@ -163,17 +43,32 @@
 <script>
 	import tabs from '../../marchVoiceComponents/tabCard.vue'
 	import articleContent from "../../marchVoiceComponents/showArticle/childComponents/artilceContent.vue"
-
+	import singleMessage from "../../marchVoiceComponents/message/singleMessage.vue"
+	
+	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
+	import {
+		interactList,
+		attentionList,
+		otherList,
+		unreadMessage,
+		readMessage
+	} from "../../utils/api/message-api.js"
 	export default {
 		components: {
 			tabs,
-			articleContent
+			articleContent,
+			singleMessage,
+			attentionAndFansCell
 		},
 		data() {
 			return {
-				//	isLoading: false, // 是否为加载中
-				//	isDisabled: false // 是否禁用按钮点击
-				tabIndex: '',
+				isLoading: false, // 是否为加载中
+				isDisabled: false, // 是否禁用按钮点击
+				isAttention: false,
+				tabIndex: 0,
+				attentionRead: false,
+				otherRead: false,
+				interactRead:false,
 				tablist: [{
 						index: 0,
 						value: '互动消息',
@@ -181,7 +76,7 @@
 					},
 					{
 						index: 1,
-						value: '关注',
+						value: '关注消息',
 						isActive: false
 					},
 					{
@@ -192,107 +87,250 @@
 				],
 				// 互动消息
 				interactList: [{
-					article: {
 						type: 0,
+						status: 1,
+						articleId: 1,
+						commentId: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
+						image: require('static/img/2.jpg'),
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
+						createTime: "更新时间",
+						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+						user: {
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+							id: 1,
+						}
+
+					}, {
+						type: 1,
+						status: 3,
+						articleId: 1,
+						commentId: "",
+						image: require('static/img/2.jpg'),
+						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
+						createTime: "更新时间",
+						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+						user: {
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+							id: 1,
+						}
+
+					}, {
+						type: 0,
+						status: 2,
+						articleId: 1,
+						commentId: "",
+						image: require('static/img/2.jpg'),
+						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
+						createTime: "更新时间",
+						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+						user: {
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+							id: 1,
+						}
+
+					}, {
+						type: 0,
+						status: 3,
+						articleId: 1,
+						commentId: "",
+						image: require('static/img/2.jpg'),
+						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
+						createTime: "更新时间",
+						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+						user: {
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+							id: 1,
+						}
+
+					}, {
+						type: 1,
+						status: 4,
+						articleId: 1,
+						commentId: "",
+						image: require('static/img/2.jpg'),
+						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
+						createTime: "更新时间",
+						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+						user: {
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+							id: 1,
+						}
+
+					}, {
+						type: 1,
+						status: 2,
+						articleId: 1,
+						commentId: "",
+						image: require('static/img/2.jpg'),
+						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
+						createTime: "更新时间",
+						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+						user: {
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+							id: 1,
+						}
+
+					},
+					{
+						type: 1,
 						status: 1,
 						articleId: 1,
 						commentId: "哈哈哈哈在法国夫是德国人头地方杠",
 						image: require('static/img/2.jpg'),
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
-						createTime: "更新时间"
+						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
+						createTime: "更新时间",
+						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+						user: {
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+							id: 1,
+						}
+
 					},
-					user: {
-						avatar: require('static/img/1.jpg'),
-						userName: "张三",
-						userId: 1,
-					}
-				}, {
-					article: {
-						type: 0,
-						status: 1,
-						articleId: 1,
-						commentId: "哈哈哈哈在法国夫是德国人头地方杠",
-						image: '',
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
-						createTime: "更新时间"
-					},
-					user: {
-						avatar: require('static/img/1.jpg'),
-						userName: "张三",
-						userId: 1,
-					}
-				}],
+				],
 
 
 				//关注消息
 				attentionList: [{
-					user: {
-						avatar: require('static/img/1.jpg'),
-						username: "李四士",
-						userId: 2,
-						createTime: "时间时间"
+						createTime: "",
+						user: {
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+							id: 1,
+							isFollow:0
+						}
+					},
+					{
+						createTime: "",
+						user: {
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+							id: 1,
+							isFollow:1
+						}
 					}
-				}],
+				],
 
 				//其他消息
 				otherList: [{
-					user: {
-						type: 1,
-						status: 0,
-						createTime: "时间时间"
-					}
+					type: 1,
+					status: 0,
+					createTime: "时间时间"
+
 				}],
 
 			}
 		},
+		onPullDownRefresh() {
+			if (this.tabIndex == 0) {
+				// this.interact();
+				// 查询关注和其他是否有未读消息
+				// unreadMessage(1).then(res=>{
+				// 	if(res.data.count>0){
+						this.attentionRead=false;
+				// 	}
+				// })
+				// unreadMessage(2).then(res=>{
+				// 	if(res.data.count>0){
+						this.otherRead=false;
+				// 	}
+				// })
+			} else if (this.tabIndex == 1) {
+				this.attention();
+			} else if (this.tabIndex == 2) {
+				this.other();
+			}
+			setTimeout(function () {
+			            uni.stopPullDownRefresh();
+			        }, 1000);
+		},
+		created() {
+			uni.hideTabBarRedDot({
+				index: 3
+			})
+			// 互动消息已读
+			let type = this.tabIndex
+			// readMessage(type).then(res => {
+
+			// 	// 消除小红点
+			// })
+			// 查询所有互动消息
+			// interactList().then(res => {
+			// 	this.interactList = res.data
+			// })
+			// 查询关注和其他是否有未读消息
+			// unreadMessage(1).then(res=>{
+			// 	if(res.data.count>0){
+			// 		this.attentionRead=false;
+			// 	}
+			// })
+			// unreadMessage(2).then(res=>{
+			// 	if(res.data.count>0){
+			// 		this.otherRead=false;
+			// 	}
+			// })
+		},
 		methods: {
-
-
 			/* 切换选项卡选项 */
 			tabActive(tabIndex) {
 				this.tablist.map((value, index) => {
 					value.isActive = tabIndex == index ? true : false;
 				})
-				if (tabIndex==0) {
-					this.recommend();
-				} else if (tabIndex==1) {
+				if (tabIndex == 0) {
+					this.interact();
+				} else if (tabIndex == 1) {
 					this.attention();
-				}else{
-					this.aaa();
+				} else {
+					this.other();
 				}
 				this.tabIndex = tabIndex;
 			},
-			
-			recommend() {
-				// console.log("互动");
+
+			interact() {
+				let type = this.tabIndex
+				// readMessage(type).then(res => {
+				// 	// 消除小红点
+				// })
+				// interactList().then(res => {
+				// 	this.interactList = res.data
+				// })
 			},
 			attention() {
-				// console.log("关注");
+				let type = this.tabIndex
+				// readMessage(type).then(res => {
+				// 	// 消除小红点
+				// })
+				// attentionList().then(res => {
+				// 	this.attentionList = res.data
+				// })
 			},
-			aaa() {
-				// console.log("其他");
+			other() {
+				let type = this.tabIndex
+				// readMessage(type).then(res => {
+				// 	// 消除小红点
+				// })
+				// otherList().then(res => {
+				// 	this.otherList = res.data
+				// })
 			}
 		},
 
-		// // 按钮切换显示
-		// changeBtn() {
-		// 	this.isDisabled = true
-		// 	this.isLoading = true
-		// 	let that = this;
-		// 	setTimeout(function() {
-		// 		that.isDisabled = false
-		// 		that.isLoading = false
-		// 		that.$emit('change');
-		// 	}, 2000);
-		// },
-		// // 进入其他页面
-		// inToPageMine() {
-		// 	console.log(this.id)
-		// }
+
 	}
 </script>
 
 <style scoped>
+	/* 关注插槽 */
+	.slot{
+		margin-left: 20rpx;
+		font-weight: 400;
+		}
 	.header {
 		height: 80rpx;
 		line-height: 80rpx;
@@ -387,5 +425,9 @@
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
+	}
+
+	.content {
+		padding-left: 10rpx;
 	}
 </style>
