@@ -1,10 +1,10 @@
 <template>
 	<view class="wrap">
+
+	
 		<!-- 用户头像公共组件 -->
-		<!-- 间隔槽 -->
-		<u-gap height="10" bg-color="#f5f5f5"></u-gap>
-		<attentionAndFansCell :showDteial="false">
-			<template v-slot:doSomeThing>
+		<attentionAndFansCell :nickname="messageInfo.user.nickname" :avatarPath="messageInfo.user.avatarPath">
+			<template v-slot:afterNicknameText>
 				<text class="slot">{{tip}}
 				</text>
 				<image v-if="messageInfo.status==3&&messageInfo.type==1" src="../../static/img/aixin.png" mode="" style="width: 44rpx;height: 30rpx; margin-left: 10rpx;"></image>
@@ -12,7 +12,11 @@
 				<image v-if="messageInfo.status==4&&messageInfo.type==1" src="../../static/img/qingzhu.png" mode="" style="width: 34rpx;height: 30rpx; margin-left: 10rpx;"></image>
 
 			</template>
+			<template v-slot:underText>
+				<text>{{messageInfo.createTime}}</text>
+			</template>
 		</attentionAndFansCell>
+		<!-- 评论内容 -->
 		<text v-if="messageInfo.commentId" class="comment">{{messageInfo.commentId}}</text>
 		<!-- 文章/想法部分 -->
 		<view class="thecontent">
@@ -20,6 +24,8 @@
 			<articleTitle class="thewords" v-if="messageInfo.type==1" :articleTitle="messageInfo.content" :articleId="messageInfo.articleId" />
 			<image v-if="messageInfo.image" :src=messageInfo.image mode="scaleToFill" class="theimg"></image>
 		</view>
+	<!-- 间隔槽 -->
+	<u-gap height="10" bg-color="#f5f5f5"></u-gap>
 	</view>
 </template>
 
@@ -85,7 +91,6 @@
 </script>
 
 <style scoped>
-	
 	/* 评论样式 */
 	.comment {
 		margin-left: 110rpx;
@@ -118,8 +123,8 @@
 		border-radius: 8rpx;
 		display: flex;
 		padding: 20rpx 20rpx;
-		margin-bottom:30rpx;
-		margin-top:6rpx;
+		margin-bottom: 30rpx;
+		margin-top: 6rpx;
 	}
 
 	.thewords {
@@ -136,7 +141,7 @@
 	/* 公共头像组件样式 */
 	>>>.attention-cell .flex-item {
 		border: none;
-		padding: 0;
+		padding: 10rpx;
 		margin-top: 17rpx;
 	}
 </style>
