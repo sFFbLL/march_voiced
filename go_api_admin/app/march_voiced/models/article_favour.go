@@ -2,7 +2,7 @@ package models
 
 type ArticleFavour struct {
 	ArticleId uint `json:"article_id" gorm:""`
-	CreatBy   uint `json:"creat_by" gorm:""`
+	CreateBy  uint `json:"creat_by" gorm:""`
 	UpdateBy  uint `json:"update_by" gorm:""`
 	BaseModel
 }
