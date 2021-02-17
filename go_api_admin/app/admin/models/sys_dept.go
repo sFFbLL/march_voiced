@@ -12,11 +12,11 @@ type SysDept struct {
 	BaseModel
 	Name     string `json:"name"`                              //名称
 	Pid      int    `json:"pid"`                               //上级部门（顶级部门为0，默认为0）
-	SubCount int    `json:"sub_count" gorm:"default:0"`        //子部门数目
+	SubCount int    `json:"sub_count" gorm:"default:"`        //子部门数目
 	DeptSort int    `json:"deptSort"`                          //排序
 	CreateBy int    `json:"create_by"`                         //创建者
 	UpdateBy int    `json:"update_by"`                         //更新者
-	Enabled  []byte `json:"enabled"  gorm:"default:[]byte{0}"` //状态：1启用（默认）、0禁用
+	Enabled  []byte `json:"enabled"  gorm:"default:"` //状态：1启用（默认）、0禁用
 }
 
 // SysDept 部门表名

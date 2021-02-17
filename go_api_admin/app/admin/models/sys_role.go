@@ -16,7 +16,7 @@ type SysRole struct {
 	Level        int    `json:"level"`                                  //角色级别（越小越大）
 	Description  string `json:"description"`                            //描述
 	DataScope    string `json:"data_scope"`                             //数据权限
-	IsProtection []byte `json:"is_protection" gorm:"default:[]byte{0}"` //是否受保护（内置角色，1为内置角色，默认值为0）
+	IsProtection []byte `json:"is_protection" gorm:"default:"` //是否受保护（内置角色，1为内置角色，默认值为0）
 	CreateBy     int    `json:"create_by" gorm:"autoCreateTime:milli"`  //创建者id
 	UpdateBy     int    `json:"update_by" gorm:"autoCreateTime:milli"`  //更新者id
 	CreateTime   int64  `json:"create_time"`                            //创建日期

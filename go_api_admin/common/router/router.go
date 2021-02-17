@@ -5,6 +5,7 @@ import (
 	"project/utils/config"
 
 	admin "project/app/admin/router"
+	march "project/app/march_voiced/router"
 	"project/common/middleware"
 	"project/utils"
 
@@ -33,6 +34,7 @@ func Setup(cfg *config.Application) *gin.Engine {
 
 	// 注册业务路由
 	admin.InitAdminRouter(r)
+	march.InitMarchRouter(r)
 
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
