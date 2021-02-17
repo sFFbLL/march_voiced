@@ -11,23 +11,23 @@ import (
 	"go.uber.org/zap"
 )
 
-// SelectDept 文章收藏
-// @Summary 文章收藏
-// @Description Author：JiaKun Li 2021/02/16
-// @Tags 文章：收藏 collect Controller
+// SelectDept 文章点赞
+// @Summary 文章点赞
+// @Description Author：JiaKun Li 2021/02/17
+// @Tags 三月圈：点赞 article favour Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object body dto.CollectArticleDto false "查询参数"
+// @Param object body dto.ArticleFavourDto false "查询参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseSuccess
-// @Router /api/collect/article [post]
-func CollectArticle(c *gin.Context) {
-	p := new(dto.CollectArticleDto)
+// @Router /api/favour/march [post]
+func MarchFavour(c *gin.Context) {
+	p := new(dto.MarchFavourDto)
 
 	// 获取缓存信息
 	user, err := api.GetUserMessage(c)
 	if err != nil {
-		zap.L().Error("CollectArticle GetUserMsg failed", zap.Error(err))
+		zap.L().Error("MarchFavour GetUserMsg failed", zap.Error(err))
 		app.ResponseError(c, app.CodeLoginExpire)
 		return
 	}
@@ -35,7 +35,7 @@ func CollectArticle(c *gin.Context) {
 	// 获取参数 校验参数
 	if err := c.ShouldBindJSON(p); err != nil {
 		// 请求参数有误， 直接返回响应
-		zap.L().Error("CollectArticle params failed", zap.String("Username", user.Username), zap.Error(err))
+		zap.L().Error("MarchFavour params failed", zap.String("Username", user.Username), zap.Error(err))
 		_, ok := err.(validator.ValidationErrors)
 		if !ok {
 			app.ResponseError(c, app.CodeParamIsInvalid)
@@ -46,10 +46,10 @@ func CollectArticle(c *gin.Context) {
 	}
 
 	//业务逻辑处理
-	s := new(service.ArticleCollect)
-	err = s.AddArticleCollect(p, user.UserId)
+	s := new(service.MarchFavour)
+	err = s.AddMarchFavour(p, user.UserId)
 	if err != nil {
-		zap.L().Error("AddArticleCollect service params failed", zap.String("Username", user.Username), zap.Error(err))
+		zap.L().Error("MarchFavour service params failed", zap.String("Username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeUpdateOperationFail)
 		return
 	}

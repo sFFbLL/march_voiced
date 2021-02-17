@@ -1,5 +1,7 @@
 package models
 
+import "project/common/global"
+
 type FollowMessage struct {
 	BaseModel
 	CreateBy   uint  `json:"create_by" gorm:"not null;index"`              //创建人
@@ -10,4 +12,13 @@ type FollowMessage struct {
 
 func (e *FollowMessage) TableName() string {
 	return `follow_message`
+}
+
+func (e *FollowMessage) UnRead() error {
+	return global.Eloquent.Table(e.TableName()).Updates(&FollowMessage{IsRead:1}).Error
+}
+
+func (e *FollowMessage) UnReadCount() (count int64, err error) {
+	err = global.Eloquent.Table(e.TableName()).Where("is_read=?", 0).Count(&count).Error
+	return
 }
