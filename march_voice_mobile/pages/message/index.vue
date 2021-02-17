@@ -1,40 +1,30 @@
 <template>
 	<view class="message">
 		<view class="header">
-			<tabs :attentionRead="attentionRead" :interactRead="interactRead" :otherRead="otherRead" class="tag-nav" :tabs='tablist' v-on:tabActive='tabActive' />
+			<tabs :attentionRead="attentionRead" :interactRead="interactRead" :otherRead="otherRead" class="tag-nav" :tabs='tablist'
+			 v-on:tabActive='tabActive' />
 		</view>
 		<view class="content">
+			<!-- 互动消息 -->
 			<view v-if="tabIndex==0" v-for="item in interactList">
+				<!-- 单个消息组件 -->
 				<singleMessage :messageInfo="item"></singleMessage>
 			</view>
-
+			<!-- 关注消息 -->
 			<view v-if="tabIndex==1" v-for="item in attentionList">
-				<attentionAndFansCell :showDteial="false">
-					<template v-slot:doSomeThing>
+				<attentionAndFansCell :nickname="item.user.nickname" :avatarPath="item.user.avatarPath" :isFollow="item.user.isFollow">
+					<template v-slot:afterNicknameText>
 						<text class="slot">关注了你
 						</text>
 					</template>
 				</attentionAndFansCell>
 			</view>
-			<view v-if="tabIndex==2">
-				<view>
-					<view>
-
-						<span class="inner-text">你投稿的文章审核
-							<span class="inner-text">已通过。</span>
-							<span class="inner-text">未通过！</span>
-						</span>
-
-						<span>
-							<span class="inner-text">您已加入三月圈</span>
-							<span class="inner-text">您加入三月圈请求被驳回</span>
-						</span>
-
-
-
-					</view>
-
-				</view>
+			<!-- 系统消息 -->
+			<view v-if="tabIndex==2" v-for="item in otherList">
+				<!-- 其他消息组件 -->
+				<otherMessage :otherList="item"></otherMessage>
+				<!-- 间隔槽 -->
+				<u-gap height="2" bg-color="#f5f5f5"></u-gap>
 			</view>
 		</view>
 	</view>
@@ -44,7 +34,7 @@
 	import tabs from '../../marchVoiceComponents/tabCard.vue'
 	import articleContent from "../../marchVoiceComponents/showArticle/childComponents/artilceContent.vue"
 	import singleMessage from "../../marchVoiceComponents/message/singleMessage.vue"
-	
+	import otherMessage from "../../marchVoiceComponents/message/otherMessage.vue"
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
 	import {
 		interactList,
@@ -58,7 +48,8 @@
 			tabs,
 			articleContent,
 			singleMessage,
-			attentionAndFansCell
+			attentionAndFansCell,
+			otherMessage
 		},
 		data() {
 			return {
@@ -68,7 +59,7 @@
 				tabIndex: 0,
 				attentionRead: false,
 				otherRead: false,
-				interactRead:false,
+				interactRead: false,
 				tablist: [{
 						index: 0,
 						value: '互动消息',
@@ -93,7 +84,7 @@
 						commentId: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
 						image: require('static/img/2.jpg'),
 						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
-						createTime: "更新时间",
+						createTime: "2020/12/12",
 						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
 						user: {
 							avatarPath: require('static/img/1.jpg'),
@@ -203,7 +194,7 @@
 							avatarPath: require('static/img/1.jpg'),
 							nickname: "张三",
 							id: 1,
-							isFollow:0
+							isFollow: 0
 						}
 					},
 					{
@@ -212,52 +203,106 @@
 							avatarPath: require('static/img/1.jpg'),
 							nickname: "张三",
 							id: 1,
-							isFollow:1
+							isFollow: 1
 						}
 					}
 				],
 
 				//其他消息
 				otherList: [{
-					type: 1,
-					status: 0,
-					createTime: "时间时间"
+						type: 1,
+						status: 0,
+						createTime: "2020-15-12 8:03",
+						articleId: 1,
+						title: "*这是一个文章标题*"
 
-				}],
+					},
+					{
+						type: 0,
+						status: 0,
+						createTime: "2020-15-12 8:03",
+						articleId: 1,
+						title: "*这是这是一个文章标题一个文章标题*"
+
+					},
+					{
+						type: 0,
+						status: 1,
+						createTime: "2020-15-12 8:03",
+						articleId: 1,
+						title: "*这是一个文章标题*"
+
+					},
+					{
+						type: 1,
+						status: 1,
+						createTime: "2020-15-12 8:03",
+						articleId: 1,
+						title: "*这是一个文章标题*"
+
+					}
+				],
 
 			}
 		},
+		// 下拉刷新获取最新数据
 		onPullDownRefresh() {
+			// 查询是否有未读消息
+			// unreadMessage(1).then(res=>{
+			// 	if(res.data.count>0){
+			// 		this.$store.commit('changeInteract',0);
+			// 	}
+			// })
+			// unreadMessage(2).then(res=>{
+			// 	if(res.data.count>0){
+			// 		this.$store.commit('changeAttention',0);
+			// 	}
+			// })
+			// unreadMessage(3).then(res=>{
+			// 	if(res.data.count>0){
+			// 		this.$store.commit('changeOther',0);
+			// 	}
+			// })
 			if (this.tabIndex == 0) {
+				// 获取最新消息数据
 				// this.interact();
-				// 查询关注和其他是否有未读消息
-				// unreadMessage(1).then(res=>{
-				// 	if(res.data.count>0){
-						this.attentionRead=false;
-				// 	}
-				// })
-				// unreadMessage(2).then(res=>{
-				// 	if(res.data.count>0){
-						this.otherRead=false;
-				// 	}
+				// 消除当前tab红点
+				this.$store.commit('changeInteract', 1);
+				// readMessage(1).then(res => {
+				// 	// 消除小红点
 				// })
 			} else if (this.tabIndex == 1) {
-				this.attention();
+				// this.attention();
+				this.$store.commit('changeAttention', 1);
+				// readMessage(2).then(res => {
+				// 	// 消除小红点
+				// })
 			} else if (this.tabIndex == 2) {
-				this.other();
+				// this.other();
+				this.$store.commit('changeOther', 1);
+				// readMessage(3).then(res => {
+				// 	// 消除小红点
+				// })
 			}
-			setTimeout(function () {
-			            uni.stopPullDownRefresh();
-			        }, 1000);
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 1000);
 		},
+		
 		created() {
-			uni.hideTabBarRedDot({
-				index: 3
-			})
+			
+			console.log(this.$store.state.attentionRead == false && this.$store.state.otherRead == false)
+			// 所有消息已读，消除底部消息红点
+			if ( this.$store.state.changeInteract == true &&this.$store.state.attentionRead == true && this.$store.state.otherRead == true) {
+				uni.hideTabBarRedDot({
+					index:3
+				})
+			}
+
 			// 互动消息已读
 			let type = this.tabIndex
-			// readMessage(type).then(res => {
-
+			this.$store.commit('changeInteract', 1);
+			// readMessage(1).then(res => {
 			// 	// 消除小红点
 			// })
 			// 查询所有互动消息
@@ -265,14 +310,16 @@
 			// 	this.interactList = res.data
 			// })
 			// 查询关注和其他是否有未读消息
-			// unreadMessage(1).then(res=>{
-			// 	if(res.data.count>0){
-			// 		this.attentionRead=false;
-			// 	}
-			// })
 			// unreadMessage(2).then(res=>{
 			// 	if(res.data.count>0){
-			// 		this.otherRead=false;
+			// 增加红点
+			// 		this.$store.commit('changeAttention',0);
+			// 	}
+			// })
+			// unreadMessage(3).then(res=>{
+			// 	if(res.data.count>0){
+			// 增加红点
+			// 		this.$store.commit('changeOther',0);
 			// 	}
 			// })
 		},
@@ -293,28 +340,19 @@
 			},
 
 			interact() {
-				let type = this.tabIndex
-				// readMessage(type).then(res => {
-				// 	// 消除小红点
-				// })
+				let type = this.tabIndex;
 				// interactList().then(res => {
 				// 	this.interactList = res.data
 				// })
 			},
 			attention() {
-				let type = this.tabIndex
-				// readMessage(type).then(res => {
-				// 	// 消除小红点
-				// })
+				let type = this.tabIndex;
 				// attentionList().then(res => {
 				// 	this.attentionList = res.data
 				// })
 			},
 			other() {
-				let type = this.tabIndex
-				// readMessage(type).then(res => {
-				// 	// 消除小红点
-				// })
+				let type = this.tabIndex;
 				// otherList().then(res => {
 				// 	this.otherList = res.data
 				// })
@@ -326,15 +364,30 @@
 </script>
 
 <style scoped>
-	/* 关注插槽 */
-	.slot{
-		margin-left: 20rpx;
-		font-weight: 400;
-		}
 	.header {
+		position: fixed;
+		top: 0;
+		background-color: white;
+		z-index: 99;
+		width: 100%;
 		height: 80rpx;
 		line-height: 80rpx;
 	}
+
+	/* 公共头像组件样式 */
+	>>>.attention-cell .flex-item {
+		padding: 10rpx;
+		margin-top: 17rpx;
+
+	}
+
+	/* 关注插槽 */
+	.slot {
+		margin-left: 20rpx;
+		font-weight: 400;
+	}
+
+
 
 	>>>.tab-card .head-nav .head-nav-bottom {
 		width: 70%;
@@ -429,5 +482,6 @@
 
 	.content {
 		padding-left: 10rpx;
+		margin-top: 80rpx;
 	}
 </style>

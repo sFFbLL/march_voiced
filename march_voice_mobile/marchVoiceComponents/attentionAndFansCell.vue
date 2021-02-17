@@ -140,7 +140,7 @@
 	/* 中部文字盒子样式 */
 	.middle-text-box {
 		align-items: center;
-		flex: 5;
+		flex: 6;
 		display: flex;
 	}
 
