@@ -14,7 +14,7 @@ import (
 // SelectDept 文章收藏
 // @Summary 文章收藏
 // @Description Author：JiaKun Li 2021/02/16
-// @Tags 文章：收藏 collect Controller
+// @Tags 文章 collect Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object body dto.CollectArticleDto false "查询参数"

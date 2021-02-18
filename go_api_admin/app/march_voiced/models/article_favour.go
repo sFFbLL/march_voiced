@@ -40,3 +40,10 @@ func (a *ArticleFavour) AddArticleFavourMessage(userId uint) {
 	}
 	AddMessage(0, 4, a.ArticleId, userId, "")
 }
+
+func (a *ArticleFavour) ArticleFavourCount() (count int64, err error) {
+	err = global.Eloquent.Table(a.TableName()).
+		Where("article_id=? and is_deleted=0", a.ArticleId).Count(&count).Error
+	return
+}
+

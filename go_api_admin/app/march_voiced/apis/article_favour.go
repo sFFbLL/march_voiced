@@ -14,7 +14,7 @@ import (
 // SelectDept 文章点赞
 // @Summary 文章点赞
 // @Description Author：JiaKun Li 2021/02/17
-// @Tags 文章：点赞 article favour Controller
+// @Tags 文章 article favour Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object body dto.ArticleFavourDto false "查询参数"

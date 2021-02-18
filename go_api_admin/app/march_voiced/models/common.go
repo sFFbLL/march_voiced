@@ -28,5 +28,6 @@ func AddSysMessage(t uint8, status uint8, userId uint)  {
 	sysMessage.Status = status
 	sysMessage.CreateBy = userId
 	sysMessage.UpdateBy = userId
+	sysMessage.FollowId = userId
 	sysMessage.Add()
 }

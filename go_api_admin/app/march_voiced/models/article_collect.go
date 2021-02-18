@@ -40,3 +40,9 @@ func (a *ArticleCollect) AddArticleCollectMessage(userId uint) {
 	}
 	AddMessage(0, 2, a.ArticleId, userId, "")
 }
+
+func (a *ArticleCollect) ArticleCollectCount() (count int64, err error) {
+	err = global.Eloquent.Table(a.TableName()).
+		Where("article_id=? and is_deleted=0", a.ArticleId).Count(&count).Error
+	return
+}
