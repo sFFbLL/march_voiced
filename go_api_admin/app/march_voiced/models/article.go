@@ -26,21 +26,21 @@ func (a *Article) TableName() string {
 	return `article`
 }
 
+func (a *Article) GetArticle() (err error) {
+	err = global.Eloquent.Table(a.TableName()).Where("id = ? AND is_deleted = 0", a.ID).First(a).Error
+	if err != nil {
+		zap.L().Error("GetArticle Dao Find First Failed", zap.Error(err))
+	}
+	return
+}
+
 func (a *Article) InsertArticle() (err error) {
 	err = global.Eloquent.Table(a.TableName()).Create(a).Error
 	return
 }
 
-func (a *Article) UpdateArticle(id uint) (err error) {
-	update := new(Article)
-
-	err = global.Eloquent.Table(a.TableName()).Where("id = ? AND is_deleted = 0", id).First(update).Error
-	if err != nil {
-		zap.L().Error("UpdateArticle Dao Find First Failed", zap.Error(err))
-		return
-	}
-
-	err = global.Eloquent.Table(a.TableName()).Model(update).Updates(a).Error
+func (a *Article) UpdateArticle() (err error) {
+	err = global.Eloquent.Table(a.TableName()).Where("id = ? AND is_deleted = 0", a.ID).Updates(a).Error
 	if err != nil {
 		zap.L().Error("UpdateArticle Dao Update Failed", zap.Error(err))
 	}
@@ -51,7 +51,7 @@ func (a *Article) ArticleDetail(id int, userId int) (userMsg bo.UserMsg, total [
 	totalString := [3]string{"article_collect", "article_comment", "article_favour"}
 
 	// 获取文章信息
-	err = global.Eloquent.Table(a.TableName()).Where("id = ? AND is_deleted = 0", id).First(a).Error
+	err = global.Eloquent.Table(a.TableName()).Where("id = ? AND is_deleted = 0", a.ID).First(a).Error
 	if err != nil {
 		zap.L().Error("ArticleDetail Select article failed", zap.Error(err))
 		return
