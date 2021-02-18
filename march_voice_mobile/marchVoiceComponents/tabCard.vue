@@ -31,6 +31,7 @@
 				default: []
 			},
 
+
 		},
 		methods: {
 			handlerActive(index) {
