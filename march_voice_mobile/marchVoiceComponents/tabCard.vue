@@ -5,9 +5,9 @@
 			<view class="head-nav-item" v-for="(item,index) in tabs" :key="item.index" :class="item.isActive ? 'active' : ''"
 			 @click="handlerActive(item.index)">
 				<view class="center">{{item.value}}
-					<u-badge v-if="(item.index==0&&interactRead==false)" :is-dot="true" type="error"></u-badge>
-					<u-badge v-if="(item.index==1&&attentionRead==false)" :is-dot="true" type="error"></u-badge>
-					<u-badge v-if="item.index==2&&otherRead==false" :is-dot="true"  type="error"></u-badge>
+					<u-badge v-if="item.index==0&&interactRead==false&&type" :is-dot="true" type="error"></u-badge>
+					<u-badge v-if="item.index==1&&attentionRead==false&&type" :is-dot="true" type="error"></u-badge>
+					<u-badge v-if="item.index==2&&otherRead==false&&type" :is-dot="true" type="error"></u-badge>
 					<view class="head-nav-bottom"></view>
 				</view>
 			</view>
@@ -18,62 +18,55 @@
 </template>
 
 <script>
-	import readMessage from "../utils/api/message-api.js"
 	export default {
 		data() {
 			return {
-			
+
 			};
 		},
+
 		props: {
 			tabs: {
 				type: Array,
 				default: []
 			},
-
+			type: {
+				type: Boolean
+			}
 		},
 		methods: {
 			handlerActive(index) {
-				if(index==0){
+				if (index == 0) {
 					// 消除红点
-					this.$store.commit('changeInteract',1);
-					// 已读接口
-					// readMessage(1).then(res=>{
-						
-					// })
-				}else if(index==1){
-					// 消除红点
-					this.$store.commit('changeAttention',1);
-					// 已读接口
-					// readMessage(2).then(res=>{
-						
-					// })
-				}else if(index==2){
-					// 消除红点
-					this.$store.commit('changeOther',1);
-					// 已读接口
-					// readMessage(3).then(res=>{
-						
-					// })
-				}
+					this.$store.commit('changeInteract', 1);
 				
+				} else if (index == 1) {
+					// 消除红点
+					this.$store.commit('changeAttention', 1);
+					
+				} else if (index == 2) {
+					// 消除红点
+					this.$store.commit('changeOther', 1);
+					
+				}
+
 				this.$emit('tabActive', index);
 			}
 		},
-		computed:{
-			interactRead(){
+		computed: {
+			interactRead() {
 				return this.$store.state.interactRead;
 			},
-			attentionRead(){
+			attentionRead() {
 				return this.$store.state.attentionRead;
 			},
-			otherRead(){
+			otherRead() {
 				return this.$store.state.otherRead;
 			}
 		},
 		mounted() {},
 		created() {
-
+			
 		}
 	}
 </script>
@@ -87,7 +80,7 @@
 		height: 100%;
 
 		.head-nav-item {
-			
+
 			flex: 1;
 			text-align: center;
 			font-size: 34rpx;
