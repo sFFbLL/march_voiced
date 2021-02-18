@@ -55,3 +55,9 @@ func (e *MarchSoftFavour) AddMarchFavourMessage(s *uint8, userId uint) {
 	}
 	AddMessage(0, *s+2, e.MarchsoftId, userId, "")
 }
+
+func (e *MarchSoftFavour) MarchFavourCount() (count int64, err error) {
+	err = global.Eloquent.Table(e.TableName()).
+		Where("article_id=? and is_deleted=0", e.MarchsoftId).Count(&count).Error
+	return
+}

@@ -12,7 +12,7 @@ import (
 // SelectDept 申请加入三月圈
 // @Summary 申请加入三月圈
 // @Description Author：JiaKun Li 2021/02/17
-// @Tags 三月圈：申请加入 marchsoft Controller
+// @Tags 三月圈 marchsoft Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object body dto.ArticleFavourDto false "查询参数"

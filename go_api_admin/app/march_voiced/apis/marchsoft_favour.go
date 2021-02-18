@@ -11,10 +11,10 @@ import (
 	"go.uber.org/zap"
 )
 
-// SelectDept 文章点赞
-// @Summary 文章点赞
+// SelectDept 三月圈点赞
+// @Summary 三月圈点赞
 // @Description Author：JiaKun Li 2021/02/17
-// @Tags 三月圈：点赞 article favour Controller
+// @Tags 三月圈 marchsoft Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object body dto.ArticleFavourDto false "查询参数"

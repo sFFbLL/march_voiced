@@ -14,6 +14,7 @@ func init() {
 func messageAuthRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/message")
 	{
-		r.GET("user/unread-count", apis.MessageUnread)
+		r.GET("user/unread-count", apis.MessageUnreadCount)
+		r.POST("user", apis.UnReadMessageRead)
 	}
 }

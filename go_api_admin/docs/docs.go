@@ -28,6 +28,118 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/apply/march": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：JiaKun Li 2021/02/17",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "三月圈 marchsoft Controller"
+                ],
+                "summary": "申请加入三月圈",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ArticleFavourDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/article": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lbl 2021/02/17 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用：文章管理 Article Controller"
+                ],
+                "summary": "修改文章",
+                "parameters": [
+                    {
+                        "description": "修改参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateArticleDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lbl 2021/02/17 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用：文章管理 Article Controller"
+                ],
+                "summary": "添加文章",
+                "parameters": [
+                    {
+                        "description": "添加参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.InsertArticleDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
+                        }
+                    }
+                }
+            }
+        },
         "/api/auth/code": {
             "get": {
                 "security": [
@@ -117,6 +229,120 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models._ResponseLogin"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：JiaKunLi 2021/01/26 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统：系统授权接口 Authorization Controller"
+                ],
+                "summary": "用户注销接口",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserLoginDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseLogin"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/child": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lzc 2021/01/30 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统：系统授权接口 Menu Controller"
+                ],
+                "summary": "返回所有子节点ID",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.SelectChildIdDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSelectMeauDataInfoList"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/collect/article": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：JiaKun Li 2021/02/16",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章 collect Controller"
+                ],
+                "summary": "文章收藏",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CollectArticleDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
                         }
                     }
                 }
@@ -219,8 +445,7 @@ var doc = `{
                         "type": "integer",
                         "description": "当前页",
                         "name": "current",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "boolean",
@@ -244,8 +469,7 @@ var doc = `{
                         "type": "string",
                         "description": "排序规则",
                         "name": "orders",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
@@ -257,8 +481,13 @@ var doc = `{
                         "type": "integer",
                         "description": "每页数据",
                         "name": "size",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "id排序",
+                        "name": "sort",
+                        "in": "query"
                     },
                     {
                         "type": "integer",
@@ -308,6 +537,82 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models._ResponseSelectDeptList"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/favour/article": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：JiaKun Li 2021/02/17",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章 article favour Controller"
+                ],
+                "summary": "文章点赞",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ArticleFavourDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/favour/march": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：JiaKun Li 2021/02/17",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "三月圈 marchsoft Controller"
+                ],
+                "summary": "三月圈点赞",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ArticleFavourDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
                         }
                     }
                 }
@@ -410,8 +715,13 @@ var doc = `{
                         "type": "integer",
                         "description": "当前页",
                         "name": "current",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "状态：1启用（默认）、0禁用",
+                        "name": "enabled",
+                        "in": "query"
                     },
                     {
                         "type": "integer",
@@ -429,15 +739,19 @@ var doc = `{
                         "type": "string",
                         "description": "排序规则",
                         "name": "orders",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页数",
+                        "name": "page",
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "每页数据",
                         "name": "size",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
@@ -590,8 +904,13 @@ var doc = `{
                         "type": "integer",
                         "description": "当前页",
                         "name": "current",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "状态：1启用（默认）、0禁用",
+                        "name": "enabled",
+                        "in": "query"
                     },
                     {
                         "type": "integer",
@@ -609,15 +928,19 @@ var doc = `{
                         "type": "string",
                         "description": "排序规则",
                         "name": "orders",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页数",
+                        "name": "page",
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "每页数据",
                         "name": "size",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
@@ -663,7 +986,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._ResponseInsertMenu"
+                            "$ref": "#/definitions/models._ResponseSelectMenu"
                         }
                     }
                 }
@@ -746,7 +1069,7 @@ var doc = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Author：Lbl 2021/02/2 获得身份令牌",
+                "description": "Author：Cgl 2021/01/30 获得身份令牌",
                 "consumes": [
                     "application/json"
                 ],
@@ -754,19 +1077,16 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "系统：部门管理 Dept Controller"
+                    "系统：菜单管理 Menu Controller"
                 ],
-                "summary": "删除部门",
+                "summary": "删除菜单",
                 "parameters": [
                     {
                         "description": "查询参数",
                         "name": "object",
                         "in": "body",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
+                            "$ref": "#/definitions/dto.DeleteMenuDto"
                         }
                     }
                 ],
@@ -774,7 +1094,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._ResponseDept"
+                            "$ref": "#/definitions/models._ResponseDeleteMenu"
                         }
                     }
                 }
@@ -813,6 +1133,192 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models._ResponseSelectForeNeedMenu"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/menus/download": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Cgl 2021/02/04 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统：菜单管理 Menu Controller"
+                ],
+                "summary": "导出菜单数据",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.DownloadMenuDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseLogin"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/menus/lazy": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Cgl 2021/02/04 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统：菜单管理 Menu Controller"
+                ],
+                "summary": "查询出该级别下属菜单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "查询参数",
+                        "name": "pid",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseMenuData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/menus/superior": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lzc 2021/01/30 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统：系统授权接口 Menu Controller"
+                ],
+                "summary": "查询菜单:根据ID获取同级与上级数据",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.DataMenuDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSelectMeauDataInfoList"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/message/user": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：JiaKun Li 2021/02/18",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "消息 message Controller"
+                ],
+                "summary": "未读消息已读",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.MessageUnreadDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/message/user/unread-count": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：JiaKun Li 2021/02/17",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "消息 message Controller"
+                ],
+                "summary": "查询是否有未读消息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "1动态，2关注，3其他 不传是全部",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseMessageUnRead"
                         }
                     }
                 }
@@ -1464,6 +1970,27 @@ var doc = `{
         }
     },
     "definitions": {
+        "bo.Children": {
+            "type": "object",
+            "properties": {
+                "component": {
+                    "type": "string"
+                },
+                "hidden": {
+                    "type": "boolean"
+                },
+                "meta": {
+                    "type": "object",
+                    "$ref": "#/definitions/bo.Meta"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
         "bo.DeptCommon": {
             "type": "object",
             "properties": {
@@ -1478,17 +2005,37 @@ var doc = `{
         "bo.GetJobList": {
             "type": "object",
             "properties": {
-                "enabled": {
-                    "description": "状态：1启用（默认）、0禁用",
+                "createBy": {
+                    "description": "创建人",
                     "type": "integer"
                 },
-                "job_sort": {
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "integer"
+                },
+                "enabled": {
+                    "description": "状态：1启用（默认）、0禁用",
+                    "type": "boolean"
+                },
+                "id": {
+                    "description": "Id",
+                    "type": "integer"
+                },
+                "jobSort": {
                     "description": "排序",
                     "type": "integer"
                 },
                 "name": {
                     "description": "岗位名称",
                     "type": "string"
+                },
+                "updateBy": {
+                    "description": "更新人",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "integer"
                 }
             }
         },
@@ -1499,6 +2046,20 @@ var doc = `{
                     "type": "integer"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "bo.Meta": {
+            "type": "object",
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "noCache": {
+                    "type": "boolean"
+                },
+                "title": {
                     "type": "string"
                 }
             }
@@ -1621,6 +2182,77 @@ var doc = `{
                 }
             }
         },
+        "bo.ReturnToAllMenusBo": {
+            "type": "object",
+            "properties": {
+                "cache": {
+                    "type": "boolean"
+                },
+                "children": {
+                    "type": "object"
+                },
+                "component": {
+                    "type": "string"
+                },
+                "createBy": {
+                    "type": "integer"
+                },
+                "createTime": {
+                    "type": "integer"
+                },
+                "hasChildren": {
+                    "type": "boolean"
+                },
+                "hidden": {
+                    "type": "boolean"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "iframe": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "leaf": {
+                    "type": "boolean"
+                },
+                "menuSort": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "permission": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                },
+                "subCount": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "type": "integer"
+                },
+                "updatedBy": {
+                    "type": "integer"
+                }
+            }
+        },
         "bo.Role": {
             "type": "object",
             "properties": {
@@ -1647,7 +2279,7 @@ var doc = `{
                 "children": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/bo.children"
+                        "$ref": "#/definitions/bo.Children"
                     }
                 },
                 "component": {
@@ -1658,7 +2290,7 @@ var doc = `{
                 },
                 "meta": {
                     "type": "object",
-                    "$ref": "#/definitions/bo.meta"
+                    "$ref": "#/definitions/bo.Meta"
                 },
                 "name": {
                     "type": "string"
@@ -1668,6 +2300,80 @@ var doc = `{
                 },
                 "redirect": {
                     "type": "string"
+                }
+            }
+        },
+        "bo.SelectMenuBo": {
+            "type": "object",
+            "properties": {
+                "cache": {
+                    "type": "boolean"
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/bo.Children"
+                    }
+                },
+                "component": {
+                    "type": "string"
+                },
+                "createBy": {
+                    "type": "integer"
+                },
+                "createTime": {
+                    "type": "string"
+                },
+                "hasChildren": {
+                    "type": "boolean"
+                },
+                "hidden": {
+                    "type": "boolean"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "iframe": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "leaf": {
+                    "type": "boolean"
+                },
+                "menuSort": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "permission": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                },
+                "subCount": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "type": "string"
+                },
+                "updatedBy": {
+                    "type": "integer"
                 }
             }
         },
@@ -1695,7 +2401,7 @@ var doc = `{
                         "$ref": "#/definitions/bo.Order"
                     }
                 },
-                "page": {
+                "pages": {
                     "type": "integer"
                 },
                 "records": {
@@ -1713,37 +2419,6 @@ var doc = `{
                 },
                 "total": {
                     "type": "integer"
-                }
-            }
-        },
-        "bo.children": {
-            "type": "object",
-            "properties": {
-                "component": {
-                    "type": "string"
-                },
-                "hidden": {
-                    "type": "string"
-                },
-                "meta": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/bo.meta"
-                    }
-                }
-            }
-        },
-        "bo.meta": {
-            "type": "object",
-            "properties": {
-                "icon": {
-                    "type": "string"
-                },
-                "noCache": {
-                    "type": "boolean"
-                },
-                "title": {
-                    "type": "string"
                 }
             }
         },
@@ -1773,11 +2448,71 @@ var doc = `{
                 }
             }
         },
+        "dto.ArticleFavourDto": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.CollectArticleDto": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.DataMenuDto": {
+            "type": "object",
+            "required": [
+                "ids"
+            ],
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
         "dto.DeleteMenuDto": {
             "type": "object"
         },
         "dto.DeleteUserDto": {
             "type": "object"
+        },
+        "dto.DownloadMenuDto": {
+            "type": "object",
+            "required": [
+                "current",
+                "orders",
+                "pid",
+                "size"
+            ],
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "orders": {
+                    "type": "string"
+                },
+                "pid": {
+                    "description": "父id",
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
         },
         "dto.DownloadUserInfoDto": {
             "type": "object",
@@ -1802,15 +2537,14 @@ var doc = `{
         },
         "dto.GetJobList": {
             "type": "object",
-            "required": [
-                "current",
-                "orders",
-                "size"
-            ],
             "properties": {
                 "current": {
                     "description": "当前页",
                     "type": "integer"
+                },
+                "enabled": {
+                    "description": "状态：1启用（默认）、0禁用",
+                    "type": "boolean"
                 },
                 "endTime": {
                     "description": "结束时间",
@@ -1824,12 +2558,50 @@ var doc = `{
                     "description": "排序规则",
                     "type": "string"
                 },
+                "page": {
+                    "description": "页数",
+                    "type": "integer"
+                },
                 "size": {
                     "description": "每页数据",
                     "type": "integer"
                 },
                 "startTime": {
                     "description": "创建时间",
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.InsertArticleDto": {
+            "type": "object",
+            "required": [
+                "content",
+                "kind",
+                "status",
+                "tag",
+                "title",
+                "type"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "tag": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "integer"
                 }
             }
@@ -1872,19 +2644,6 @@ var doc = `{
         },
         "dto.InsertMenuDto": {
             "type": "object",
-            "required": [
-                "component",
-                "icon",
-                "id",
-                "menuSort",
-                "name",
-                "path",
-                "permission",
-                "pid",
-                "roles",
-                "title",
-                "type"
-            ],
             "properties": {
                 "cache": {
                     "type": "boolean"
@@ -1929,17 +2688,29 @@ var doc = `{
                     "type": "string"
                 },
                 "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.MessageUnreadDto": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "1动态，2关注，3其他 不传是全部",
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.SelectChildIdDto": {
+            "type": "object",
+            "properties": {
+                "id": {
                     "type": "integer"
                 }
             }
         },
         "dto.SelectDeptDto": {
             "type": "object",
-            "required": [
-                "current",
-                "orders",
-                "size"
-            ],
             "properties": {
                 "current": {
                     "description": "当前页",
@@ -1969,6 +2740,10 @@ var doc = `{
                     "description": "每页数据",
                     "type": "integer"
                 },
+                "sort": {
+                    "description": "id排序",
+                    "type": "string"
+                },
                 "startTime": {
                     "description": "创建时间",
                     "type": "integer"
@@ -1977,11 +2752,6 @@ var doc = `{
         },
         "dto.SelectMenuDto": {
             "type": "object",
-            "required": [
-                "current",
-                "orders",
-                "size"
-            ],
             "properties": {
                 "blurry": {
                     "type": "string"
@@ -2002,7 +2772,7 @@ var doc = `{
                 "size": {
                     "type": "integer"
                 },
-                "statTime": {
+                "startTime": {
                     "type": "integer"
                 }
             }
@@ -2026,12 +2796,53 @@ var doc = `{
                     "description": "是否激活",
                     "type": "boolean"
                 },
+                "endTime": {
+                    "type": "integer"
+                },
                 "orders": {
                     "description": "排序规则与字段",
                     "type": "string"
                 },
                 "size": {
                     "description": "当前页最大数据量",
+                    "type": "integer"
+                },
+                "startTime": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.UpdateArticleDto": {
+            "type": "object",
+            "required": [
+                "content",
+                "id",
+                "status",
+                "title"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "tag": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "integer"
                 }
             }
@@ -2137,7 +2948,7 @@ var doc = `{
             "properties": {
                 "gender": {
                     "description": "性别",
-                    "type": "boolean"
+                    "type": "string"
                 },
                 "id": {
                     "description": "id",
@@ -2434,6 +3245,44 @@ var doc = `{
                 }
             }
         },
+        "models._ResponseMenuData": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/bo.ReturnToAllMenusBo"
+                    }
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ResponseMessageUnRead": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/dto.MessageUnreadDto"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
         "models._ResponseSelectDeptList": {
             "type": "object",
             "properties": {
@@ -2470,6 +3319,44 @@ var doc = `{
                 }
             }
         },
+        "models._ResponseSelectMeauDataInfoList": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ResponseSelectMenu": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.SelectMenuBo"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
         "models._ResponseSelectUserInfoList": {
             "type": "object",
             "properties": {
@@ -2481,6 +3368,19 @@ var doc = `{
                     "description": "数据",
                     "type": "object",
                     "$ref": "#/definitions/bo.UserInfoListBo"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ResponseSuccess": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
                 },
                 "message": {
                     "description": "提示信息",

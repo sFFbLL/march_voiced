@@ -12,6 +12,20 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// InsertArticle 文章审核通过或驳回
+// @Summary 文章审核通过或驳回
+// @Description Author：Lbl 2021/02/18 获得身份令牌
+// @Tags 文章：Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object body dto.InsertArticleDto false "添加参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseSuccess
+// @Router /api/article [post]
+func ArticlePass() {
+
+}
+
 // InsertArticle 添加文章
 // @Summary 添加文章
 // @Description Author：Lbl 2021/02/17 获得身份令牌
