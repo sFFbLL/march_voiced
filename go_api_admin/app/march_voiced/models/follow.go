@@ -22,18 +22,18 @@ func (fo *Follow) TableName() string {
 }
 
 // 判断userId 是否关注了 followId
-func (fo *Follow) IsFollow(userId, followId int) (bool, error) {
+func (fo *Follow) IsFollow(userId, followId int) (int, error) {
 	var count int64
 	var err error
 	err = global.Eloquent.Table("follow").Where("follow_id = ? AND creat_by = ? AND is_deleted = 0", followId, userId).Count(&count).Error
 	if err != nil {
 		zap.L().Error("IsFollow Select failed", zap.Error(err))
-		return false, err
+		return 0, err
 	}
 	if count > 0 {
-		return true, err
+		return 1, err
 	}
-	return false, err
+	return 0, err
 }
 
 // GetFollowList 查询关注列表信息的数据持久层

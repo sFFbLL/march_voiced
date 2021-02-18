@@ -26,8 +26,8 @@ func (co *ArticleComment) TableName() string {
 	return `article_comment`
 }
 
-func (co *ArticleComment) ArticleCommentCount(id int) (count int64, err error) {
-	err = global.Eloquent.Table(co.TableName()).Where("article_id = ? AND is_deleted = 0", id).Count(&count).Error
+func (co *ArticleComment) ArticleCommentCount() (count int64, err error) {
+	err = global.Eloquent.Table(co.TableName()).Where("article_id = ? AND is_deleted = 0", co.ID).Count(&count).Error
 	if err != nil {
 		zap.L().Error("ArticleCommentCount Select failed", zap.Error(err))
 		return

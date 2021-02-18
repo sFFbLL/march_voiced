@@ -17,7 +17,7 @@ var articleCh chan bo.Article
 type Article struct{}
 
 // 添加文章
-func (a Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (err error) {
+func (a *Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (err error) {
 	// 实例化要添加的文章
 	article := new(models.Article)
 	article.CreatBy = uint(userId)
@@ -36,9 +36,16 @@ func (a Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (er
 }
 
 // 更新文章
-func (a Article) UpdateArticle(articleDto *dto.UpdateArticleDto, userId int) (err error) {
+func (a *Article) UpdateArticle(articleDto *dto.UpdateArticleDto, userId int) (err error) {
 	// 实例化要修改的文章
 	article := new(models.Article)
+	// 获取该文章原内容
+	err = article.GetArticle()
+	if err != nil {
+		return
+	}
+
+	// 更新文章内容
 	article.UpdateBy = uint(userId)
 	article.Title = articleDto.Title
 	article.Content = articleDto.Content
@@ -47,22 +54,29 @@ func (a Article) UpdateArticle(articleDto *dto.UpdateArticleDto, userId int) (er
 	article.Tag = articleDto.Tag
 	article.Status = articleDto.Status
 	article.Type = articleDto.Type
+	article.ID = int(articleDto.ID)
 
 	// 调用dao方法
-	err = article.UpdateArticle(articleDto.ID)
+	err = article.UpdateArticle()
 	return
 }
 
 // 文章详情
-func (a Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err error) {
+func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err error) {
 	//初始化
-	articleMsg = new(bo.Article)
 	article := new(models.Article)
+	//articleCollect := new(models.ArticleCollect)
+	//articleComment := new(models.ArticleComment)
+	//articleFavour := new(models.ArticleFavour)
+	//follow := new(models.Follow)
+	articleMsg = new(bo.Article)
 	var userMsg bo.UserMsg
 	var total [3]int64
 
 	// 获取数据
+	article.ID = id
 	userMsg, total, err = article.ArticleDetail(id, userId)
+
 	// 封装bo
 	articleMsg.User = userMsg
 	articleMsg.CollectTotal = total[0]
@@ -84,7 +98,7 @@ func (a Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err 
 }
 
 // 转载文章
-func (a Article) ReprintArticle(id int, userId int) (err error) {
+func (a *Article) ReprintArticle(id int, userId int) (err error) {
 	// 实例化要添加的文章
 	var status uint8 = 1
 	article := new(models.Article)
@@ -99,7 +113,7 @@ func (a Article) ReprintArticle(id int, userId int) (err error) {
 }
 
 // 推荐文章
-func (a Article) TopArticleList(paging dto.Paging, userId int) (articleList *[]bo.Article, err error) {
+func (a *Article) TopArticleList(paging dto.Paging, userId int) (articleList *[]bo.Article, err error) {
 	// 声明所需变量
 	articleList = new([]bo.Article)
 	article := new(models.Article)
