@@ -32,13 +32,13 @@
 			<view class="right-button-box">
 				<!-- 无<view v-if="user.follow != null"> ================================================================== -->
 				<view v-if="isFollow != null">
-					<button v-show="isFollow === 1"
+					<button v-show="isFollow === 0"
 					 class="right-button"
 					 type="default-green"
 					 :disabled="isDisabled"
 					 iconType="circle"
 					 @click.stop="changeBtn"><span>关 注</span></button>
-					<button v-show="isFollow === 0"
+					<button v-show="isFollow === 1"
 					 class="right-button"
 					 type="default"
 					 :disabled="isDisabled"

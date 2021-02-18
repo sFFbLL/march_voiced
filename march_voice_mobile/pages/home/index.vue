@@ -312,6 +312,9 @@
 	}
 
 	.header {
+		position: fixed;
+		z-index: 10;
+		width: 100%;
 		height: 100rpx;
 		line-height: 100rpx;
 		background-color: #fff;
@@ -336,6 +339,7 @@
 
 	.content {
 		background-color: #fff;
+		padding-top: 115rpx;
 	}
 
 	.loading {
@@ -351,4 +355,3 @@
 		width: 30rpx !important;
 	}
 </style>
-style>

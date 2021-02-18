@@ -5,7 +5,8 @@
 		<articleTitle :articleTitle="articleInfo.title"
 		 :articleId="articleInfo.id" />
 		<!-- 作者信息 -->
-		<attentionAndFansCell :id="articleInfo.user.id"
+		<attentionAndFansCell v-if="articleInfo.user"
+		 :id="articleInfo.user.id"
 		 :nickname="articleInfo.user.nickname"
 		 :avatarPath="articleInfo.user.avatarPath"
 		 :isFollow="articleInfo.user.isFollow"></attentionAndFansCell>

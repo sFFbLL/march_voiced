@@ -39,7 +39,7 @@
 			}
 		},
 		mounted() {
-
+			
 		}
 	}
 </script>
@@ -47,7 +47,7 @@
 <style>
 	.article-title .article-text{
 		color: #404040;
-		font-size: 32rpx;
+		font-size: 34rpx;
 		font-family: "微软雅黑";
 		text-align: left;
 		font-weight: bold;

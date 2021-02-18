@@ -2,12 +2,21 @@
 	<view class="tab-card">
 		<!-- 选项卡导航 -->
 		<view class="head-nav">
-			<view class="head-nav-item" v-for="(item,index) in tabs" :key="item.index" :class="item.isActive ? 'active' : ''"
+			<view class="head-nav-item"
+			 v-for="(item,index) in tabs"
+			 :key="item.index"
+			 :class="item.isActive ? 'active' : ''"
 			 @click="handlerActive(item.index)">
 				<view class="center">{{item.value}}
-				<u-badge v-if="(item.index==0&&iread!=0)" :is-dot="true" type="error"></u-badge>
-					<u-badge v-if="(item.index==1&&aread!=1)" :is-dot="true" type="error"></u-badge>
-					<u-badge v-if="item.index==2&&oread!=2" :is-dot="true" type="error"></u-badge>
+					<u-badge v-if="(item.index==0&&iread!=0)"
+					 :is-dot="true"
+					 type="error"></u-badge>
+					<u-badge v-if="(item.index==1&&aread!=1)"
+					 :is-dot="true"
+					 type="error"></u-badge>
+					<u-badge v-if="item.index==2&&oread!=2"
+					 :is-dot="true"
+					 type="error"></u-badge>
 					<view class="head-nav-bottom"></view>
 				</view>
 			</view>
@@ -21,10 +30,10 @@
 	export default {
 		data() {
 			return {
-				aread:-1,
-				oread:-1,
-				iread:-1
-				
+				aread: -1,
+				oread: -1,
+				iread: -1
+
 			};
 		},
 		props: {
@@ -44,19 +53,19 @@
 				type: Boolean,
 				default: false
 			},
-			
+
 		},
 		methods: {
 			handlerActive(index) {
-				if(index==1&&this.attentionRead==false){
-					this.aread=1;
-					this.$emit('attentionRead',true)
-				}else if(index==2){
-					this.oread=2;
-					this.$emit('otherRead',true)
-				}else if(index==0){
-						this.iread=0;
-						this.$emit('interactRead',true)
+				if (index == 1 && this.attentionRead == false) {
+					this.aread = 1;
+					this.$emit('attentionRead', true)
+				} else if (index == 2) {
+					this.oread = 2;
+					this.$emit('otherRead', true)
+				} else if (index == 0) {
+					this.iread = 0;
+					this.$emit('interactRead', true)
 				}
 				this.$emit('tabActive', index);
 			}
@@ -68,7 +77,12 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss"
+ scoped>
+	.tab-card {
+		height: 100%;
+	}
+
 	.head-nav {
 		display: -webkit-flex;
 		display: flex;
@@ -89,6 +103,7 @@
 	.head-nav-item .center {
 		position: relative;
 		margin: auto;
+		height: 100%;
 	}
 
 
@@ -99,8 +114,8 @@
 			position: relative;
 			margin: auto;
 			width: 50%;
-			height: 8rpx;
-			top: -8rpx;
+			height: 6rpx;
+			top: -6rpx;
 			background-color: #404040;
 		}
 	}

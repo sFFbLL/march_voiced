@@ -89,7 +89,6 @@
 	}
 
 	.followMessage {
-		padding-top: 6rpx;
 		font-size: 26rpx;
 		width: 420rpx;
 		color: #969696;
