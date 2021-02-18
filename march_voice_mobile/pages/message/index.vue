@@ -1,8 +1,7 @@
 <template>
 	<view class="message">
 		<view class="header">
-			<tabs :attentionRead="attentionRead" :interactRead="interactRead" :otherRead="otherRead" class="tag-nav" :tabs='tablist'
-			 v-on:tabActive='tabActive' />
+			<tabs :type="message" class="tag-nav" :tabs='tablist' v-on:tabActive='tabActive' />
 		</view>
 		<view class="content">
 			<!-- 互动消息 -->
@@ -26,6 +25,9 @@
 				<!-- 间隔槽 -->
 				<u-gap height="2" bg-color="#f5f5f5"></u-gap>
 			</view>
+		</view>
+		<view v-show="isLoadMore">
+			<uni-load-more :status="loadStatus"></uni-load-more>
 		</view>
 	</view>
 </template>
@@ -53,10 +55,20 @@
 		},
 		data() {
 			return {
+				interactCurrent: 1, //互动当前页数，
+				attentionCurrent: 1, //关注当前页数
+				otherCurrent: 1, //其他消息当前页数,
+				size: 10,
+				isLoadMore: false, //是否加载中
+				loadStatus: 'loading',
+				interactLoadStatus: 'loading',
+				attentionLoadStatus: 'loading',
+				otherLoadStatus: 'loading',
 				isLoading: false, // 是否为加载中
 				isDisabled: false, // 是否禁用按钮点击
 				isAttention: false,
 				tabIndex: 0,
+				message: true,
 				attentionRead: false,
 				otherRead: false,
 				interactRead: false,
@@ -245,6 +257,22 @@
 
 			}
 		},
+		//上拉触底函数
+		onReachBottom() {
+			if (!this.isLoadMore && this.tabIndex == 0) { //此处判断，上锁，防止重复请求
+				this.isLoadMore = true
+				this.interactCurrent += 1
+				this.interact();
+			} else if (!this.isLoadMore && this.tabIndex == 1) {
+				this.isLoadMore = true
+				this.attentionCurrent += 1
+				this.attention();
+			} else if (!this.isLoadMore && this.tabIndex == 2) {
+				this.isLoadMore = true
+				this.otherCurrent += 1
+				this.other();
+			}
+		},
 		// 下拉刷新获取最新数据
 		onPullDownRefresh() {
 			// 查询是否有未读消息
@@ -268,47 +296,38 @@
 				// this.interact();
 				// 消除当前tab红点
 				this.$store.commit('changeInteract', 1);
-				// readMessage(1).then(res => {
-				// 	// 消除小红点
-				// })
+
 			} else if (this.tabIndex == 1) {
 				// this.attention();
 				this.$store.commit('changeAttention', 1);
-				// readMessage(2).then(res => {
-				// 	// 消除小红点
-				// })
+
 			} else if (this.tabIndex == 2) {
 				// this.other();
 				this.$store.commit('changeOther', 1);
-				// readMessage(3).then(res => {
-				// 	// 消除小红点
-				// })
+
 			}
 			setTimeout(function() {
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},
-		
-		created() {
-			
-			console.log(this.$store.state.attentionRead == false && this.$store.state.otherRead == false)
+		onShow() {
+			uni.hideTabBarRedDot({
+				index: 3
+			})
 			// 所有消息已读，消除底部消息红点
-			if ( this.$store.state.changeInteract == true &&this.$store.state.attentionRead == true && this.$store.state.otherRead == true) {
-				uni.hideTabBarRedDot({
-					index:3
-				})
-			}
+			// if ( this.$store.state.changeInteract == true &&this.$store.state.attentionRead == true && this.$store.state.otherRead == true) {
 
+			// }
+		},
+		created() {
 			// 互动消息已读
-			let type = this.tabIndex
 			this.$store.commit('changeInteract', 1);
 			// readMessage(1).then(res => {
-			// 	// 消除小红点
+			// 	
 			// })
+
 			// 查询所有互动消息
-			// interactList().then(res => {
-			// 	this.interactList = res.data
-			// })
+			this.interact()
 			// 查询关注和其他是否有未读消息
 			// unreadMessage(2).then(res=>{
 			// 	if(res.data.count>0){
@@ -323,6 +342,7 @@
 			// 	}
 			// })
 		},
+
 		methods: {
 			/* 切换选项卡选项 */
 			tabActive(tabIndex) {
@@ -330,31 +350,100 @@
 					value.isActive = tabIndex == index ? true : false;
 				})
 				if (tabIndex == 0) {
+					this.loadStatus = this.interactLoadStatus;
 					this.interact();
 				} else if (tabIndex == 1) {
+					this.loadStatus = this.attentionLoadStatus;
 					this.attention();
 				} else {
+					this.loadStatus = this.otherLoadStatus;
 					this.other();
 				}
 				this.tabIndex = tabIndex;
 			},
-
+			// 请求互动消息数据，并发送已读请求
 			interact() {
-				let type = this.tabIndex;
-				// interactList().then(res => {
-				// 	this.interactList = res.data
+				let _this = this;
+				// 查询所有数据
+				// let params = {
+				// current: this.interactCurrent,
+				// 	size:this.size
+				// }
+				// interactList(params).then(res => {
+				// _this.interactList = [..._this.interactList,...res.data];
+				// if(res.data.length<=_this.size){
+				// 	_this.loadStatus='nomore';
+				// }
+				// })
+				if (this.interactList.length > 16) {
+					_this.loadStatus = "nomore";
+					_this.interactLoadStatus = "nomore";
+				} else if (this.interactCurrent === 1) {
+					_this.isLoadMore = false;
+				} else {
+					setTimeout(function() {
+						_this.isLoadMore = false;
+					}, 2000);
+				}
+				// 数据已读
+				// readMessage(1).then(res => {
+				// 	
 				// })
 			},
+			// 请求关注消息数据，并发送已读请求
 			attention() {
-				let type = this.tabIndex;
-				// attentionList().then(res => {
-				// 	this.attentionList = res.data
+				let _this = this;
+				// let params = {
+				// current: this.attentionCurrent,
+				// 	size:this.size
+				// }
+				// attentionList(params).then(res => {
+				// _this.attentionList = [..._this.attentionList,...res.data];
+				// if(res.data.length<=_this.size){
+				// 	_this.loadStatus='nomore';
+				// }
+				// })
+				if (this.attentionList.length > 16) {
+					_this.loadStatus = "nomore";
+					_this.attentionLoadStatus = "nomore";
+				} else if (this.attentionCurrent === 1) {
+					_this.isLoadMore = false;
+				} else {
+					setTimeout(function() {
+						_this.isLoadMore = false;
+					}, 2000);
+				}
+				// 数据已读
+				// readMessage(1).then(res => {
+				// 	
 				// })
 			},
+			// 请求系统消息数据，并发送已读请求
 			other() {
-				let type = this.tabIndex;
-				// otherList().then(res => {
-				// 	this.otherList = res.data
+				let _this = this;
+				// let params = {
+				// current: this.otherCurrent,
+				// 	size:this.size
+				// }
+				// otherList(params).then(res => {
+				// _this.otherList = [..._this.otherList,...res.data];
+				// if(res.data.length<=_this.size){
+				// 	_this.loadStatus='nomore';
+				// }
+				// })
+				if (this.otherList.length > 16) {
+					_this.loadStatus = "nomore";
+					_this.otherLoadStatus = "nomore";
+				} else if (this.otherCurrent === 1) {
+					_this.isLoadMore = false;
+				} else {
+					setTimeout(function() {
+						_this.isLoadMore = false;
+					}, 2000);
+				}
+				// 数据已读
+				// readMessage(1).then(res => {
+				// 	
 				// })
 			}
 		},

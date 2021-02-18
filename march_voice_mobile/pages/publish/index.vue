@@ -27,6 +27,7 @@
  
  <script>
 	  import publishTypeCard from '../../marchVoiceComponents/publishTypeCard.vue';
+import {check} from '../../utils/checkUnRead.js'
  export default {
 	
 	 
@@ -44,6 +45,8 @@
  		// setTimeout(() => {
  		this.active = true;
  		// }, 500);
+			check()
+		
  	},
  	onHide() {
  		this.active = false;

@@ -7,6 +7,7 @@
 </template>
 
 <script>
+	import {check} from '../../utils/checkUnRead.js'
 </script>
 
 <style>

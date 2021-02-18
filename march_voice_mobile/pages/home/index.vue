@@ -46,6 +46,7 @@
 	import recommend from '../../marchVoiceComponents/showArticle/recommend.vue'
 	import follow from '../../marchVoiceComponents/showArticle/follow.vue'
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
+	import {check} from '../../utils/checkUnRead.js'
 	import {
 		getRecommend,
 		getFollow
@@ -83,6 +84,9 @@
 				followLoadStatus: 'loading',
 				isLoadMore: false, //是否加载中
 			}
+		},
+		onShow() {
+			check()
 		},
 		onLoad() {
 			if (!this.tabIndex) {

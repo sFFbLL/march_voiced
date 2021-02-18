@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import App from './App'
-
 //引入vuex
 import store from './store'
 import uView from "uview-ui";
@@ -17,3 +16,5 @@ const app = new Vue({
 	store
 })
 app.$mount()
+
+

@@ -7,7 +7,7 @@ export default new Vuex.Store({
 	state: {
 		interactRead:false,
 		attentionRead:false,
-		otherRead:false
+		otherRead:false,
 	},
 	mutations: {
 		changeInteract(state,n){
