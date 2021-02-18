@@ -2,21 +2,12 @@
 	<view class="tab-card">
 		<!-- 选项卡导航 -->
 		<view class="head-nav">
-			<view class="head-nav-item"
-			 v-for="(item,index) in tabs"
-			 :key="item.index"
-			 :class="item.isActive ? 'active' : ''"
+			<view class="head-nav-item" v-for="(item,index) in tabs" :key="item.index" :class="item.isActive ? 'active' : ''"
 			 @click="handlerActive(item.index)">
 				<view class="center">{{item.value}}
-					<u-badge v-if="(item.index==0&&iread!=0)"
-					 :is-dot="true"
-					 type="error"></u-badge>
-					<u-badge v-if="(item.index==1&&aread!=1)"
-					 :is-dot="true"
-					 type="error"></u-badge>
-					<u-badge v-if="item.index==2&&oread!=2"
-					 :is-dot="true"
-					 type="error"></u-badge>
+					<u-badge v-if="(item.index==0&&interactRead==false)" :is-dot="true" type="error"></u-badge>
+					<u-badge v-if="(item.index==1&&attentionRead==false)" :is-dot="true" type="error"></u-badge>
+					<u-badge v-if="item.index==2&&otherRead==false" :is-dot="true"  type="error"></u-badge>
 					<view class="head-nav-bottom"></view>
 				</view>
 			</view>
@@ -27,13 +18,11 @@
 </template>
 
 <script>
+	import readMessage from "../utils/api/message-api.js"
 	export default {
 		data() {
 			return {
-				aread: -1,
-				oread: -1,
-				iread: -1
-
+			
 			};
 		},
 		props: {
@@ -41,33 +30,45 @@
 				type: Array,
 				default: []
 			},
-			otherRead: {
-				type: Boolean,
-				default: false
-			},
-			attentionRead: {
-				type: Boolean,
-				default: false
-			},
-			interactRead: {
-				type: Boolean,
-				default: false
-			},
 
 		},
 		methods: {
 			handlerActive(index) {
-				if (index == 1 && this.attentionRead == false) {
-					this.aread = 1;
-					this.$emit('attentionRead', true)
-				} else if (index == 2) {
-					this.oread = 2;
-					this.$emit('otherRead', true)
-				} else if (index == 0) {
-					this.iread = 0;
-					this.$emit('interactRead', true)
+				if(index==0){
+					// 消除红点
+					this.$store.commit('changeInteract',1);
+					// 已读接口
+					// readMessage(1).then(res=>{
+						
+					// })
+				}else if(index==1){
+					// 消除红点
+					this.$store.commit('changeAttention',1);
+					// 已读接口
+					// readMessage(2).then(res=>{
+						
+					// })
+				}else if(index==2){
+					// 消除红点
+					this.$store.commit('changeOther',1);
+					// 已读接口
+					// readMessage(3).then(res=>{
+						
+					// })
 				}
+				
 				this.$emit('tabActive', index);
+			}
+		},
+		computed:{
+			interactRead(){
+				return this.$store.state.interactRead;
+			},
+			attentionRead(){
+				return this.$store.state.attentionRead;
+			},
+			otherRead(){
+				return this.$store.state.otherRead;
 			}
 		},
 		mounted() {},
@@ -77,19 +78,16 @@
 	}
 </script>
 
-<style lang="scss"
- scoped>
-	.tab-card {
-		height: 100%;
-	}
-
+<style lang="scss">
 	.head-nav {
+
 		display: -webkit-flex;
 		display: flex;
 		overflow: hidden;
 		height: 100%;
 
 		.head-nav-item {
+			
 			flex: 1;
 			text-align: center;
 			font-size: 34rpx;
@@ -103,7 +101,7 @@
 	.head-nav-item .center {
 		position: relative;
 		margin: auto;
-		height: 100%;
+		width: 228rpx;
 	}
 
 
@@ -114,8 +112,8 @@
 			position: relative;
 			margin: auto;
 			width: 50%;
-			height: 6rpx;
-			top: -6rpx;
+			height: 8rpx;
+			top: -8rpx;
 			background-color: #404040;
 		}
 	}

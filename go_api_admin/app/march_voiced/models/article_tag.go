@@ -3,7 +3,7 @@ package models
 type ArticleTag struct {
 	Tag      string `json:"kind" gorm:""`
 	Icon     uint   `json:"icon" gorm:""`
-	CreatBy  uint   `json:"creat_by" gorm:""`
+	CreateBy uint   `json:"creat_by" gorm:""`
 	UpdateBy uint   `json:"update_by" gorm:""`
 	BaseModel
 }
