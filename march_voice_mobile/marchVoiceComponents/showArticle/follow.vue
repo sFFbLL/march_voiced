@@ -2,12 +2,10 @@
 	<!-- 推荐页面文章展示组件 -->
 	<view class="recommend-component">
 		<!-- 作者信息 -->
-		<attentionAndFansCell :userInfo="articleInfo.user"
-		 :showDteial="false"
-		 :showIntrouduce="false"
-		 :showDate="false"
-		 :user="articleInfo.user">
-			<view slot="followMessage"
+		<attentionAndFansCell :id="articleInfo.user.id"
+		 :nickname="articleInfo.user.nickname"
+		 :avatarPath="articleInfo.user.avatarPath">
+			<view slot="underText"
 			 class="followMessage">
 				<text v-if="articleInfo.status===0">
 					发布
@@ -49,7 +47,7 @@
 	export default {
 		data() {
 			return {
-				dynamic: "null"
+				
 			};
 		},
 		props: {
@@ -73,7 +71,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.recommend-component {
 		background-color: #fff;
 		margin: auto;

@@ -1,9 +1,9 @@
 {
+  "component": true,
   "usingComponents": {
     "article-title": "/marchVoiceComponents/showArticle/childComponents/articleTitle",
     "article-content": "/marchVoiceComponents/showArticle/childComponents/artilceContent",
     "article-interact": "/marchVoiceComponents/showArticle/childComponents/articleInteract",
     "attention-and-fans-cell": "/marchVoiceComponents/attentionAndFansCell"
-  },
-  "component": true
+  }
 }

@@ -1,5 +1,5 @@
 
-.article-title {
+.article-title .article-text{
 	color: #404040;
 	font-size: 32rpx;
 	font-family: "微软雅黑";
@@ -11,5 +11,9 @@
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	line-height: 150%;
+}
+.article-text {
+	display: inline-block;
+	width: 100%;
 }
 

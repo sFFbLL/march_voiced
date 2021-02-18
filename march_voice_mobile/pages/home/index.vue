@@ -6,7 +6,7 @@
 			<tabs class="tag-nav"
 			 :tabs='tablist'
 			 v-on:tabActive='tabActive' />
-			 <!-- 搜索图标 -->
+			<!-- 搜索图标 -->
 			<view class="search"
 			 @click="search()">
 				<view class="search-icon">
@@ -79,6 +79,8 @@
 				recommendList: [],
 				followList: [],
 				loadStatus: 'loading', //加载样式：more-加载前样式，loading-加载中样式，nomore-没有数据样式
+				recommendLoadStatus: 'loading',
+				followLoadStatus: 'loading',
 				isLoadMore: false, //是否加载中
 			}
 		},
@@ -108,8 +110,10 @@
 					value.isActive = tabIndex == index ? true : false;
 				})
 				if (!tabIndex) {
+					this.loadStatus = this.recommendLoadStatus;
 					this.recommend();
 				} else if (tabIndex) {
+					this.loadStatus = this.followLoadStatus;
 					this.follow();
 				}
 				this.tabIndex = tabIndex;
@@ -117,64 +121,64 @@
 			// 推荐
 			recommend() {
 				let recommendList = [{
-					articleId: 1,
+					id: 1,
 					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
 					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					articleImg: require('static/img/2.jpg'),
+					image: require('static/img/2.jpg'),
 					upDateTime: "更新时间",
 					favourTotal: 1,
 					collectTotal: 1,
 					commentTotal: 1,
 					user: {
 						id: 1,
-						name: "张三",
-						imgUrl: require('../../static/img/1.jpg'),
-						follow: false
+						nickname: "张三",
+						avatarPath: require('../../static/img/1.jpg'),
+						isFollow: 0
 					}
 				}, {
-					articleId: 2,
+					id: 2,
 					title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
 					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
-					articleImg: "",
+					image: "",
 					upDateTime: "更新时间",
 					favourTotal: 1,
 					collectTotal: 1,
 					commentTotal: 1,
 					user: {
 						id: 2,
-						name: "李四",
-						imgUrl: require('../../static/img/1.jpg'),
-						follow: true
+						nickname: "李四",
+						avatarPath: require('../../static/img/1.jpg'),
+						isFollow: 1
 					}
 				}, {
-					articleId: 1,
+					id: 1,
 					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
 					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					articleImg: require('static/img/2.jpg'),
+					image: require('static/img/2.jpg'),
 					upDateTime: "更新时间",
 					favourTotal: 1,
 					collectTotal: 1,
 					commentTotal: 1,
 					user: {
 						id: 1,
-						name: "张三",
-						userImage: "",
-						follow: false
+						nickname: "张三",
+						avatarPath: require('../../static/img/1.jpg'),
+						isFollow: 0
 					}
 				}, {
-					articleId: 1,
+					id: 1,
 					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
 					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					articleImg: require('static/img/2.jpg'),
+					image: require('static/img/2.jpg'),
 					upDateTime: "更新时间",
 					favourTotal: 1,
 					collectTotal: 1,
 					commentTotal: 1,
 					user: {
 						id: 1,
-						name: "张三",
-						imgUrl: require('../../static/img/1.jpg'),
-						follow: false
+						nickname: "张三",
+						avatarPath: require('../../static/img/1.jpg'),
+						isFollow: 0
 					}
 				}];
 				let _this = this;
@@ -190,6 +194,10 @@
 				}) */
 				if (this.recommendList.length > 16) {
 					_this.loadStatus = "nomore";
+					_this.recommendLoadStatus = "nomore";
+				} else if (this.recommendCurrent === 1) {
+					_this.isLoadMore = false;
+					_this.recommendList = [..._this.recommendList, ...recommendList];
 				} else {
 					setTimeout(function () {
 						_this.isLoadMore = false;
@@ -204,7 +212,7 @@
 						articleId: 2,
 						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
 						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						articleImg: "",
+						image: "",
 						createTime: "2020-08-24",
 						favourTotal: 1,
 						collectTotal: 1,
@@ -212,14 +220,14 @@
 						status: 0,
 						user: {
 							id: 2,
-							name: "李四",
-							imgUrl: require('../../static/img/1.jpg')
+							nickname: "李四",
+							avatarPath: require('../../static/img/1.jpg')
 						}
 					}, {
 						articleId: 2,
 						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
 						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						articleImg: require('static/img/2.jpg'),
+						image: require('static/img/2.jpg'),
 						createTime: "2020-08-24",
 						favourTotal: 1,
 						collectTotal: 1,
@@ -227,15 +235,15 @@
 						status: 1,
 						user: {
 							id: 2,
-							name: "李四",
-							imgUrl: require('../../static/img/1.jpg')
+							nickname: "李四",
+							avatarPath: require('../../static/img/1.jpg')
 						}
 					},
 					{
 						articleId: 2,
 						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
 						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						articleImg: "",
+						image: "",
 						createTime: "2020-08-24",
 						favourTotal: 1,
 						collectTotal: 1,
@@ -243,14 +251,14 @@
 						status: 2,
 						user: {
 							id: 2,
-							name: "李四",
-							imgUrl: require('../../static/img/1.jpg')
+							nickname: "李四",
+							avatarPath: require('../../static/img/1.jpg')
 						}
 					}, {
 						articleId: 2,
 						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
 						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						articleImg: require('static/img/2.jpg'),
+						image: require('static/img/2.jpg'),
 						createTime: "2020-08-24",
 						favourTotal: 1,
 						collectTotal: 1,
@@ -258,8 +266,8 @@
 						status: 3,
 						user: {
 							id: 2,
-							name: "李四",
-							imgUrl: require('../../static/img/1.jpg')
+							nickname: "李四",
+							avatarPath: require('../../static/img/1.jpg')
 						}
 					}
 				];
@@ -276,23 +284,27 @@
 				}) */
 				if (this.followList.length > 16) {
 					_this.loadStatus = "nomore";
+				} else if (this.followCurrent === 1) {
+					_this.isLoadMore = false;
+					_this.followList = [..._this.followList, ...followList];
 				} else {
 					setTimeout(function () {
 						_this.isLoadMore = false;
+						_this.follLoadStatus = "nomore";
 						_this.followList = [..._this.followList, ...followList];
 					}, 2000);
 				}
 			},
 			search() {
 				uni.navigateTo({
-					url:'../search/index'
+					url: '../search/index'
 				})
 			}
 		}
 	}
 </script>
 
-<style>
+<style scoped>
 	.home,
 	.home .content {
 		background-color: #f7f7f7;

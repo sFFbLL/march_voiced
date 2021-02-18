@@ -3,17 +3,16 @@
 	<view class="recommend-component">
 		<!-- 文章标题 -->
 		<articleTitle :articleTitle="articleInfo.title"
-		 :articleId="articleInfo.articleId" />
+		 :articleId="articleInfo.id" />
 		<!-- 作者信息 -->
-		<attentionAndFansCell :userInfo="articleInfo.user"
-		 :showDteial="false"
-		 :showIntrouduce="false"
-		 :showDate="false"
-		 :user="articleInfo.user"><span slot="hasAttention">已关注</span></attentionAndFansCell>
+		<attentionAndFansCell :id="articleInfo.user.id"
+		 :nickname="articleInfo.user.nickname"
+		 :avatarPath="articleInfo.user.avatarPath"
+		 :isFollow="articleInfo.user.isFollow"></attentionAndFansCell>
 		<!-- 文章内容 -->
 		<articleContent :articleContent="articleInfo.content"
-		 :articleImg="articleInfo.articleImg"
-		 :articleId="articleInfo.articleId" />
+		 :articleImg="articleInfo.image"
+		 :articleId="articleInfo.id" />
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal"
 		 :commentTotal="articleInfo.commentTotal"
@@ -21,7 +20,7 @@
 	</view>
 </template>
 
-<script>
+<script scoped>
 	import articleTitle from "./childComponents/articleTitle.vue"
 	import articleContent from "./childComponents/artilceContent.vue"
 	import articleInteract from "./childComponents/articleInteract.vue"

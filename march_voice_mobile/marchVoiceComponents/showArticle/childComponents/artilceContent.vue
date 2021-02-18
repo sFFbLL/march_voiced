@@ -51,7 +51,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.article-content {
 		margin-top: 18rpx;
 		display: flex;

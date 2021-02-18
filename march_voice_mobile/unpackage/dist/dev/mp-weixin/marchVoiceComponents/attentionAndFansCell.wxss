@@ -100,17 +100,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	/* 大盒子样式 */
 .flex-item.data-v-a34efa72 {
 		display: -webkit-box;
@@ -177,12 +166,6 @@
 		padding-top: 4rpx;
 		font-size: 24rpx;
 }
-	/* 关注数粉丝数文章数去掉最后的 |  */
-.inner-text-message ._span.data-v-a34efa72:not(:last-child) {
-		margin-right: 10rpx;
-		padding-right: 10rpx;
-		border-right: 1rpx solid #969696;
-}
 	/* 自我介绍 */
 .inner-text-selfintroduce.data-v-a34efa72 {
 		padding-top: 4rpx;
@@ -200,9 +183,9 @@
 		-webkit-box-flex: 1;
 		-webkit-flex: 1;
 		        flex: 1;
-		-webkit-box-align:center;
-		-webkit-align-items:center;
-		        align-items:center
+		-webkit-box-align: center;
+		-webkit-align-items: center;
+		        align-items: center
 }
 	/* 右侧按钮 */
 .right-button.data-v-a34efa72 {
@@ -226,7 +209,7 @@ uni-button[type=default-green].data-v-a34efa72 {
 }
 	/* 修改点击按钮后的样式 */
 .button-hover[type=default-green].data-v-a34efa72 {
-		background-color: rgba(49, 49, 49, 1.0);
+		background-color: rgba(26, 26, 26, 1.0);
 }
 	/* 修改按钮样式 */
 uni-button.data-v-a34efa72 {
