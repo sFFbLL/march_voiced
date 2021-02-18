@@ -30,6 +30,7 @@
   display: -webkit-box;
   display: flex;
   overflow: hidden;
+  height: 100%;
 }
 .head-nav .head-nav-item {
   -webkit-box-flex: 1;
@@ -53,12 +54,8 @@
   position: relative;
   margin: auto;
   width: 50%;
-  background-color: #404040;
-}
-.head-nav-bottom {
-  position: absolute;
-  bottom: 0;
   height: 8rpx;
-  width: 100%;
+  top: -8rpx;
+  background-color: #404040;
 }
 

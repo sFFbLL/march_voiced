@@ -1,7 +1,39 @@
 
-.data-v-4f224584 .asd>.attention-cell>.flex-item {
-	border-bottom: none;
-	border-top: 1rpx #d9d9d9 solid;
-	padding: 20rpx 30rpx 0rpx 30rpx;
+.home,
+.home .content {
+	background-color: rgba(241, 241, 241, 1);
+	margin-bottom: 30rpx;
+}
+.header {
+	height: 100rpx;
+	line-height: 100rpx;
+	background-color: #fff;
+	margin-bottom: 15rpx;
+}
+.tag-nav {
+	display: inline-block;
+	height: 100%;
+	width: 90%;
+}
+.search {
+	display: inline-block;
+	width: 8%;
+}
+.search .search-icon {
+	position: absolute;
+	top: 5rpx;
+}
+.content {
+	background-color: #fff;
+}
+.loading {
+	background-color: #fff;
+}
+ .uni-load-more .uni-load-more__text {
+	font-size: 28rpx;
+}
+ .uni-load-more .uni-load-more__img {
+	height: 30rpx !important;
+	width: 30rpx !important;
 }
 

@@ -1,191 +1,309 @@
 
-.allImage {
-		display: -webkit-box;
-		display: -webkit-flex;
-		display: flex;
-		margin-top: 10rpx;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/* 发布想法的按钮 */
+.publishbtn{
+	border-radius: 50%;
+	width: 100rpx;
+	height: 100rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	position: fixed;
+	z-index: 222;
+	top: 980rpx;
+	right: 30rpx;
+	/* background-image: linear-gradient(to top, #4481eb 0%, #04befe 100%); */
+	background-image: -webkit-linear-gradient(315deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%);
+	background-image: linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%);
 }
-.oneimg{
-	width: 774rpx;
-	height: 300rpx;
+.addicon{
+		margin-left: 8rpx;
+}
+/* 微信分享 遮罩层*/
+.mcover {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.7);
+	z-index: 20;
+}
+/* 想法文字部分样式 */
+.wordscontent {
+	margin-top: 20rpx;
+}
+/* 公共头像组件样式 */
+ .attention-cell .flex-item {
+	border: none;
+	padding: 0;
+	margin-top: 17rpx;
 }
 .content {
-		overflow: hidden;
-		-webkit-line-clamp: 3;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		font-size: 32rpx;
-		color: #404040;
-		text-align: left;
-		line-height: 1.5;
-}
-.comment {
-		position: absolute;
-		left: 650rpx;
-}
-.commentTotal {
-		font-size: 24rpx;
-		color: #999999;
-		margin-left: 10rpx;
-}
-.chat {
-		-webkit-transform: rotateY(180deg);
-		        transform: rotateY(180deg);
-}
-.isDisplay {
-		display: none;
-}
-.oneemoji {
-		margin-left: 25rpx;
-}
-.addqingzhu {
-		width: 55rpx;
-		height: 50rpx;
-		top: 8rpx;
-}
-.addaixin {
-		width: 60rpx;
-		height: 42rpx;
-		top: 8rpx;
-}
-.addxiaoku {
-		width: 55rpx;
-		height: 50rpx;
-		top: 8rpx;
-}
-.visible {
-		visibility: hidden;
-}
-.arrow {
-		margin-left: 110rpx;
-}
-.clickEmoji {
-		background-color: #b8e3ff;
-}
-.allEmoji {
-		width: 260rpx;
-		height: 68rpx;
-		/* margin-left: 60rpx; */
-		border: 0.5rpx solid #e1e1e1;
-		border-radius: 15rpx 15rpx 15rpx 15rpx;
-		box-shadow: 1rpx 1rpx 10rpx 1rpx #e1e1e1;
-		z-index: 5;
-}
-.qingzhu {
-		width: 35rpx;
-		height: 30rpx;
-		top: 5rpx;
-}
-.aixin {
-		width: 45rpx;
-		height: 30rpx;
-		top: 5rpx;
-}
-.xiaoku {
-		width: 35rpx;
-		height: 30rpx;
-		top: 5rpx;
-}
-.addemoji {
-		width: 30rpx;
-		height: 30rpx;
-		top: 5rpx;
-}
-.add {
-		margin-left: 10rpx;
-}
-.emoji ._span {
-		margin-left: 10rpx;
-		top: 8rpx;
-}
-.emoji {
-		width: 92rpx;
-		height: 44rpx;
-		line-height: 40rpx;
-		border-radius: 10rpx 10rpx 10rpx 10rpx;
-		color: #999999;
-		font-size: 24rpx;
-		text-align: center;
-		font-family: Arial;
-		margin-left: 20rpx;
-		border: 2rpx solid #999999;
+	overflow: hidden;
+	-webkit-line-clamp: 3;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	font-size: 32rpx;
+	color: #404040;
+	text-align: left;
+	line-height: 1.5;
 }
 .ideacontent {
-		background-color: #FFFFFF;
-		padding:26rpx;
+	background-color: #FFFFFF;
+	padding: 26rpx;
 }
 .idea {
-		/* margin-top: 20rpx; */
-		width: 100%;
-		/* height: 75rpx; */
-		/* line-height: 20rpx; */
-		color: #101010;
-		font-size: 14rpx;
-		text-align: center;
-		font-family: Arial;
-		display: -webkit-box;
-		display: -webkit-flex;
-		display: flex;
-		border: 1rpx solid rgba(255, 255, 255, 100);
+	/* margin-top: 20rpx; */
+	width: 100%;
+	/* height: 75rpx; */
+	/* line-height: 20rpx; */
+	color: #101010;
+	font-size: 14rpx;
+	text-align: center;
+	font-family: Arial;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	border: 1rpx solid rgba(255, 255, 255, 100);
 }
 .wrap {
-		background-color: #F5F5F5;
-		height: 100vh;
+	background-color: #F5F5F5;
+	height: 100vh;
 }
 /* 头部样式 */
 .marchcicrle {
-		font-size: 36rpx;
-		width: 108rpx;
-		height: 46px;
+	font-size: 36rpx;
+	width: 108rpx;
+	height: 46px;
 }
-.member {
-		font-size: 28rpx;
-		margin: 0 20rpx;
+.member,
+.total {
+	font-size: 28rpx;
+	margin: 0 10rpx;
 }
 .info {
-		margin-top: 30rpx;
-		font-size: 32rpx;
-}
-.total {
-		font-size: 28rpx;
-		margin: 80rpx 20rpx;
+	margin-top: 30rpx;
+	font-size: 32rpx;
 }
 .titlebg {
-		display: -webkit-box;
-		display: -webkit-flex;
-		display: flex;
-		width: 100%;
-		height: 320rpx;
-		background-image: url(/static/img/marchcicrlebg.jpg);
-		background-position: center;
-		background-size: 100% 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	width: 100%;
+	height: 320rpx;
+	background-image: url(/static/img/marchcicrlebg.jpg);
+	background-position: center;
+	background-size: 100% 100%;
 }
 .title {
-		margin: 72rpx 25rpx;
-		width: 416rpx;
-		color: #FFFFFF;
-		font-weight: bold;
+	margin: 72rpx 25rpx;
+	width: 416rpx;
+	color: #FFFFFF;
+	font-weight: bold;
 }
 .wxlogo {
-		width: 70rpx;
-		height: 70rpx;
-		left: 50rpx;
-		top: 100rpx;
+	width: 70rpx;
+	height: 70rpx;
+	left: 50rpx;
+	top: 100rpx;
 }
 .join {
-		left: 143rpx;
-		top: 30rpx;
-		width: 120rpx;
-		height: 54rpx;
+	left: 143rpx;
+	top: 30rpx;
+	width: 120rpx;
+	height: 54rpx;
 
-		line-height: 55rpx;
-		border-radius: 28rpx 28rpx 28rpx 28rpx;
-		background-color: #404040;
-		color: #FFFFFF;
-		font-size: 28rpx;
-		text-align: center;
-		font-family: Arial;
-		border: 0.5rpx solid #101010 inset;
+	line-height: 55rpx;
+	border-radius: 28rpx 28rpx 28rpx 28rpx;
+	background-color: #404040;
+	color: #FFFFFF;
+	font-size: 28rpx;
+	text-align: center;
+	font-family: Arial;
+	border: 0.5rpx solid #101010 inset;
 }
 

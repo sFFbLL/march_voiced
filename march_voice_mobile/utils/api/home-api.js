@@ -24,12 +24,24 @@ export function getFollow (params) {
 }
 
 /**
- * 搜索接口
+ * 搜索文章接口
  * @param {Object} params {搜索关键字 页码 页大小}
  */
-export function search (params) {
+export function searchArticle (params) {
 	return request({
-		url: '/api/base/search',
+		url: '/api/base/searchActile',
+		method: 'get',
+		params
+	})
+}
+
+/**
+ * 搜索用户接口
+ * @param {Object} params {搜索关键字 页码 页大小}
+ */
+export function searchUser (params) {
+	return request({
+		url: '/api/base/searchUser',
 		method: 'get',
 		params
 	})
