@@ -18,6 +18,7 @@ type _ResponseMessageUnRead struct {
 	Data    dto.MessageUnreadDto `json:"data"`    // 数据
 }
 
+
 type _ResponseMatchSensitiveWord struct {
 	Code    app.ResCode `json:"code"`    // 业务响应状态码
 	Message string      `json:"message"` // 提示信息
@@ -64,4 +65,37 @@ type _ResponseSelectUserInfo struct {
 	Code    app.ResCode       `json:"code"`    // 业务响应状态码
 	Message string            `json:"message"` // 提示信息
 	Data    bo.SelectUserInfo `json:"code"`    // 数据
+}
+
+type _ResponseGetSysMessage struct {
+	Code    app.ResCode      `json:"code"`    // 业务响应状态码
+	Message string           `json:"message"` // 提示信息
+	Data    bo.GetSysMessage `json:"data"`    // 数据
+}
+
+// _ResponseGetMessage 关注页面(动态)列表页响应
+type _ResponseGetMessage struct {
+	Code    app.ResCode   `json:"code"`    // 业务响应状态码
+	Message string        `json:"message"` // 提示信息
+	Data    bo.GetMessage `json:"data"`    // 数据
+}
+
+// _ResponseApplyMarchUser 申请三月圈审核中用户
+type _ResponseApplyMarchUser struct {
+	Code    app.ResCode       `json:"code"`    // 业务响应状态码
+	Message string            `json:"message"` // 提示信息
+	Data    bo.ApplyMarchUser `json:"data"`    // 数据
+}
+
+// 申请三月圈审核中用户
+type _ResponseGetMarchApplyUser struct {
+	Code    app.ResCode   `json:"code"`    // 业务响应状态码
+	Message string        `json:"message"` // 提示信息
+	Data    bo.GetMessage `json:"data"`    // 数据
+}
+
+type _ResponseTopArticleListHandler struct {
+	Code    app.ResCode   `json:"code"`    // 业务响应状态码
+	Message string        `json:"message"` // 提示信息
+	Data    []bo.Article `json:"data"`    // 数据
 }

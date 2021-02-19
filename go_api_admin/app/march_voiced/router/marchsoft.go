@@ -14,6 +14,9 @@ func init() {
 func marchRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/apply")
 	{
+		r.GET("march", apis.GetMarchApplyUser)
 		r.POST("march", apis.ApplyMarch)
+		r.PUT("march", apis.MarchPass)
+		r.PUT("article", apis.ArticlePass)
 	}
 }

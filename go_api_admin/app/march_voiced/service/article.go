@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"project/app/march_voiced/models"
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
@@ -12,6 +13,23 @@ import (
 )
 
 type Article struct{}
+
+// ArticlePass 文章审核
+func (a *Article) ArticlePass(p *dto.ArticlePass, userId int) (err error) {
+	article := new(models.Article)
+	article.ID = int(p.Id)
+	err = article.GetArticle()
+	if err != nil {
+		return
+	}
+	if *article.Status != 2 {
+		return errors.New("文章不是发布未审核状态")
+	}
+	article.Status = p.Status
+	err = article.UpdateArticle()
+	go models.AddSysMessage(0, *p.Status, uint(userId), article.CreateBy)
+	return
+}
 
 // 添加文章
 func (a *Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (err error) {

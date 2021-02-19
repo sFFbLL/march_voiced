@@ -2,10 +2,23 @@ package service
 
 import (
 	"project/app/march_voiced/models"
+	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
+	"project/utils"
 )
 
 type Message struct {
+}
+
+// GetMessage 获取关注的人动态业务方法
+func (e *Message) GetMessage(p *dto.Paginator, userId int) (getMessage *bo.GetMessage, err error) {
+	message := new(models.Message)
+	getMessage = new(bo.GetMessage)
+	getMessageData := new([]bo.GetMessageData)
+	getMessage.Message = getMessageData
+	err = message.GetMessage(getMessage, p, userId)
+	getMessage.Total = uint(utils.PagesCount(int(getMessage.Count), int(p.Size)))
+	return
 }
 
 // MessageUnread 查询是否有未读消息业务方法

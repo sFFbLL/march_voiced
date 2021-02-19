@@ -1,6 +1,9 @@
 package models
 
-import "project/common/global"
+import (
+	"project/app/march_voiced/models/dto"
+	"project/common/global"
+)
 
 type SysMessage struct {
 	BaseModel
@@ -16,18 +19,29 @@ func (e *SysMessage) TableName() string {
 	return `sys_message`
 }
 
+// UnRead 未读消息已读业务方法持久方法
 func (e *SysMessage) UnRead() error {
 	return global.Eloquent.Table(e.TableName()).
 		Where("follow_id=? and is_read=? and is_deleted=0", e.FollowId, 0).
 		Updates(&SysMessage{IsRead: 1}).Error
 }
 
+// UnReadCount 查询是否有未读消息持久方法
 func (e *SysMessage) UnReadCount() (count int64, err error) {
 	err = global.Eloquent.Table(e.TableName()).
 		Where("follow_id=? and is_read=? and is_deleted=0", e.FollowId, 0).Count(&count).Error
 	return
 }
 
+// Add 新增系统消息
 func (e *SysMessage) Add() {
 	_ = global.Eloquent.Table(e.TableName()).Create(e).Error
+}
+
+func (e *SysMessage) GetSysMessage(p *dto.Paginator, userId int) (count int64, sysMessage *[]SysMessage, err error) {
+	sysMessage = new([]SysMessage)
+	err = global.Eloquent.Table(e.TableName()).Where("follow_id", userId).Count(&count).
+		Order("create_time desc").
+		Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).Find(sysMessage).Error
+	return
 }
