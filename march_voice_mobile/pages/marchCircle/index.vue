@@ -9,8 +9,14 @@
 				<p class="info">简介: {{marchCircleInfo.brief}}</p>
 			</view>
 			<view>
-				<image @click="share()" class="wxlogo" src="../../static/img/wxlogo.png"></image>
-				<button v-if="sanyueMumber" class="join" :disabled="disabledJoin" :style="{fontSize:fontSize+'rpx'}" @click="join()">{{isjoin}}</button>
+				<image @click="share()"
+				 class="wxlogo"
+				 src="../../static/img/wxlogo.png"></image>
+				<button v-if="sanyueMumber"
+				 class="join"
+				 :disabled="disabledJoin"
+				 :style="{fontSize:fontSize+'rpx'}"
+				 @click="join()">{{isjoin}}</button>
 				<u-toast ref="uToast" />
 
 			</view>
@@ -22,12 +28,16 @@
 		<view class="wrap">
 			<!-- 间隔槽 -->
 			<view v-for="item in ideasList">
-				<u-gap height="30" bg-color="#f5f5f5"></u-gap>
+				<u-gap height="30"
+				 bg-color="#f5f5f5"></u-gap>
 				<view class="ideacontent">
 					<!-- 用户头像公共组件 -->
-					<attentionAndFansCell :nickname="item.user.nickname" :avatarPath="item.user.avatarPath" :isFollow="item.user.isFollow"></attentionAndFansCell>
+					<attentionAndFansCell :nickname="item.user.nickname"
+					 :avatarPath="item.user.avatarPath"
+					 :isFollow="item.user.isFollow"></attentionAndFansCell>
 					<!-- 想法的文字部分 -->
-					<articleContent :articleContent="item.content" @click="toDetail(item.id)"></articleContent>
+					<articleContent :articleContent="item.content"
+					 @click="toDetail(item.id)"></articleContent>
 					<!-- 想法的图片部分组件 -->
 					<imageAdaptation :imgList="imgList"></imageAdaptation>
 					<!-- 点赞表情组件 -->
@@ -40,14 +50,21 @@
 			<uni-load-more :status="loadStatus"></uni-load-more>
 		</view>
 		<!-- 微信分享遮罩层 -->
-		<view class="mcover" @click="isshow()" :style="{display:mcoverDisplay}">
+		<view class="mcover"
+		 @click="isshow()"
+		 :style="{display:mcoverDisplay}">
 			<image src="https://oscimg.oschina.net/oscnet/fd2170a448e37826ae9f4d7088f287b8f24.jpg" />
 		</view>
 		<!-- 发布三月圈悬浮按钮 -->
-		<view v-if="sanyueMumber" @click="publish()" class="publishbtn">
-			<uni-icons class="addicon" type="plusempty" size="43" color="white"></uni-icons>
+		<view v-if="sanyueMumber"
+		 @click="publish()"
+		 class="publishbtn">
+			<uni-icons class="addicon"
+			 type="plusempty"
+			 size="43"
+			 color="white"></uni-icons>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -149,11 +166,11 @@
 		},
 		//上拉触底函数
 		onReachBottom() {
-			if (!this.isLoadMore ) { //此处判断，上锁，防止重复请求
+			if (!this.isLoadMore) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true
 				this.current += 1
 				this.getCircleList();
-			} 
+			}
 		},
 		created() {
 			// 获取三月基本信息接口
@@ -167,7 +184,7 @@
 				current: this.current,
 				size: this.size
 			}
-			
+
 
 		},
 		onShow() {
@@ -175,10 +192,10 @@
 		},
 		mounted() {},
 		methods: {
-			
+
 			// 获取三月圈列表
 			// 获取想法列表接口
-			getCircleList(){
+			getCircleList() {
 				let _this = this;
 				// marchCircleList(params).then(res=>{
 				// this.ideasList=[...this.ideasList,...res.data];
@@ -190,20 +207,20 @@
 				// if(res.data.length<=_this.size){
 				// 	_this.loadStatus='nomore';
 				// }
-			
-			// })
-			
-			if (this.ideasList.length > 16) {
-				_this.loadStatus = "nomore";
-			} else if (this.current === 1) {
-				_this.isLoadMore = false;
-			} else {
-				setTimeout(function() {
+
+				// })
+
+				if (this.ideasList.length > 16) {
+					_this.loadStatus = "nomore";
+				} else if (this.current === 1) {
 					_this.isLoadMore = false;
-				}, 2000);
-			}
+				} else {
+					setTimeout(function () {
+						_this.isLoadMore = false;
+					}, 2000);
+				}
 			},
-			
+
 			// 跳转详情页面
 			toDetail(id) {
 				uni.navigateTo({

@@ -1,13 +1,12 @@
-import request from '@/utils/request.js'
+import Axios from '@/utils/request.js'
+import baseUrl from '../env.js'
 /**
  * 获取推荐文章接口
  * @param {Object} params {页码 页大小}
  */
 export function getRecommend (params) {
-	return request({
-		url: '/api/article-recom',
-		method: 'get',
-		params
+	return Axios.get(baseUrl + '/api/base/article-recom', {
+		params: params,
 	})
 }
 
@@ -16,10 +15,8 @@ export function getRecommend (params) {
  * @param {Object} params {页码 页大小}
  */
 export function getFollow (params) {
-	return request({
-		url: '/api/message/follow',
-		method: 'get',
-		params
+	return Axios.get(baseUrl + '/api/base/follow', {
+		params: params,
 	})
 }
 
@@ -28,10 +25,8 @@ export function getFollow (params) {
  * @param {Object} params {搜索关键字 页码 页大小}
  */
 export function searchArticle (params) {
-	return request({
-		url: '/api/base/searchActile',
-		method: 'get',
-		params
+	return Axios.get(baseUrl + '/api/base/searchArticle', {
+		params: params,
 	})
 }
 
@@ -40,9 +35,7 @@ export function searchArticle (params) {
  * @param {Object} params {搜索关键字 页码 页大小}
  */
 export function searchUser (params) {
-	return request({
-		url: '/api/base/searchUser',
-		method: 'get',
-		params
+	return Axios.get(baseUrl + '/api/base/searchUser', {
+		params: params,
 	})
 }

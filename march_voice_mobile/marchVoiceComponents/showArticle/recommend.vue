@@ -5,7 +5,8 @@
 		<articleTitle :articleTitle="articleInfo.title"
 		 :articleId="articleInfo.id" />
 		<!-- 作者信息 -->
-		<attentionAndFansCell :id="articleInfo.user.id"
+		<attentionAndFansCell v-if="articleInfo.user"
+		 :id="articleInfo.user.id"
 		 :nickname="articleInfo.user.nickname"
 		 :avatarPath="articleInfo.user.avatarPath"
 		 :isFollow="articleInfo.user.isFollow"></attentionAndFansCell>
@@ -16,7 +17,8 @@
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal"
 		 :commentTotal="articleInfo.commentTotal"
-		 :collectTotal="articleInfo.collectTotal"></articleInteract>
+		 :collectTotal="articleInfo.collectTotal"
+		 v-if="isArticleInteract"></articleInteract>
 	</view>
 </template>
 
@@ -35,6 +37,10 @@
 			articleInfo: {
 				type: Object,
 				default: {}
+			},
+			isArticleInteract: {
+				type: Boolean,
+				default: true
 			}
 		},
 		components: {
