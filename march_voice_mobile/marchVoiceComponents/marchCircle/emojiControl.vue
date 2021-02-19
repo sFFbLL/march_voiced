@@ -1,35 +1,67 @@
 <template>
 	<view>
-		<!-- 添加表情上方提示框 -->
-		<view class="allEmoji" :class="{'visible':visible}" :style="{marginLeft:emojiPosition01+'px'}">
-			<image class="addxiaoku oneemoji" @click="addAEmoji('face')" src="../../static/img/xiaoku.png" mode=""></image>
-			<image class="addaixin oneemoji" @click="addAEmoji('like')" src="../../static/img/aixin.png" mode=""></image>
-			<image class="addqingzhu oneemoji" @click="addAEmoji('favour')" src="../../static/img/qingzhu.png" mode=""></image>
-			<uni-icons class="arrow" type="arrowdown" size="15" style="color: #e6e6e6; "></uni-icons>
-		</view>
+
 		<!-- 各种表情 -->
 		<view class="idea">
-			<view class="emoji" :class="{'clickEmoji':clickFace,'isDisplay':faceDisplay}" @click="clickAni('face')">
-				<image class=" xiaoku" src="../../static/img/xiaoku.png" mode=""></image>
+			<view class="emoji"
+			 :class="{'clickEmoji':clickFace,'isDisplay':faceDisplay}"
+			 @click="clickAni('face')">
+				<image class=" xiaoku"
+				 src="../../static/img/xiaoku.png"
+				 mode=""></image>
 
 				<span>{{emojiList.faceTotal}}</span>
 			</view>
-			<view class="emoji" :class="{'clickEmoji':clickLike}" @click="clickAni('like')">
-				<image class="aixin" src="../../static/img/aixin.png" mode=""></image>
+			<view class="emoji"
+			 :class="{'clickEmoji':clickLike}"
+			 @click="clickAni('like')">
+				<image class="aixin"
+				 src="../../static/img/aixin.png"
+				 mode=""></image>
 				<span>{{emojiList.likeTotal}}</span>
 			</view>
-			<view class="emoji" :class="{'clickEmoji':clickFavour,'isDisplay':favourDisplay}" @click="clickAni('favour')">
-				<image class="qingzhu" src="../../static/img/qingzhu.png" mode=""></image>
+			<view class="emoji"
+			 :class="{'clickEmoji':clickFavour,'isDisplay':favourDisplay}"
+			 @click="clickAni('favour')">
+				<image class="qingzhu"
+				 src="../../static/img/qingzhu.png"
+				 mode=""></image>
 				<span>{{emojiList.favourTotal}}</span>
 			</view>
 			<!-- 添加表情 -->
-			<view class="emoji" @click="addEmoji()">
-				<image class="addemoji" src="../../static/img/emoji.png" mode=""></image>
-				<image class="addemoji add" src="../../static/img/add.png" mode=""></image>
+			<view class="emoji"
+			 @click="addEmoji()">
+				<image class="addemoji"
+				 src="../../static/img/emoji.png"
+				 mode=""></image>
+				<image class="addemoji add"
+				 src="../../static/img/add.png"
+				 mode=""></image>
+				<!-- 添加表情上方提示框 -->
+				<view class="allEmoji"
+				 :class="{'visible':visible}">
+					<image class="addxiaoku oneemoji"
+					 @click="addAEmoji('face')"
+					 src="../../static/img/xiaoku.png"
+					 mode=""></image>
+					<image class="addaixin oneemoji"
+					 @click="addAEmoji('like')"
+					 src="../../static/img/aixin.png"
+					 mode=""></image>
+					<image class="addqingzhu oneemoji"
+					 @click="addAEmoji('favour')"
+					 src="../../static/img/qingzhu.png"
+					 mode=""></image>
+					 <u-icon class="arrow" name="arrow-down-fill" color="#f5f5f5" size="30"></u-icon>
+				</view>
 			</view>
 			<!-- 评论+评论数量 -->
-			<view class="comment" v-if="isShow">
-				<u-icon name="chat" color="#999999" size="40" class="chat"></u-icon>
+			<view class="comment"
+			 v-if="isShow">
+				<u-icon name="chat"
+				 color="#999999"
+				 size="40"
+				 class="chat"></u-icon>
 				<span class="commentTotal">{{emojiList.commentTotal}}</span>
 
 			</view>
@@ -43,9 +75,9 @@
 			emojiList: {
 
 			},
-			isShow:{
-				type:Boolean,
-				default:true
+			isShow: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {
@@ -122,7 +154,7 @@
 							this.emojiList.likeTotal--;
 							this.clickLike = !this.clickLike;
 						} else {
-								this.clickLike = !this.clickLike;
+							this.clickLike = !this.clickLike;
 							if (!this.clickFace && !this.clickFavour) {
 								this.emojiList.likeTotal++;
 							} else if (this.clickFace) {
@@ -135,8 +167,6 @@
 								this.clickFavour = !this.clickFavour;
 							}
 						}
-
-
 						break
 
 					case 'favour':
@@ -232,11 +262,13 @@
 	}
 
 	.visible {
-		visibility: hidden;
+		display: none;
 	}
 
 	.arrow {
-		margin-left: 110rpx;
+		position: absolute;
+		top: 55rpx;
+		left: 115rpx;
 	}
 
 	.clickEmoji {
@@ -244,13 +276,16 @@
 	}
 
 	.allEmoji {
+		position: absolute;
+		bottom: 64rpx;
+		left: -80rpx;
 		width: 260rpx;
 		height: 68rpx;
-		/* margin-left: 60rpx; */
+		background-color: #f5f5f5;
 		border: 0.5rpx solid #e1e1e1;
 		border-radius: 15rpx 15rpx 15rpx 15rpx;
 		box-shadow: 1rpx 1rpx 10rpx 1rpx #e1e1e1;
-		z-index: 5;
+		z-index: 10;
 	}
 
 	.qingzhu {
@@ -281,12 +316,15 @@
 		margin-left: 10rpx;
 	}
 
+
+
 	.emoji span {
 		margin-left: 10rpx;
 		top: 8rpx;
 	}
 
 	.emoji {
+		position: relative;
 		width: 92rpx;
 		height: 44rpx;
 		line-height: 40rpx;
@@ -295,7 +333,7 @@
 		font-size: 24rpx;
 		text-align: center;
 		font-family: Arial;
-		margin-left: 20rpx;
+		margin-right: 20rpx;
 		border: 2rpx solid #999999;
 	}
 
@@ -306,7 +344,7 @@
 	}
 
 	.idea {
-		/* margin-top: 20rpx; */
+		margin-top: 20rpx;
 		width: 100%;
 		/* height: 75rpx; */
 		/* line-height: 20rpx; */
@@ -317,6 +355,4 @@
 		display: flex;
 		border: 1rpx solid rgba(255, 255, 255, 100);
 	}
-
-	
 </style>

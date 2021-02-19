@@ -46,7 +46,9 @@
 	import recommend from '../../marchVoiceComponents/showArticle/recommend.vue'
 	import follow from '../../marchVoiceComponents/showArticle/follow.vue'
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
-	import {check} from '../../utils/checkUnRead.js'
+	import {
+		check
+	} from '../../utils/checkUnRead.js'
 	import {
 		getRecommend,
 		getFollow
@@ -115,10 +117,10 @@
 				})
 				if (!tabIndex) {
 					this.loadStatus = this.recommendLoadStatus;
-					this.recommend();
+					this.isLoadMore=false;
 				} else if (tabIndex) {
 					this.loadStatus = this.followLoadStatus;
-					this.follow();
+					this.isLoadMore=false
 				}
 				this.tabIndex = tabIndex;
 			},
@@ -316,6 +318,9 @@
 	}
 
 	.header {
+		position: fixed;
+		z-index: 10;
+		width: 100%;
 		height: 100rpx;
 		line-height: 100rpx;
 		background-color: #fff;
@@ -340,6 +345,7 @@
 
 	.content {
 		background-color: #fff;
+		padding-top: 115rpx;
 	}
 
 	.loading {
@@ -355,4 +361,3 @@
 		width: 30rpx !important;
 	}
 </style>
-style>
