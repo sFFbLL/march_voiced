@@ -2,12 +2,21 @@
 	<view class="tab-card">
 		<!-- 选项卡导航 -->
 		<view class="head-nav">
-			<view class="head-nav-item" v-for="(item,index) in tabs" :key="item.index" :class="item.isActive ? 'active' : ''"
+			<view class="head-nav-item"
+			 v-for="(item,index) in tabs"
+			 :key="item.index"
+			 :class="item.isActive ? 'active' : ''"
 			 @click="handlerActive(item.index)">
 				<view class="center">{{item.value}}
-					<u-badge v-if="item.index==0&&interactRead==false&&type" :is-dot="true" type="error"></u-badge>
-					<u-badge v-if="item.index==1&&attentionRead==false&&type" :is-dot="true" type="error"></u-badge>
-					<u-badge v-if="item.index==2&&otherRead==false&&type" :is-dot="true" type="error"></u-badge>
+					<u-badge v-if="item.index==0&&interactRead==false&&type"
+					 :is-dot="true"
+					 type="error"></u-badge>
+					<u-badge v-if="item.index==1&&attentionRead==false&&type"
+					 :is-dot="true"
+					 type="error"></u-badge>
+					<u-badge v-if="item.index==2&&otherRead==false&&type"
+					 :is-dot="true"
+					 type="error"></u-badge>
 					<view class="head-nav-bottom"></view>
 				</view>
 			</view>
@@ -30,6 +39,7 @@
 				type: Array,
 				default: []
 			},
+
 			type: {
 				type: Boolean
 			}
@@ -39,15 +49,15 @@
 				if (index == 0) {
 					// 消除红点
 					this.$store.commit('changeInteract', 1);
-				
+
 				} else if (index == 1) {
 					// 消除红点
 					this.$store.commit('changeAttention', 1);
-					
+
 				} else if (index == 2) {
 					// 消除红点
 					this.$store.commit('changeOther', 1);
-					
+
 				}
 
 				this.$emit('tabActive', index);
@@ -66,7 +76,7 @@
 		},
 		mounted() {},
 		created() {
-			
+
 		}
 	}
 </script>

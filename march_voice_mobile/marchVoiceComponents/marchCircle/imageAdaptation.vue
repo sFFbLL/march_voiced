@@ -1,8 +1,14 @@
 <template>
-	<view>
+	<view class="image-adaptation">
 		<view class="allImage">
-			<view class="images" v-for="(item,index) in imgList" :key="index">
-				<image @click="previewImg()" class="oneimg" :src="item" mode="aspectFill" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx'}"></image>
+			<view class="images"
+			 v-for="(item,index) in imgList"
+			 :key="index">
+				<image @click="previewImg()"
+				 class="oneimg"
+				 :src="item"
+				 mode="aspectFill"
+				 :style="{width:imgWidth+'rpx',height:imgHeight+'rpx'}"></image>
 			</view>
 		</view>
 	</view>
@@ -57,7 +63,7 @@
 						this.imgHeight = this.imgLayout1[1];
 					} else {
 						this.imgHeight = 300;
-						this.imgWidth = 702;
+						this.imgWidth = 690;
 					}
 
 				} else if (this.imgList.length == 2 || this.imgList.length == 4) {
@@ -65,7 +71,7 @@
 						this.imgWidth = this.imgLayout2[0];
 						this.imgHeight = this.imgLayout2[1];
 					} else {
-						this.imgWidth = 321;
+						this.imgWidth = 334;
 						this.imgHeight = 280;
 					}
 
@@ -86,9 +92,7 @@
 
 <style>
 	/* 想法图片排列样式 */
-
 	.allImage {
-		display: flex;
 		margin-top: 10rpx;
 		flex-wrap: wrap;
 		justify-content: flex-start;
@@ -100,5 +104,6 @@
 
 	.images {
 		margin-right: 10rpx;
+		display: inline-block;
 	}
 </style>
