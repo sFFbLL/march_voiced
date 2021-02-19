@@ -25,3 +25,8 @@ type Paging struct {
 	Current int `json:"current"`
 	Size    int `json:"size"`
 }
+
+type ArticlePass struct {
+	Id     uint   `json:"id" binding:"required"`
+	Status *uint8 `json:"status" binding:"required,lte=1"`
+}

@@ -114,7 +114,7 @@ func GetFansList(c *gin.Context) {
 // @Tags 用户：关注管理 Follow Controller
 // @Accept application/json
 // @Produce application/json
-// @Param string query id false "查询参数"
+// @Param id query string false "查询参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseSuccess
 // @Router /api/follow/judge [get]
@@ -147,7 +147,7 @@ func GetStatus(c *gin.Context) {
 // @Tags 用户：关注管理 Follow Controller
 // @Accept application/json
 // @Produce application/json
-// @Param string query id false "查询参数"
+// @Param id query string false "查询参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseSuccess
 // @Router /api/follow/center [put]
