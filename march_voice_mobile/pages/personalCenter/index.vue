@@ -4,7 +4,8 @@
 			<attentionAndFansCell :id="userInfo.user.id"
 			 :nickname="userInfo.user.nickname"
 			 :avatarPath="userInfo.user.avatarPath"
-			 :isFollow="userInfo.user.isFollow">
+			 :isFollow="userInfo.user.isFollow"
+			 class="top-user-info">
 				<view slot="underText"
 				 class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
@@ -32,9 +33,34 @@
 				 v-on:tabActive='tabActive'></tabCarb>
 			</view>
 			<view class="kind-article-list">
-				<view v-for="(item,index) in articleList1">
+				<view v-for="(item,index) in articleList"
+				 v-if="!tabIndex">
 					<recommend :articleInfo="item"
-					 class="arcitle-item"></recommend>
+					 class="arcitle-item item"></recommend>
+				</view>
+				<view v-for="(item,index) in ideaList"
+				 v-if="tabIndex === 1">
+					<view class="ideacontent item">
+						<!-- 用户头像公共组件 -->
+						<attentionAndFansCell :nickname="userInfo.user.nickname"
+						 :avatarPath="userInfo.user.avatarPath"
+						 :isFollow="userInfo.user.isFollow">
+							<view slot="underText">{{item.updateTime}}</view>
+						</attentionAndFansCell>
+						<!-- 想法的文字部分 -->
+						<articleContent :articleContent="item.content"></articleContent>
+						<!-- 想法的图片部分组件 -->
+						<imageAdaptation :imgList="item.imgList"></imageAdaptation>
+						<!-- 点赞表情组件 -->
+						<emojiControl :emojiList="emojiList"
+						 class="emoji-control"></emojiControl>
+					</view>
+				</view>
+				<view v-for="(item,index) in draftList"
+				 v-if="tabIndex === 2">
+					<recommend :articleInfo="item"
+					 :isArticleInteract="false"
+					 class="arcitle-item item"></recommend>
 				</view>
 				<!-- 下拉加载更多 -->
 				<view v-show="isLoadMore">
@@ -48,10 +74,14 @@
 </template>
 
 <script>
+	// import {getUserInfo,getUserArticleList,getUserIdeaList} from 
 	import attentionAndFansCell from "../../marchVoiceComponents/attentionAndFansCell.vue"
 	import tabCarb from '../../marchVoiceComponents/tabCard.vue'
 	import recommend from '../../marchVoiceComponents/showArticle/recommend.vue'
 	import uniLoadMore from '../../components/uni-load-more/uni-load-more.vue'
+	import emojiControl from '../../marchVoiceComponents/marchCircle/emojiControl.vue'
+	import imageAdaptation from '../../marchVoiceComponents/marchCircle/imageAdaptation.vue'
+	import articleContent from '../../marchVoiceComponents/showArticle/childComponents/artilceContent.vue'
 	export default {
 		data() {
 			return {
@@ -65,7 +95,8 @@
 				draftLoadStatus: 'loading',
 				isLoadMore: false, //是否加载中
 				tabIndex: '',
-				userInfo: {
+				userInfo: {},
+				userInfo1: {
 					signature: "向往的生活：面朝大海，春暖花开。",
 					followTotal: 12,
 					fansTotal: 345,
@@ -79,39 +110,116 @@
 				},
 				articleList: [],
 				articleList1: [{
+						id: 1,
+						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
+						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						"image": require('static/img/2.jpg'),
+						upDateTime: "更新时间",
+						"favourTotal": 1,
+						"collectTotal": 1,
+						"commentTotal": 1
+					},
+					{
+						id: 1,
+						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
+						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						"image": require('static/img/2.jpg'),
+						"favourTotal": 1,
+						"collectTotal": 1,
+						"commentTotal": 1
+					},
+					{
+						id: 1,
+						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
+						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						"image": require('static/img/2.jpg'),
+						"favourTotal": 1,
+						"collectTotal": 1,
+						"commentTotal": 1
+					},
+					{
+						id: 1,
+						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
+						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						"image": require('static/img/2.jpg'),
+						"favourTotal": 1,
+						"collectTotal": 1,
+						"commentTotal": 1
+					},
+				],
+				ideaList: [],
+				ideaList1: [{
 					id: 1,
-					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-					"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					"image": require('static/img/2.jpg'),
-					upDateTime: "更新时间",
-					"favourTotal": 1,
-					"collectTotal": 1,
-					"commentTotal": 1
+					imgList: [
+						'../../static/img/cat.jpg'
+					],
+					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹",
+					updateTime: "暂无时间",
+					faceTotal: 0,
+					likeTotal: 0,
+					favourTotal: 0,
+					commentTotal: 0
 				}, {
 					id: 1,
-					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-					"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					"image": require('static/img/2.jpg'),
-					"favourTotal": 1,
-					"collectTotal": 1,
-					"commentTotal": 1
+					imgList: [
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+					],
+					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹",
+					updateTime: "暂无时间",
+					faceTotal: 0,
+					likeTotal: 0,
+					favourTotal: 0,
+					commentTotal: 0
 				}, {
 					id: 1,
-					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-					"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					"image": require('static/img/2.jpg'),
-					"favourTotal": 1,
-					"collectTotal": 1,
-					"commentTotal": 1
-				}, {
-					id: 1,
-					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-					"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					"image": require('static/img/2.jpg'),
-					"favourTotal": 1,
-					"collectTotal": 1,
-					"commentTotal": 1
+					imgList: [
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg'
+					],
+					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹",
+					updateTime: "暂无时间",
+					faceTotal: 0,
+					likeTotal: 0,
+					favourTotal: 0,
+					commentTotal: 0
 				}],
+				draftList: [],
+				draftList1: [{
+						id: 1,
+						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
+						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						"image": ""
+					},
+					{
+						id: 1,
+						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
+						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						"image": require('static/img/2.jpg')
+					},
+					{
+						id: 1,
+						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
+						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						"image": require('static/img/2.jpg')
+					},
+					{
+						id: 1,
+						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
+						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						"image": ""
+					},
+				],
+				emojiList: {
+					faceTotal: 0,
+					likeTotal: 6,
+					favourTotal: 10,
+					commentTotal: 0,
+				},
 				tabs: [{
 						index: 0,
 						value: '文章',
@@ -134,7 +242,31 @@
 			attentionAndFansCell,
 			tabCarb,
 			recommend,
-			uniLoadMore
+			uniLoadMore,
+			emojiControl,
+			imageAdaptation,
+			articleContent
+		},
+		onLoad() {
+			this.getArticleList();
+			this.getIdeaList();
+			this.getDraftList();
+		},
+
+		onReachBottom() { //上拉触底函数
+			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
+				this.isLoadMore = true;
+				this.articleCurrent += 1;
+				this.getArticleList();
+			} else if (!this.isLoadMore && this.tabIndex === 1) {
+				this.isLoadMore = true;
+				this.ideaCurrent += 1;
+				this.getIdeaList();
+			} else if (!this.isLoadMore && this.tabIndex === 2) {
+				this.isLoadMore = true
+				this.draftCurrent += 1
+				this.getDraftList();
+			}
 		},
 		methods: {
 			/* 切换选项卡选项 */
@@ -142,9 +274,78 @@
 				this.tabs.map((value, index) => {
 					value.isActive = tabIndex == index ? true : false;
 				})
-				if (tabIndex === 0) {} else if (tabIndex === 1) {} else if (tabIndex === 2) {}
+				if (tabIndex === 0) {
+					this.isLoadMore = false;
+					this.loadStatus = this.articleLoadStatus;
+				} else if (tabIndex === 1) {
+					this.isLoadMore = false;
+					this.loadStatus = this.ideaLoadStatus;
+				} else if (tabIndex === 2) {
+					this.isLoadMore = false;
+					this.loadStatus = this.draftLoadStatus;
+				}
 				this.tabIndex = tabIndex;
 			},
+			getUserInfo() {
+				let params = {
+					id: 1
+				}
+				getFollow(params).then(res => {
+					_this.recommendList = [..._this.recommend, ...res.data];
+					if (res.data.length <= _this.size) {
+						_this.loadStatus = nomore;
+					}
+				})
+				this.userInfo = this.userInfo1;
+			},
+			getIdeaList() {
+				let _this = this;
+				if (this.ideaList.length > 7) {
+					_this.loadStatus = "nomore";
+					_this.ideaLoadStatus = "nomore";
+				} else if (this.ideaCurrent === 1) {
+					_this.isLoadMore = false;
+					_this.ideaList = [..._this.ideaList, ..._this.ideaList1];
+				} else {
+					setTimeout(function () {
+						_this.isLoadMore = false;
+						_this.ideaList = [..._this.ideaList, ..._this.ideaList1];
+					}, 2000);
+				}
+			},
+			getDraftList() {
+				let _this = this;
+				if (this.draftList.length > 10) {
+					_this.loadStatus = "nomore";
+					_this.draftLoadStatus = "nomore";
+				} else if (this.draftCurrent === 1) {
+					_this.isLoadMore = false;
+					_this.draftList = [..._this.draftList, ..._this.draftList1];
+				} else {
+					setTimeout(function () {
+						_this.isLoadMore = false;
+						_this.draftList = [..._this.draftList, ..._this.draftList1];
+					}, 2000);
+				}
+			},
+			getArticleList() {
+				let _this = this;
+				if (this.articleList.length > 10) {
+					_this.loadStatus = "nomore";
+					_this.articleLoadStatus = "nomore";
+				} else if (this.articleCurrent === 1) {
+					_this.isLoadMore = false;
+					_this.articleList = [..._this.articleList, ..._this.articleList1];
+				} else {
+					setTimeout(function () {
+						_this.isLoadMore = false;
+						_this.articleList = [..._this.articleList, ..._this.articleList1];
+					}, 2000);
+				}
+			}
+		},
+		created() {
+			this.getUserInfo();
 		}
 	}
 </script>
@@ -168,7 +369,7 @@
 	}
 
 	/* 修改头像样式 */
-	>>>.inner-img {
+	>>>.top-user-info .inner-img {
 		width: 112rpx;
 		height: 112rpx;
 		margin-right: 18rpx;
@@ -176,7 +377,7 @@
 	}
 
 	/* 修改昵称样式 */
-	>>>.inner-text-name {
+	>>>.top-user-info .inner-text-name {
 		font-size: 36rpx;
 	}
 
@@ -241,17 +442,41 @@
 
 	.kind-article-list {
 		padding: 0 30rpx;
-		height: 100rpx;
 		background-color: #fff;
 	}
 
 	.arcitle-item {
 		padding: 30rpx 0;
 		margin-bottom: 0;
-		border-bottom: 1rpx solid #f0f0f0;
 	}
 
 	>>>.article-title .article-text {
 		font-size: 34rpx;
+	}
+
+	>>>.uni-load-more .uni-load-more__text {
+		font-size: 28rpx;
+	}
+
+	>>>.uni-load-more .uni-load-more__img {
+		height: 30rpx !important;
+		width: 30rpx !important;
+	}
+
+	.item {
+		border-bottom: 1rpx solid #f0f0f0;
+	}
+
+	/* 想法用户头像 */
+	>>>.ideacontent .attention-cell .flex-item {
+		padding: 30rpx 0 0 0;
+	}
+
+	>>>.allImage {
+		margin-top: 20rpx;
+	}
+
+	.emoji-control {
+		margin-bottom: 30rpx;
 	}
 </style>

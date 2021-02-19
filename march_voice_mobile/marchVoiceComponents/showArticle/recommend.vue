@@ -17,7 +17,8 @@
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal"
 		 :commentTotal="articleInfo.commentTotal"
-		 :collectTotal="articleInfo.collectTotal"></articleInteract>
+		 :collectTotal="articleInfo.collectTotal"
+		 v-if="isArticleInteract"></articleInteract>
 	</view>
 </template>
 
@@ -36,6 +37,10 @@
 			articleInfo: {
 				type: Object,
 				default: {}
+			},
+			isArticleInteract: {
+				type: Boolean,
+				default: true
 			}
 		},
 		components: {

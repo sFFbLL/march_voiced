@@ -47,6 +47,9 @@
 	import follow from '../../marchVoiceComponents/showArticle/follow.vue'
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	import {
+		check
+	} from '../../utils/checkUnRead.js'
+	import {
 		getRecommend,
 		getFollow
 	} from '@/utils/api/home-api.js'
@@ -84,6 +87,9 @@
 				isLoadMore: false, //是否加载中
 			}
 		},
+		onShow() {
+			check()
+		},
 		onLoad() {
 			if (!this.tabIndex) {
 				this.recommend();
@@ -111,10 +117,10 @@
 				})
 				if (!tabIndex) {
 					this.loadStatus = this.recommendLoadStatus;
-					this.recommend();
+					this.isLoadMore=false;
 				} else if (tabIndex) {
 					this.loadStatus = this.followLoadStatus;
-					this.follow();
+					this.isLoadMore=false
 				}
 				this.tabIndex = tabIndex;
 			},
