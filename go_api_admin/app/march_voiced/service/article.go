@@ -4,15 +4,11 @@ import (
 	"project/app/march_voiced/models"
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
-	"project/utils"
 	"sort"
 	"sync"
 
 	"go.uber.org/zap"
 )
-
-var wg sync.WaitGroup
-var articleCh chan bo.Article
 
 type Article struct{}
 
@@ -20,7 +16,7 @@ type Article struct{}
 func (a *Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (err error) {
 	// 实例化要添加的文章
 	article := new(models.Article)
-	article.CreatBy = uint(userId)
+	article.CreateBy = uint(userId)
 	article.UpdateBy = uint(userId)
 	article.Title = articleDto.Title
 	article.Content = articleDto.Content
@@ -65,23 +61,23 @@ func (a *Article) UpdateArticle(articleDto *dto.UpdateArticleDto, userId int) (e
 func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err error) {
 	//初始化
 	article := new(models.Article)
-	//articleCollect := new(models.ArticleCollect)
-	//articleComment := new(models.ArticleComment)
-	//articleFavour := new(models.ArticleFavour)
-	//follow := new(models.Follow)
+	articleCollect := new(models.ArticleCollect)
+	articleComment := new(models.ArticleComment)
+	articleFavour := new(models.ArticleFavour)
+	follow := new(models.Follow)
 	articleMsg = new(bo.Article)
 	var userMsg bo.UserMsg
-	var total [3]int64
 
 	// 获取数据
 	article.ID = id
-	userMsg, total, err = article.ArticleDetail(id, userId)
+	userMsg, err = article.ArticleDetail()
+	if err != nil {
+		return
+	}
 
 	// 封装bo
-	articleMsg.User = userMsg
-	articleMsg.CollectTotal = total[0]
-	articleMsg.CommentTotal = total[1]
-	articleMsg.FavourTotal = total[2]
+	articleMsg.UserMsg = userMsg
+	// 文章信息
 	articleMsg.ID = article.ID
 	articleMsg.Title = article.Title
 	articleMsg.Content = article.Content
@@ -90,9 +86,40 @@ func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err
 	articleMsg.Kind = article.Kind
 	articleMsg.Type = article.Type
 	articleMsg.UpdateTime = article.UpdateTime
-	articleMsg.CreatTime = article.CreateTime
+	articleMsg.CreateTime = article.CreateTime
 	articleMsg.UpdateBy = article.UpdateBy
-	articleMsg.CreatBy = article.CreatBy
+	articleMsg.CreateBy = article.CreateBy
+	// 文章收藏数
+	articleCollect.ArticleId = uint(id)
+	articleMsg.CollectTotal, err = articleCollect.ArticleCollectCount()
+	if err != nil {
+		zap.L().Error("ArticleCollectCount Get count failed", zap.Error(err))
+		err = nil
+	}
+	// 文章评论数
+	articleComment.ArticleId = uint(id)
+	articleMsg.CommentTotal, err = articleComment.ArticleCommentCount()
+	if err != nil {
+		zap.L().Error("ArticleCommentCount Get count failed", zap.Error(err))
+		err = nil
+	}
+	// 文章喜欢数
+	articleFavour.ArticleId = uint(id)
+	articleMsg.FavourTotal, err = articleFavour.ArticleFavourCount()
+	if err != nil {
+		zap.L().Error("ArticleFavourCount Get count failed", zap.Error(err))
+		err = nil
+	}
+	// 是否关注
+	if userId == userMsg.UserID {
+		articleMsg.IsFollow = 0
+	} else {
+		articleMsg.IsFollow, err = follow.IsFollow(userId, userMsg.UserID)
+		if err != nil {
+			zap.L().Error("IsFollow failed", zap.Error(err))
+			err = nil
+		}
+	}
 
 	return
 }
@@ -102,7 +129,7 @@ func (a *Article) ReprintArticle(id int, userId int) (err error) {
 	// 实例化要添加的文章
 	var status uint8 = 1
 	article := new(models.Article)
-	article.CreatBy = uint(userId)
+	article.CreateBy = uint(userId)
 	article.UpdateBy = uint(userId)
 	article.Status = &status
 	article.Type = uint(id)
@@ -117,73 +144,75 @@ func (a *Article) TopArticleList(paging dto.Paging, userId int) (articleList *[]
 	// 声明所需变量
 	articleList = new([]bo.Article)
 	article := new(models.Article)
-	articleCh = make(chan bo.Article, 7)
 	var keys []int
 
 	// 取出要返回文章信息
 	articleArray, err := article.TopArticleList(paging)
 	if err != nil {
 		zap.L().Error("TopArticleList Select ArticleList filed", zap.Error(err))
-		close(articleCh)
 		return
 	}
 
 	// 数据拼接
+	var wg sync.WaitGroup
+	articleCh := make(chan *bo.Article, len(*articleArray))
 	for _, v := range *articleArray {
 		wg.Add(1)
-		go goArticleMsg(&articleCh, v.ID, userId)
+		go goArticleMsg(&articleCh, &wg, userId, v)
 	}
 	wg.Wait()
 	close(articleCh)
 
 	//articleMap 排序 遍历
-	articleMapList := make(map[int]bo.Article, len(*articleArray))
+	articleMapList := make(map[int]*bo.Article, len(*articleArray))
 	for i := range articleCh {
-		articleMapList[int(i.CreatTime)] = i
-		keys = append(keys, int(i.CreatTime))
+		articleMapList[int(i.CreateTime)] = i
+		keys = append(keys, int(i.CreateTime))
 	}
 	// 排序
 	sort.Ints(keys)
 	// 遍历
 	for _, key := range keys {
-		*articleList = append(*articleList, articleMapList[key])
+		*articleList = append(*articleList, *articleMapList[key])
 	}
-
 	return
 }
 
-func goArticleMsg(articleCh *chan bo.Article, articleId int, userId int) {
-	articleMsg := new(bo.Article)
-	article := new(models.Article)
-	var userMsg bo.UserMsg
-	var total [3]int64
+func goArticleMsg(articleCh *chan *bo.Article, wg *sync.WaitGroup, userId int, articleMsg bo.Article) {
+	articleCollect := new(models.ArticleCollect)
+	articleComment := new(models.ArticleComment)
+	articleFavour := new(models.ArticleFavour)
+	follow := new(models.Follow)
 	var err error
 
 	// 获取数据
-	userMsg, total, err = article.ArticleDetail(articleId, userId)
+	articleCollect.ArticleId = uint(articleMsg.ID)
+	articleMsg.CollectTotal, err = articleCollect.ArticleCollectCount()
 	if err != nil {
-		zap.L().Error("goArticleMsg articleId："+utils.IntToString(articleId)+" failed", zap.Error(err))
-		wg.Done()
-		return
+		zap.L().Error("goArticleMsg ArticleCollectCount failed", zap.Error(err))
 	}
-	// 封装bo
-	articleMsg.User = userMsg
-	articleMsg.CollectTotal = total[0]
-	articleMsg.CommentTotal = total[1]
-	articleMsg.FavourTotal = total[2]
-	articleMsg.ID = article.ID
-	articleMsg.Title = article.Title
-	articleMsg.Content = article.Content
-	articleMsg.Image = article.Image
-	articleMsg.Tag = article.Tag
-	articleMsg.Kind = article.Kind
-	articleMsg.Type = article.Type
-	articleMsg.UpdateTime = article.UpdateTime
-	articleMsg.CreatTime = article.CreateTime
-	articleMsg.UpdateBy = article.UpdateBy
-	articleMsg.CreatBy = article.CreatBy
-	*articleCh <- *articleMsg
-
+	articleComment.ArticleId = uint(articleMsg.ID)
+	articleMsg.CommentTotal, err = articleComment.ArticleCommentCount()
+	if err != nil {
+		zap.L().Error("goArticleMsg ArticleCommentCount failed", zap.Error(err))
+	}
+	articleFavour.ArticleId = uint(articleMsg.ID)
+	articleMsg.FavourTotal, err = articleFavour.ArticleFavourCount()
+	if err != nil {
+		zap.L().Error("goArticleMsg ArticleFavourCount failed", zap.Error(err))
+	}
+	// 是否关注
+	if userId == articleMsg.UserID {
+		articleMsg.IsFollow = 0
+	} else {
+		articleMsg.IsFollow, err = follow.IsFollow(userId, articleMsg.UserID)
+		if err != nil {
+			zap.L().Error("goArticleMsg IsFollow failed", zap.Error(err))
+			err = nil
+		}
+	}
+	// 管道放数据
+	*articleCh <- &articleMsg
 	wg.Done()
 	return
 }

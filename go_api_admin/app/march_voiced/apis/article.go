@@ -134,7 +134,7 @@ func UpdateArticleHandler(c *gin.Context) {
 // @Tags 应用：文章管理 Article Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object  false "修改参数"
+// @Param path false "修改参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._Article
 // @Router /api/article/{id} [get]
@@ -224,9 +224,9 @@ func ReprintArticleHandler(c *gin.Context) {
 // @Tags 应用：文章管理 Article Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object query false "添加参数"
+// @Param object query dto.Paging false "添加参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseSuccess
+// @Success 200 {object} models._Article
 // @Router /api/article/top [get]
 func TopArticleListHandler(c *gin.Context) {
 	// 声明必要变量

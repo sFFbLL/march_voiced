@@ -43,7 +43,7 @@ func (e *Message) Add(articleId uint, userId uint) (err error) {
 			return
 		}
 		e.ArticleId = uint(article.ID)
-		e.FollowId = article.CreatBy
+		e.FollowId = article.CreateBy
 		e.Title = article.Title
 		e.Image = article.Image
 		e.Content = article.Content
