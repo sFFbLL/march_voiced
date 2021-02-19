@@ -18,7 +18,6 @@ type _ResponseMessageUnRead struct {
 	Data    dto.MessageUnreadDto `json:"data"`    // 数据
 }
 
-
 type _ResponseMatchSensitiveWord struct {
 	Code    app.ResCode `json:"code"`    // 业务响应状态码
 	Message string      `json:"message"` // 提示信息
@@ -95,7 +94,19 @@ type _ResponseGetMarchApplyUser struct {
 }
 
 type _ResponseTopArticleListHandler struct {
-	Code    app.ResCode   `json:"code"`    // 业务响应状态码
-	Message string        `json:"message"` // 提示信息
+	Code    app.ResCode  `json:"code"`    // 业务响应状态码
+	Message string       `json:"message"` // 提示信息
 	Data    []bo.Article `json:"data"`    // 数据
+}
+
+type _Article struct {
+	Code    app.ResCode `json:"code"`    // 业务响应状态码
+	Message string      `json:"message"` // 提示信息
+	Data    bo.Article  `json:"data"`    // 数据
+}
+
+type _ArticleUser struct {
+	Code    app.ResCode    `json:"code"`    // 业务响应状态码
+	Message string         `json:"message"` // 提示信息
+	Data    bo.ArticleUser `json:"data"`    // 数据
 }
