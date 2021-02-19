@@ -51,7 +51,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.search-article-item {
 		padding: 20rpx 0;
 		overflow: hidden;

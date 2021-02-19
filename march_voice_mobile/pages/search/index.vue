@@ -11,7 +11,7 @@
 			</view>
 		</view>
 		<view class="content">
-			<view v-if="!userList.length">
+			<view v-if="!userList.length && !articleList.length">
 				<u-empty text="没有数据"
 				 mode="search"
 				 class="nodate"></u-empty>
@@ -23,7 +23,8 @@
 				 :show-line="false"
 				 :bold="false"
 				 color="#969696"
-				 sub-color="#969696" @click="moreUser()"></u-section>
+				 sub-color="#969696"
+				 @click="moreUser()"></u-section>
 				<view class="user-list">
 					<view class="user-item"
 					 v-for="(item,index) in userList">
@@ -35,31 +36,34 @@
 					</view>
 				</view>
 			</view>
-
+			<view class="divide"
+			 v-if="userList.length && articleList.length"></view>
 			<!-- 文章列表 -->
 			<view class="search-article"
-			 v-if="userList.length">
+			 v-if="articleList.length">
 				<view v-for="(item,index) in articleList"
 				 :key="index">
-					<searchArticle :articleInfo="item"/>
+					<searchArticleItem :articleInfo="item" />
 				</view>
 			</view>
-
-			<!-- 下拉加载更多 -->
-			<view v-show="isLoadMore">
-				<uni-load-more class="loading"
-				 :status="loadStatus"
-				 iconType="circle"></uni-load-more>
-			</view>
 		</view>
+		<!-- 下拉加载更多 -->
+		<view v-show="isLoadMore">
+			<uni-load-more class="loading"
+			 :status="loadStatus"
+			 iconType="circle"></uni-load-more>
+		</view>
+	</view>
 	</view>
 </template>
 
 <script>
 	import {
-		search
+		searchArticle,
+		searchUser
 	} from '@/utils/api/home-api.js'
-	import searchArticle from "@/marchVoiceComponents/showArticle/searchArticle.vue"
+	import searchArticleItem from "@/marchVoiceComponents/showArticle/searchArticle.vue"
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	export default {
 		data() {
 			return {
@@ -69,7 +73,8 @@
 				loadStatus: 'loading', //加载样式：more-加载前样式，loading-加载中样式，nomore-没有数据样式
 				isLoadMore: false, //是否加载中
 				articleCurrent: 1, //关注当前页数
-				size: 10,
+				articleSize: 10,
+				userSize: 4,
 				articleList1: [{
 						id: 1,
 						title: "所以监听用户的截图操作，提示<font color=red>用户</font>进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
@@ -77,7 +82,7 @@
 						createTime: "2021-02-16",
 						favourTotal: 0,
 						commentTotal: 0,
-						nickname:"张三"
+						nickname: "张三"
 					},
 					{
 						id: 2,
@@ -86,7 +91,7 @@
 						createTime: "2021-02-16",
 						favourTotal: 0,
 						commentTotal: 0,
-						nickname:"张三"
+						nickname: "张三"
 					},
 					{
 						id: 3,
@@ -95,7 +100,7 @@
 						createTime: "2021-02-16",
 						favourTotal: 0,
 						commentTotal: 0,
-						nickname:"张三"
+						nickname: "张三"
 					},
 					{
 						id: 4,
@@ -104,7 +109,7 @@
 						createTime: "2021-02-16",
 						favourTotal: 0,
 						commentTotal: 0,
-						nickname:"张三"
+						nickname: "张三"
 					},
 					{
 						id: 5,
@@ -113,7 +118,7 @@
 						createTime: "2021-02-16",
 						favourTotal: 0,
 						commentTotal: 0,
-						nickname:"张三"
+						nickname: "张三"
 					}
 				],
 				userList1: [{
@@ -140,7 +145,8 @@
 			}
 		},
 		components: {
-			searchArticle
+			searchArticleItem,
+			uniLoadMore
 		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore) {
@@ -153,16 +159,8 @@
 			search() {
 				// let _this = this;
 				if (this.searchText) {
-					/* let _this = this;
-					let params = {
-						searchText: this.searchText,
-						current: this.current,
-						size: this.size
-					}
-					search().then(res => {
-						_this.userList = userList;
-						_this.articleList = articleList;
-					}) */
+					// this.getArticleList();
+					// this.getUserList();
 					this.userList = this.userList1;
 					this.articleList = [...this.articleList, ...this.articleList1];
 				}
@@ -171,33 +169,43 @@
 				this.searchText = "";
 			},
 			getList() {
-				// let _this = this;
 				if (this.searchText) {
-					/* let _this = this;
-					let params = {
-						searchText: this.searchText,
-						current: this.current,
-						size: this.size
-					}
-					search().then(res => {
-						_this.userList = userList;
-						_this.articleList = articleList;
-					}) */
-					this.userList = this.userList1;
 					let _this = this;
 					if (this.articleList.length > 16) {
 						_this.loadStatus = "nomore";
 					} else {
 						setTimeout(function () {
 							_this.isLoadMore = false;
+							// this.getArticleList();
 							_this.articleList = [..._this.articleList, ..._this.articleList1];
 						}, 2000);
 					}
 				}
 			},
-			moreUser(){
+			moreUser() {
 				uni.navigateTo({
-					url:'../search/searchUser'
+					url: '../search/searchUser'
+				})
+			},
+			getArticleList() {
+				let _this = this;
+				let params = {
+					searchText: this.searchText,
+					current: this.current,
+					size: this.articleSize
+				}
+				searchArticle().then(res => {
+					_this.articleList = [..._this.articleList, ...res.data.articleList];
+				})
+			},
+			getUserList() {
+				let _this = this;
+				let params = {
+					searchText: this.searchText,
+					size: this.userSize
+				}
+				searchUser().then(res => {
+					_this.userList = res.data.userList;
 				})
 			}
 
@@ -205,27 +213,35 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.search {
 		background-color: #f7f7f7;
 	}
 
 	.nodate,
 	.search-user,
-	.search-article {
+	.search-article,
+	.search-header {
 		background-color: #fff;
 	}
 
 	.search-header {
+		position: fixed;
 		height: 110rpx;
+		width: 100%;
 		line-height: 100rpx;
 		background-color: #fff;
-		border-bottom: 1px solid #f0f0f0;
+		border-bottom: 1rpx solid #f0f0f0;
+		z-index: 10;
 	}
 
 	.search-input {
 		width: 90%;
 		margin: auto;
+	}
+
+	.content {
+		padding-top: 110rpx;
 	}
 
 	.nodate {
@@ -235,7 +251,6 @@
 	.search-user {
 		width: 100%;
 		padding: 30rpx;
-		border-bottom: 1px solid #f0f0f0;
 	}
 
 	.user-list {
@@ -255,10 +270,14 @@
 		border-radius: 50%;
 	}
 
+	.divide {
+		height: 30rpx;
+		border-top: 1rpx solid #f0f0f0;
+		border-bottom: 1rpx solid #f0f0f0;
+	}
+
 	.search-article {
-		margin-top: 30rpx;
 		padding: 20rpx 30rpx 0 30rpx;
-		border-top: 1px solid #f0f0f0;
 	}
 
 	.user-item .username {
@@ -271,5 +290,10 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+
+	>>>.uni-load-more .uni-load-more__img {
+		height: 30rpx !important;
+		width: 30rpx !important;
 	}
 </style>

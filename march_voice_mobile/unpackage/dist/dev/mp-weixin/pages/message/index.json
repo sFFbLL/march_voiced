@@ -2,6 +2,7 @@
   "navigationBarTitleText": "消息",
   "navigationStyle": "custom",
   "usingComponents": {
-    "tabs": "/marchVoiceComponents/tabCard"
+    "tabs": "/marchVoiceComponents/tabCard",
+    "article-content": "/marchVoiceComponents/showArticle/childComponents/artilceContent"
   }
 }

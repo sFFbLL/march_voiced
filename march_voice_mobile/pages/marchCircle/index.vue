@@ -19,28 +19,35 @@
 		</view>
 
 		<!-- 三月圈内容 -->
-		<view class="wrap" @click="toDetail()">
+		<view class="wrap">
 			<!-- 间隔槽 -->
-			<u-gap height="30" bg-color="#f5f5f5"></u-gap>
-			<view class="ideacontent">
-
-				<!-- 用户头像公共组件 -->
-				<attentionAndFansCell :showDteial="false" :showDate='false'></attentionAndFansCell>
-				<!-- 想法的文字部分 -->
-				<articleContent :articleContent="ideasList.content"></articleContent>
-				<!-- 想法的图片部分组件 -->
-				<imageAdaptation :imgList="imgList" ></imageAdaptation>
-				<!-- 点赞表情组件 -->
-				<emojiControl :emojiList="emojiList"></emojiControl>
+			<view v-for="item in ideasList">
+				<u-gap height="30" bg-color="#f5f5f5"></u-gap>
+				<view class="ideacontent">
+					<!-- 用户头像公共组件 -->
+					<attentionAndFansCell :nickname="item.user.nickname" :avatarPath="item.user.avatarPath" :isFollow="item.user.isFollow"></attentionAndFansCell>
+					<!-- 想法的文字部分 -->
+					<articleContent :articleContent="item.content" @click="toDetail(item.id)"></articleContent>
+					<!-- 想法的图片部分组件 -->
+					<imageAdaptation :imgList="imgList"></imageAdaptation>
+					<!-- 点赞表情组件 -->
+					<emojiControl :emojiList="emojiList"></emojiControl>
+				</view>
 			</view>
+
 		</view>
+		<view v-show="isLoadMore">
+			<uni-load-more :status="loadStatus"></uni-load-more>
+		</view>
+		<!-- 微信分享遮罩层 -->
 		<view class="mcover" @click="isshow()" :style="{display:mcoverDisplay}">
 			<image src="https://oscimg.oschina.net/oscnet/fd2170a448e37826ae9f4d7088f287b8f24.jpg" />
 		</view>
 		<!-- 发布三月圈悬浮按钮 -->
-		<view  v-if="sanyueMumber" @click="publish()" class="publishbtn">
+		<view v-if="sanyueMumber" @click="publish()" class="publishbtn">
 			<uni-icons class="addicon" type="plusempty" size="43" color="white"></uni-icons>
 		</view>
+		
 	</view>
 </template>
 
@@ -55,9 +62,16 @@
 	import imageAdaptation from '../../marchVoiceComponents/marchCircle/imageAdaptation.vue'
 	import * as jwx from '../../utils/jws.js'
 	import articleContent from '../../marchVoiceComponents/showArticle/childComponents/artilceContent.vue'
+	import {
+		check
+	} from '../../utils/checkUnRead.js'
 	export default {
 		data() {
 			return {
+				isLoadMore: false, //是否加载中
+				loadStatus: 'loading',
+				current: 1,
+				size: 10,
 				sanyueMumber: true,
 				isjoin: '加入',
 				disabledJoin: false,
@@ -82,14 +96,14 @@
 					commentTotal: 0,
 				},
 				imgList: [
-					'../../static/img/cat.jpg','../../static/img/cat.jpg',
-					'../../static/img/cat.jpg','../../static/img/cat.jpg',
-					'../../static/img/cat.jpg','../../static/img/cat.jpg',
-					'../../static/img/cat.jpg','../../static/img/cat.jpg',
+					'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+					'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+					'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+					'../../static/img/cat.jpg', '../../static/img/cat.jpg',
 					'../../static/img/cat.jpg'
 				],
-				ideasList: {
-					id:6,
+				ideasList: [{
+					id: 6,
 					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
 					upDateTime: '2020/12/12',
 					faceTotal: 2,
@@ -102,10 +116,27 @@
 					user: {
 						nickname: "xianer",
 						id: 0,
-						avatarPath: '',
+						avatarPath: '../../static/img/cat.jpg',
 						isFollow: 0
 					}
-				}
+				}, {
+					id: 6,
+					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+					upDateTime: '2020/12/12',
+					faceTotal: 2,
+					likeTotal: 3,
+					favourTotal: 42,
+					commentTotal: 0,
+					imgList: [
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg'
+					],
+					user: {
+						nickname: "xianer",
+						id: 0,
+						avatarPath: '../../static/img/cat.jpg',
+						isFollow: 0
+					}
+				}]
 
 
 			}
@@ -116,6 +147,14 @@
 			imageAdaptation,
 			articleContent
 		},
+		//上拉触底函数
+		onReachBottom() {
+			if (!this.isLoadMore ) { //此处判断，上锁，防止重复请求
+				this.isLoadMore = true
+				this.current += 1
+				this.getCircleList();
+			} 
+		},
 		created() {
 			// 获取三月基本信息接口
 			// getMarchCircleInfo().then(res=>{
@@ -124,29 +163,51 @@
 			if (this.marchCircleInfo.ismarch == 0) {
 				this.sanyueMumber = false;
 			}
+			let params = {
+				current: this.current,
+				size: this.size
+			}
+			
 
-			// 获取想法列表接口
-			// marchCircleList().then(res=>{
-			// 	this.ideasList=res.data;
-			// 	this.emojiList.faceTotal=this.ideasList.faceTotal;
-			// 	this.emojiList.favourTotal=this.ideasList.favourTotal;
-			// 	this.emojiList.likeTotal=this.ideasList.likeTotal;
-			// 	this.emojiList.commentTotal=this.ideasList.commentTotal;
-			// 	this.imgList=this.ideasList.imgList;
-
-			// })
-uni.showTabBarRedDot({
-				index:3
-			})
-
-
+		},
+		onShow() {
+			check()
 		},
 		mounted() {},
 		methods: {
+			
+			// 获取三月圈列表
+			// 获取想法列表接口
+			getCircleList(){
+				let _this = this;
+				// marchCircleList(params).then(res=>{
+				// this.ideasList=[...this.ideasList,...res.data];
+				// this.emojiList.faceTotal=this.ideasList.faceTotal;
+				// this.emojiList.favourTotal=this.ideasList.favourTotal;
+				// this.emojiList.likeTotal=this.ideasList.likeTotal;
+				// this.emojiList.commentTotal=this.ideasList.commentTotal;
+				// this.imgList=this.ideasList.imgList;
+				// if(res.data.length<=_this.size){
+				// 	_this.loadStatus='nomore';
+				// }
+			
+			// })
+			
+			if (this.ideasList.length > 16) {
+				_this.loadStatus = "nomore";
+			} else if (this.current === 1) {
+				_this.isLoadMore = false;
+			} else {
+				setTimeout(function() {
+					_this.isLoadMore = false;
+				}, 2000);
+			}
+			},
+			
 			// 跳转详情页面
-			toDetail() {
+			toDetail(id) {
 				uni.navigateTo({
-					url: '../ideaDetails/index?id='+this.ideasList.id
+					url: '../ideaDetails/index?id=' + id
 				})
 			},
 			// 调用微信接口分享内容
@@ -184,8 +245,8 @@ uni.showTabBarRedDot({
 </script>
 
 <style>
-		/* 发布想法的按钮 */
-	.publishbtn{
+	/* 发布想法的按钮 */
+	.publishbtn {
 		border-radius: 50%;
 		width: 100rpx;
 		height: 100rpx;
@@ -196,10 +257,12 @@ uni.showTabBarRedDot({
 		right: 30rpx;
 		/* background-image: linear-gradient(to top, #4481eb 0%, #04befe 100%); */
 		background-image: linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%);
-		}
-		.addicon{
-			margin-left: 8rpx;
-		}
+	}
+
+	.addicon {
+		margin-left: 8rpx;
+	}
+
 	/* 微信分享 遮罩层*/
 	.mcover {
 		position: fixed;
@@ -257,7 +320,7 @@ uni.showTabBarRedDot({
 
 	.wrap {
 		background-color: #F5F5F5;
-		height: 100vh;
+		/* height: 100vh; */
 	}
 
 	/* 头部样式 */

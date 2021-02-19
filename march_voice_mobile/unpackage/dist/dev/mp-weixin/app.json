@@ -11,8 +11,12 @@
     "pages/fans/index",
     "pages/attention/index",
     "pages/collect/index",
+    "pages/publish/richTextEditor",
     "pages/pcLogin/pcLogin",
-    "pages/pcPublish/pcPublish"
+    "pages/pcPublish/pcPublish",
+    "pages/ideaPublish/index",
+    "pages/search/index",
+    "pages/search/searchUser"
   ],
   "subPackages": [],
   "window": {

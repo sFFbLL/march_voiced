@@ -9,8 +9,13 @@
 	border: none;
 	padding: 0;
 }
- .article-title{
+ .article-title {
 	margin-top: 17rpx;
 }
-
+.followMessage {
+	padding-top: 6rpx;
+	font-size: 26rpx;
+	width: 420rpx;
+	color: #969696;
+}
 

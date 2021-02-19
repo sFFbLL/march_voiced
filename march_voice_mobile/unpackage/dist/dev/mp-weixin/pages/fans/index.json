@@ -1,6 +1,8 @@
 {
   "navigationBarTitleText": "粉丝",
   "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50,
   "usingComponents": {
     "uni-list": "/components/uni-list/uni-list",
     "attention-and-fans-cell": "/marchVoiceComponents/attentionAndFansCell",

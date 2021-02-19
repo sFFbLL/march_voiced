@@ -63,6 +63,8 @@
  		// setTimeout(() => {
  		this.active = true;
  		// }, 500);
+			check()
+		
  	},
  	onHide() {
  		this.active = false;

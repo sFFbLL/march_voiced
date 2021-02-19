@@ -1,4 +1,6 @@
 {
+
+
 	"easycom": {
 		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
 	},
@@ -159,22 +161,13 @@
 				"selectedIconPath": "static/img/circle1.png",
 				"text": "三月圈"
 			},
-			//#ifdef MP-WEIXIN
 			{
 				"pagePath": "pages/publish/index",
 				"iconPath": "static/img/publish.png",
 				"selectedIconPath": "static/img/publish1.png",
 				"text": "发布"
 			},
-			//#endif
-			//#ifndef MP-WEIXIN
-			{
-				"pagePath": "pages/publish/index",
-				"iconPath": "static/img/publish.png",
-				"selectedIconPath": "static/img/publish1.png",
-				"text": "发布"
-			},
-			//#endif
+		
 			{
 				"pagePath": "pages/message/index",
 				"iconPath": "static/img/message.png",

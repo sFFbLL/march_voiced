@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 <view class="edit_container data-v-2c26eea2"><quill-editor vue-id="53a50e37-1" options="{{editorOption}}" data-ref="myQuillEditor" value="{{content}}" data-event-opts="{{[['^blur',[['onEditorBlur',['$event']]]],['^focus',[['onEditorFocus',['$event']]]],['^change',[['onEditorChange',['$event']]]],['^input',[['__set_model',['','content','$event',[]]]]]]}}" bind:blur="__e" bind:focus="__e" bind:change="__e" bind:input="__e" class="data-v-2c26eea2 vue-ref" bind:__l="__l"></quill-editor></view>
+=======
+<view class="_div"></view>
+>>>>>>> cbf8e9606b519967fb8ea30db91ea0bd400bf243

@@ -56,24 +56,24 @@
 	export default {
 		props: {
 			// 用于事件
-			id:{
-				type:String,
-				default:null
+			id: {
+				type: Number,
+				default: null
 			},
 			// 显示昵称
-			nickname:{
-				type:String,
-				default:"昵称"
+			nickname: {
+				type: String,
+				default: "昵称"
 			},
 			// 显示头像
-			avatarPath:{
-				type:String,
+			avatarPath: {
+				type: String,
 				default: null
 			},
 			// 是否关注
-			isFollow:{
-				type:Number,
-				default:null
+			isFollow: {
+				type: Number,
+				default: null
 			},
 		},
 		data() {
@@ -140,7 +140,7 @@
 	/* 中部文字盒子样式 */
 	.middle-text-box {
 		align-items: center;
-		flex: 5;
+		flex: 6;
 		display: flex;
 	}
 

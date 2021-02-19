@@ -5,9 +5,9 @@
 			<view class="head-nav-item" v-for="(item,index) in tabs" :key="item.index" :class="item.isActive ? 'active' : ''"
 			 @click="handlerActive(item.index)">
 				<view class="center">{{item.value}}
-				<u-badge v-if="(item.index==0&&iread!=0)" :is-dot="true" type="error"></u-badge>
-					<u-badge v-if="(item.index==1&&aread!=1)" :is-dot="true" type="error"></u-badge>
-					<u-badge v-if="item.index==2&&oread!=2" :is-dot="true" type="error"></u-badge>
+					<u-badge v-if="item.index==0&&interactRead==false&&type" :is-dot="true" type="error"></u-badge>
+					<u-badge v-if="item.index==1&&attentionRead==false&&type" :is-dot="true" type="error"></u-badge>
+					<u-badge v-if="item.index==2&&otherRead==false&&type" :is-dot="true" type="error"></u-badge>
 					<view class="head-nav-bottom"></view>
 				</view>
 			</view>
@@ -21,61 +21,66 @@
 	export default {
 		data() {
 			return {
-				aread:-1,
-				oread:-1,
-				iread:-1
-				
+
 			};
 		},
+
 		props: {
 			tabs: {
 				type: Array,
 				default: []
 			},
-			otherRead: {
-				type: Boolean,
-				default: false
-			},
-			attentionRead: {
-				type: Boolean,
-				default: false
-			},
-			interactRead: {
-				type: Boolean,
-				default: false
-			},
-			
+			type: {
+				type: Boolean
+			}
 		},
 		methods: {
 			handlerActive(index) {
-				if(index==1&&this.attentionRead==false){
-					this.aread=1;
-					this.$emit('attentionRead',true)
-				}else if(index==2){
-					this.oread=2;
-					this.$emit('otherRead',true)
-				}else if(index==0){
-						this.iread=0;
-						this.$emit('interactRead',true)
+				if (index == 0) {
+					// 消除红点
+					this.$store.commit('changeInteract', 1);
+				
+				} else if (index == 1) {
+					// 消除红点
+					this.$store.commit('changeAttention', 1);
+					
+				} else if (index == 2) {
+					// 消除红点
+					this.$store.commit('changeOther', 1);
+					
 				}
+
 				this.$emit('tabActive', index);
+			}
+		},
+		computed: {
+			interactRead() {
+				return this.$store.state.interactRead;
+			},
+			attentionRead() {
+				return this.$store.state.attentionRead;
+			},
+			otherRead() {
+				return this.$store.state.otherRead;
 			}
 		},
 		mounted() {},
 		created() {
-
+			
 		}
 	}
 </script>
 
 <style lang="scss">
 	.head-nav {
+
 		display: -webkit-flex;
 		display: flex;
 		overflow: hidden;
 		height: 100%;
 
 		.head-nav-item {
+
 			flex: 1;
 			text-align: center;
 			font-size: 34rpx;
@@ -89,6 +94,7 @@
 	.head-nav-item .center {
 		position: relative;
 		margin: auto;
+		width: 228rpx;
 	}
 
 
