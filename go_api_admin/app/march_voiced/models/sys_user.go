@@ -31,21 +31,30 @@ type User struct {
 	Signature    string `json:"signature"` // 个签
 }
 
+type UserIn struct {
+	Id         int    `json:"id"`
+	AvatarPath string `json:"avatar_path"`
+	NickName   string `json:"nick_name"`
+	IsFollow   int    `json:"isFollow"`
+	Signature  string `json:"signature"`
+}
+
 // SysUser用户表名
 func (u *User) TableName() string {
 	return `sys_user`
 }
 
 // SelectUserInfo 查询用户基本信息
-func (u *User) SelectUserInfo(id int) error {
-	err := global.Eloquent.Table(u.TableName()).Where("is_deleted=? AND id=?", []byte{0}, id).Find(u).Error
+func (u *User) SelectUserInfo(id int) (userIn *UserIn, err error) {
+	userIn = new(UserIn)
+	err = global.Eloquent.Table(u.TableName()).Where("is_deleted=? AND id=?", []byte{0}, id).Find(userIn).Error
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return
 }
 
-//
+// GetUserCollect 用戶的文章收藏數
 func (u *User) GetUserCollect(id int) (count int64, err error) {
 	err = global.Eloquent.Table(`article_collect`).Where("is_deleted=? AND create_by=?", []byte{0}, id).Count(&count).Error
 	if err != nil {

@@ -1,10 +1,12 @@
 package apis
 
 import (
+	"fmt"
 	"project/app/march_voiced/models/dto"
 	"project/app/march_voiced/service"
 	"project/common/api"
 	"project/utils/app"
+	"strconv"
 
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
@@ -32,6 +34,7 @@ func AddArticleComment(c *gin.Context) {
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
 		return
 	}
+	fmt.Printf("%#v", p.ID)
 	if err := c.ShouldBindJSON(p); err != nil {
 		// 请求参数有误，直接返回响应
 		zap.L().Error("comment bind params failed", zap.String("username", user.Username))
@@ -66,9 +69,8 @@ func AddArticleComment(c *gin.Context) {
 // @Param object body dto.DeleteArticleComment false "查询参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseSuccess
-// @Router /api/comment/article [delete]
+// @Router /api/comment/article/:id [delete]
 func DeleteArticleComment(c *gin.Context) {
-	p := new(dto.DeleteArticleComment)
 	// 获取上下文信息
 	user, err := api.GetUserMessage(c)
 	if err != nil {
@@ -76,10 +78,9 @@ func DeleteArticleComment(c *gin.Context) {
 		zap.L().Error("DeleteArticleComment failed", zap.Error(err))
 		return
 	}
-	if err := c.ShouldBindJSON(&p); err != nil {
-		// 请求参数有误，直接返回响应
-		zap.L().Error("comment bind params failed", zap.String("username", user.Username), zap.Error(err))
-		c.Error(err)
+	IdS := c.Param("id")
+	id, err := strconv.Atoi(IdS)
+	if err != nil {
 		_, ok := err.(validator.ValidationErrors)
 		if !ok {
 			app.ResponseError(c, app.CodeParamIsInvalid)
@@ -88,7 +89,7 @@ func DeleteArticleComment(c *gin.Context) {
 		app.ResponseSuccess(c, app.CodeParamNotComplete)
 		return
 	}
-	if err = co.DeleteArticleComment(user.UserId, p.ID); err != nil {
+	if err = co.DeleteArticleComment(user.UserId, id); err != nil {
 		c.Error(err)
 		zap.L().Error("delete article comment failed", zap.String("Username", user.Username), zap.Error(err))
 		return
@@ -124,7 +125,7 @@ func GetArticleComment(c *gin.Context) {
 			app.ResponseError(c, app.CodeParamIsInvalid)
 			return
 		}
-		app.ResponseSuccess(c, app.CodeParamNotComplete)
+		app.ResponseError(c, app.CodeParamNotComplete)
 		return
 	}
 	// 业务逻辑处理
