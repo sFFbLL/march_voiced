@@ -4,6 +4,7 @@ import (
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
 	"project/common/global"
+	"project/utils"
 
 	"go.uber.org/zap"
 )
@@ -17,13 +18,21 @@ type Article struct {
 	Status      *uint8 `json:"status" gorm:"size:2;"`
 	IsRecommend *uint8 `json:"is_recommend" gorm:"size:1;DEFAULT:0;"`
 	Type        uint   `json:"type" gorm:""`
-	CreatBy     uint   `json:"creat_by" gorm:""`
+	CreateBy    uint   `json:"create_by" gorm:""`
 	UpdateBy    uint   `json:"update_by" gorm:""`
 	BaseModel
 }
 
 func (a *Article) TableName() string {
 	return `article`
+}
+
+func (a *Article) ArticleCountByUserId(id int) (count int64, err error) {
+	err = global.Eloquent.Table(a.TableName()).Where("create_by = ? AND is_deleted = 0", id).Count(&count).Error
+	if err != nil {
+		zap.L().Error("ArticleCountByUserId "+utils.IntToString(id)+" Failed", zap.Error(err))
+	}
+	return
 }
 
 func (a *Article) GetArticle() (err error) {
@@ -47,8 +56,7 @@ func (a *Article) UpdateArticle() (err error) {
 	return
 }
 
-func (a *Article) ArticleDetail(id int, userId int) (userMsg bo.UserMsg, total [3]int64, err error) {
-	totalString := [3]string{"article_collect", "article_comment", "article_favour"}
+func (a *Article) ArticleDetail() (userMsg bo.UserMsg, err error) {
 
 	// 获取文章信息
 	err = global.Eloquent.Table(a.TableName()).Where("id = ? AND is_deleted = 0", a.ID).First(a).Error
@@ -67,40 +75,21 @@ func (a *Article) ArticleDetail(id int, userId int) (userMsg bo.UserMsg, total [
 	}
 
 	// 获取用户信息
-	err = global.Eloquent.Table("sys_user").Select("id, nick_name, avatar_path").Where("id = ? AND is_deleted = 0", a.CreatBy).First(&userMsg).Error
+	err = global.Eloquent.Table("sys_user").Select("sys_user.id AS user_id, nick_name, avatar_path").Where("id = ? AND is_deleted = 0", a.CreateBy).Find(&userMsg).Error
 	if err != nil {
 		zap.L().Error("ArticleDetail Select articleUser failed", zap.Error(err))
 		return
 	}
 
-	// 是否关注
-	if uint(userId) != a.CreatBy {
-		var count int64
-		err = global.Eloquent.Table("follow").Where("follow_id = ? AND creat_by = ? AND is_deleted = 0", a.CreatBy, userId).Count(&count).Error
-		if err != nil {
-			zap.L().Error("ArticleDetail Select IsFollow failed", zap.Error(err))
-			return
-		}
-		if count > 0 {
-			userMsg.IsFollow = 1
-		}
-	}
-
-	// 获取文章total信息
-	for i, v := range totalString {
-		err = global.Eloquent.Table(v).Where("article_id = ? AND is_deleted = 0", id).Count(&total[i]).Error
-		if err != nil {
-			zap.L().Error("ArticleDetail Select total "+v+" failed", zap.Error(err))
-			return
-		}
-	}
-
 	return
 }
 
-func (a *Article) TopArticleList(paging dto.Paging) (articleArray *[]Article, err error) {
-	articleArray = new([]Article)
-	err = global.Eloquent.Table(a.TableName()).Where("is_deleted = 0 AND is_recommend = 1 AND type = 0 AND status = 1").
+func (a *Article) TopArticleList(paging dto.Paging) (articleArray *[]bo.Article, err error) {
+	articleArray = new([]bo.Article)
+	err = global.Eloquent.Table(a.TableName()).
+		Where("article.is_deleted = 0 AND article.is_recommend = 1 AND article.type = 0 AND article.status = 1").
+		Select("article.id, article.title, article.content, article.image, article.tag, article.kind, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.id AS user_id, sys_user.nick_name, sys_user.avatar_path").
+		Joins("JOIN sys_user ON article.create_by = sys_user.id").
 		Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(articleArray).Error
 	return
 }
