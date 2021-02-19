@@ -74,7 +74,11 @@
 </template>
 
 <script>
-	// import {getUserInfo,getUserArticleList,getUserIdeaList} from 
+	import {
+		getUserInfo,
+		getUserArticleList,
+		getUserIdeaList
+	} from '@/utils/api/personalCenter-api.js'
 	import attentionAndFansCell from "../../marchVoiceComponents/attentionAndFansCell.vue"
 	import tabCarb from '../../marchVoiceComponents/tabCard.vue'
 	import recommend from '../../marchVoiceComponents/showArticle/recommend.vue'
@@ -217,7 +221,7 @@
 				emojiList: {
 					faceTotal: 0,
 					likeTotal: 6,
-					favourTotal: 10,
+					favourTotal: 0,
 					commentTotal: 0,
 				},
 				tabs: [{
@@ -287,19 +291,25 @@
 				this.tabIndex = tabIndex;
 			},
 			getUserInfo() {
+				/* let _this = this;
 				let params = {
 					id: 1
 				}
-				getFollow(params).then(res => {
-					_this.recommendList = [..._this.recommend, ...res.data];
-					if (res.data.length <= _this.size) {
-						_this.loadStatus = nomore;
-					}
-				})
+				getUserInfo(params).then(res => {
+					_this.userInfo = res.data;
+				}) */
 				this.userInfo = this.userInfo1;
 			},
 			getIdeaList() {
 				let _this = this;
+				/* let params = {
+					id: 1,
+					current: _this.ideaCurrent,
+					size: _this.size
+				}
+				getUserIdeaList(params).then(res => {
+					_this.ideaList = [..._this.ideaList, ...res.data];
+				}) */
 				if (this.ideaList.length > 7) {
 					_this.loadStatus = "nomore";
 					_this.ideaLoadStatus = "nomore";
@@ -315,6 +325,15 @@
 			},
 			getDraftList() {
 				let _this = this;
+				/* let params = {
+					id: 1,
+					current: _this.ideaCurrent,
+					size: _this.size,
+					kind: 1
+				}
+				getUserArticleList(params).then(res => {
+					_this.draftList = [..._this.draftList, ...res.data];
+				}) */
 				if (this.draftList.length > 10) {
 					_this.loadStatus = "nomore";
 					_this.draftLoadStatus = "nomore";
@@ -330,6 +349,15 @@
 			},
 			getArticleList() {
 				let _this = this;
+				/* let params = {
+					id: 1,
+					current: _this.ideaCurrent,
+					size: _this.size,
+					kind: 2
+				}
+				getUserArticleList(params).then(res => {
+					_this.articleList = [..._this.articleList, ...res.data];
+				}) */
 				if (this.articleList.length > 10) {
 					_this.loadStatus = "nomore";
 					_this.articleLoadStatus = "nomore";

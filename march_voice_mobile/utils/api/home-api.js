@@ -1,4 +1,5 @@
-import request from '@/utils/request.js'
+import Axios from '@/utils/request.js'
+import baseUrl from '../env.js'
 /**
  * 获取推荐文章接口
  * @param {Object} params {页码 页大小}

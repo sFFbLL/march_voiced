@@ -30,8 +30,7 @@
 	  import {
 	  	getTags
 	  } from '@/utils/api/publish-api.js';
-import {check} from '../../utils/checkUnRead.js';
-
+	  import {check} from '../../utils/checkUnRead.js';
  export default {
  	data() {
  		return {
