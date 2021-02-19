@@ -1,1 +1,0 @@
-<view data-event-opts="{{[['tap',[['articleDetails',['$event']]]]]}}" class="article-title" bindtap="__e"><view><text class="article-text"><rich-text nodes="{{articleTitle}}"></rich-text></text></view></view>

@@ -1,10 +1,11 @@
-import request from '@/utils/request.js'
+import Axios from '@/utils/request.js'
+import baseUrl from '../env.js'
 /**
  * 获取个人主页用户信息接口
  * @param {Object} params {id}
  */
 export function getUserInfo (params) {
-	return Axios.get(baseUrl + '/api/user/ingo/:id' {
+	return Axios.get(baseUrl + '/api/user/ingo', {
 		params: params,
 	})
 }
@@ -14,7 +15,7 @@ export function getUserInfo (params) {
  * @param {Object} params {id,current,size,kind}
  */
 export function getUserArticleList (params) {
-	return Axios.get(baseUrl + '/api/article/user' {
+	return Axios.get(baseUrl + '/api/article/user', {
 		params: params,
 	})
 }
@@ -24,7 +25,7 @@ export function getUserArticleList (params) {
  * @param {Object} params {id,current,size}
  */
 export function getUserIdeaList (params) {
-	return Axios.get(baseUrl + '/api/march/user' {
+	return Axios.get(baseUrl + '/api/march/user', {
 		params: params,
 	})
 }

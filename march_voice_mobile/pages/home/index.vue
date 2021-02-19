@@ -91,11 +91,8 @@
 			check()
 		},
 		onLoad() {
-			if (!this.tabIndex) {
 				this.recommend();
-			} else {
 				this.follow();
-			}
 		},
 
 		onReachBottom() { //上拉触底函数
@@ -117,10 +114,10 @@
 				})
 				if (!tabIndex) {
 					this.loadStatus = this.recommendLoadStatus;
-					this.isLoadMore=false;
+					this.isLoadMore = false;
 				} else if (tabIndex) {
 					this.loadStatus = this.followLoadStatus;
-					this.isLoadMore=false
+					this.isLoadMore = false;
 				}
 				this.tabIndex = tabIndex;
 			},
