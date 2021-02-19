@@ -1,0 +1,17 @@
+
+.search-header {
+	height: 110rpx;
+	line-height: 100rpx;
+}
+.search-input {
+	width: 90%;
+	margin: auto;
+}
+.searchUser {
+	width: 100%;
+	height: 100rpx;
+}
+.userList {
+	display: inline-block;
+}
+

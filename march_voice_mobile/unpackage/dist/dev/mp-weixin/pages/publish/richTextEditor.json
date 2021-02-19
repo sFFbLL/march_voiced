@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "富文本编辑器",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "quill-editor": "/node-modules/vue-quill-editor/dist/vue-quill-editor"
+  }
+}
