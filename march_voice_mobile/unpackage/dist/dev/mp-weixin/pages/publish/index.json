@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "编辑",
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "publish-type-card": "/marchVoiceComponents/publishTypeCard"
-  }
-}
