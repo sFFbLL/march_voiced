@@ -4,6 +4,7 @@ import (
 	"project/app/march_voiced/models"
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
+	"project/utils/sensitiveWord"
 	"sort"
 	"sync"
 
@@ -214,5 +215,24 @@ func goArticleMsg(articleCh *chan *bo.Article, wg *sync.WaitGroup, userId int, a
 	// 管道放数据
 	*articleCh <- &articleMsg
 	wg.Done()
+	return
+}
+
+// MatchSensitiveWord  文章敏感词匹配
+func (a *Article) MatchSensitiveWord(id int) (res *bo.WordRes, err error) {
+	article := new(models.Article)
+	// 获取文章
+	content, err := article.GetArticleContent(id)
+	if err != nil {
+		return nil, err
+	}
+	// 匹配敏感词库
+	data, err := sensitiveWord.Check(content)
+	if err != nil {
+		return nil, err
+	}
+
+	res = new(bo.WordRes)
+	res.Sensitive = *data
 	return
 }

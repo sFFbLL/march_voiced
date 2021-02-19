@@ -19,6 +19,7 @@ func articleAuthRouter(v1 *gin.RouterGroup) {
 		r.PUT("", apis.UpdateArticleHandler)
 		r.POST("reprint", apis.ReprintArticleHandler)
 		r.GET("top", apis.TopArticleListHandler)
+		r.GET("word", apis.MatchSensitiveWord)
 	}
 
 }

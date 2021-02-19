@@ -16,12 +16,12 @@ var mc = new(service.MarchsoftComment)
 // AddMarchsoftComment	新增文章评论
 // @Summary 新增文章评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：评论管理 Comment Controller
+// @Tags 三月圈：评论管理 Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object body dto.AddMarchsoftComment false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseMarchsoftComment
+// @Success 200 {object} models._ResponseSuccess
 // @Router /api/comment/marchsoft [post]
 func AddMarchsoftComment(c *gin.Context) {
 	p := new(dto.AddMarchsoftComment)
@@ -56,15 +56,15 @@ func AddMarchsoftComment(c *gin.Context) {
 	app.ResponseSuccess(c, nil)
 }
 
-// DeleteMarchsoftComment 删除文章详情页的评论
-// @Summary 删除文章详情页的评论
+// DeleteMarchsoftComment 删除评论
+// @Summary 删除评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：详情页评论 comment Controller
+// @Tags 三月圈：评论管理 Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object body int false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseMarchsoftComment
+// @Success 200 {object} models._ResponseSuccess
 // @Router /api/comment/marchsoft [delete]
 func DeleteMarchsoftComment(c *gin.Context) {
 	p := new(dto.DeleteMarchsoftComment)
@@ -95,15 +95,15 @@ func DeleteMarchsoftComment(c *gin.Context) {
 	app.ResponseSuccess(c, nil)
 }
 
-// GetMarchsoftComment 查询文章详情页的评论
+// GetMarchsoftComment 查询评论
 // @Summary 查询评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：评论管理 comment Controller
+// @Tags 三月圈：评论管理 Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query dto.GetMarchsoftComment false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseMarchsoftComment
+// @Success 200 {object} models._ResponseGetMarchsoftComment
 // @Router /api/comment/marchsoft [get]
 func GetMarchsoftComment(c *gin.Context) {
 	p := new(dto.GetMarchsoftComment)
@@ -138,15 +138,15 @@ func GetMarchsoftComment(c *gin.Context) {
 	app.ResponseSuccess(c, res)
 }
 
-// GetMarchsoftChildComment 查询文章详情页一父评论的全部子评论
-// @Summary 查询评论
+// GetMarchsoftChildComment 查询一父评论的size条子评论
+// @Summary 查询一父评论的size条子评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：评论管理 comment Controller
+// @Tags 三月圈：评论管理 Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query dto.GetMarchsoftChildComment false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseMarchsoftChildComment
+// @Success 200 {object} models._ResponseGetMarchsoftChildComment
 // @Router /api/comment/children/marchsoft [get]
 func GetMarchsoftChildComment(c *gin.Context) {
 	p := new(dto.GetMarchsoftChildComment)

@@ -20,6 +20,7 @@ func (mc *MarchsoftComment) AddMarchsoftComment(userId int, p *dto.AddMarchsoftC
 	comment.UpdateBy = uint(userId)
 	comment.CreateBy = uint(userId)
 	err = comment.AddMarchsoftComment()
+	go comment.AddMarchsoftCommentMessage(userId)
 	return
 }
 
@@ -103,10 +104,10 @@ func (mc *MarchsoftComment) GetMarchsoftComment(p *dto.GetMarchsoftComment) (res
 	return res, nil
 }
 
-// GetMarchsoftChildComment 查询文章详情页的某个一级评论下的所有子评论
-func (mc *MarchsoftComment) GetMarchsoftChildComment(p *dto.GetMarchsoftChildComment) (*bo.ChildrenArticleComment, error) {
+// GetMarchsoftChildComment 查询文章详情页的某个一级评论下的size条子评论
+func (mc *MarchsoftComment) GetMarchsoftChildComment(p *dto.GetMarchsoftChildComment) (*bo.ChildrenMarchsoftComment, error) {
 	comment := new(models.MarchsoftComment)
-	res := new(bo.ChildrenArticleComment)
+	res := new(bo.ChildrenMarchsoftComment)
 	if p.Size == 0 || p.Current == 0 {
 		return nil, errors.New("参数缺失")
 	} else {

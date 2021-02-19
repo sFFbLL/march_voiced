@@ -28,3 +28,13 @@ type UserMsg struct {
 	Nickname   string `json:"nickname" gorm:"column:nick_name"`
 	AvatarPath string `json:"avatarPath" gorm:"column:avatar_path"`
 }
+
+type WordRes struct {
+	Sensitive []SensitiveWord
+}
+
+type SensitiveWord struct {
+	Word    string `json:"word"`
+	Indexes []int  `json:"indexes"`
+	Length  int    `json:"length"`
+}

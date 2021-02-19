@@ -25,7 +25,7 @@ func (fo *Follow) TableName() string {
 func (fo *Follow) IsFollow(userId, followId int) (int, error) {
 	var count int64
 	var err error
-	err = global.Eloquent.Table("follow").Where("follow_id = ? AND create_by = ? AND is_deleted = 0", followId, userId).Count(&count).Error
+	err = global.Eloquent.Table(fo.TableName()).Where("follow_id = ? AND create_by = ? AND is_deleted = 0", followId, userId).Count(&count).Error
 	if err != nil {
 		zap.L().Error("IsFollow Select failed", zap.Error(err))
 		return 0, err

@@ -7,10 +7,6 @@ type AddArticleComment struct {
 	Pid     uint   `json:"pid"`      // 父评论id
 }
 
-type DeleteArticleComment struct {
-	ID int `json:"id"`
-}
-
 type GetArticleComment struct {
 	ID      int    `form:"id" binding:"required"`      // 文章id
 	Current int    `form:"current" binding:"required"` // 当前页
