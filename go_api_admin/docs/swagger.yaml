@@ -75,6 +75,8 @@ definitions:
         type: integer
       user_id:
         type: integer
+      word_count:
+        type: integer
     type: object
   bo.ArticleComment:
     properties:
@@ -96,6 +98,41 @@ definitions:
         type: integer
       reply_name:
         type: string
+    type: object
+  bo.ArticleUser:
+    properties:
+      collectTotal:
+        type: integer
+      commentTotal:
+        type: integer
+      content:
+        type: string
+      create_by:
+        type: integer
+      create_time:
+        type: integer
+      favourTotal:
+        type: integer
+      id:
+        type: integer
+      image:
+        type: string
+      isFollow:
+        type: integer
+      kind:
+        type: integer
+      tag:
+        type: integer
+      title:
+        type: string
+      type:
+        type: integer
+      update_by:
+        type: integer
+      update_time:
+        type: integer
+      word_count:
+        type: integer
     type: object
   bo.Children:
     properties:
@@ -860,6 +897,8 @@ definitions:
         type: string
       type:
         type: integer
+      word_count:
+        type: integer
     required:
     - content
     - kind
@@ -867,6 +906,7 @@ definitions:
     - tag
     - title
     - type
+    - word_count
     type: object
   dto.InsertDeptDto:
     properties:
@@ -957,6 +997,20 @@ definitions:
         type: integer
       size:
         type: integer
+    type: object
+  dto.SelectArticleByUser:
+    properties:
+      current:
+        type: integer
+      id:
+        type: integer
+      kind:
+        type: integer
+      size:
+        type: integer
+    required:
+    - id
+    - kind
     type: object
   dto.SelectChildIdDto:
     properties:
@@ -1054,11 +1108,14 @@ definitions:
         type: string
       type:
         type: integer
+      word_count:
+        type: integer
     required:
     - content
     - id
     - status
     - title
+    - word_count
     type: object
   dto.UpdateDeptDto:
     properties:
@@ -1225,6 +1282,32 @@ definitions:
     - password
     - username
     - uuid
+    type: object
+  models._Article:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.Article'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models._ArticleUser:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.ArticleUser'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
     type: object
   models._ResponseApplyMarchUser:
     properties:
@@ -1792,6 +1875,30 @@ paths:
       summary: 文章详情
       tags:
       - 应用：文章管理 Article Controller
+  /api/article/index:
+    get:
+      consumes:
+      - application/json
+      description: Author：Lbl 2021/02/17 获得身份令牌
+      parameters:
+      - in: query
+        name: current
+        type: integer
+      - in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._Article'
+      security:
+      - ApiKeyAuth: []
+      summary: 文章列表
+      tags:
+      - 应用：文章管理 Article Controller
   /api/article/reprint:
     post:
       consumes:
@@ -1839,6 +1946,38 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 推荐文章列表
+      tags:
+      - 应用：文章管理 Article Controller
+  /api/article/user:
+    get:
+      consumes:
+      - application/json
+      description: Author：Lbl 2021/02/17 获得身份令牌
+      parameters:
+      - in: query
+        name: current
+        type: integer
+      - in: query
+        name: id
+        required: true
+        type: integer
+      - in: query
+        name: kind
+        required: true
+        type: integer
+      - in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ArticleUser'
+      security:
+      - ApiKeyAuth: []
+      summary: 用户文章列表
       tags:
       - 应用：文章管理 Article Controller
   /api/article/word:

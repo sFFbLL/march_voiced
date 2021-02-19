@@ -20,6 +20,7 @@ func articleAuthRouter(v1 *gin.RouterGroup) {
 		r.POST("reprint", apis.ReprintArticleHandler)
 		r.GET("top", apis.TopArticleListHandler)
 		r.GET("word", apis.MatchSensitiveWord)
+		r.GET("/user", apis.SelectArticleListByUserId)
+		r.GET("/index", apis.SelectArticleListIndex)
 	}
-
 }

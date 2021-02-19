@@ -252,6 +252,46 @@ var doc = `{
                 }
             }
         },
+        "/api/article/index": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lbl 2021/02/17 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用：文章管理 Article Controller"
+                ],
+                "summary": "文章列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._Article"
+                        }
+                    }
+                }
+            }
+        },
         "/api/article/reprint": {
             "post": {
                 "security": [
@@ -328,6 +368,58 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models._ResponseTopArticleListHandler"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/article/user": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lbl 2021/02/17 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用：文章管理 Article Controller"
+                ],
+                "summary": "用户文章列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "kind",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ArticleUser"
                         }
                     }
                 }
@@ -3007,6 +3099,9 @@ var doc = `{
                 },
                 "user_id": {
                     "type": "integer"
+                },
+                "word_count": {
+                    "type": "integer"
                 }
             }
         },
@@ -3039,6 +3134,59 @@ var doc = `{
                 },
                 "reply_name": {
                     "type": "string"
+                }
+            }
+        },
+        "bo.ArticleUser": {
+            "type": "object",
+            "properties": {
+                "collectTotal": {
+                    "type": "integer"
+                },
+                "commentTotal": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "create_by": {
+                    "type": "integer"
+                },
+                "create_time": {
+                    "type": "integer"
+                },
+                "favourTotal": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "isFollow": {
+                    "type": "integer"
+                },
+                "kind": {
+                    "type": "integer"
+                },
+                "tag": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "update_by": {
+                    "type": "integer"
+                },
+                "update_time": {
+                    "type": "integer"
+                },
+                "word_count": {
+                    "type": "integer"
                 }
             }
         },
@@ -4152,7 +4300,8 @@ var doc = `{
                 "status",
                 "tag",
                 "title",
-                "type"
+                "type",
+                "word_count"
             ],
             "properties": {
                 "content": {
@@ -4174,6 +4323,9 @@ var doc = `{
                     "type": "string"
                 },
                 "type": {
+                    "type": "integer"
+                },
+                "word_count": {
                     "type": "integer"
                 }
             }
@@ -4310,6 +4462,27 @@ var doc = `{
                 }
             }
         },
+        "dto.SelectArticleByUser": {
+            "type": "object",
+            "required": [
+                "id",
+                "kind"
+            ],
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "kind": {
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.SelectChildIdDto": {
             "type": "object",
             "properties": {
@@ -4427,7 +4600,8 @@ var doc = `{
                 "content",
                 "id",
                 "status",
-                "title"
+                "title",
+                "word_count"
             ],
             "properties": {
                 "content": {
@@ -4452,6 +4626,9 @@ var doc = `{
                     "type": "string"
                 },
                 "type": {
+                    "type": "integer"
+                },
+                "word_count": {
                     "type": "integer"
                 }
             }
@@ -4703,6 +4880,42 @@ var doc = `{
                 },
                 "type": {
                     "description": "文件类型",
+                    "type": "string"
+                }
+            }
+        },
+        "models._Article": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.Article"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ArticleUser": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.ArticleUser"
+                },
+                "message": {
+                    "description": "提示信息",
                     "type": "string"
                 }
             }

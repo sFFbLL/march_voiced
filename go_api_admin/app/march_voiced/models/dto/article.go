@@ -1,29 +1,37 @@
 package dto
 
 type InsertArticleDto struct {
-	Title   string `json:"title" binding:"required"`
-	Content string `json:"content" binding:"required"`
-	Image   string `json:"image"`
-	Kind    uint8  `json:"kind" binding:"required"`
-	Tag     uint8  `json:"tag" binding:"required"`
-	Status  *uint8 `json:"status" binding:"required"`
-	Type    *uint  `json:"type" binding:"required"`
+	Title     string `json:"title" binding:"required"`
+	Content   string `json:"content" binding:"required"`
+	Image     string `json:"image"`
+	Kind      uint8  `json:"kind" binding:"required"`
+	Tag       uint8  `json:"tag" binding:"required"`
+	Status    *uint8 `json:"status" binding:"required,lte=1"`
+	Type      *uint  `json:"type" binding:"required"`
+	WordCount uint   `json:"word_count" binding:"required"`
 }
 
 type UpdateArticleDto struct {
-	Title   string `json:"title" binding:"required"`
-	Content string `json:"content" binding:"required"`
-	Image   string `json:"image"`
-	ID      uint   `json:"id"  binding:"required"`
-	Type    uint   `json:"type"`
-	Kind    uint8  `json:"kind"`
-	Tag     uint8  `json:"tag"`
-	Status  *uint8 `json:"status"  binding:"required"`
+	Title     string `json:"title" binding:"required"`
+	Content   string `json:"content" binding:"required"`
+	Image     string `json:"image"`
+	ID        uint   `json:"id"  binding:"required"`
+	Type      uint   `json:"type"`
+	WordCount uint   `json:"word_count" binding:"required"`
+	Kind      uint8  `json:"kind"`
+	Tag       uint8  `json:"tag"`
+	Status    *uint8 `json:"status" binding:"required,lte=1"`
 }
 
 type Paging struct {
-	Current int `json:"current"`
-	Size    int `json:"size"`
+	Current int `form:"current"`
+	Size    int `form:"size"`
+}
+
+type SelectArticleByUser struct {
+	Paging
+	ID   uint  `form:"id" binding:"required"`
+	Kind uint8 `form:"kind" binding:"required,lte=2"`
 }
 
 type ArticlePass struct {
