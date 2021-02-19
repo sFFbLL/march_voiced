@@ -7,6 +7,7 @@ import (
 	"project/common/api"
 	"project/utils"
 	"project/utils/app"
+	"strconv"
 
 	"go.uber.org/zap"
 
@@ -269,4 +270,40 @@ func TopArticleListHandler(c *gin.Context) {
 
 	// 成功返回状态
 	app.ResponseSuccess(c, articleList)
+}
+
+// MatchSensitiveWord 敏感词匹配
+// @Summary 敏感词匹配
+// @Description Author：YanSongWu 2021/02/18 获得身份令牌
+// @Tags 应用：文章管理 Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object query int false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseMatchSensitiveWord
+// @Router /api/article/word [get]
+func MatchSensitiveWord(c *gin.Context) {
+	// 获取上下文信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("GetUserMessage failed", zap.Error(err))
+		return
+	}
+
+	// 接收参数
+	id := c.Query("id")
+	idI, err := strconv.Atoi(id)
+	if err != nil {
+		zap.L().Error("MatchSensitiveWord failed", zap.String("username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamIsInvalid)
+		return
+	}
+	res, err := a.MatchSensitiveWord(idI)
+	if err != nil {
+		zap.L().Error("match sensitiveWord failed", zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+	// 返回响应
+	app.ResponseSuccess(c, res)
 }

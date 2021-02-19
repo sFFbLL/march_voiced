@@ -41,6 +41,11 @@ func (co *ArticleComment) AddArticleComment() (err error) {
 	return
 }
 
+//AddArticleCommentMessage 新增详情页的评论消息
+func (co *ArticleComment) AddArticleCommentMessage(userId int) {
+	AddMessage(0, 1, co.ArticleId, uint(userId), co.Content)
+}
+
 // DeleteArticleComment 删除详情页的评论
 func (co *ArticleComment) DeleteArticleComment() (err error) {
 	// 修改is_deleted为1

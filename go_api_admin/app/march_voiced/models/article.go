@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
 	"project/common/global"
@@ -92,4 +93,14 @@ func (a *Article) TopArticleList(paging dto.Paging) (articleArray *[]bo.Article,
 		Joins("JOIN sys_user ON article.create_by = sys_user.id").
 		Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(articleArray).Error
 	return
+}
+
+// GetArticleContent 根据id获取文章内容
+func (a *Article) GetArticleContent(id int) (content string, err error) {
+	err = global.Eloquent.Table(a.TableName()).Where("is_deleted=? AND id=?", []byte{0}, id).
+		Not("status", 0).First(&a).Error
+	if err != nil {
+		return "", errors.New("获取文章内容失败")
+	}
+	return a.Content, nil
 }

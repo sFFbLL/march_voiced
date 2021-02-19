@@ -17,12 +17,12 @@ var co = new(service.ArticleComment)
 // AddArticleComment	新增文章评论
 // @Summary 新增文章评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：评论管理 Comment Controller
+// @Tags 文章：评论管理 Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object body dto.AddArticleComment false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseArticleComment
+// @Success 200 {object} models._ResponseSuccess
 // @Router /api/comment/article [post]
 func AddArticleComment(c *gin.Context) {
 	p := new(dto.AddArticleComment)
@@ -60,12 +60,12 @@ func AddArticleComment(c *gin.Context) {
 // DeleteArticleComment 删除文章详情页的评论
 // @Summary 删除文章详情页的评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：详情页评论 comment Controller
+// @Tags 文章：详情页评论 comment Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object body int false "查询参数"
+// @Param object body dto.DeleteArticleComment false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseArticleComment
+// @Success 200 {object} models._ResponseSuccess
 // @Router /api/comment/article [delete]
 func DeleteArticleComment(c *gin.Context) {
 	p := new(dto.DeleteArticleComment)
@@ -97,14 +97,14 @@ func DeleteArticleComment(c *gin.Context) {
 }
 
 // GetArticleComment 查询文章详情页的评论
-// @Summary 查询评论
+// @Summary 查询文章详情页的评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：评论管理 comment Controller
+// @Tags 文章：评论管理 comment Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object query dto.GetArticleComment false "查询参数"
+// @Param object query string false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseArticleComment
+// @Success 200 {object} models._ResponseGetArticleComment
 // @Router /api/comment/article [get]
 func GetArticleComment(c *gin.Context) {
 	p := new(dto.GetArticleComment)
@@ -139,15 +139,15 @@ func GetArticleComment(c *gin.Context) {
 	app.ResponseSuccess(c, res)
 }
 
-// GetArticleChildComment 查询文章详情页一父评论的全部子评论
-// @Summary 查询评论
+// GetArticleChildComment 查询文章详情页一父评论size条子评论
+// @Summary 查询文章详情页一父评论size条子评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：评论管理 comment Controller
+// @Tags 文章：评论管理 comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query dto.GetArticleChildComment false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseArticleChildComment
+// @Success 200 {object} models._ResponseGetArticleChildComment
 // @Router /api/comment/children/article [get]
 func GetArticleChildComment(c *gin.Context) {
 	p := new(dto.GetArticleChildComment)
