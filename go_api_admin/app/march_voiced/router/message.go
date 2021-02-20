@@ -20,5 +20,6 @@ func messageAuthRouter(v1 *gin.RouterGroup) {
 		r.POST("user", apis.UnReadMessageRead)
 		// GetMessage 关注页面(动态)列表页
 		r.GET("follow", apis.GetMessage)
+		r.GET("user", apis.GetMessageMe)
 	}
 }

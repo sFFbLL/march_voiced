@@ -10,6 +10,17 @@ import (
 type Message struct {
 }
 
+// GetMessageMe 我的消息
+func (e *Message) GetMessageMe(p *dto.Paginator, userId int) (getMessage *bo.GetMessage, err error) {
+	message := new(models.Message)
+	getMessage = new(bo.GetMessage)
+	getMessageData := new([]bo.GetMessageData)
+	getMessage.Records = getMessageData
+	err = message.GetMessageMe(getMessage, p, userId)
+	getMessage.Pages = utils.PagesCount(int(getMessage.Total), int(p.Size))
+	return
+}
+
 // GetMessage 获取关注的人动态业务方法
 func (e *Message) GetMessage(p *dto.Paginator, userId int) (getMessage *bo.GetMessage, err error) {
 	message := new(models.Message)
