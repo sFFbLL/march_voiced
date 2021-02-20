@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "搜索",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-search": "/node-modules/uview-ui/components/u-search/u-search",
+    "u-empty": "/node-modules/uview-ui/components/u-empty/u-empty",
+    "u-section": "/node-modules/uview-ui/components/u-section/u-section",
+    "uni-load-more": "/components/uni-load-more/uni-load-more",
+    "search-article-item": "/marchVoiceComponents/showArticle/searchArticle"
+  }
+}

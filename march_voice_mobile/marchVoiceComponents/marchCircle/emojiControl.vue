@@ -9,24 +9,15 @@
 				<image class=" xiaoku"
 				 src="../../static/img/xiaoku.png"
 				 mode=""></image>
-
-				<span>{{emojiList.faceTotal}}</span>
+				<span>{{faceTotal}}</span>
 			</view>
-			<view class="emoji"
-			 :class="{'clickEmoji':clickLike}"
-			 @click="clickAni('like')">
-				<image class="aixin"
-				 src="../../static/img/aixin.png"
-				 mode=""></image>
-				<span>{{emojiList.likeTotal}}</span>
+			<view class="emoji" :class="{'clickEmoji':clickLike}" @click="clickAni('like')">
+				<image class="aixin" src="../../static/img/aixin.png" mode=""></image>
+				<span>{{likeTotal}}</span>
 			</view>
-			<view class="emoji"
-			 :class="{'clickEmoji':clickFavour,'isDisplay':favourDisplay}"
-			 @click="clickAni('favour')">
-				<image class="qingzhu"
-				 src="../../static/img/qingzhu.png"
-				 mode=""></image>
-				<span>{{emojiList.favourTotal}}</span>
+			<view class="emoji" :class="{'clickEmoji':clickFavour,'isDisplay':favourDisplay}" @click="clickAni('favour')">
+				<image class="qingzhu" src="../../static/img/qingzhu.png" mode=""></image>
+				<span>{{favourTotal}}</span>
 			</view>
 			<!-- 添加表情 -->
 			<view class="emoji"
@@ -56,13 +47,11 @@
 				</view>
 			</view>
 			<!-- 评论+评论数量 -->
-			<view class="comment"
-			 v-if="isShow">
-				<u-icon name="chat"
-				 color="#999999"
-				 size="40"
-				 class="chat"></u-icon>
-				<span class="commentTotal">{{emojiList.commentTotal}}</span>
+
+			<view class="comment" v-if="isShow">
+				<u-icon name="chat" color="#999999" size="40" class="chat"></u-icon>
+				<span class="commentTotal">{{commentTotal}}</span>
+
 
 			</view>
 		</view>
@@ -70,11 +59,26 @@
 </template>
 
 <script>
+	import changeFavour from '../../utils/api/marchCircle-api.js'
 	export default {
 		props: {
-			emojiList: {
-
+			id: {
+				type: Number
 			},
+			faceTotals: {
+				type: Number
+			},
+			likeTotals: {
+				type: Number
+			},
+			favourTotals: {
+				type: Number
+			},
+			commentTotals: {
+				type: Number
+			},
+			// 只有详情页的时候才传false
+
 			isShow: {
 				type: Boolean,
 				default: true
@@ -89,60 +93,85 @@
 				faceDisplay: true,
 				favourDisplay: true,
 				emojiPosition01: 30,
+				faceTotal: this.faceTotals,
+				likeTotal: this.likeTotals,
+				favourTotal: this.favourTotals,
+				commentTotal: this.commentTotals
 			}
 		},
+
 		created() {
-			if (this.emojiList.faceTotal > 0) {
+			if (this.faceTotal > 0) {
 				this.faceDisplay = false;
 			}
-			if (this.emojiList.favourTotal > 0) {
+			if (this.favourTotal > 0) {
 				this.favourDisplay = false;
 			}
 			// 当展示3个表情时
-			if (this.emojiList.faceTotal > 0 && this.emojiList.favourTotal > 0) {
+			if (this.faceTotal > 0 && this.favourTotal > 0) {
 				this.emojiPosition01 = 140;
 			}
 			// 当展示两个表情时
-			else if (this.emojiList.faceTotal > 0 || this.emojiList.favourTotal > 0) {
+			else if (this.faceTotal > 0 || this.favourTotal > 0) {
 				this.emojiPosition01 = 85;
 			}
 		},
 		methods: {
+			// 控制展示三个表情的位置
 			addEmoji() {
 				this.visible = !this.visible;
 				// 当展示三个表情时
-				if (this.emojiList.faceTotal > 0 && this.emojiList.favourTotal > 0) {
+				if (this.faceTotal > 0 && this.favourTotal > 0) {
 					this.emojiPosition01 = 140;
 				}
 				// 当展示两个表情时
-				else if (this.emojiList.faceTotal > 0 || this.emojiList.favourTotal > 0) {
+				else if (this.faceTotal > 0 || this.favourTotal > 0) {
 					this.emojiPosition01 = 85;
 				}
 				// 当展示一个表情时
-				else if (this.emojiList.faceTotal <= 0 && this.emojiList.favourTotal <= 0) {
+				else if (this.faceTotal <= 0 && this.favourTotal <= 0) {
 					this.emojiPosition01 = 30;
 				}
 
 			},
+			// 调用接口对点赞状态改变
+			emjoiInterface(params) {
+				// changeFavour(params).then(res=>{
+				// 	console.log("表情点赞状态改变")
+				// })
+			},
+			// 点击表情事件处理
 			clickAni(emoji) {
+				let params = {
+					id: this.id,
+					type: 0
+				}
+				console.log(this.clickFace)
 				switch (emoji) {
+
 					case 'face':
+						this.emjoiInterface(params)
+						// 如果face表情已经处于点击状态
 						if (this.clickFace) {
-							this.emojiList.faceTotal--;
+							this.faceTotal--;
 							this.clickFace = !this.clickFace;
-							if (this.emojiList.faceTotal == 0)
+							if (this.faceTotal == 0)
 								this.faceDisplay = true;
-						} else {
+						} else { //如果face表情处于未点击状态
 							this.clickFace = !this.clickFace;
+							this.faceDisplay = false;
+							// 1.并且另外两个表情也处于未点击状态
 							if (!this.clickLike && !this.clickFavour) {
-								this.emojiList.faceTotal++;
-							} else if (this.clickLike) {
-								this.emojiList.likeTotal--;
-								this.emojiList.faceTotal++;
+								this.faceTotal++;
+							} else if (this.clickLike) { //2.like表情正处于点击状态,
+								this.likeTotal--;
+								this.faceTotal++;
 								this.clickLike = !this.clickLike;
 							} else if (this.clickFavour) {
-								this.emojiList.favourTotal > 1 ? this.emojiList.favourTotal-- : this.favourDisplay = true;
-								this.emojiList.faceTotal++;
+								this.favourTotal--;
+								if (!this.favourTotal)
+									this.favourDisplay = true;
+								this.faceTotal++;
 								this.clickFavour = !this.clickFavour;
 							}
 						}
@@ -150,43 +179,55 @@
 						break
 
 					case 'like':
+						params.type = 1;
+						this.emjoiInterface(params)
 						if (this.clickLike) {
-							this.emojiList.likeTotal--;
+							this.likeTotal--;
 							this.clickLike = !this.clickLike;
 						} else {
-							this.clickLike = !this.clickLike;
+							this.clickLike = !this.clickLike;*--+
 							if (!this.clickFace && !this.clickFavour) {
-								this.emojiList.likeTotal++;
+								this.likeTotal++;
 							} else if (this.clickFace) {
-								this.emojiList.likeTotal++;
-								this.emojiList.faceTotal > 1 ? this.emojiList.faceTotal-- : this.faceDisplay = true;
+								this.likeTotal++;
+								this.faceTotal--
+								if (!this.faceTotal)
+									this.faceDisplay = true;
 								this.clickFace = !this.clickFace;
 							} else if (this.clickFavour) {
-								this.emojiList.favourTotal > 1 ? this.emojiList.favourTotal-- : this.favourDisplay = true;
-								this.emojiList.likeTotal++;
+								this.favourTotal--
+								if (!this.favourTotal)
+									this.favourDisplay = true;
+								this.likeTotal++;
 								this.clickFavour = !this.clickFavour;
 							}
 						}
 						break
 
 					case 'favour':
+						params.type = 2;
+						this.emjoiInterface(params)
 						if (this.clickFavour) {
-							this.emojiList.favourTotal--;
+							this.favourTotal--;
 							this.clickFavour = !this.clickFavour;
-							if (this.emojiList.favourTotal == 0)
+							if (this.favourTotal == 0)
 								this.favourDisplay = true;
 
 						} else {
 							this.clickFavour = !this.clickFavour;
+
+							this.favourDisplay = false;
 							if (!this.clickLike && !this.clickFace) {
-								this.emojiList.favourTotal++;
+								this.favourTotal++;
 							} else if (this.clickLike) {
-								this.emojiList.likeTotal--;
-								this.emojiList.favourTotal++;
+								this.likeTotal--;
+								this.favourTotal++;
 								this.clickLike = !this.clickLike;
 							} else if (this.clickFace) {
-								this.emojiList.faceTotal > 1 ? this.emojiList.faceTotal-- : this.faceDisplay = true;
-								this.emojiList.favourTotal++;
+								this.faceTotal--
+								if (!this.faceTotal)
+									this.faceDisplay = true;
+								this.favourTotal++;
 								this.clickFace = !this.clickFace;
 							}
 						}
@@ -196,19 +237,9 @@
 					default:
 				}
 			},
-			addAEmoji(emoji) {
-				// switch (emoji) {
-				// 	case 'face':
-				// 		if (this.emojiList.faceTotal >= 0)
-				// 			this.faceDisplay = false;
-				// 		break
-				// 	case 'favour':
-				// 		if (this.emojiList.favourTotal >= 0)
-				// 			this.favourDisplay = false;
-				// 		break
 
-				// 	default:
-				// }
+			// 添加表情事件处理
+			addAEmoji(emoji) {
 				this.clickAni(emoji);
 
 				this.visible = !this.visible;
