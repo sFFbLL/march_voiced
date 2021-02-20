@@ -52,7 +52,7 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 			if err != nil {
 				return nil, errors.New("获取用户信息失败")
 			}
-			commentChild, err := comment.GetChildCommentList(int(p.ID), commentList[i].ID)
+			commentChild, err := comment.GetChildCommentList(int(p.ID), int(p.ChildSize), commentList[i].ID)
 			if err != nil {
 				return nil, errors.New("查询子评论失败")
 			}
@@ -70,10 +70,10 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 					ArticleCreate: bo.ArticleCreate{
 						CreateByName: userChildInfo.NickName,
 						IdAvatar:     userChildInfo.AvatarPath,
-						CreateBy:     int(commentChild.CreateBy),
+						CreateBy:     commentChild.CreateBy,
 					},
 					ArticleReply: bo.ArticleReply{
-						ReplyId:     int(commentChild.ReplyId),
+						ReplyId:     commentChild.ReplyId,
 						ReplyName:   userChildReplyInfo.NickName,
 						ReplyAvatar: userChildReplyInfo.AvatarPath,
 					},
@@ -85,12 +85,12 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 					Content:    commentList[i].Content,
 					CreateTime: commentList[i].CreateTime,
 					ArticleCreate: bo.ArticleCreate{
-						CreateBy:     int(commentList[i].CreateBy),
+						CreateBy:     commentList[i].CreateBy,
 						CreateByName: userInfo.NickName,
 						IdAvatar:     userInfo.AvatarPath,
 					},
 					ArticleReply: bo.ArticleReply{
-						ReplyId:     int(commentList[i].ReplyId),
+						ReplyId:     commentList[i].ReplyId,
 						ReplyName:   userReplyInfo.NickName,
 						ReplyAvatar: userReplyInfo.AvatarPath,
 					},
@@ -127,12 +127,12 @@ func (co *ArticleComment) GetArticleChildComment(p *dto.GetArticleChildComment) 
 				Content:    childComment.Content,
 				CreateTime: childComment.CreateTime,
 				ArticleCreate: bo.ArticleCreate{
-					CreateBy:     int(childComment.CreateBy),
+					CreateBy:     childComment.CreateBy,
 					CreateByName: userChildInfo.NickName,
 					IdAvatar:     userChildInfo.AvatarPath,
 				},
 				ArticleReply: bo.ArticleReply{
-					ReplyId:     int(childComment.ReplyId),
+					ReplyId:     childComment.ReplyId,
 					ReplyName:   replyUserChildInfo.NickName,
 					ReplyAvatar: replyUserChildInfo.AvatarPath,
 				},

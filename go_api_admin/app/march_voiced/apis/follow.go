@@ -18,7 +18,7 @@ var fo = new(service.Follow)
 // GetFollowList 查询关注列表
 // @Summary 查询关注列表
 // @Description Author：YanSongWu 2021/02/18
-// @Tags 用户：关注管理 Follow Controller
+// @Tags 关注 Follow Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query dto.GetFollowList false "查询参数"
@@ -51,7 +51,7 @@ func GetFollowList(c *gin.Context) {
 
 	// 业务逻辑处理
 	if p.Id == 0 {
-		p.Id = user.UserId
+		p.Id = uint(user.UserId)
 	}
 	res, err := fo.GetFollowList(p)
 	if err != nil {
@@ -66,7 +66,7 @@ func GetFollowList(c *gin.Context) {
 // GetFansList 查询粉丝列表
 // @Summary 查询关注列表
 // @Description Author：YanSongWu 2021/02/18
-// @Tags 用户：关注管理 Follow Controller
+// @Tags 关注 Follow Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query dto.GetFollowList false "查询参数"
@@ -96,7 +96,7 @@ func GetFansList(c *gin.Context) {
 	}
 	// 业务逻辑处理
 	if p.Id == 0 {
-		p.Id = user.UserId
+		p.Id = uint(user.UserId)
 	}
 	res, err := fo.GetFansList(p)
 	if err != nil {
@@ -111,7 +111,7 @@ func GetFansList(c *gin.Context) {
 // GetStatus 查看关注状态
 // @Summary 查询关注状态
 // @Description Author：YanSongWu 2021/02/18 获得身份令牌
-// @Tags 用户：关注管理 Follow Controller
+// @Tags 关注 Follow Controller
 // @Accept application/json
 // @Produce application/json
 // @Param id query string false "查询参数"
@@ -131,7 +131,7 @@ func GetStatus(c *gin.Context) {
 		app.ResponseError(c, app.CodeParamIsInvalid)
 		return
 	}
-	err = fo.GetFollowStatus(idI, user.UserId)
+	err = fo.GetFollowStatus(idI, int(user.UserId))
 	if err != nil {
 		zap.L().Error("get follow status failed", zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
@@ -144,7 +144,7 @@ func GetStatus(c *gin.Context) {
 // UpdateStatus 修改关注状态
 // @Summary 修改关注状态
 // @Description Author：Cgl 2021/02/18 获得身份令牌
-// @Tags 用户：关注管理 Follow Controller
+// @Tags 关注 Follow Controller
 // @Accept application/json
 // @Produce application/json
 // @Param id query string false "查询参数"
@@ -164,7 +164,7 @@ func UpdateStatus(c *gin.Context) {
 		app.ResponseError(c, app.CodeParamIsInvalid)
 		return
 	}
-	err = fo.UpdateStatus(id.Id, user.UserId)
+	err = fo.UpdateStatus(int(id.Id), int(user.UserId))
 	if err != nil {
 		zap.L().Error("UpdateStatus failed", zap.String("username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeUpdateOperationFail)

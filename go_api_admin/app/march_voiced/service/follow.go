@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"project/app/march_voiced/models"
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
@@ -16,25 +15,25 @@ func (fo *Follow) GetFollowList(p *dto.GetFollowList) (*bo.GetFollowList, error)
 	var res bo.GetFollowList
 	var signalFollowList []bo.FollowInfo
 	if p.Size == 0 || p.Current == 0 {
-		return nil, errors.New("参数缺失")
-	} else {
-		followList, err := follow.GetFollowList(p)
+		p.Size = 5
+		p.Current = 1
+	}
+	followList, err := follow.GetFollowList(p)
+	if err != nil {
+		return nil, err
+	}
+	for _, followTwo := range *followList {
+		fansTotal, err := follow.GetFansTotal(followTwo.Id)
 		if err != nil {
 			return nil, err
 		}
-		for _, followTwo := range *followList {
-			fansTotal, err := follow.GetFansTotal(followTwo.Id)
-			if err != nil {
-				return nil, err
-			}
-			followTotal, err := follow.GetFollowTotal(followTwo.Id)
-			if err != nil {
-				return nil, err
-			}
-			followTwo.FansTotal = fansTotal
-			followTwo.FollowTotal = followTotal
-			signalFollowList = append(signalFollowList, followTwo)
+		followTotal, err := follow.GetFollowTotal(followTwo.Id)
+		if err != nil {
+			return nil, err
 		}
+		followTwo.FansTotal = fansTotal
+		followTwo.FollowTotal = followTotal
+		signalFollowList = append(signalFollowList, followTwo)
 	}
 	res.Follow = signalFollowList
 	return &res, nil
@@ -45,26 +44,26 @@ func (fo *Follow) GetFansList(p *dto.GetFollowList) (*bo.GetFollowList, error) {
 	follow := new(models.Follow)
 	var res bo.GetFollowList
 	var signalFollowList []bo.FollowInfo
-	if p.Size == 0 || p.Current == 0 {
-		return nil, errors.New("参数缺失")
-	} else {
-		followList, err := follow.GetFansList(p)
+	if p.Size == 0 && p.Current == 0 {
+		p.Size = 5
+		p.Current = 1
+	}
+	followList, err := follow.GetFansList(p)
+	if err != nil {
+		return nil, err
+	}
+	for _, followTwo := range *followList {
+		fansTotal, err := follow.GetFansTotal(followTwo.Id)
 		if err != nil {
 			return nil, err
 		}
-		for _, followTwo := range *followList {
-			fansTotal, err := follow.GetFansTotal(followTwo.Id)
-			if err != nil {
-				return nil, err
-			}
-			followTotal, err := follow.GetFollowTotal(followTwo.Id)
-			if err != nil {
-				return nil, err
-			}
-			followTwo.FansTotal = fansTotal
-			followTwo.FollowTotal = followTotal
-			signalFollowList = append(signalFollowList, followTwo)
+		followTotal, err := follow.GetFollowTotal(followTwo.Id)
+		if err != nil {
+			return nil, err
 		}
+		followTwo.FansTotal = fansTotal
+		followTwo.FollowTotal = followTotal
+		signalFollowList = append(signalFollowList, followTwo)
 	}
 	res.Follow = signalFollowList
 	return &res, nil

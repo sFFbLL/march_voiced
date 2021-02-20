@@ -11,14 +11,14 @@ type MarchsoftComment struct {
 }
 
 // AddMarchsoftComment 新增文章详情页的评论
-func (mc *MarchsoftComment) AddMarchsoftComment(userId int, p *dto.AddMarchsoftComment) (err error) {
+func (mc *MarchsoftComment) AddMarchsoftComment(userId uint, p *dto.AddMarchsoftComment) (err error) {
 	comment := new(models.MarchsoftComment)
 	comment.Pid = p.Pid
 	comment.Content = p.Content
 	comment.MarchsoftId = p.ID
 	comment.ReplyId = p.ReplyId
-	comment.UpdateBy = uint(userId)
-	comment.CreateBy = uint(userId)
+	comment.UpdateBy = userId
+	comment.CreateBy = userId
 	err = comment.AddMarchsoftComment()
 	go comment.AddMarchsoftCommentMessage(int(userId))
 	return
@@ -53,7 +53,7 @@ func (mc *MarchsoftComment) GetMarchsoftComment(p *dto.GetMarchsoftComment) (res
 			if err != nil {
 				return nil, errors.New("获取用户信息失败")
 			}
-			commentChild, err := comment.GetChildCommentList(p.ID, commentList[i].ID)
+			commentChild, err := comment.GetChildCommentList(p.ID, p.ChildSize, commentList[i].ID)
 			if err != nil {
 				return nil, errors.New("查询子评论失败")
 			}
@@ -71,10 +71,10 @@ func (mc *MarchsoftComment) GetMarchsoftComment(p *dto.GetMarchsoftComment) (res
 					MarchsoftCreate: bo.MarchsoftCreate{
 						CreateByName: userChildInfo.NickName,
 						IdAvatar:     userChildInfo.AvatarPath,
-						CreateBy:     int(commentChild.CreateBy),
+						CreateBy:     commentChild.CreateBy,
 					},
 					MarchsoftReply: bo.MarchsoftReply{
-						ReplyId:     int(commentChild.ReplyId),
+						ReplyId:     commentChild.ReplyId,
 						ReplyName:   userChildReplyInfo.NickName,
 						ReplyAvatar: userChildReplyInfo.AvatarPath,
 					},
@@ -86,12 +86,12 @@ func (mc *MarchsoftComment) GetMarchsoftComment(p *dto.GetMarchsoftComment) (res
 					Content:    commentList[i].Content,
 					CreateTime: commentList[i].CreateTime,
 					MarchsoftCreate: bo.MarchsoftCreate{
-						CreateBy:     int(commentList[i].CreateBy),
+						CreateBy:     commentList[i].CreateBy,
 						CreateByName: userInfo.NickName,
 						IdAvatar:     userInfo.AvatarPath,
 					},
 					MarchsoftReply: bo.MarchsoftReply{
-						ReplyId:     int(commentList[i].ReplyId),
+						ReplyId:     commentList[i].ReplyId,
 						ReplyName:   userReplyInfo.NickName,
 						ReplyAvatar: userReplyInfo.AvatarPath,
 					},
@@ -128,12 +128,12 @@ func (mc *MarchsoftComment) GetMarchsoftChildComment(p *dto.GetMarchsoftChildCom
 				Content:    childComment.Content,
 				CreateTime: childComment.CreateTime,
 				MarchsoftCreate: bo.MarchsoftCreate{
-					CreateBy:     int(childComment.CreateBy),
+					CreateBy:     childComment.CreateBy,
 					CreateByName: userChildInfo.NickName,
 					IdAvatar:     userChildInfo.AvatarPath,
 				},
 				MarchsoftReply: bo.MarchsoftReply{
-					ReplyId:     int(childComment.ReplyId),
+					ReplyId:     childComment.ReplyId,
 					ReplyName:   replyUserChildInfo.NickName,
 					ReplyAvatar: replyUserChildInfo.AvatarPath,
 				},

@@ -41,7 +41,7 @@ func (fo *Follow) GetFollowList(p *dto.GetFollowList) (followList *[]bo.FollowIn
 	followList = new([]bo.FollowInfo)
 	err = global.Eloquent.Table("sys_user").Joins("left join follow on sys_user.id = follow.follow_id").
 		Where("follow.create_by=? AND follow.is_deleted=?", p.Id, []byte{0}).
-		Offset((p.Current - 1) * p.Current).Limit(p.Size).Scan(followList).Error
+		Offset(int((p.Current - 1) * p.Current)).Limit(int(p.Size)).Scan(followList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func (fo *Follow) GetFansList(p *dto.GetFollowList) (followList *[]bo.FollowInfo
 	followList = new([]bo.FollowInfo)
 	err = global.Eloquent.Table("sys_user").Joins("left join follow on sys_user.id = follow.create_by").
 		Where("follow.follow_id=? AND follow.is_deleted=?", p.Id, []byte{0}).
-		Offset((p.Current - 1) * p.Current).Limit(p.Size).Scan(followList).Error
+		Offset(int((p.Current - 1) * p.Current)).Limit(int(p.Size)).Scan(followList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (fo *Follow) GetFansList(p *dto.GetFollowList) (followList *[]bo.FollowInfo
 }
 
 // GetFansTotal 查询一个人的粉丝总人数
-func (fo *Follow) GetFansTotal(id int) (fansTotal int64, err error) {
+func (fo *Follow) GetFansTotal(id uint) (fansTotal int64, err error) {
 	err = global.Eloquent.Table(fo.TableName()).Where("is_deleted=? AND follow_id=?", []byte{0}, id).Count(&fansTotal).Error
 	if err != nil {
 		return 0, err
@@ -70,7 +70,7 @@ func (fo *Follow) GetFansTotal(id int) (fansTotal int64, err error) {
 }
 
 // GetFollowTotal 查询一个人的关注总人数
-func (fo *Follow) GetFollowTotal(id int) (followTotal int64, err error) {
+func (fo *Follow) GetFollowTotal(id uint) (followTotal int64, err error) {
 	err = global.Eloquent.Table(fo.TableName()).Where("is_deleted=? AND create_by=?", []byte{0}, id).Count(&followTotal).Error
 	if err != nil {
 		return 0, err

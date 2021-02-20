@@ -8,10 +8,11 @@ type AddArticleComment struct {
 }
 
 type GetArticleComment struct {
-	ID      uint   `form:"id" binding:"required"`      // 文章id
-	Current uint   `form:"current" binding:"required"` // 当前页
-	Size    uint   `form:"size" binding:"required"`
-	Orders  string `form:"orders"` // 排序规则
+	ID        uint   `form:"id" binding:"required"` // 文章id
+	Current   uint   `form:"current"`               // 当前页
+	Size      uint   `form:"size"`
+	ChildSize uint   `form:"childSize"` // 多少条子评论
+	Orders    string `form:"orders"`    // 排序规则
 }
 
 type GetArticleChildComment struct {

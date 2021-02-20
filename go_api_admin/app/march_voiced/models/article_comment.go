@@ -55,6 +55,10 @@ func (co *ArticleComment) DeleteArticleComment() (err error) {
 
 // GetCommentList 先查询size个一级评论的相关信息
 func (co *ArticleComment) GetCommentList(p *dto.GetArticleComment) (commentList []*ArticleComment, err error) {
+	if p.Size == 0 && p.Current == 0 {
+		p.Size = 5
+		p.Current = 1
+	}
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=? AND article_id=?", []byte{0}, p.ID)
 	err = table.Where("pid=? AND reply_id=?", 0, 0).
 		Offset(int((p.Current - 1) * p.Size)).Limit(int(p.Size)).Order("create_time desc").
@@ -62,10 +66,11 @@ func (co *ArticleComment) GetCommentList(p *dto.GetArticleComment) (commentList 
 	return
 }
 
-// GetChildCommentList 查询父评论下属的三个子评论
-func (co *ArticleComment) GetChildCommentList(articleId int, pid int) (commentList []*ArticleComment, err error) {
+// GetChildCommentList 查询父评论下属的childSize个子评论
+func (co *ArticleComment) GetChildCommentList(articleId int, size int, pid int) (commentList []*ArticleComment, err error) {
+
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=? AND article_id=?", []byte{0}, articleId)
-	err = table.Where("pid=?", pid).Limit(3).Order("create_time desc").Find(&commentList).Error
+	err = table.Where("pid=?", pid).Limit(size).Order("create_time desc").Find(&commentList).Error
 	return
 }
 
@@ -87,6 +92,9 @@ func (co *ArticleComment) GetUserInfo(id uint) (userInfo *UserInfo, err error) {
 
 // GetArticleChildComment 查询指定文章下某一条一级评论的size條二级评论
 func (co *ArticleComment) GetArticleChildComment(p *dto.GetArticleChildComment) (commentList *[]ArticleComment, err error) {
+	if p.Size == 0 {
+		p.Size = 4
+	}
 	commentList = new([]ArticleComment)
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=?", []byte{0})
 	err = table.Where("pid=?", p.ID).Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).Order("create_time desc").Find(commentList).Error

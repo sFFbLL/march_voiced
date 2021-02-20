@@ -22,12 +22,12 @@ func (u *User) SelectUserInfo(id int, me int) (res *bo.SelectUserInfo, err error
 		zap.L().Error("SelectUserInfo failed", zap.Error(err))
 		return
 	}
-	followTotal, err := fo.GetFollowTotal(id)
+	followTotal, err := fo.GetFollowTotal(uint(id))
 	if err != nil {
 		zap.L().Error("GetFollowTotal failed", zap.Error(err))
 		return
 	}
-	fansTotal, err := fo.GetFansTotal(id)
+	fansTotal, err := fo.GetFansTotal(uint(id))
 	if err != nil {
 		zap.L().Error("GetFansTotal failed", zap.Error(err))
 		return

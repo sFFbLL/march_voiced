@@ -1,11 +1,11 @@
 package dto
 
 type GetFollowList struct {
-	Id      int `form:"id"` // 用户id
-	Current int `form:"current"`
-	Size    int `form:"size"`
+	Id      uint `form:"id"` // 用户id
+	Current uint `form:"current"`
+	Size    uint `form:"size"`
 }
 
 type UpdateStatus struct {
-	Id int `json:"id"`
+	Id uint `json:"id"`
 }

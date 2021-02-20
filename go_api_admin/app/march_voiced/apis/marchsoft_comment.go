@@ -17,7 +17,7 @@ var mc = new(service.MarchsoftComment)
 // AddMarchsoftComment	新增文章评论
 // @Summary 新增文章评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 三月圈：评论管理 Comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object body dto.AddMarchsoftComment false "查询参数"
@@ -45,7 +45,7 @@ func AddMarchsoftComment(c *gin.Context) {
 		return
 	}
 	// 业务逻辑处理
-	err = mc.AddMarchsoftComment(user.UserId, p)
+	err = mc.AddMarchsoftComment(uint(user.UserId), p)
 	if err != nil {
 		c.Error(err)
 		zap.L().Error("add marchsoft comment failed", zap.String("Username", user.Username), zap.Error(err))
@@ -60,7 +60,7 @@ func AddMarchsoftComment(c *gin.Context) {
 // DeleteMarchsoftComment 删除评论
 // @Summary 删除评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 三月圈：评论管理 Comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param id path int false "查询参数"
@@ -99,7 +99,7 @@ func DeleteMarchsoftComment(c *gin.Context) {
 // GetMarchsoftComment 查询评论
 // @Summary 查询评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 三月圈：评论管理 Comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query dto.GetMarchsoftComment false "查询参数"
@@ -142,7 +142,7 @@ func GetMarchsoftComment(c *gin.Context) {
 // GetMarchsoftChildComment 查询一父评论的size条子评论
 // @Summary 查询一父评论的size条子评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 三月圈：评论管理 Comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query dto.GetMarchsoftChildComment false "查询参数"
