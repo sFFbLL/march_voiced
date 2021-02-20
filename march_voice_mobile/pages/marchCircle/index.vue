@@ -27,21 +27,20 @@
 		<!-- 三月圈内容 -->
 		<view class="wrap">
 			<!-- 间隔槽 -->
-			<view v-for="item in ideasList">
-				<u-gap height="30"
-				 bg-color="#f5f5f5"></u-gap>
+
+			<view v-for="item in reverseIdeaList">
+				<u-gap height="30" bg-color="#f5f5f5"></u-gap>
 				<view class="ideacontent">
 					<!-- 用户头像公共组件 -->
-					<attentionAndFansCell :nickname="item.user.nickname"
-					 :avatarPath="item.user.avatarPath"
-					 :isFollow="item.user.isFollow"></attentionAndFansCell>
+					<attentionAndFansCell :nickname="item.nickname" :avatarPath="item.avatarPath" :isFollow="item.isFollow"></attentionAndFansCell>
 					<!-- 想法的文字部分 -->
 					<articleContent :articleContent="item.content"
 					 @click="toDetail(item.id)"></articleContent>
 					<!-- 想法的图片部分组件 -->
-					<imageAdaptation :imgList="imgList"></imageAdaptation>
-					<!-- 点赞表情组件 -->
-					<emojiControl :emojiList="emojiList"></emojiControl>
+					<imageAdaptation :imgList="item.imgList"></imageAdaptation>
+					<!-- 点赞表情组件+评论 -->
+					<emojiControl :faceTotals="item.faceTotal" :likeTotals="item.likeTotal" :favourTotals="item.favourTotal"
+					 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
 				</view>
 			</view>
 
@@ -72,7 +71,8 @@
 	import {
 		getMarchCircleInfo,
 		marchCircleList,
-		joinMarchCircle
+		joinMarchCircle,
+		changeFavour
 	} from '../../utils/api/marchCircle-api.js'
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
 	import emojiControl from '../../marchVoiceComponents/marchCircle/emojiControl.vue'
@@ -106,56 +106,176 @@
 					ismarch: 1,
 					brief: "啊士大夫艰苦的萨拉就",
 				},
-				emojiList: {
-					faceTotal: 3,
-					likeTotal: 6,
-					favourTotal: 10,
-					commentTotal: 0,
-				},
-				imgList: [
-					'../../static/img/cat.jpg', '../../static/img/cat.jpg',
-					'../../static/img/cat.jpg', '../../static/img/cat.jpg',
-					'../../static/img/cat.jpg', '../../static/img/cat.jpg',
-					'../../static/img/cat.jpg', '../../static/img/cat.jpg',
-					'../../static/img/cat.jpg'
-				],
 				ideasList: [{
 					id: 6,
 					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					upDateTime: '2020/12/12',
-					faceTotal: 2,
+					updateTime: '2020/12/12',
+					faceTotal: 0,
 					likeTotal: 3,
-					favourTotal: 42,
+					favourTotal: 0,
 					commentTotal: 0,
 					imgList: [
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg'
+						'../../static/img/cat.jpg'
 					],
-					user: {
-						nickname: "xianer",
-						id: 0,
-						avatarPath: '../../static/img/cat.jpg',
-						isFollow: 0
-					}
+					user_id: 1,
+					nickname: "仙儿",
+					avatarPath: "",
+					isFollow: 0
 				}, {
 					id: 6,
 					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					upDateTime: '2020/12/12',
+					updateTime: '2020/12/12',
 					faceTotal: 2,
 					likeTotal: 3,
 					favourTotal: 42,
 					commentTotal: 0,
 					imgList: [
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg'
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+
 					],
-					user: {
-						nickname: "xianer",
-						id: 0,
-						avatarPath: '../../static/img/cat.jpg',
-						isFollow: 0
-					}
-				}]
+					user_id: 1,
+					nickname: "仙儿",
+					avatarPath: "",
+					isFollow: 0
+				}, {
+					id: 6,
+					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+					updateTime: '2020/12/12',
+					faceTotal: 2,
+					likeTotal: 3,
+					favourTotal: 42,
+					commentTotal: 0,
+					imgList: [
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+					],
+					user_id: 1,
+					nickname: "仙儿",
+					avatarPath: "",
+					isFollow: 0
+				}, {
+					id: 6,
+					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+					updateTime: '2020/12/12',
+					faceTotal: 2,
+					likeTotal: 3,
+					favourTotal: 42,
+					commentTotal: 0,
+					imgList: [
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg'
+					],
+					user_id: 1,
+					nickname: "仙儿",
+					avatarPath: "",
+					isFollow: 0
+				}, {
+					id: 6,
+					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+					updateTime: '2020/12/12',
+					faceTotal: 2,
+					likeTotal: 3,
+					favourTotal: 42,
+					commentTotal: 0,
+					imgList: [
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg'
+					],
+					user_id: 1,
+					nickname: "仙儿",
+					avatarPath: "",
+					isFollow: 0
+				}, {
+					id: 6,
+					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+					updateTime: '2020/12/12',
+					faceTotal: 2,
+					likeTotal: 3,
+					favourTotal: 42,
+					commentTotal: 0,
+					imgList: [
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg'
+					],
+					user_id: 1,
+					nickname: "仙儿",
+					avatarPath: "",
+					isFollow: 0
+				}, {
+					id: 6,
+					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+					updateTime: '2020/12/12',
+					faceTotal: 2,
+					likeTotal: 3,
+					favourTotal: 42,
+					commentTotal: 0,
+					imgList: [
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg'
+					],
+					user_id: 1,
+					nickname: "仙儿",
+					avatarPath: "",
+					isFollow: 0
+				}, {
+					id: 6,
+					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+					updateTime: '2020/12/12',
+					faceTotal: 2,
+					likeTotal: 3,
+					favourTotal: 42,
+					commentTotal: 0,
+					imgList: [
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg'
+					],
+					user_id: 1,
+					nickname: "仙儿",
+					avatarPath: "",
+					isFollow: 0
+				}, {
+					id: 6,
+					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+					updateTime: '2020/12/12',
+					faceTotal: 2,
+					likeTotal: 3,
+					favourTotal: 42,
+					commentTotal: 0,
+					imgList: [
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg', '../../static/img/cat.jpg', '../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+						'../../static/img/cat.jpg',
+					],
+					user_id: 1,
+					nickname: "仙儿",
+					avatarPath: "",
+					isFollow: 0
+				}, ]
 
 
+			}
+		},
+		computed:{
+			reverseIdeaList(){
+				return this.ideasList.reverse();
 			}
 		},
 		components: {
@@ -185,25 +305,19 @@
 				size: this.size
 			}
 
-
+			this.getCircleList(params);
 		},
 		onShow() {
 			check()
 		},
-		mounted() {},
 		methods: {
 
 			// 获取三月圈列表
 			// 获取想法列表接口
-			getCircleList() {
+			getCircleList(params) {
 				let _this = this;
 				// marchCircleList(params).then(res=>{
-				// this.ideasList=[...this.ideasList,...res.data];
-				// this.emojiList.faceTotal=this.ideasList.faceTotal;
-				// this.emojiList.favourTotal=this.ideasList.favourTotal;
-				// this.emojiList.likeTotal=this.ideasList.likeTotal;
-				// this.emojiList.commentTotal=this.ideasList.commentTotal;
-				// this.imgList=this.ideasList.imgList;
+				// _this.ideasList=[...this.ideasList,...res.data];
 				// if(res.data.length<=_this.size){
 				// 	_this.loadStatus='nomore';
 				// }
@@ -215,7 +329,7 @@
 				} else if (this.current === 1) {
 					_this.isLoadMore = false;
 				} else {
-					setTimeout(function () {
+					setTimeout(function() {
 						_this.isLoadMore = false;
 					}, 2000);
 				}

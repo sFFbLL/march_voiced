@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "消息",
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "u-gap": "/node-modules/uview-ui/components/u-gap/u-gap",
+    "uni-load-more": "/components/uni-load-more/uni-load-more",
+    "tabs": "/marchVoiceComponents/tabCard",
+    "article-content": "/marchVoiceComponents/showArticle/childComponents/artilceContent",
+    "single-message": "/marchVoiceComponents/message/singleMessage",
+    "attention-and-fans-cell": "/marchVoiceComponents/attentionAndFansCell",
+    "other-message": "/marchVoiceComponents/message/otherMessage"
+  }
+}
