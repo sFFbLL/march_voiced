@@ -110,3 +110,21 @@ type _ArticleUser struct {
 	Message string         `json:"message"` // 提示信息
 	Data    bo.ArticleUser `json:"data"`    // 数据
 }
+
+type _IsFavourCollectByArticleId struct {
+	Code    app.ResCode                   `json:"code"`    // 业务响应状态码
+	Message string                        `json:"message"` // 提示信息
+	Data    bo.IsFavourCollectByArticleId `json:"data"`    // 数据
+}
+
+type _ArticleTagList struct {
+	Code    app.ResCode       `json:"code"`    // 业务响应状态码
+	Message string            `json:"message"` // 提示信息
+	Data    bo.ArticleTagList `json:"data"`    // 数据
+}
+
+type _ArticleReprint struct {
+	Code    app.ResCode   `json:"code"`    // 业务响应状态码
+	Message string        `json:"message"` // 提示信息
+	Data    bo.ArticleMsg `json:"data"`    // 数据
+}
