@@ -6,7 +6,7 @@ type InsertArticleDto struct {
 	Image     string `json:"image"`
 	Kind      uint8  `json:"kind" binding:"required"`
 	Tag       uint8  `json:"tag" binding:"required"`
-	Status    *uint8 `json:"status" binding:"required,lte=1"`
+	Status    *uint8 `json:"status" binding:"required"`
 	Type      *uint  `json:"type" binding:"required"`
 	WordCount uint   `json:"word_count" binding:"required"`
 }
@@ -16,11 +16,11 @@ type UpdateArticleDto struct {
 	Content   string `json:"content" binding:"required"`
 	Image     string `json:"image"`
 	ID        uint   `json:"id"  binding:"required"`
-	Type      uint   `json:"type"`
 	WordCount uint   `json:"word_count" binding:"required"`
+	Type      *uint  `json:"type"`
+	Status    *uint8 `json:"status" binding:"required,lte=1"`
 	Kind      uint8  `json:"kind"`
 	Tag       uint8  `json:"tag"`
-	Status    *uint8 `json:"status" binding:"required,lte=1"`
 }
 
 type Paging struct {

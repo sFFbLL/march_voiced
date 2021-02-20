@@ -9,7 +9,7 @@ import (
 
 type ArticleCollect struct {
 	ArticleId uint `json:"article_id" gorm:""`
-	CreateBy   uint `json:"creat_by" gorm:""`
+	CreateBy  uint `json:"creat_by" gorm:""`
 	UpdateBy  uint `json:"update_by" gorm:""`
 	BaseModel
 }
@@ -25,7 +25,7 @@ func (a *ArticleCollect) AddArticleCollect(p *dto.CollectArticleDto) (err error)
 	if err != nil {
 		return errors.New("查询操作失败")
 	}
-	if count>0 {
+	if count > 0 {
 		a.IsDeleted = 1
 		return table.Where("create_by=? and article_id=? and is_deleted=?", a.CreateBy, a.ArticleId, 0).Updates(a).Error
 	}
@@ -44,5 +44,16 @@ func (a *ArticleCollect) AddArticleCollectMessage(userId uint) {
 func (a *ArticleCollect) ArticleCollectCount() (count int64, err error) {
 	err = global.Eloquent.Table(a.TableName()).
 		Where("article_id=? and is_deleted=0", a.ArticleId).Count(&count).Error
+	return
+}
+
+func (a *ArticleCollect) IsCollectByArticleId() (signal int, err error) {
+	var count int64
+	err = global.Eloquent.Table(a.TableName()).
+		Where("article_id=? AND is_deleted=0 AND create_by = ?", a.ArticleId, a.CreateBy).Count(&count).Error
+	if err != nil || count == 0 {
+		return
+	}
+	signal = 1
 	return
 }

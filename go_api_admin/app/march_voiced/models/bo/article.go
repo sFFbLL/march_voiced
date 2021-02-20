@@ -46,8 +46,8 @@ type ArticleTotal struct {
 
 type GoArticleMsg struct {
 	ArticleTotal
-	UserId        int
-	ArticleId     int
+	UserId        uint
+	ArticleId     uint
 	ArticleUserId uint
 	CreateTime    int64
 }
@@ -55,4 +55,16 @@ type GoArticleMsg struct {
 type ArticleUser struct {
 	ArticleMsg
 	ArticleTotal
+}
+
+type IsFavourCollectByArticleId struct {
+	IsFavour  int `json:"isFavour"`
+	IsCollect int `json:"isCollect"`
+}
+
+type ArticleTagList struct {
+	ID          int    `json:"id"`
+	Icon        int    `json:"icon"`
+	Tag         string `json:"tag"`
+	Description string `json:"description"`
 }
