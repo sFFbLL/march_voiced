@@ -39,22 +39,34 @@ func (co *MarchsoftComment) DeleteMarchsoftComment() (err error) {
 
 // GetCommentList 先查询size个一级评论的相关信息
 func (co *MarchsoftComment) GetCommentList(p *dto.GetMarchsoftComment) (commentList []*MarchsoftComment, err error) {
+
+	if p.Size == 0 && p.Current == 0 {
+		p.Size = 5
+		p.Current = 1
+	}
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=? AND marchsoft_id=?", []byte{0}, p.ID)
 	err = table.Where("pid=? AND reply_id=?", 0, 0).
-		Offset((p.Current - 1) * p.Size).Limit(p.Size).Order("create_time desc").
+		Offset(int((p.Current - 1) * p.Size)).Limit(int(p.Size)).Order("create_time desc").
 		Find(&commentList).Error
 	return
 }
 
-// GetChildCommentList 查询父评论下属的三个子评论
-func (co *MarchsoftComment) GetChildCommentList(marchsoftId int, pid int) (commentList []*MarchsoftComment, err error) {
+// GetChildCommentList 查询父评论下属的childSize个子评论
+func (co *MarchsoftComment) GetChildCommentList(marchsoftId uint, size uint, pid int) (commentList []*MarchsoftComment, err error) {
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=? AND marchsoft_id=?", []byte{0}, marchsoftId)
-	err = table.Where("pid=?", pid).Limit(3).Order("create_time desc").Find(&commentList).Error
+	err = table.Where("pid=?", pid).Limit(int(size)).Order("create_time desc").Find(&commentList).Error
 	return
 }
 
 // GetUserInfo 获取与评论有关的用户的信息
 func (co *MarchsoftComment) GetUserInfo(id uint) (userInfo *UserInfo, err error) {
+	if id == 0 {
+		userInfo = &UserInfo{
+			NickName:   "",
+			AvatarPath: "",
+		}
+		return
+	}
 	userInfo = new(UserInfo)
 	idI := int(id)
 	table := global.Eloquent.Table("sys_user").Where("is_deleted=?", []byte{0})
@@ -62,10 +74,13 @@ func (co *MarchsoftComment) GetUserInfo(id uint) (userInfo *UserInfo, err error)
 	return
 }
 
-// GetMarchsoftChildComment 查询指定文章下某一条一级评论的全部二级评论
+// GetMarchsoftChildComment 查询指定文章下某一条一级评论的size条二级评论
 func (co *MarchsoftComment) GetMarchsoftChildComment(p *dto.GetMarchsoftChildComment) (commentList *[]MarchsoftComment, err error) {
+	if p.Size == 0 {
+		p.Size = 4
+	}
 	commentList = new([]MarchsoftComment)
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=?", []byte{0})
-	err = table.Where("pid=?", p.ID).Limit(p.Size).Offset((p.Current - 1) * p.Size).Order("create_time desc").Find(commentList).Error
+	err = table.Where("pid=?", p.ID).Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).Order("create_time desc").Find(commentList).Error
 	return
 }
