@@ -31,7 +31,11 @@ export function joinMarchCircle(params){
 }
 
 // 点赞表情
-
+export function changeFavour(params){
+	return Axios.post(baseUrl+'/api/apply/march',{
+		params:params,
+	})
+}
 
 
 // 点击微信进行分享，调用微信接口获取签名信息
@@ -55,3 +59,5 @@ export function publishComment(params){
 		params:params,
 	})
 }
+
+// 调用接口转化imgurl
