@@ -4,7 +4,7 @@
 			<input class="title-text" type="text" v-model="title" placeholder="标题" placeholder-class="placeholder"/>
 		</view>
 		<!-- http://www.kuntong.site/api/file/uploadImage -->
-		<jinEdit placeholder="请输入内容" @editOk="editOk" uploadFileUrl="http://www.kuntong.site/api/file/uploadImage"></jinEdit>
+		<jinEdit placeholder="请输入内容" :html="html" :readOnly="false" @editOk="editOk" uploadFileUrl="http://www.kuntong.site/api/file/uploadImage"></jinEdit>
 	</view>
 </template>
 
@@ -17,7 +17,8 @@
 		data() {
 			return {
 				option:null,
-				title:null
+				title:null,
+				html:'<p>爱搜IDno为阿斯兰的框架内</p><hr><p><br></p><hr><h2>我是test</h2><p>我是<strong>加粗</strong></p><p><em>我是斜体</em><span class="ql-cursor">﻿</span></p>' // 编辑时候跳过来绑定的html内容
 			}
 		},
 		components: {

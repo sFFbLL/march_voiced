@@ -8,6 +8,7 @@
 			:show-img-size="true"
 			:show-img-toolbar="true"
 			:show-img-resize="true"
+			:read-only="readOnly"
 			@ready="onEditorReady"
 			id="editor"
 			@statuschange="statuschange"
@@ -96,6 +97,10 @@ export default {
 		// 初始化html
 		html: {
 			type: String
+		},
+		readOnly: {
+			type: null,
+			default: false
 		}
 	},
 	computed:{

@@ -55,10 +55,10 @@
 	},
  	onLoad() {
 		// 获取文章标签
-		// getTags().then(res => {
-		// 	this.list = res.data
-		// 	console.log("ASDASD")
-		// })
+		getTags().then(res => {
+			this.list = res.data
+			console.log("ASDASD")
+		})
 	},
  	onShow() {
  		// setTimeout(() => {

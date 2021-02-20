@@ -9,7 +9,7 @@
 			</view>
 		</view>
 		<view class="item-img-box">
-			<u-image class="inner-img" :src="src" height="60rpx" width="60rpx" :fade="fade" shape="circle"></u-image>
+			<u-image class="inner-img" :src="icon" height="60rpx" width="60rpx" :fade="fade" shape="circle"></u-image>
 		</view>
 	</view>
 </template>
@@ -17,22 +17,24 @@
 <script>
 	export default {
 			props:{
-				type:{
+				tag:{
 					type:String,
-					default:"text"
+					default:"aeticle"
 				},
-				
+				icon:{
+					type:String,
+					default:null
+				}
 			},
 			data() {
 				return {
-					src: require('../static/img/1.jpg'),
 					fade:false,
 				}
 			},
 			methods:{
 				toPublishPage(){
 					uni.navigateTo({
-						url:"richTextEditor?type="+this.type,
+						url:"richTextEditor?tag="+this.tag,
 					})
 				}
 			}
