@@ -1,16 +1,57 @@
 definitions:
-  bo.ApplyMarchUser:
+  bo.ApplyArticleList:
     properties:
-      count:
+      current:
+        description: 页码
+        type: integer
+      pages:
+        description: 总页数
+        type: integer
+      records:
+        description: 消息
+        items:
+          $ref: '#/definitions/bo.ApplyArticleListData'
+        type: array
+      size:
+        description: 页内大小
+        type: integer
+      total:
         description: 总条数
         type: integer
-      message:
+    type: object
+  bo.ApplyArticleListData:
+    properties:
+      createTime:
+        type: integer
+      nickname:
+        type: string
+      recommend:
+        type: integer
+      status:
+        type: integer
+      tag:
+        type: string
+      title:
+        type: string
+    type: object
+  bo.ApplyMarchUser:
+    properties:
+      current:
+        description: 页码
+        type: integer
+      pages:
+        description: 总页数
+        type: integer
+      records:
         description: 消息
         items:
           $ref: '#/definitions/bo.ApplyMarchUserMessage'
         type: array
+      size:
+        description: 页内大小
+        type: integer
       total:
-        description: 总页数
+        description: 总条数
         type: integer
     type: object
   bo.ApplyMarchUserMessage:
@@ -97,6 +138,44 @@ definitions:
       reply_id:
         type: integer
       reply_name:
+        type: string
+    type: object
+  bo.ArticleMsg:
+    properties:
+      content:
+        type: string
+      create_by:
+        type: integer
+      create_time:
+        type: integer
+      id:
+        type: integer
+      image:
+        type: string
+      kind:
+        type: integer
+      tag:
+        type: integer
+      title:
+        type: string
+      type:
+        type: integer
+      update_by:
+        type: integer
+      update_time:
+        type: integer
+      word_count:
+        type: integer
+    type: object
+  bo.ArticleTagList:
+    properties:
+      description:
+        type: string
+      icon:
+        type: integer
+      id:
+        type: integer
+      tag:
         type: string
     type: object
   bo.ArticleUser:
@@ -236,16 +315,22 @@ definitions:
     type: object
   bo.GetMessage:
     properties:
-      count:
-        description: 总条数
+      current:
+        description: 页码
         type: integer
-      message:
+      pages:
+        description: 总页数
+        type: integer
+      records:
         description: 消息
         items:
           $ref: '#/definitions/bo.GetMessageData'
         type: array
+      size:
+        description: 页内大小
+        type: integer
       total:
-        description: 总页数
+        description: 总条数
         type: integer
     type: object
   bo.GetMessageData:
@@ -286,16 +371,22 @@ definitions:
     type: object
   bo.GetSysMessage:
     properties:
-      count:
-        description: 总条数
+      current:
+        description: 页码
         type: integer
-      message:
+      pages:
+        description: 总页数
+        type: integer
+      records:
         description: 消息
         items:
           $ref: '#/definitions/bo.GetSysMessageData'
         type: array
+      size:
+        description: 页内大小
+        type: integer
       total:
-        description: 总页数
+        description: 总条数
         type: integer
     type: object
   bo.GetSysMessageData:
@@ -308,6 +399,13 @@ definitions:
         type: integer
       type:
         description: 0文章审核/1三月圈申请
+        type: integer
+    type: object
+  bo.IsFavourCollectByArticleId:
+    properties:
+      isCollect:
+        type: integer
+      isFavour:
         type: integer
     type: object
   bo.Job:
@@ -722,6 +820,41 @@ definitions:
         description: 回复人id
         type: integer
     type: object
+  dto.ApplyArticlePaginator:
+    properties:
+      content:
+        type: string
+      current:
+        type: integer
+      endTime:
+        description: 结束时间
+        type: integer
+      nickname:
+        type: string
+      size:
+        type: integer
+      startTime:
+        description: 创建时间
+        type: integer
+      status:
+        description: 1通过 2审核中
+        type: integer
+    type: object
+  dto.ApplyMarchPaginator:
+    properties:
+      current:
+        type: integer
+      endTime:
+        description: 结束时间
+        type: integer
+      nickname:
+        type: string
+      size:
+        type: integer
+      startTime:
+        description: 创建时间
+        type: integer
+    type: object
   dto.ArticleFavourDto:
     properties:
       id:
@@ -865,6 +998,9 @@ definitions:
     type: object
   dto.GetMarchsoftComment:
     properties:
+      childSize:
+        description: 多少条子评论
+        type: integer
       current:
         description: 当前页
         type: integer
@@ -877,9 +1013,7 @@ definitions:
       size:
         type: integer
     required:
-    - current
     - id
-    - size
     type: object
   dto.InsertArticleDto:
     properties:
@@ -1296,6 +1430,32 @@ definitions:
         description: 提示信息
         type: string
     type: object
+  models._ArticleReprint:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.ArticleMsg'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models._ArticleTagList:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.ArticleTagList'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
   models._ArticleUser:
     properties:
       code:
@@ -1303,6 +1463,32 @@ definitions:
         type: integer
       data:
         $ref: '#/definitions/bo.ArticleUser'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models._IsFavourCollectByArticleId:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.IsFavourCollectByArticleId'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models._ResponseApplyArticleList:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.ApplyArticleList'
         description: 数据
         type: object
       message:
@@ -1718,6 +1904,47 @@ info:
   version: 0.1.0
 paths:
   /api/apply/article:
+    get:
+      consumes:
+      - application/json
+      description: Author：JiaKun Li 2021/02/20
+      parameters:
+      - in: query
+        name: content
+        type: string
+      - in: query
+        name: current
+        type: integer
+      - description: 结束时间
+        in: query
+        name: endTime
+        type: integer
+      - in: query
+        name: nickname
+        type: string
+      - in: query
+        name: size
+        type: integer
+      - description: 创建时间
+        in: query
+        name: startTime
+        type: integer
+      - description: 1通过 2审核中
+        in: query
+        name: status
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseApplyArticleList'
+      security:
+      - ApiKeyAuth: []
+      summary: （后台）文章审核列表页
+      tags:
+      - 文章：Article Controller
     put:
       consumes:
       - application/json
@@ -1749,8 +1976,19 @@ paths:
       - in: query
         name: current
         type: integer
+      - description: 结束时间
+        in: query
+        name: endTime
+        type: integer
+      - in: query
+        name: nickname
+        type: string
       - in: query
         name: size
+        type: integer
+      - description: 创建时间
+        in: query
+        name: startTime
         type: integer
       produces:
       - application/json
@@ -1761,7 +1999,7 @@ paths:
             $ref: '#/definitions/models._ResponseApplyMarchUser'
       security:
       - ApiKeyAuth: []
-      summary: 申请三月圈审核中用户
+      summary: 查询申请三月圈审核中用户
       tags:
       - 三月圈 marchsoft Controller
     post:
@@ -1854,6 +2092,27 @@ paths:
       tags:
       - 应用：文章管理 Article Controller
   /api/article/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Author：Lbl 2021/02/17 获得身份令牌
+      parameters:
+      - description: 修改参数
+        in: path
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseSuccess'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除文章
+      tags:
+      - 应用：文章管理 Article Controller
     get:
       consumes:
       - application/json
@@ -1873,6 +2132,28 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 文章详情
+      tags:
+      - 应用：文章管理 Article Controller
+  /api/article/favour-collect/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Author：Lbl 2021/02/17 获得身份令牌
+      parameters:
+      - description: 修改参数
+        in: path
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._IsFavourCollectByArticleId'
+      security:
+      - ApiKeyAuth: []
+      summary: 文章是否点赞收藏
       tags:
       - 应用：文章管理 Article Controller
   /api/article/index:
@@ -1899,6 +2180,28 @@ paths:
       summary: 文章列表
       tags:
       - 应用：文章管理 Article Controller
+  /api/article/recommend/:id:
+    put:
+      consumes:
+      - application/json
+      description: Author：JiaKun Li 2021/02/20
+      parameters:
+      - description: 添加参数
+        in: path
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseSuccess'
+      security:
+      - ApiKeyAuth: []
+      summary: （后台）文章设置推荐
+      tags:
+      - 文章：Article Controller
   /api/article/reprint:
     post:
       consumes:
@@ -1918,10 +2221,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._ResponseSuccess'
+            $ref: '#/definitions/models._ArticleReprint'
       security:
       - ApiKeyAuth: []
       summary: 文章转载
+      tags:
+      - 应用：文章管理 Article Controller
+  /api/article/tag:
+    get:
+      consumes:
+      - application/json
+      description: Author：Lbl 2021/02/17 获得身份令牌
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ArticleTagList'
+      security:
+      - ApiKeyAuth: []
+      summary: 文章标签
       tags:
       - 应用：文章管理 Article Controller
   /api/article/top:
@@ -2149,7 +2469,7 @@ paths:
       - ApiKeyAuth: []
       summary: 查询文章详情页的评论
       tags:
-      - 文章：评论管理 comment Controller
+      - 评论： Comment Controller
     post:
       consumes:
       - application/json
@@ -2171,7 +2491,7 @@ paths:
       - ApiKeyAuth: []
       summary: 新增文章评论
       tags:
-      - 文章：评论管理 Comment Controller
+      - 评论： Comment Controller
   /api/comment/article/:id:
     delete:
       consumes:
@@ -2193,7 +2513,7 @@ paths:
       - ApiKeyAuth: []
       summary: 删除文章详情页的评论
       tags:
-      - 文章：详情页评论 comment Controller
+      - 评论： Comment Controller
   /api/comment/children/article:
     get:
       consumes:
@@ -2229,7 +2549,7 @@ paths:
       - ApiKeyAuth: []
       summary: 查询文章详情页一父评论size条子评论
       tags:
-      - 文章：评论管理 comment Controller
+      - 评论： Comment Controller
   /api/comment/children/marchsoft:
     get:
       consumes:
@@ -2264,7 +2584,7 @@ paths:
       - ApiKeyAuth: []
       summary: 查询一父评论的size条子评论
       tags:
-      - 三月圈：评论管理 Comment Controller
+      - 评论： Comment Controller
   /api/comment/marchsoft:
     delete:
       consumes:
@@ -2286,16 +2606,19 @@ paths:
       - ApiKeyAuth: []
       summary: 删除评论
       tags:
-      - 三月圈：评论管理 Comment Controller
+      - 评论： Comment Controller
     get:
       consumes:
       - application/json
       description: Author：YanSongWu 2021/02/17
       parameters:
+      - description: 多少条子评论
+        in: query
+        name: childSize
+        type: integer
       - description: 当前页
         in: query
         name: current
-        required: true
         type: integer
       - description: 文章id
         in: query
@@ -2308,7 +2631,6 @@ paths:
         type: string
       - in: query
         name: size
-        required: true
         type: integer
       produces:
       - application/json
@@ -2321,7 +2643,7 @@ paths:
       - ApiKeyAuth: []
       summary: 查询评论
       tags:
-      - 三月圈：评论管理 Comment Controller
+      - 评论： Comment Controller
     post:
       consumes:
       - application/json
@@ -2343,7 +2665,7 @@ paths:
       - ApiKeyAuth: []
       summary: 新增文章评论
       tags:
-      - 三月圈：评论管理 Comment Controller
+      - 评论： Comment Controller
   /api/dept:
     get:
       consumes:
@@ -2584,7 +2906,7 @@ paths:
       - ApiKeyAuth: []
       summary: 查询关注列表
       tags:
-      - 用户：关注管理 Follow Controller
+      - 关注 Follow Controller
   /api/follow/center:
     put:
       consumes:
@@ -2606,7 +2928,7 @@ paths:
       - ApiKeyAuth: []
       summary: 修改关注状态
       tags:
-      - 用户：关注管理 Follow Controller
+      - 关注 Follow Controller
   /api/follow/fans:
     get:
       consumes:
@@ -2634,7 +2956,7 @@ paths:
       - ApiKeyAuth: []
       summary: 查询关注列表
       tags:
-      - 用户：关注管理 Follow Controller
+      - 关注 Follow Controller
   /api/follow/judge:
     get:
       consumes:
@@ -2656,7 +2978,7 @@ paths:
       - ApiKeyAuth: []
       summary: 查询关注状态
       tags:
-      - 用户：关注管理 Follow Controller
+      - 关注 Follow Controller
   /api/job:
     delete:
       consumes:
@@ -2826,25 +3148,27 @@ paths:
     delete:
       consumes:
       - application/json
-      description: Author：Cgl 2021/01/30 获得身份令牌
+      description: Author：Lbl 2021/02/2 获得身份令牌
       parameters:
       - description: 查询参数
         in: body
         name: object
         schema:
-          $ref: '#/definitions/dto.DeleteMenuDto'
+          items:
+            type: integer
+          type: array
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._ResponseDeleteMenu'
+            $ref: '#/definitions/models._ResponseDept'
       security:
       - ApiKeyAuth: []
-      summary: 删除菜单
+      summary: 删除部门
       tags:
-      - 系统：菜单管理 Menu Controller
+      - 系统：部门管理 Dept Controller
     get:
       consumes:
       - application/json
@@ -3074,6 +3398,29 @@ paths:
       tags:
       - 消息：Message Controller
   /api/message/user:
+    get:
+      consumes:
+      - application/json
+      description: Author：JiaKun Li 2021/02/17
+      parameters:
+      - in: query
+        name: current
+        type: integer
+      - in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseGetMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: 我的消息
+      tags:
+      - 消息 message Controller
     post:
       consumes:
       - application/json

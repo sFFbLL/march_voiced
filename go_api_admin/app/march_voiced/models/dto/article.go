@@ -1,12 +1,22 @@
 package dto
 
+type ApplyArticlePaginator struct {
+	Current   uint   `form:"current"`
+	Size      uint   `form:"size"`
+	EndTime   uint   `form:"endTime"`   //结束时间
+	StartTime uint   `form:"startTime"` //创建时间
+	Status    uint8  `form:"status"`    //1通过 2审核中
+	Nickname  string `form:"nickname"`
+	Content   string `form:"content"`
+}
+
 type InsertArticleDto struct {
 	Title     string `json:"title" binding:"required"`
 	Content   string `json:"content" binding:"required"`
 	Image     string `json:"image"`
 	Kind      uint8  `json:"kind" binding:"required"`
 	Tag       uint8  `json:"tag" binding:"required"`
-	Status    *uint8 `json:"status" binding:"required,lte=1"`
+	Status    *uint8 `json:"status" binding:"required"`
 	Type      *uint  `json:"type" binding:"required"`
 	WordCount uint   `json:"word_count" binding:"required"`
 }
@@ -16,11 +26,11 @@ type UpdateArticleDto struct {
 	Content   string `json:"content" binding:"required"`
 	Image     string `json:"image"`
 	ID        uint   `json:"id"  binding:"required"`
-	Type      uint   `json:"type"`
 	WordCount uint   `json:"word_count" binding:"required"`
+	Type      *uint  `json:"type"`
+	Status    *uint8 `json:"status" binding:"required,lte=1"`
 	Kind      uint8  `json:"kind"`
 	Tag       uint8  `json:"tag"`
-	Status    *uint8 `json:"status" binding:"required,lte=1"`
 }
 
 type Paging struct {

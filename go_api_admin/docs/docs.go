@@ -29,6 +29,72 @@ var doc = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/api/apply/article": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：JiaKun Li 2021/02/20",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章：Article Controller"
+                ],
+                "summary": "（后台）文章审核列表页",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "content",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "结束时间",
+                        "name": "endTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "nickname",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "创建时间",
+                        "name": "startTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "1通过 2审核中",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseApplyArticleList"
+                        }
+                    }
+                }
+            },
             "put": {
                 "security": [
                     {
@@ -83,7 +149,7 @@ var doc = `{
                 "tags": [
                     "三月圈 marchsoft Controller"
                 ],
-                "summary": "申请三月圈审核中用户",
+                "summary": "查询申请三月圈审核中用户",
                 "parameters": [
                     {
                         "type": "integer",
@@ -92,7 +158,24 @@ var doc = `{
                     },
                     {
                         "type": "integer",
+                        "description": "结束时间",
+                        "name": "endTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "nickname",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
                         "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "创建时间",
+                        "name": "startTime",
                         "in": "query"
                     }
                 ],
@@ -252,6 +335,42 @@ var doc = `{
                 }
             }
         },
+        "/api/article/favour-collect/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lbl 2021/02/17 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用：文章管理 Article Controller"
+                ],
+                "summary": "文章是否点赞收藏",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "修改参数",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._IsFavourCollectByArticleId"
+                        }
+                    }
+                }
+            }
+        },
         "/api/article/index": {
             "get": {
                 "security": [
@@ -292,6 +411,42 @@ var doc = `{
                 }
             }
         },
+        "/api/article/recommend/:id": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：JiaKun Li 2021/02/20",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章：Article Controller"
+                ],
+                "summary": "（后台）文章设置推荐",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "添加参数",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
+                        }
+                    }
+                }
+            }
+        },
         "/api/article/reprint": {
             "post": {
                 "security": [
@@ -327,7 +482,35 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._ResponseSuccess"
+                            "$ref": "#/definitions/models._ArticleReprint"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/article/tag": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lbl 2021/02/17 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用：文章管理 Article Controller"
+                ],
+                "summary": "文章标签",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ArticleTagList"
                         }
                     }
                 }
@@ -479,6 +662,40 @@ var doc = `{
                     "应用：文章管理 Article Controller"
                 ],
                 "summary": "文章详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "修改参数",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lbl 2021/02/17 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用：文章管理 Article Controller"
+                ],
+                "summary": "删除文章",
                 "parameters": [
                     {
                         "type": "integer",
@@ -720,7 +937,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "文章：评论管理 comment Controller"
+                    "评论： Comment Controller"
                 ],
                 "summary": "查询文章详情页的评论",
                 "parameters": [
@@ -754,7 +971,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "文章：评论管理 Comment Controller"
+                    "评论： Comment Controller"
                 ],
                 "summary": "新增文章评论",
                 "parameters": [
@@ -792,7 +1009,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "文章：详情页评论 comment Controller"
+                    "评论： Comment Controller"
                 ],
                 "summary": "删除文章详情页的评论",
                 "parameters": [
@@ -828,7 +1045,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "文章：评论管理 comment Controller"
+                    "评论： Comment Controller"
                 ],
                 "summary": "查询文章详情页一父评论size条子评论",
                 "parameters": [
@@ -884,7 +1101,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "三月圈：评论管理 Comment Controller"
+                    "评论： Comment Controller"
                 ],
                 "summary": "查询一父评论的size条子评论",
                 "parameters": [
@@ -939,16 +1156,21 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "三月圈：评论管理 Comment Controller"
+                    "评论： Comment Controller"
                 ],
                 "summary": "查询评论",
                 "parameters": [
                     {
                         "type": "integer",
+                        "description": "多少条子评论",
+                        "name": "childSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
                         "description": "当前页",
                         "name": "current",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
@@ -966,8 +1188,7 @@ var doc = `{
                     {
                         "type": "integer",
                         "name": "size",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -993,7 +1214,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "三月圈：评论管理 Comment Controller"
+                    "评论： Comment Controller"
                 ],
                 "summary": "新增文章评论",
                 "parameters": [
@@ -1029,7 +1250,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "三月圈：评论管理 Comment Controller"
+                    "评论： Comment Controller"
                 ],
                 "summary": "删除评论",
                 "parameters": [
@@ -1409,7 +1630,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户：关注管理 Follow Controller"
+                    "关注 Follow Controller"
                 ],
                 "summary": "查询关注列表",
                 "parameters": [
@@ -1455,7 +1676,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户：关注管理 Follow Controller"
+                    "关注 Follow Controller"
                 ],
                 "summary": "修改关注状态",
                 "parameters": [
@@ -1491,7 +1712,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户：关注管理 Follow Controller"
+                    "关注 Follow Controller"
                 ],
                 "summary": "查询关注列表",
                 "parameters": [
@@ -1537,7 +1758,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户：关注管理 Follow Controller"
+                    "关注 Follow Controller"
                 ],
                 "summary": "查询关注状态",
                 "parameters": [
@@ -1935,7 +2156,7 @@ var doc = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Author：Cgl 2021/01/30 获得身份令牌",
+                "description": "Author：Lbl 2021/02/2 获得身份令牌",
                 "consumes": [
                     "application/json"
                 ],
@@ -1943,16 +2164,19 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "系统：菜单管理 Menu Controller"
+                    "系统：部门管理 Dept Controller"
                 ],
-                "summary": "删除菜单",
+                "summary": "删除部门",
                 "parameters": [
                     {
                         "description": "查询参数",
                         "name": "object",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/dto.DeleteMenuDto"
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
                         }
                     }
                 ],
@@ -1960,7 +2184,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._ResponseDeleteMenu"
+                            "$ref": "#/definitions/models._ResponseDept"
                         }
                     }
                 }
@@ -2235,6 +2459,44 @@ var doc = `{
             }
         },
         "/api/message/user": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：JiaKun Li 2021/02/17",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "消息 message Controller"
+                ],
+                "summary": "我的消息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseGetMessage"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -2990,22 +3252,81 @@ var doc = `{
         }
     },
     "definitions": {
+        "bo.ApplyArticleList": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "description": "页码",
+                    "type": "integer"
+                },
+                "pages": {
+                    "description": "总页数",
+                    "type": "integer"
+                },
+                "records": {
+                    "description": "消息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/bo.ApplyArticleListData"
+                    }
+                },
+                "size": {
+                    "description": "页内大小",
+                    "type": "integer"
+                },
+                "total": {
+                    "description": "总条数",
+                    "type": "integer"
+                }
+            }
+        },
+        "bo.ApplyArticleListData": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "type": "integer"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "recommend": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "bo.ApplyMarchUser": {
             "type": "object",
             "properties": {
-                "count": {
-                    "description": "总条数",
+                "current": {
+                    "description": "页码",
                     "type": "integer"
                 },
-                "message": {
+                "pages": {
+                    "description": "总页数",
+                    "type": "integer"
+                },
+                "records": {
                     "description": "消息",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/bo.ApplyMarchUserMessage"
                     }
                 },
+                "size": {
+                    "description": "页内大小",
+                    "type": "integer"
+                },
                 "total": {
-                    "description": "总页数",
+                    "description": "总条数",
                     "type": "integer"
                 }
             }
@@ -3133,6 +3454,64 @@ var doc = `{
                     "type": "integer"
                 },
                 "reply_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "bo.ArticleMsg": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "create_by": {
+                    "type": "integer"
+                },
+                "create_time": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "integer"
+                },
+                "tag": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "update_by": {
+                    "type": "integer"
+                },
+                "update_time": {
+                    "type": "integer"
+                },
+                "word_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "bo.ArticleTagList": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "tag": {
                     "type": "string"
                 }
             }
@@ -3342,19 +3721,27 @@ var doc = `{
         "bo.GetMessage": {
             "type": "object",
             "properties": {
-                "count": {
-                    "description": "总条数",
+                "current": {
+                    "description": "页码",
                     "type": "integer"
                 },
-                "message": {
+                "pages": {
+                    "description": "总页数",
+                    "type": "integer"
+                },
+                "records": {
                     "description": "消息",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/bo.GetMessageData"
                     }
                 },
+                "size": {
+                    "description": "页内大小",
+                    "type": "integer"
+                },
                 "total": {
-                    "description": "总页数",
+                    "description": "总条数",
                     "type": "integer"
                 }
             }
@@ -3411,19 +3798,27 @@ var doc = `{
         "bo.GetSysMessage": {
             "type": "object",
             "properties": {
-                "count": {
-                    "description": "总条数",
+                "current": {
+                    "description": "页码",
                     "type": "integer"
                 },
-                "message": {
+                "pages": {
+                    "description": "总页数",
+                    "type": "integer"
+                },
+                "records": {
                     "description": "消息",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/bo.GetSysMessageData"
                     }
                 },
+                "size": {
+                    "description": "页内大小",
+                    "type": "integer"
+                },
                 "total": {
-                    "description": "总页数",
+                    "description": "总条数",
                     "type": "integer"
                 }
             }
@@ -3441,6 +3836,17 @@ var doc = `{
                 },
                 "type": {
                     "description": "0文章审核/1三月圈申请",
+                    "type": "integer"
+                }
+            }
+        },
+        "bo.IsFavourCollectByArticleId": {
+            "type": "object",
+            "properties": {
+                "isCollect": {
+                    "type": "integer"
+                },
+                "isFavour": {
                     "type": "integer"
                 }
             }
@@ -4064,6 +4470,57 @@ var doc = `{
                 }
             }
         },
+        "dto.ApplyArticlePaginator": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "current": {
+                    "type": "integer"
+                },
+                "endTime": {
+                    "description": "结束时间",
+                    "type": "integer"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "startTime": {
+                    "description": "创建时间",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "1通过 2审核中",
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.ApplyMarchPaginator": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "endTime": {
+                    "description": "结束时间",
+                    "type": "integer"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "startTime": {
+                    "description": "创建时间",
+                    "type": "integer"
+                }
+            }
+        },
         "dto.ArticleFavourDto": {
             "type": "object",
             "required": [
@@ -4270,11 +4727,13 @@ var doc = `{
         "dto.GetMarchsoftComment": {
             "type": "object",
             "required": [
-                "current",
-                "id",
-                "size"
+                "id"
             ],
             "properties": {
+                "childSize": {
+                    "description": "多少条子评论",
+                    "type": "integer"
+                },
                 "current": {
                     "description": "当前页",
                     "type": "integer"
@@ -4902,6 +5361,42 @@ var doc = `{
                 }
             }
         },
+        "models._ArticleReprint": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.ArticleMsg"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ArticleTagList": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.ArticleTagList"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
         "models._ArticleUser": {
             "type": "object",
             "properties": {
@@ -4913,6 +5408,42 @@ var doc = `{
                     "description": "数据",
                     "type": "object",
                     "$ref": "#/definitions/bo.ArticleUser"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._IsFavourCollectByArticleId": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.IsFavourCollectByArticleId"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ResponseApplyArticleList": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.ApplyArticleList"
                 },
                 "message": {
                     "description": "提示信息",

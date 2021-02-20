@@ -25,6 +25,7 @@ RUN go build -o march .
 WORKDIR /dist
 
 # 将二进制文件从 /build 目录复制到这里
+RUN cp -r /build/static ./static
 RUN cp -r /build/settings ./settings
 RUN cp /build/march .
 

@@ -11,19 +11,18 @@ import (
 	"go.uber.org/zap"
 )
 
-// GetMarchApplyUser 申请三月圈审核中用户
-// @Summary 申请三月圈审核中用户
+// GetMarchApplyUser 查询申请三月圈审核中用户
+// @Summary 查询申请三月圈审核中用户
 // @Description Author：JiaKun Li 2021/02/17
 // @Tags 三月圈 marchsoft Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object query dto.Paginator false "查询参数"
+// @Param object query dto.ApplyMarchPaginator false "查询参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseApplyMarchUser
 // @Router /api/apply/march [get]
-// TODO
 func GetMarchApplyUser(c *gin.Context) {
-	p := new(dto.Paginator)
+	p := new(dto.ApplyMarchPaginator)
 
 	// 获取缓存信息
 	user, err := api.GetUserMessage(c)

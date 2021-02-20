@@ -19,7 +19,7 @@ var co = new(service.ArticleComment)
 // AddArticleComment	新增文章评论
 // @Summary 新增文章评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 文章：评论管理 Comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object body dto.AddArticleComment false "查询参数"
@@ -48,7 +48,7 @@ func AddArticleComment(c *gin.Context) {
 		return
 	}
 	// 业务逻辑处理
-	err = co.AddArticleComment(user.UserId, p)
+	err = co.AddArticleComment(uint(user.UserId), p)
 	if err != nil {
 		c.Error(err)
 		zap.L().Error("add article comment failed", zap.String("Username", user.Username), zap.Error(err))
@@ -63,7 +63,7 @@ func AddArticleComment(c *gin.Context) {
 // DeleteArticleComment 删除文章详情页的评论
 // @Summary 删除文章详情页的评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 文章：详情页评论 comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param id path int false "查询参数"
@@ -80,7 +80,7 @@ func DeleteArticleComment(c *gin.Context) {
 	}
 	IdS := c.Param("id")
 	id, err := strconv.Atoi(IdS)
-	if err != nil {
+	if err != nil || id <= 0 {
 		_, ok := err.(validator.ValidationErrors)
 		if !ok {
 			app.ResponseError(c, app.CodeParamIsInvalid)
@@ -89,7 +89,7 @@ func DeleteArticleComment(c *gin.Context) {
 		app.ResponseSuccess(c, app.CodeParamNotComplete)
 		return
 	}
-	if err = co.DeleteArticleComment(user.UserId, id); err != nil {
+	if err = co.DeleteArticleComment(uint(user.UserId), id); err != nil {
 		c.Error(err)
 		zap.L().Error("delete article comment failed", zap.String("Username", user.Username), zap.Error(err))
 		return
@@ -100,7 +100,7 @@ func DeleteArticleComment(c *gin.Context) {
 // GetArticleComment 查询文章详情页的评论
 // @Summary 查询文章详情页的评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 文章：评论管理 comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query string false "查询参数"
@@ -112,14 +112,12 @@ func GetArticleComment(c *gin.Context) {
 	// 获取上下文中信息
 	user, err := api.GetUserMessage(c)
 	if err != nil {
-		c.Error(err)
 		zap.L().Error("GetArticleComment failed", zap.Error(err))
 		return
 	}
 	if err := c.ShouldBindQuery(p); err != nil {
 		// 请求参数有误，直接返回响应
 		zap.L().Error("comment bind params failed", zap.String("Username", user.Username), zap.Error(err))
-		c.Error(err)
 		_, ok := err.(validator.ValidationErrors)
 		if !ok {
 			app.ResponseError(c, app.CodeParamIsInvalid)
@@ -143,7 +141,7 @@ func GetArticleComment(c *gin.Context) {
 // GetArticleChildComment 查询文章详情页一父评论size条子评论
 // @Summary 查询文章详情页一父评论size条子评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 文章：评论管理 comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query dto.GetArticleChildComment false "查询参数"

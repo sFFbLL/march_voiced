@@ -2,23 +2,28 @@ package service
 
 import (
 	"errors"
+
 	models2 "project/app/admin/models"
 	"project/app/march_voiced/models"
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
 	"project/common/global"
+	"project/utils"
 )
 
 type Marchsoft struct {
 }
 
-// GetMarchApplyUser 业务方法
-func (e *Marchsoft) GetMarchApplyUser(p *dto.Paginator, userId int) (applyMarchUser *bo.ApplyMarchUser, err error) {
+// GetMarchApplyUser 查询申请三月圈审核中用户业务方法
+func (e *Marchsoft) GetMarchApplyUser(p *dto.ApplyMarchPaginator, userId int) (applyMarchUser *bo.ApplyMarchUser, err error) {
 	marchSoft := new(models.MarchSoft)
 	applyMarchUser = new(bo.ApplyMarchUser)
 	applyMarchUserMessage := new([]bo.ApplyMarchUserMessage)
-	applyMarchUser.Message = applyMarchUserMessage
+	applyMarchUser.Records = applyMarchUserMessage
 	err = marchSoft.GetMarchApplyUser(applyMarchUser, p)
+	applyMarchUser.Pages = utils.PagesCount(int(applyMarchUser.Total), int(p.Size))
+	applyMarchUser.Current = p.Current
+	applyMarchUser.Size = p.Size
 	return
 }
 
@@ -35,7 +40,7 @@ func (e *Marchsoft) ApplyMarch(userId int) (err error) {
 		return errors.New("用户已申请或已加入")
 	}
 	var i uint8 = 2
-	err = table.Updates(&models2.SysUser{IsMarch: &i}).Error
+	err = table.Updates(&models2.SysUser{IsMarch: &i, MarchUpdateTime: utils.NowUnix()}).Error
 	if err != nil {
 		return
 	}
@@ -56,7 +61,7 @@ func (e *Marchsoft) MarchPass(p *dto.MarchPass, userId int) (err error) {
 	if count == 0 {
 		return errors.New("该用户未申请三月圈")
 	}
-	err = table.Updates(&models2.SysUser{IsMarch: p.Status}).Error
+	err = table.Updates(&models2.SysUser{IsMarch: p.Status, MarchUpdateTime: utils.NowUnix()}).Error
 	if err != nil {
 		return
 	}

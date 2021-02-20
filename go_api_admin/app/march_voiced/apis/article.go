@@ -1,6 +1,7 @@
 package apis
 
 import (
+	"gorm.io/gorm"
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
 	"project/app/march_voiced/service"
@@ -14,7 +15,104 @@ import (
 	"go.uber.org/zap"
 )
 
-var a = new(service.Article)
+// ArticleRecommend （后台）文章设置推荐
+// @Summary （后台）文章设置推荐
+// @Description Author：JiaKun Li 2021/02/20
+// @Tags 文章：Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param id path int false "添加参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseSuccess
+// @Router /api/article/recommend/:id [put]
+func ArticleRecommend(c *gin.Context) {
+	id := c.Param("id")
+
+	// 获取缓存信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("ArticleRecommend GetUserMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeLoginExpire)
+		return
+	}
+
+	articleId, err := strconv.Atoi(id)
+	if err != nil {
+		zap.L().Error("ArticleRecommend params failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamTypeBindError)
+	}
+
+	if articleId <= 0 {
+		app.ResponseError(c, app.CodeParamIsInvalid)
+	}
+
+	//业务逻辑处理
+	s := new(service.Article)
+	err = s.ArticleRecommend(articleId)
+	if err == gorm.ErrRecordNotFound {
+		zap.L().Error("ArticleRecommend gorm.ErrRecordNotFound", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseErrorWithMsg(c, app.CodeSelectOperationFail, "该文章未发布")
+	}
+	if err != nil {
+		zap.L().Error("ArticleRecommend service params failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	app.ResponseSuccess(c, nil)
+}
+
+// ApplyArticleList （后台）文章审核列表页
+// @Summary （后台）文章审核列表页
+// @Description Author：JiaKun Li 2021/02/20
+// @Tags 文章：Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object query dto.ApplyArticlePaginator false "添加参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseApplyArticleList
+// @Router /api/apply/article [get]
+func ApplyArticleList(c *gin.Context) {
+	p := new(dto.ApplyArticlePaginator)
+
+	// 获取缓存信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("ApplyArticleList GetUserMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeLoginExpire)
+		return
+	}
+
+	// 获取参数 校验参数
+	if err := c.ShouldBindQuery(p); err != nil {
+		// 请求参数有误， 直接返回响应
+		zap.L().Error("ApplyArticleList params failed", zap.String("Username", user.Username), zap.Error(err))
+		_, ok := err.(validator.ValidationErrors)
+		if !ok {
+			app.ResponseError(c, app.CodeParamIsInvalid)
+			return
+		}
+		app.ResponseError(c, app.CodeParamTypeBindError)
+		return
+	}
+
+	if p.Size == 0 && p.Current == 0 {
+		p.Size = 10
+		p.Current = 1
+	}
+
+	//业务逻辑处理
+	s := new(service.Article)
+	applyArticleList, err := s.ApplyArticleList(p, user.UserId)
+	if err != nil {
+		zap.L().Error("ApplyArticleList service params failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	app.ResponseSuccess(c, applyArticleList)
+}
+
 
 // ArticlePass 文章审核通过或驳回
 // @Summary 文章审核通过或驳回
@@ -50,7 +148,7 @@ func ArticlePass(c *gin.Context) {
 		return
 	}
 
-	//业务逻辑处理
+	//业务逻辑处理6
 	s := new(service.Article)
 	err = s.ArticlePass(p, user.UserId)
 	if err != nil {
@@ -74,6 +172,7 @@ func ArticlePass(c *gin.Context) {
 // @Router /api/article [post]
 func InsertArticleHandler(c *gin.Context) {
 	// 声明必要变量
+	a := new(service.Article)
 	article := new(dto.InsertArticleDto)
 	userMsg := new(api.UserMessage)
 	var err error
@@ -99,6 +198,12 @@ func InsertArticleHandler(c *gin.Context) {
 		return
 	}
 
+	// 判断参数是否合法
+	if *article.Status != 0 && *article.Status != 2 {
+		zap.L().Error("InsertArticleHandler article.Status Params Failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamIsInvalid)
+		return
+	}
 	// 进入service层对数据操作
 	err = a.InsertArticle(article, userMsg.UserId)
 	if err != nil {
@@ -123,6 +228,7 @@ func InsertArticleHandler(c *gin.Context) {
 // @Router /api/article [put]
 func UpdateArticleHandler(c *gin.Context) {
 	// 声明必要变量
+	a := new(service.Article)
 	article := new(dto.UpdateArticleDto)
 	userMsg := new(api.UserMessage)
 	var err error
@@ -160,6 +266,53 @@ func UpdateArticleHandler(c *gin.Context) {
 	app.ResponseSuccess(c, nil)
 }
 
+// DeleteArticle 删除文章
+// @Summary 删除文章
+// @Description Author：Lbl 2021/02/17 获得身份令牌
+// @Tags 应用：文章管理 Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param id path int false "修改参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseSuccess
+// @Router /api/article/{id} [delete]
+func DeleteArticleHandler(c *gin.Context) {
+	// 声明必要变量
+	a := new(service.Article)
+	userMsg := new(api.UserMessage)
+	var err error
+	var id int
+
+	// 获取上下文中的用户信息
+	userMsg, err = api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("DeleteArticleHandler Get userId failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
+		return
+	}
+
+	// 参数绑定
+
+	// 获取参数
+	id, err = utils.StringToInt(c.Param("id"))
+	if err != nil {
+		zap.L().Error("ArticleDetailHandler bind Query Failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamNotComplete)
+		return
+	}
+
+	// 进入service层对数据操作
+	err = a.DeleteArticle(id, userMsg.UserId)
+	if err != nil {
+		zap.L().Error("DeleteArticleHandle service failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeUpdateOperationFail)
+		return
+	}
+
+	// 成功返回状态
+	app.ResponseSuccess(c, nil)
+}
+
 // ArticleDetail 文章详情
 // @Summary 文章详情
 // @Description Author：Lbl 2021/02/17 获得身份令牌
@@ -172,6 +325,7 @@ func UpdateArticleHandler(c *gin.Context) {
 // @Router /api/article/{id} [get]
 func ArticleDetailHandler(c *gin.Context) {
 	// 声明必要变量
+	a := new(service.Article)
 	userMsg := new(api.UserMessage)
 	article := new(bo.Article)
 	var id int
@@ -213,12 +367,15 @@ func ArticleDetailHandler(c *gin.Context) {
 // @Produce application/json
 // @Param object body []int false "添加参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseSuccess
+// @Success 200 {object} models._ArticleReprint
 // @Router /api/article/reprint [post]
 func ReprintArticleHandler(c *gin.Context) {
 	// 声明必要变量
+	a := new(service.Article)
 	userMsg := new(api.UserMessage)
+	articleMsg := new(bo.ArticleMsg)
 	var id []int
+	var signal int
 	var err error
 
 	// 获取上下文用户信息
@@ -239,15 +396,20 @@ func ReprintArticleHandler(c *gin.Context) {
 	}
 
 	// 进入service层对数据操作
-	err = a.ReprintArticle(id[0], userMsg.UserId)
+	articleMsg, signal, err = a.ReprintArticle(id[0], userMsg.UserId)
 	if err != nil {
 		zap.L().Error("ReprintArticleHandler service failed", zap.String("Username", userMsg.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeInsertOperationFail)
 		return
 	}
+	if signal == 1 {
+		zap.L().Error("ReprintArticleHandler the article dont's public ", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseErrorWithMsg(c, app.CodeOperationFail, "该文章没有审核通过，不能被转载")
+		return
+	}
 
 	// 成功返回状态
-	app.ResponseSuccess(c, nil)
+	app.ResponseSuccess(c, articleMsg)
 }
 
 // TopArticleList 推荐文章列表
@@ -262,6 +424,7 @@ func ReprintArticleHandler(c *gin.Context) {
 // @Router /api/article/top [get]
 func TopArticleListHandler(c *gin.Context) {
 	// 声明必要变量
+	a := new(service.Article)
 	userMsg := new(api.UserMessage)
 	articleList := new([]bo.Article)
 	var paging dto.Paging
@@ -292,7 +455,7 @@ func TopArticleListHandler(c *gin.Context) {
 	}
 
 	// 进入service层对数据操作
-	articleList, err = a.TopArticleList(paging, userMsg.UserId)
+	articleList, err = a.TopArticleList(paging, uint(userMsg.UserId))
 	if err != nil {
 		zap.L().Error("TopArticleListHandler service failed", zap.String("Username", userMsg.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
@@ -329,6 +492,8 @@ func MatchSensitiveWord(c *gin.Context) {
 		app.ResponseError(c, app.CodeParamIsInvalid)
 		return
 	}
+
+	a := new(service.Article)
 	res, err := a.MatchSensitiveWord(idI)
 	if err != nil {
 		zap.L().Error("match sensitiveWord failed", zap.Error(err))
@@ -351,6 +516,7 @@ func MatchSensitiveWord(c *gin.Context) {
 // @Router /api/article/index [get]
 func SelectArticleListIndex(c *gin.Context) {
 	// 声明必要变量
+	a := new(service.Article)
 	userMsg := new(api.UserMessage)
 	articleList := new([]bo.Article)
 	var paging dto.Paging
@@ -381,7 +547,7 @@ func SelectArticleListIndex(c *gin.Context) {
 	}
 
 	// 进入service层对数据操作
-	articleList, err = a.SelectArticleListIndex(paging, userMsg.UserId)
+	articleList, err = a.SelectArticleListIndex(paging, uint(userMsg.UserId))
 	if err != nil {
 		zap.L().Error("TopArticleListHandler service failed", zap.String("Username", userMsg.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
@@ -404,6 +570,7 @@ func SelectArticleListIndex(c *gin.Context) {
 // @Router /api/article/user [get]
 func SelectArticleListByUserId(c *gin.Context) {
 	// 声明必要变量
+	a := new(service.Article)
 	userMsg := new(api.UserMessage)
 	articleList := new([]bo.ArticleUser)
 	var paging dto.SelectArticleByUser
@@ -436,7 +603,7 @@ func SelectArticleListByUserId(c *gin.Context) {
 	}
 
 	// 进入service层对数据操作
-	articleList, err = a.SelectArticleListByUserId(paging, userMsg.UserId)
+	articleList, err = a.SelectArticleListByUserId(paging, uint(userMsg.UserId))
 	if err != nil {
 		zap.L().Error("SelectArticleListByUserId service failed", zap.String("Username", userMsg.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
@@ -445,4 +612,86 @@ func SelectArticleListByUserId(c *gin.Context) {
 
 	// 成功返回状态
 	app.ResponseSuccess(c, articleList)
+}
+
+// IsFavourCollectByArticleId 文章是否点赞收藏
+// @Summary 文章是否点赞收藏
+//@Description Author：Lbl 2021/02/17 获得身份令牌
+// @Tags 应用：文章管理 Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param id path int false "修改参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._IsFavourCollectByArticleId
+// @Router /api/article/favour-collect/{id} [get]
+func IsFavourCollectByArticleId(c *gin.Context) {
+	// 声明必要变量
+	a := new(service.Article)
+	userMsg := new(api.UserMessage)
+	article := new(bo.IsFavourCollectByArticleId)
+	var id int
+	var err error
+
+	// 获取上下文中的用户信息
+	userMsg, err = api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("IsFavourCollectByArticleId Get userMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
+		return
+	}
+
+	// 获取参数
+	id, err = utils.StringToInt(c.Param("id"))
+	if err != nil {
+		zap.L().Error("IsFavourCollectByArticleId bind Query Failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamNotComplete)
+		return
+	}
+
+	// 进入service层对数据操作
+	article, err = a.IsFavourCollectByArticleId(id, userMsg.UserId)
+	if err != nil {
+		zap.L().Error("IsFavourCollectByArticleId service failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	// 成功返回状态
+	app.ResponseSuccess(c, article)
+}
+
+// GetArticleTagList 文章标签
+// @Summary 文章标签
+//@Description Author：Lbl 2021/02/17 获得身份令牌
+// @Tags 应用：文章管理 Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ArticleTagList
+// @Router /api/article/tag [get]
+func GetArticleTagList(c *gin.Context) {
+	// 声明必要变量
+	a := new(service.Article)
+	userMsg := new(api.UserMessage)
+	articleTagList := new([]bo.ArticleTagList)
+	var err error
+
+	// 获取上下文中的用户信息
+	userMsg, err = api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("GetArticleTagList Get userMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
+		return
+	}
+
+	// 进入service层对数据操作
+	articleTagList, err = a.GetArticleTagList()
+	if err != nil {
+		zap.L().Error("GetArticleTagList service failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	// 成功返回状态
+	app.ResponseSuccess(c, articleTagList)
 }

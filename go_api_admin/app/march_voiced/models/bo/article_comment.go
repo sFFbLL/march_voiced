@@ -22,13 +22,13 @@ type ArticleComment struct {
 }
 
 type ArticleCreate struct {
-	CreateBy     int    `json:"create_by"`
+	CreateBy     uint   `json:"create_by"`
 	CreateByName string `json:"create_by_name"`
 	IdAvatar     string `json:"id_avatar"`
 }
 
 type ArticleReply struct {
-	ReplyId     int    `json:"reply_id"`
+	ReplyId     uint   `json:"reply_id"`
 	ReplyName   string `json:"reply_name"`
 	ReplyAvatar string `json:"reply_avatar"`
 }

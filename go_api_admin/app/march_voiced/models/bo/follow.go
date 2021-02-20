@@ -13,7 +13,7 @@ type FollowInfo struct {
 
 // 表示一个人的信息
 type User struct {
-	Id         int    `json:"id"`
+	Id         uint   `json:"id"`
 	AvatarPath string `json:"avatar_path"`
 	Nickname   string `json:"nickname" gorm:"column:nick_name"`
 }

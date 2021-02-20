@@ -46,8 +46,8 @@ type ArticleTotal struct {
 
 type GoArticleMsg struct {
 	ArticleTotal
-	UserId        int
-	ArticleId     int
+	UserId        uint
+	ArticleId     uint
 	ArticleUserId uint
 	CreateTime    int64
 }
@@ -55,4 +55,34 @@ type GoArticleMsg struct {
 type ArticleUser struct {
 	ArticleMsg
 	ArticleTotal
+}
+
+
+type IsFavourCollectByArticleId struct {
+	IsFavour  int `json:"isFavour"`
+	IsCollect int `json:"isCollect"`
+}
+
+type ArticleTagList struct {
+	ID          int    `json:"id"`
+	Icon        int    `json:"icon"`
+	Tag         string `json:"tag"`
+	Description string `json:"description"`
+}
+
+type ApplyArticleList struct {
+	Current uint                    `json:"current"` //页码
+	Size    uint                    `json:"size"`    //页内大小
+	Pages   int                     `json:"pages"`   //总页数
+	Total   int64                   `json:"total"`   //总条数
+	Records *[]ApplyArticleListData `json:"records"` //消息
+}
+
+type ApplyArticleListData struct {
+	Title       string `json:"title"`
+	Tag         string `json:"tag"`
+	Nickname    string `json:"nickname" gorm:"column:nick_name"`
+	CreateTime  int64  `json:"createTime" gorm:"column:status_update_time"`
+	Status      uint8  `json:"status"`
+	IsRecommend uint8  `json:"recommend" gorm:"column:is_recommend"`
 }

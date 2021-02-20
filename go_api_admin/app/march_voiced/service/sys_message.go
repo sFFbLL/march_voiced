@@ -25,8 +25,10 @@ func (e *SysMessage) GetSysMessage(p *dto.Paginator, userId int) (getSysMessage 
 		})
 	}
 	getSysMessage = new(bo.GetSysMessage)
-	getSysMessage.Count = uint(count)
-	getSysMessage.Message = getSysMessageData
-	getSysMessage.Total = uint(utils.PagesCount(int(count), int(p.Size)))
+	getSysMessage.Total = count
+	getSysMessage.Records = getSysMessageData
+	getSysMessage.Pages = utils.PagesCount(int(count), int(p.Size))
+	getSysMessage.Size = p.Size
+	getSysMessage.Current = p.Current
 	return
 }
