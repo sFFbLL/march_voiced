@@ -11,24 +11,24 @@ type ArticleComment struct {
 }
 
 // AddArticleComment 新增文章详情页的评论
-func (co *ArticleComment) AddArticleComment(userId int, p *dto.AddArticleComment) (err error) {
+func (co *ArticleComment) AddArticleComment(userId uint, p *dto.AddArticleComment) (err error) {
 	comment := new(models.ArticleComment)
 	comment.Pid = p.Pid
 	comment.Content = p.Content
 	comment.ArticleId = p.ID
 	comment.ReplyId = p.ReplyId
-	comment.UpdateBy = uint(userId)
-	comment.CreateBy = uint(userId)
+	comment.UpdateBy = userId
+	comment.CreateBy = userId
 	err = comment.AddArticleComment()
 	go comment.AddArticleCommentMessage(userId)
 	return
 }
 
 // DeleteArticleComment 删除文章详情页的评论
-func (co *ArticleComment) DeleteArticleComment(userId int, id int) (err error) {
+func (co *ArticleComment) DeleteArticleComment(userId uint, id int) (err error) {
 	comment := new(models.ArticleComment)
 	comment.ID = id
-	comment.UpdateBy = uint(userId)
+	comment.UpdateBy = userId
 	err = comment.DeleteArticleComment()
 	return
 }
@@ -40,7 +40,6 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 	if p.Size == 0 || p.Current == 0 {
 		return nil, errors.New("参数缺失")
 	} else {
-
 		res = new(bo.GetArticleComment)
 		var SignalComments []bo.SignalArticleComment
 		var ChildComments []bo.ArticleComment
@@ -53,7 +52,7 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 			if err != nil {
 				return nil, errors.New("获取用户信息失败")
 			}
-			commentChild, err := comment.GetChildCommentList(p.ID, commentList[i].ID)
+			commentChild, err := comment.GetChildCommentList(int(p.ID), commentList[i].ID)
 			if err != nil {
 				return nil, errors.New("查询子评论失败")
 			}

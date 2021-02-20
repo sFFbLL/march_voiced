@@ -42,8 +42,8 @@ func (co *ArticleComment) AddArticleComment() (err error) {
 }
 
 //AddArticleCommentMessage 新增详情页的评论消息
-func (co *ArticleComment) AddArticleCommentMessage(userId int) {
-	AddMessage(0, 1, co.ArticleId, uint(userId), co.Content)
+func (co *ArticleComment) AddArticleCommentMessage(userId uint) {
+	AddMessage(0, 1, co.ArticleId, userId, co.Content)
 }
 
 // DeleteArticleComment 删除详情页的评论
@@ -57,7 +57,7 @@ func (co *ArticleComment) DeleteArticleComment() (err error) {
 func (co *ArticleComment) GetCommentList(p *dto.GetArticleComment) (commentList []*ArticleComment, err error) {
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=? AND article_id=?", []byte{0}, p.ID)
 	err = table.Where("pid=? AND reply_id=?", 0, 0).
-		Offset((p.Current - 1) * p.Size).Limit(p.Size).Order("create_time desc").
+		Offset(int((p.Current - 1) * p.Size)).Limit(int(p.Size)).Order("create_time desc").
 		Find(&commentList).Error
 	return
 }
@@ -71,6 +71,13 @@ func (co *ArticleComment) GetChildCommentList(articleId int, pid int) (commentLi
 
 // GetUserInfo 获取与评论有关的用户的信息
 func (co *ArticleComment) GetUserInfo(id uint) (userInfo *UserInfo, err error) {
+	if id == 0 {
+		userInfo = &UserInfo{
+			NickName:   "",
+			AvatarPath: "",
+		}
+		return
+	}
 	userInfo = new(UserInfo)
 	idI := int(id)
 	table := global.Eloquent.Table("sys_user").Where("is_deleted=?", []byte{0})
@@ -78,10 +85,10 @@ func (co *ArticleComment) GetUserInfo(id uint) (userInfo *UserInfo, err error) {
 	return
 }
 
-// GetArticleChildComment 查询指定文章下某一条一级评论的全部二级评论
+// GetArticleChildComment 查询指定文章下某一条一级评论的size條二级评论
 func (co *ArticleComment) GetArticleChildComment(p *dto.GetArticleChildComment) (commentList *[]ArticleComment, err error) {
 	commentList = new([]ArticleComment)
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=?", []byte{0})
-	err = table.Where("pid=?", p.ID).Limit(p.Size).Offset((p.Current - 1) * p.Size).Order("create_time desc").Find(commentList).Error
+	err = table.Where("pid=?", p.ID).Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).Order("create_time desc").Find(commentList).Error
 	return
 }

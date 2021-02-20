@@ -18,7 +18,7 @@ const (
 )
 
 type UserMessage struct {
-	UserId   int
+	UserId   uint
 	Username string
 }
 

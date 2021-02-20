@@ -90,7 +90,6 @@ func (fo *Follow) GetFollowStatus(id int, me int) (err error) {
 
 // UpdateStatus 修改关注状态
 func (fo *Follow) UpdateStatus(id int, me int) (err error) {
-	var num int64
 	err = fo.GetFollowStatus(id, me)
 	if err != nil {
 		fo.CreateBy = uint(me)
@@ -103,8 +102,8 @@ func (fo *Follow) UpdateStatus(id int, me int) (err error) {
 		return nil
 	} else {
 		// 已关注的情况(要改为未关注):
-		err = global.Eloquent.Table(fo.TableName()).Update("is_deleted=?", []byte{1}).Count(&num).Error
-		if err != nil || num != 1 {
+		err = global.Eloquent.Table(fo.TableName()).Where("is_deleted=? AND create_by=? AND follow_id=?", 0, me, id).Update("is_deleted", 1).Error
+		if err != nil {
 			return errors.New("修改失败")
 		}
 	}

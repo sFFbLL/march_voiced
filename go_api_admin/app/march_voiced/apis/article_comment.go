@@ -80,7 +80,7 @@ func DeleteArticleComment(c *gin.Context) {
 	}
 	IdS := c.Param("id")
 	id, err := strconv.Atoi(IdS)
-	if err != nil {
+	if err != nil || id <= 0 {
 		_, ok := err.(validator.ValidationErrors)
 		if !ok {
 			app.ResponseError(c, app.CodeParamIsInvalid)

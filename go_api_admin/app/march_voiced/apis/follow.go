@@ -153,23 +153,18 @@ func GetStatus(c *gin.Context) {
 // @Router /api/follow/center [put]
 func UpdateStatus(c *gin.Context) {
 	// 获取上下文信息
+	id := new(dto.UpdateStatus)
 	user, err := api.GetUserMessage(c)
 	if err != nil {
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
 		return
 	}
-	// 绑定参数
-	id := c.Query("id")
-	idI, err := strconv.Atoi(id)
-	if err != nil {
-		zap.L().Error("string to int failed", zap.String("username", user.Username), zap.Error(err))
-		app.ResponseError(c, app.CodeParamTypeBindError)
-	}
-	if idI == 0 {
+	if err = c.ShouldBindJSON(id); err != nil || id.Id == 0 {
 		zap.L().Error("UpdateStatus failed", zap.String("username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeParamIsInvalid)
+		return
 	}
-	err = fo.UpdateStatus(idI, user.UserId)
+	err = fo.UpdateStatus(id.Id, user.UserId)
 	if err != nil {
 		zap.L().Error("UpdateStatus failed", zap.String("username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeUpdateOperationFail)
