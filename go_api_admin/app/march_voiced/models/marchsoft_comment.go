@@ -19,10 +19,15 @@ func (co *MarchsoftComment) TableName() string {
 	return `marchsoft_comment`
 }
 
-// AddMarchsoftComment 新增详情页的评论
+// AddMarchsoftComment 新增评论
 func (co *MarchsoftComment) AddMarchsoftComment() (err error) {
 	err = global.Eloquent.Create(co).Error
 	return
+}
+
+// AddMarchsoftCommentMessage 新增评论消息
+func (co *MarchsoftComment) AddMarchsoftCommentMessage(id int) {
+	AddMessage(0, 1, co.MarchsoftId, uint(id), co.Content)
 }
 
 // DeleteMarchsoftComment 删除详情页的评论

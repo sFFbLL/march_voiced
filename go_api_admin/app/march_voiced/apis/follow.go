@@ -18,7 +18,7 @@ var fo = new(service.Follow)
 // GetFollowList 查询关注列表
 // @Summary 查询关注列表
 // @Description Author：YanSongWu 2021/02/18
-// @Tags 系统：关注管理 follow Controller
+// @Tags 用户：关注管理 Follow Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query dto.GetFollowList false "查询参数"
@@ -66,10 +66,10 @@ func GetFollowList(c *gin.Context) {
 // GetFansList 查询粉丝列表
 // @Summary 查询关注列表
 // @Description Author：YanSongWu 2021/02/18
-// @Tags 系统：关注管理 follow Controller
+// @Tags 用户：关注管理 Follow Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object query dto.GetFansList false "查询参数"
+// @Param object query dto.GetFollowList false "查询参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseGetFansList
 // @Router /api/follow/fans [get]
@@ -110,13 +110,13 @@ func GetFansList(c *gin.Context) {
 
 // GetStatus 查看关注状态
 // @Summary 查询关注状态
-// @Description Author：Cgl 2021/02/18 获得身份令牌
-// @Tags 关注：关注状态管理 Follow Controller
+// @Description Author：YanSongWu 2021/02/18 获得身份令牌
+// @Tags 用户：关注管理 Follow Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object body dto.GetFollowStatus false "查询参数"
+// @Param id query string false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseGetFollowStatus
+// @Success 200 {object} models._ResponseSuccess
 // @Router /api/follow/judge [get]
 func GetStatus(c *gin.Context) {
 	user, err := api.GetUserMessage(c)
@@ -144,12 +144,12 @@ func GetStatus(c *gin.Context) {
 // UpdateStatus 修改关注状态
 // @Summary 修改关注状态
 // @Description Author：Cgl 2021/02/18 获得身份令牌
-// @Tags 关注：关注管理 follow Controller
+// @Tags 用户：关注管理 Follow Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object body dto.UpdateStatus false "查询参数"
+// @Param id query string false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseUpdateStatus
+// @Success 200 {object} models._ResponseSuccess
 // @Router /api/follow/center [put]
 func UpdateStatus(c *gin.Context) {
 	// 获取上下文信息

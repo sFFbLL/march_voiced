@@ -71,7 +71,7 @@ type SysUser struct {
 	PwdResetTime int64  `json:"pwd_reset_time"` //修改密码的时间
 	CreateBy     int    `json:"create_by"`      //
 	UpdateBy     int    `json:"update_by"`      //
-	IsMarch      int    `json:"is_march"`
+	IsMarch      *uint8  `json:"is_march"`
 }
 
 //redis 缓存model

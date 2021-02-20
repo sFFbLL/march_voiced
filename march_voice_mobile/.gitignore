@@ -4,7 +4,9 @@ yarn-debug.log*
 yarn-error.log*
 **/*.log
 node_modules/
+
 unpackage/
+
 
 tests/**/coverage/
 tests/e2e/reports
@@ -18,5 +20,6 @@ selenium-debug.log
 *.njsproj
 *.sln
 *.local
+
 
 yarn.lock

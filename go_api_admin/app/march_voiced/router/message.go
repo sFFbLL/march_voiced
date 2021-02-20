@@ -14,7 +14,11 @@ func init() {
 func messageAuthRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/message")
 	{
+		// MessageUnreadCount 查询是否有未读消息
 		r.GET("user/unread-count", apis.MessageUnreadCount)
+		// UnReadMessageRead 未读消息已读
 		r.POST("user", apis.UnReadMessageRead)
+		// GetMessage 关注页面(动态)列表页
+		r.GET("follow", apis.GetMessage)
 	}
 }

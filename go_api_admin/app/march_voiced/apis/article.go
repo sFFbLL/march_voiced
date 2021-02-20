@@ -7,27 +7,59 @@ import (
 	"project/common/api"
 	"project/utils"
 	"project/utils/app"
-
-	"go.uber.org/zap"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"go.uber.org/zap"
 )
 
 var a = new(service.Article)
 
-// InsertArticle 文章审核通过或驳回
+// ArticlePass 文章审核通过或驳回
 // @Summary 文章审核通过或驳回
-// @Description Author：Lbl 2021/02/18 获得身份令牌
+// @Description Author：JiaKun Li 2021/02/18
 // @Tags 文章：Article Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object body dto.InsertArticleDto false "添加参数"
+// @Param object body dto.ArticlePass false "添加参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseSuccess
-// @Router /api/article [post]
-func ArticlePass() {
+// @Router /api/apply/article [put]
+func ArticlePass(c *gin.Context) {
+	p := new(dto.ArticlePass)
 
+	// 获取缓存信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("ArticlePass GetUserMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeLoginExpire)
+		return
+	}
+
+	// 获取参数 校验参数
+	if err := c.ShouldBindJSON(p); err != nil {
+		// 请求参数有误， 直接返回响应
+		zap.L().Error("ArticlePass params failed", zap.String("Username", user.Username), zap.Error(err))
+		_, ok := err.(validator.ValidationErrors)
+		if !ok {
+			app.ResponseError(c, app.CodeParamIsInvalid)
+			return
+		}
+		app.ResponseError(c, app.CodeParamTypeBindError)
+		return
+	}
+
+	//业务逻辑处理
+	s := new(service.Article)
+	err = s.ArticlePass(p, user.UserId)
+	if err != nil {
+		zap.L().Error("ArticlePass service params failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeUpdateOperationFail)
+		return
+	}
+
+	app.ResponseSuccess(c, nil)
 }
 
 // InsertArticle 添加文章
@@ -134,9 +166,9 @@ func UpdateArticleHandler(c *gin.Context) {
 // @Tags 应用：文章管理 Article Controller
 // @Accept application/json
 // @Produce application/json
-// @Param path false "修改参数"
+// @Param id path int false "修改参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._Article
+// @Success 200 {object} models._ResponseSuccess
 // @Router /api/article/{id} [get]
 func ArticleDetailHandler(c *gin.Context) {
 	// 声明必要变量
@@ -226,7 +258,7 @@ func ReprintArticleHandler(c *gin.Context) {
 // @Produce application/json
 // @Param object query dto.Paging false "添加参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._Article
+// @Success 200 {object} models._ResponseTopArticleListHandler
 // @Router /api/article/top [get]
 func TopArticleListHandler(c *gin.Context) {
 	// 声明必要变量
@@ -263,6 +295,150 @@ func TopArticleListHandler(c *gin.Context) {
 	articleList, err = a.TopArticleList(paging, userMsg.UserId)
 	if err != nil {
 		zap.L().Error("TopArticleListHandler service failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	// 成功返回状态
+	app.ResponseSuccess(c, articleList)
+}
+
+// MatchSensitiveWord 敏感词匹配
+// @Summary 敏感词匹配
+// @Description Author：YanSongWu 2021/02/18 获得身份令牌
+// @Tags 应用：文章管理 Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object query int false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseMatchSensitiveWord
+// @Router /api/article/word [get]
+func MatchSensitiveWord(c *gin.Context) {
+	// 获取上下文信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("GetUserMessage failed", zap.Error(err))
+		return
+	}
+
+	// 接收参数
+	id := c.Query("id")
+	idI, err := strconv.Atoi(id)
+	if err != nil {
+		zap.L().Error("MatchSensitiveWord failed", zap.String("username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamIsInvalid)
+		return
+	}
+	res, err := a.MatchSensitiveWord(idI)
+	if err != nil {
+		zap.L().Error("match sensitiveWord failed", zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+	// 返回响应
+	app.ResponseSuccess(c, res)
+}
+
+// SelectArticleListIndex 文章列表
+// @Summary 文章列表
+// @Description Author：Lbl 2021/02/17 获得身份令牌
+// @Tags 应用：文章管理 Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object query dto.Paging false "添加参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._Article
+// @Router /api/article/index [get]
+func SelectArticleListIndex(c *gin.Context) {
+	// 声明必要变量
+	userMsg := new(api.UserMessage)
+	articleList := new([]bo.Article)
+	var paging dto.Paging
+	var err error
+
+	// 获取上下文用户信息
+	userMsg, err = api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("TopArticleListHandler Get userId failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
+		return
+	}
+
+	// 参数绑定
+	paging.Current, err = utils.StringToInt(c.DefaultQuery("current", "1"))
+	if err != nil {
+		// 请求参数有误， 直接返回响应
+		zap.L().Error("TopArticleListHandler params Current failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamTypeBindError)
+		return
+	}
+	paging.Size, err = utils.StringToInt(c.DefaultQuery("size", "10"))
+	if err != nil {
+		// 请求参数有误， 直接返回响应
+		zap.L().Error("TopArticleListHandler params Size failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamTypeBindError)
+		return
+	}
+
+	// 进入service层对数据操作
+	articleList, err = a.SelectArticleListIndex(paging, userMsg.UserId)
+	if err != nil {
+		zap.L().Error("TopArticleListHandler service failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	// 成功返回状态
+	app.ResponseSuccess(c, articleList)
+}
+
+// SelectArticleListByUserId 用户文章列表
+// @Summary 用户文章列表
+// @Description Author：Lbl 2021/02/17 获得身份令牌
+// @Tags 应用：文章管理 Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object query dto.SelectArticleByUser false "添加参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ArticleUser
+// @Router /api/article/user [get]
+func SelectArticleListByUserId(c *gin.Context) {
+	// 声明必要变量
+	userMsg := new(api.UserMessage)
+	articleList := new([]bo.ArticleUser)
+	var paging dto.SelectArticleByUser
+	var err error
+
+	// 获取上下文用户信息
+	userMsg, err = api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("SelectArticleListByUserId Get userMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
+		return
+	}
+	err = c.ShouldBindQuery(&paging)
+	if err != nil {
+		zap.L().Error("SelectArticleListByUserId ShouldBindQuery Params Failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		_, ok := err.(validator.ValidationErrors)
+		if !ok {
+			app.ResponseError(c, app.CodeParamIsInvalid)
+			return
+		}
+		app.ResponseError(c, app.CodeParamNotComplete)
+		return
+	}
+
+	if paging.Current == 0 {
+		paging.Current = 1
+	}
+	if paging.Size == 0 {
+		paging.Current = 10
+	}
+
+	// 进入service层对数据操作
+	articleList, err = a.SelectArticleListByUserId(paging, userMsg.UserId)
+	if err != nil {
+		zap.L().Error("SelectArticleListByUserId service failed", zap.String("Username", userMsg.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
 		return
 	}

@@ -15,7 +15,7 @@ func commentRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/comment")
 	{
 		r.POST("article", apis.AddArticleComment)
-		r.DELETE("article", apis.DeleteArticleComment)
+		r.DELETE("article/:id", apis.DeleteArticleComment)
 		r.GET("article", apis.GetArticleComment)
 
 		r.POST("marchsoft", apis.AddMarchsoftComment)

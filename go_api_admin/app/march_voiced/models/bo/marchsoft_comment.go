@@ -9,7 +9,7 @@ type SignalMarchsoftComment struct {
 	ChildComments []MarchsoftComment
 }
 
-type ChildrenArticleComment struct {
+type ChildrenMarchsoftComment struct {
 	Comment []MarchsoftComment
 }
 
