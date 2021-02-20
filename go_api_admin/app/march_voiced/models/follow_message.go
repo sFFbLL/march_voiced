@@ -47,9 +47,9 @@ func (e *FollowMessage) GetFollowMessage(getFollowMessage *bo.GetFollowMessage, 
 	err = global.Eloquent.Table(e.TableName()).
 		Select("sys_user.avatar_path, sys_user.nick_name, sys_user.id, follow_message.create_time").
 		Joins("left join sys_user on sys_user.id = follow_message.create_by").
-		Where("follow_message.follow_id=? and sys_user.is_deleted=0", userId, userId).Count(&getFollowMessage.Count).
+		Where("follow_message.follow_id=? and sys_user.is_deleted=0", userId, userId).Count(&getFollowMessage.Total).
 		Order("follow_message.create_time desc").
-		Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).Find(getFollowMessage.Message).Error
+		Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).Find(getFollowMessage.Records).Error
 	return
 }
 

@@ -51,27 +51,28 @@ type GenderEnabled struct {
 
 type SysUser struct {
 	*BaseModel
-	Username     string `json:"username"`
-	Password     string `json:"password"`
-	DeptId       int    `json:"dept_id"`        //部门id
-	PostId       int    `json:"post_id"`        //
-	RoleId       int    `json:"role_id"`        //
-	NickName     string `json:"nick_name"`      //
-	Phone        string `json:"phone"`          //
-	Email        string `json:"email"`          //
-	AvatarPath   string `json:"avatar_path"`    //头像路径
-	Avatar       string `json:"avatar"`         //
-	Sex          string `json:"sex"`            //
-	Status       string `json:"status"`         //
-	Remark       string `json:"remark"`         //
-	Salt         string `json:"salt"`           //
-	Gender       []byte `json:"gender"`         //性别（0为男默认，1为女）
-	IsAdmin      []byte `json:"is_admin"`       //是否为admin账号
-	Enabled      []byte `json:"enabled"`        //状态：1启用（默认）、0禁用
-	PwdResetTime int64  `json:"pwd_reset_time"` //修改密码的时间
-	CreateBy     int    `json:"create_by"`      //
-	UpdateBy     int    `json:"update_by"`      //
-	IsMarch      *uint8  `json:"is_march"`
+	Username        string `json:"username"`
+	Password        string `json:"password"`
+	DeptId          int    `json:"dept_id"`                                       //部门id
+	PostId          int    `json:"post_id"`                                       //
+	RoleId          int    `json:"role_id"`                                       //
+	NickName        string `json:"nick_name"`                                     //
+	Phone           string `json:"phone"`                                         //
+	Email           string `json:"email"`                                         //
+	AvatarPath      string `json:"avatar_path"`                                   //头像路径
+	Avatar          string `json:"avatar"`                                        //
+	Sex             string `json:"sex"`                                           //
+	Status          string `json:"status"`                                        //
+	Remark          string `json:"remark"`                                        //
+	Salt            string `json:"salt"`                                          //
+	Gender          []byte `json:"gender"`                                        //性别（0为男默认，1为女）
+	IsAdmin         []byte `json:"is_admin"`                                      //是否为admin账号
+	Enabled         []byte `json:"enabled"`                                       //状态：1启用（默认）、0禁用
+	PwdResetTime    int64  `json:"pwd_reset_time"`                                //修改密码的时间
+	CreateBy        int    `json:"create_by"`                                     //
+	UpdateBy        int    `json:"update_by"`                                     //
+	IsMarch         *uint8 `json:"is_march"`                                      // 三月圈状态
+	MarchUpdateTime int64  `json:"march_update_time" gorm:"autoCreateTime:milli"` //三月圈状态更新时间
 }
 
 //redis 缓存model

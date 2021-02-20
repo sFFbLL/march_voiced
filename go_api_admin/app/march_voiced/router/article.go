@@ -25,5 +25,7 @@ func articleAuthRouter(v1 *gin.RouterGroup) {
 		r.GET("/favour-collect/:id", apis.IsFavourCollectByArticleId)
 		r.GET("/tag", apis.GetArticleTagList)
 		r.POST("/reprint", apis.ReprintArticleHandler)
+		r.GET("/admin", apis.ApplyArticleList)
+		r.GET("recommend/:id", apis.ArticleRecommend)
 	}
 }

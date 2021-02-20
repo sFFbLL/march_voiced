@@ -36,9 +36,9 @@ func (e *Message) GetMessage(getMessage *bo.GetMessage, p *dto.Paginator, userId
 	err = global.Eloquent.Table(e.TableName()).
 		Select("sys_user.avatar_path, sys_user.nick_name, message.type , message.status, message.article_id, message.create_by, message.create_time, message.title, message.comment, message.content, message.image").
 		Joins("left join sys_user on sys_user.id = message.create_by").
-		Where("message.create_by in (?) and sys_user.is_deleted=0", followList).Count(&getMessage.Count).
+		Where("message.create_by in (?) and sys_user.is_deleted=0", followList).Count(&getMessage.Total).
 		Order("create_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
-		Find(getMessage.Message).Error
+		Find(getMessage.Records).Error
 	return
 }
 
