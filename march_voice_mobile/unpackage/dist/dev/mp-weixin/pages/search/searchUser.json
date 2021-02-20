@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "搜索",
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "uni-load-more": "/components/uni-load-more/uni-load-more",
-    "attention-and-fans-cell": "/marchVoiceComponents/attentionAndFansCell"
-  }
-}
