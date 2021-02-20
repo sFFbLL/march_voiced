@@ -37,7 +37,7 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		res, err := global.Rdb.Get(fmt.Sprintf("%s%s%s", config.JwtConfig.RedisHeader, "-", parts[1])).Result()
 		if err != nil {
 			zap.L().Error("token解析失败", zap.Error(err))
-			app.ResponseError(c, app.CodeInvalidToken)
+			app.ResponseError400(c, app.CodeInvalidToken)
 			c.Abort()
 			return
 		}

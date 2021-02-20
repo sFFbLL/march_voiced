@@ -2,23 +2,23 @@
  	<view class="content" :class="{'active':active}">
  		<view class="tabbar-box-wrap">
  			<view class="tabbar-box">
- 				<view class="tabbar-box-item" @click="goToPage('/pages/publish/tabbar-3/tabbar-3-detial/tabbar-3-release/tabbar-3-release')">
- 					<publishTypeCard :type="type">
+ 				<view class="tabbar-box-item">
+ 					<publishTypeCard :tag="item.tag" :icon="item.icon"  v-for="(item,index) in list" :key="item.index">
  						<template v-slot:title>
- 							写文章
+ 							写{{item.tag}}
  						</template>
  						<template v-slot:describe>
- 							记录我的生活，酸甜苦辣，喜怒哀乐
+ 							{{item.description}}
  						</template>
  					</publishTypeCard>
-					<publishTypeCard>
+<!-- 					<publishTypeCard :kind="kind">
 						<template v-slot:title>
-							写文章
+							写笔记
 						</template>
 						<template v-slot:describe>
 							记录我的生活，酸甜苦辣，喜怒哀乐
 						</template>
-					</publishTypeCard>
+					</publishTypeCard> -->
  				</view>
  			</view>
  		</view>
@@ -27,20 +27,39 @@
  
  <script>
 	  import publishTypeCard from '../../marchVoiceComponents/publishTypeCard.vue';
-import {check} from '../../utils/checkUnRead.js'
+	  import {
+	  	getTags
+	  } from '@/utils/api/publish-api.js';
+	  import {check} from '../../utils/checkUnRead.js';
  export default {
-	
-	 
  	data() {
  		return {
  			active: false,
-			type:"asdasd"
+			tag:"article",
+			list:[
+				{
+					"tag": "文章",
+					"icon": '../../static/img/1.jpg',
+					"description":"1"
+				},
+				{
+					"tag": "想法",
+					"icon": '../../static/img/1.jpg',
+					"description":"2"
+				}
+			]
  		};
  	},
 	components:{
 		publishTypeCard
 	},
- 	onLoad() {},
+ 	onLoad() {
+		// 获取文章标签
+		// getTags().then(res => {
+		// 	this.list = res.data
+		// 	console.log("ASDASD")
+		// })
+	},
  	onShow() {
  		// setTimeout(() => {
  		this.active = true;

@@ -66,7 +66,7 @@ func AddArticleComment(c *gin.Context) {
 // @Tags 文章：详情页评论 comment Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object body dto.DeleteArticleComment false "查询参数"
+// @Param id path int false "查询参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseSuccess
 // @Router /api/comment/article/:id [delete]

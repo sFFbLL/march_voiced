@@ -63,7 +63,7 @@ func AddMarchsoftComment(c *gin.Context) {
 // @Tags 三月圈：评论管理 Comment Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object body int false "查询参数"
+// @Param id path int false "查询参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseSuccess
 // @Router /api/comment/marchsoft [delete]
