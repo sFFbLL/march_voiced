@@ -15,9 +15,9 @@ func (e *Message) GetMessage(p *dto.Paginator, userId int) (getMessage *bo.GetMe
 	message := new(models.Message)
 	getMessage = new(bo.GetMessage)
 	getMessageData := new([]bo.GetMessageData)
-	getMessage.Message = getMessageData
+	getMessage.Records = getMessageData
 	err = message.GetMessage(getMessage, p, userId)
-	getMessage.Total = uint(utils.PagesCount(int(getMessage.Count), int(p.Size)))
+	getMessage.Pages = utils.PagesCount(int(getMessage.Total), int(p.Size))
 	return
 }
 

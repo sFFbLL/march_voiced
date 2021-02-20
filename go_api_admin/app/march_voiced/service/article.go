@@ -2,17 +2,51 @@ package service
 
 import (
 	"errors"
+	"sort"
+	"sync"
+
 	"project/app/march_voiced/models"
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
+	"project/utils"
 	"project/utils/sensitiveWord"
-	"sort"
-	"sync"
 
 	"go.uber.org/zap"
 )
 
 type Article struct{}
+
+// ArticleRecommend （后台）文章设置推荐
+func (a *Article) ArticleRecommend(articleId int) (err error) {
+	article := new(models.Article)
+	err = article.ArticleRecommend(articleId)
+	if err != nil {
+		return
+	}
+	if *article.IsRecommend == 0 {
+		*article.IsRecommend = 1
+	} else {
+		*article.IsRecommend = 0
+	}
+	err = article.UpdateArticle()
+	return
+}
+
+// ApplyArticleList （后台）文章审核列表页
+func (a *Article) ApplyArticleList(p *dto.ApplyArticlePaginator, userId int) (applyArticleList *bo.ApplyArticleList, err error) {
+	article := new(models.Article)
+	applyArticleList = new(bo.ApplyArticleList)
+	applyArticleListData := new([]bo.ApplyArticleListData)
+	applyArticleList.Records = applyArticleListData
+	err = article.GetApplyArticle(applyArticleList, p, userId)
+	if err != nil {
+		return
+	}
+	applyArticleList.Size = p.Size
+	applyArticleList.Current = p.Current
+	applyArticleList.Pages = utils.PagesCount(int(applyArticleList.Total), int(p.Size))
+	return
+}
 
 // ArticlePass 文章审核
 func (a *Article) ArticlePass(p *dto.ArticlePass, userId int) (err error) {
@@ -26,8 +60,12 @@ func (a *Article) ArticlePass(p *dto.ArticlePass, userId int) (err error) {
 		return errors.New("文章不是发布未审核状态")
 	}
 	article.Status = p.Status
+	article.UpdateTime = utils.NowUnix()
 	err = article.UpdateArticle()
 	go models.AddSysMessage(0, *p.Status, uint(userId), article.CreateBy)
+	if *p.Status == 1 {
+		go models.AddMessage(0, 0, uint(article.ID), uint(userId), "")
+	}
 	return
 }
 

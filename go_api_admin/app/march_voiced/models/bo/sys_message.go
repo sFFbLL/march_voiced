@@ -1,9 +1,11 @@
 package bo
 
 type GetSysMessage struct {
-	Total   uint                 `json:"total"`   //总页数
-	Count   uint                 `json:"count"`   //总条数
-	Message *[]GetSysMessageData `json:"message"` //消息
+	Current uint                 `json:"current"` //页码
+	Size    uint                 `json:"size"`    //页内大小
+	Pages   int                  `json:"pages"`   //总页数
+	Total   int64                `json:"total"`   //总条数
+	Records *[]GetSysMessageData `json:"records"` //消息
 }
 
 type GetSysMessageData struct {

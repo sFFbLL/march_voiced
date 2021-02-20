@@ -1,6 +1,7 @@
 package apis
 
 import (
+	"gorm.io/gorm"
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
 	"project/app/march_voiced/service"
@@ -13,6 +14,105 @@ import (
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
 )
+
+// ArticleRecommend （后台）文章设置推荐
+// @Summary （后台）文章设置推荐
+// @Description Author：JiaKun Li 2021/02/20
+// @Tags 文章：Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param id path int false "添加参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseSuccess
+// @Router /api/article/recommend/:id [put]
+func ArticleRecommend(c *gin.Context) {
+	id := c.Param("id")
+
+	// 获取缓存信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("ArticleRecommend GetUserMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeLoginExpire)
+		return
+	}
+
+	articleId, err := strconv.Atoi(id)
+	if err != nil {
+		zap.L().Error("ArticleRecommend params failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamTypeBindError)
+	}
+
+	if articleId <= 0 {
+		app.ResponseError(c, app.CodeParamIsInvalid)
+	}
+
+	//业务逻辑处理
+	s := new(service.Article)
+	err = s.ArticleRecommend(articleId)
+	if err == gorm.ErrRecordNotFound {
+		zap.L().Error("ArticleRecommend gorm.ErrRecordNotFound", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseErrorWithMsg(c, app.CodeSelectOperationFail, "该文章未发布")
+	}
+	if err != nil {
+		zap.L().Error("ArticleRecommend service params failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	app.ResponseSuccess(c, nil)
+}
+
+// ApplyArticleList （后台）文章审核列表页
+// @Summary （后台）文章审核列表页
+// @Description Author：JiaKun Li 2021/02/20
+// @Tags 文章：Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object query dto.ApplyArticlePaginator false "添加参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseApplyArticleList
+// @Router /api/apply/article [get]
+func ApplyArticleList(c *gin.Context) {
+	p := new(dto.ApplyArticlePaginator)
+
+	// 获取缓存信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("ApplyArticleList GetUserMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeLoginExpire)
+		return
+	}
+
+	// 获取参数 校验参数
+	if err := c.ShouldBindQuery(p); err != nil {
+		// 请求参数有误， 直接返回响应
+		zap.L().Error("ApplyArticleList params failed", zap.String("Username", user.Username), zap.Error(err))
+		_, ok := err.(validator.ValidationErrors)
+		if !ok {
+			app.ResponseError(c, app.CodeParamIsInvalid)
+			return
+		}
+		app.ResponseError(c, app.CodeParamTypeBindError)
+		return
+	}
+
+	if p.Size == 0 && p.Current == 0 {
+		p.Size = 10
+		p.Current = 1
+	}
+
+	//业务逻辑处理
+	s := new(service.Article)
+	applyArticleList, err := s.ApplyArticleList(p, user.UserId)
+	if err != nil {
+		zap.L().Error("ApplyArticleList service params failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	app.ResponseSuccess(c, applyArticleList)
+}
+
 
 // ArticlePass 文章审核通过或驳回
 // @Summary 文章审核通过或驳回

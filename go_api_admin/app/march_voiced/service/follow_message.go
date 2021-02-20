@@ -16,7 +16,7 @@ func (e *FollowMessage) GetFollowMessage(p *dto.Paginator, userId int) (getFollo
 
 	getFollowMessage = new(bo.GetFollowMessage)
 	followMessageData := new([]bo.GetFollowMessageData)
-	getFollowMessage.Message = followMessageData
+	getFollowMessage.Records = followMessageData
 	err = followMessage.GetFollowMessage(getFollowMessage, p, userId)
 	if err != nil {
 		return
@@ -40,7 +40,9 @@ func (e *FollowMessage) GetFollowMessage(p *dto.Paginator, userId int) (getFollo
 		}
 		*followMessageDataFinal = append(*followMessageDataFinal, i)
 	}
-	getFollowMessage.Message = followMessageDataFinal
-	getFollowMessage.Total = uint(utils.PagesCount(int(getFollowMessage.Count), int(p.Size)))
+	getFollowMessage.Records = followMessageDataFinal
+	getFollowMessage.Pages = utils.PagesCount(int(getFollowMessage.Total), int(p.Size))
+	getFollowMessage.Current = p.Current
+	getFollowMessage.Size = p.Size
 	return
 }
