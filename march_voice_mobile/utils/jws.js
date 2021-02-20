@@ -2,7 +2,7 @@ import getScanCode from "./api/marchCircle-api.js"
 
 // jwx.js
 //#ifdef H5
-const jweixin = require('jweixin-module')
+// const jweixin = require('jweixin-module')
 //#endif
 export function configWeiXin() {
 	//查询后端返回的公众号参数信息

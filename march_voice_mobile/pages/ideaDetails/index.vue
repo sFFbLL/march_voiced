@@ -5,14 +5,15 @@
 		<view class="ideacontent">
 
 			<!-- 用户头像公共组件 -->
-			<attentionAndFansCell :showDteial="false"></attentionAndFansCell>
+			<attentionAndFansCell :nickname="ideaInfoList.nickname" :avatarPath="ideaInfoList.avatarPath" :isFollow="ideaInfoList.isFollow"></attentionAndFansCell>
 			<!-- 想法的文字部分 -->
 			<articleContent :articleContent="ideaInfoList.content"></articleContent>
 			<!-- 想法的图片部分组件 -->
-			<imageAdaptation :imgList="imgList"></imageAdaptation>
+			<imageAdaptation :imgList="ideaInfoList.imgList"></imageAdaptation>
 
 			<!-- 点赞表情组件 -->
-			<emojiControl :isShow="false" :emojiList="emojiList"></emojiControl>
+			<emojiControl :isShow="false" :faceTotals="ideaInfoList.faceTotal" :likeTotals="ideaInfoList.likeTotal" :favourTotals="ideaInfoList.favourTotal"
+					 :commentTotals="ideaInfoList.commentTotal" :id="ideaInfoList.id" ></emojiControl>
 		</view>
 		<!-- 评论吸底框 -->
 		<view class="commentwarp">
@@ -42,18 +43,9 @@
 			return {
 				sendDisabled: true,
 				comment: null,
-				emojiList: {
-					faceTotal: 2,
-					likeTotal: 3,
-					favourTotal: 0,
-					commentTotal: 9,
-				},
-				imgList: [
-					'../../static/img/cat.jpg', '../../static/img/cat.jpg'
-				],
 				ideaInfoList: {
 					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					upDateTime: '2020/12/12',
+					updateTime: '2020/12/12',
 					faceTotal: 2,
 					likeTotal: 3,
 					favourTotal: 0,
@@ -62,12 +54,11 @@
 					imgList: [
 						'../../static/img/cat.jpg', '../../static/img/cat.jpg'
 					],
-					user: {
-						nickname: "xianer",
-						id: 0,
-						avatarPath: '',
-						isFollow: 0
-					}
+					user_id: 0,
+					nickname: "xianer",
+					avatarPath: '../../static/img/cat.jpg',
+					isFollow: 0
+
 				}
 			}
 		},
@@ -75,16 +66,11 @@
 			this.ideaId = option.id;
 		},
 		created() {
+			let id = this.ideaId
 
 			// 获取想法详细信息接口
-			// ideaDetail(this.ideaId).then(res=>{
+			// ideaDetail(id).then(res=>{
 			// 	this.ideaInfoList=res.data;
-			// 	this.emojiList.faceTotal=this.ideaInfoList.faceTotal;
-			// 	this.emojiList.favourTotal=this.ideaInfoList.favourTotal;
-			// 	this.emojiList.likeTotal=this.ideaInfoList.likeTotal;
-			// 	this.emojiList.commentTotal=this.ideaInfoList.commentTotal;
-			// 	this.imgList=this.ideaInfoList.imgList;
-
 			// })
 
 
@@ -98,7 +84,7 @@
 			sendComment() {
 				// 发送评论接口
 				// publishComment(comment).then(res => {
-					console.log("success send comment");
+				console.log("success send comment");
 				// })
 				// 重新获取评论？
 			}

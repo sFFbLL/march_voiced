@@ -124,10 +124,10 @@
 	/* 发布部分 */
 	.publishbtn{
 		border-radius: 40rpx;
-		color: white;
 		width: 500rpx;
 		height: 80rpx;
-		background-color: #007AFF;
+		color: #FFFFFF;
+		background-image: linear-gradient(140deg, #7ce1e6 0%, #5b97e5 100%);
 		display: inline-block;
 		text-align: center;
 		line-height: 2.3;
