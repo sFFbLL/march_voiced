@@ -185,7 +185,7 @@
 							this.likeTotal--;
 							this.clickLike = !this.clickLike;
 						} else {
-							this.clickLike = !this.clickLike;*--+
+							this.clickLike = !this.clickLike;
 							if (!this.clickFace && !this.clickFavour) {
 								this.likeTotal++;
 							} else if (this.clickFace) {
