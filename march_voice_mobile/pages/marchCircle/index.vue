@@ -117,7 +117,7 @@
 					imgList: [
 						'../../static/img/cat.jpg'
 					],
-					user_id: 1,
+					create_by: 1,
 					nickname: "仙儿",
 					avatarPath: "",
 					isFollow: 0
@@ -133,7 +133,7 @@
 						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
 
 					],
-					user_id: 1,
+					create_by: 1,
 					nickname: "仙儿",
 					avatarPath: "",
 					isFollow: 0
@@ -149,7 +149,7 @@
 						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
 						'../../static/img/cat.jpg',
 					],
-					user_id: 1,
+					create_by: 1,
 					nickname: "仙儿",
 					avatarPath: "",
 					isFollow: 0
@@ -166,7 +166,7 @@
 						'../../static/img/cat.jpg',
 						'../../static/img/cat.jpg'
 					],
-					user_id: 1,
+					create_by: 1,
 					nickname: "仙儿",
 					avatarPath: "",
 					isFollow: 0
@@ -184,7 +184,7 @@
 						'../../static/img/cat.jpg',
 						'../../static/img/cat.jpg'
 					],
-					user_id: 1,
+					create_by: 1,
 					nickname: "仙儿",
 					avatarPath: "",
 					isFollow: 0
@@ -203,7 +203,7 @@
 						'../../static/img/cat.jpg',
 						'../../static/img/cat.jpg'
 					],
-					user_id: 1,
+					create_by: 1,
 					nickname: "仙儿",
 					avatarPath: "",
 					isFollow: 0
@@ -223,7 +223,7 @@
 						'../../static/img/cat.jpg',
 						'../../static/img/cat.jpg'
 					],
-					user_id: 1,
+					create_by: 1,
 					nickname: "仙儿",
 					avatarPath: "",
 					isFollow: 0
@@ -244,7 +244,7 @@
 						'../../static/img/cat.jpg',
 						'../../static/img/cat.jpg'
 					],
-					user_id: 1,
+					create_by: 1,
 					nickname: "仙儿",
 					avatarPath: "",
 					isFollow: 0
@@ -264,7 +264,7 @@
 						'../../static/img/cat.jpg',
 						'../../static/img/cat.jpg',
 					],
-					user_id: 1,
+					create_by: 1,
 					nickname: "仙儿",
 					avatarPath: "",
 					isFollow: 0

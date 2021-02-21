@@ -54,7 +54,7 @@
 					imgList: [
 						'../../static/img/cat.jpg', '../../static/img/cat.jpg'
 					],
-					user_id: 0,
+					create_by: 0,
 					nickname: "xianer",
 					avatarPath: '../../static/img/cat.jpg',
 					isFollow: 0
