@@ -145,11 +145,10 @@ func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err
 	articleFavour := new(models.ArticleFavour)
 	follow := new(models.Follow)
 	articleMsg = new(bo.Article)
-	var userMsg bo.Article
 
 	// 获取数据
 	article.ID = id
-	userMsg, err = article.ArticleDetail()
+	articleMsg, err = article.ArticleDetail()
 	if err != nil {
 		return
 	}
@@ -175,10 +174,10 @@ func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err
 		err = nil
 	}
 	// 是否关注
-	if userId == userMsg.UserID {
+	if userId == int(articleMsg.CreateBy) {
 		articleMsg.IsFollow = 0
 	} else {
-		articleMsg.IsFollow, err = follow.IsFollow(userId, userMsg.UserID)
+		articleMsg.IsFollow, err = follow.IsFollow(userId, int(articleMsg.CreateBy))
 		if err != nil {
 			zap.L().Error("IsFollow failed", zap.Error(err))
 			err = nil
@@ -192,7 +191,7 @@ func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err
 func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleMsg, signal int, err error) {
 	// 实例化要修改的文章
 	article := new(models.Article)
-	var t uint = 1
+	var t uint
 	var s uint8 = 1
 
 	// 获取该文章原内容
@@ -207,6 +206,7 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleMsg,
 	}
 
 	// 更新文章内容
+	t = uint(article.ID)
 	article.UpdateBy = uint(userId)
 	article.CreateBy = uint(userId)
 	article.UpdateTime = 0
@@ -235,6 +235,7 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleMsg,
 		UpdateTime: article.UpdateTime,
 	}
 
+	go models.AddMessage(0, 1, uint(id), uint(userId), "")
 	return
 }
 

@@ -12,3 +12,14 @@ type ApplyMarchPaginator struct {
 	StartTime uint   `form:"startTime"` //创建时间
 	Nickname  string `form:"nickname"`
 }
+
+type InsertMarchSoft struct {
+	Content   string   `json:"content" binding:"required"`
+	Image     string   `json:"image"`
+	ImageList []string `json:"imageList"`
+}
+
+type SelectMarchListById struct {
+	Paging
+	ID uint `form:"id"`
+}

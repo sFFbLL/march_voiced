@@ -22,7 +22,6 @@ type ArticleMsg struct {
 }
 
 type UserMsg struct {
-	UserID     int    `json:"user_id"`
 	Nickname   string `json:"nickname" gorm:"column:nick_name"`
 	AvatarPath string `json:"avatarPath" gorm:"column:avatar_path"`
 }

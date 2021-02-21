@@ -84,3 +84,8 @@ func (co *MarchsoftComment) GetMarchsoftChildComment(p *dto.GetMarchsoftChildCom
 	err = table.Where("pid=?", p.ID).Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).Order("create_time desc").Find(commentList).Error
 	return
 }
+
+func (co *MarchsoftComment) GetMarchSoftCommentCount() (count int64, err error) {
+	err = global.Eloquent.Table(co.TableName()).Where("marchsoft_id = ?", co.MarchsoftId).Count(&count).Error
+	return
+}

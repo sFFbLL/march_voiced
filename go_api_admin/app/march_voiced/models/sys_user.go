@@ -62,3 +62,10 @@ func (u *User) GetUserCollect(id int) (count int64, err error) {
 	}
 	return
 }
+
+// 是否在三月圈
+func (u *User) IsMarchByUserId() (signal uint8, err error) {
+	err = global.Eloquent.Table(u.TableName()).Select("is_march").
+		Where("id = ? AND is_deleted = 0 ", u.ID).Find(&signal).Error
+	return
+}

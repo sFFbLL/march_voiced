@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"project/app/march_voiced/models/bo"
 
 	"project/app/march_voiced/models/dto"
 	"project/common/global"
@@ -33,7 +34,7 @@ func (e *MarchSoftFavour) AddMarchFavour(p *dto.MarchFavourDto) (err error) {
 		tx.Rollback()
 		return
 	}
-	if count>0 {
+	if count > 0 {
 		tx.Commit()
 		return
 	}
@@ -59,5 +60,20 @@ func (e *MarchSoftFavour) AddMarchFavourMessage(s *uint8, userId uint) {
 func (e *MarchSoftFavour) MarchFavourCount() (count int64, err error) {
 	err = global.Eloquent.Table(e.TableName()).
 		Where("article_id=? and is_deleted=0", e.MarchsoftId).Count(&count).Error
+	return
+}
+
+func (e *MarchSoftFavour) MarchFavourCountByType() (marchSoftFavourTotal *[]bo.MarchSoftFavourTotal, err error) {
+	marchSoftFavourTotal = new([]bo.MarchSoftFavourTotal)
+	err = global.Eloquent.Table(e.TableName()).
+		Select("type, sum(type) as total").
+		Where("marchsoft_id = ?", e.MarchsoftId).
+		Group("type").Find(&marchSoftFavourTotal).Error
+	return
+}
+
+func (e *MarchSoftFavour) GetMarchFavourType() (signal int, err error) {
+	err = global.Eloquent.Table(e.TableName()).Select("type").
+		Where("marchsoft_id = ? AND create_by = ? AND is_deleted=0", e.MarchsoftId, e.CreateBy).Find(&signal).Error
 	return
 }
