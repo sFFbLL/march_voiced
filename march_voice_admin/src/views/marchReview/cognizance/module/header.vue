@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <el-input
-      v-model="authorNickname"
+      v-model="query.authorNickname"
       clearable
       size="small"
       placeholder="作者昵称"
@@ -9,12 +9,16 @@
       class="filter-item"
       @keyup.enter.native="crud.toQuery"
     />
-    <date-range-picker v-model="createTime" class="date-item" @change="go()" />
+    <date-range-picker
+      v-model="query.createTime"
+      class="date-item"
+      @change="go()"
+    />
   </div>
 </template>
 
 <script>
-import { header } from '@crud/crud'
+import header from '@crud/crud'
 import DateRangePicker from '@/components/DateRangePicker'
 export default {
   components: { DateRangePicker },
@@ -34,7 +38,7 @@ export default {
   },
   methods: {
     go() {
-      console.log(this.createTime)
+      console.log(this.crud)
     }
   }
 }

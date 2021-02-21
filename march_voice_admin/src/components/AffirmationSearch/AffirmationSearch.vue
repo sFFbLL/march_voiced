@@ -8,8 +8,7 @@
           type="success"
           icon="el-icon-search"
           @click="toQuery"
-          >搜索</el-button
-        >
+        >搜索</el-button>
         <el-button
           v-if="crud.optShow.reset"
           class="filter-item"
@@ -17,8 +16,7 @@
           type="warning"
           icon="el-icon-refresh-left"
           @click="crud.resetQuery(true, role, deptId)"
-          >重置</el-button
-        >
+        >重置</el-button>
       </span>
     </span>
     <el-button-group class="crud-opts-right">
@@ -31,7 +29,7 @@
         @click="toggleSearch()"
       />
       <!-- 刷新图标 -->
-      <el-button size="mini" icon="el-icon-refresh" @click="toQuery" />
+      <el-button size="mini" icon="el-icon-refresh" @click="crud.refresh()" />
 
       <el-popover placement="bottom-end" width="150" trigger="click">
         <el-button slot="reference" size="mini" icon="el-icon-s-grid">
@@ -40,36 +38,36 @@
         <el-checkbox
           v-model="allColumnsSelected"
           :indeterminate="allColumnsSelectedIndeterminate"
-          >全选</el-checkbox
-        >
+          @change="handleCheckAllChange"
+        >全选</el-checkbox>
         <el-checkbox
           v-for="item of tableColumns"
-          :key="item"
+          :key="item.property"
           v-model="item.visible"
-          :label="item"
-          >{{ item }}</el-checkbox
+          @change="handleCheckedTableColumnsChange(item)"
         >
+          {{ item.label }}</el-checkbox>
       </el-popover>
     </el-button-group>
   </div>
 </template>
 <script>
-import CRUD, { crud } from "@crud/crud";
+import CRUD, { crud } from '@crud/crud'
 export default {
   mixins: [crud()],
   props: {
     permission: {
       type: Object,
       default: () => {
-        return {};
-      },
+        return {}
+      }
     },
     url: {
       type: String,
       default: () => {
-        return "";
-      },
-    },
+        return ''
+      }
+    }
     // identity: {
     //   type: String,
     //   default: () => {
@@ -80,25 +78,80 @@ export default {
   isMyExport: {
     type: Boolean,
     default: () => {
-      return false;
-    },
+      return false
+    }
   },
   data() {
     return {
-      tableColumns: ["上海", "北京", "广州", "深圳"],
+      tableColumns: ['上海', '北京', '广州', '深圳'],
       allColumnsSelected: true,
-      allColumnsSelectedIndeterminate: false,
-    };
+      allColumnsSelectedIndeterminate: false
+    }
   },
   methods: {
     toQuery() {
-      this.crud.toQuery();
+      this.crud.toQuery()
     },
     toggleSearch() {
-      this.crud.props.searchToggle = !this.crud.props.searchToggle;
+      this.crud.props.searchToggle = !this.crud.props.searchToggle
     },
-  },
-};
+    handleCheckAllChange(val) {
+      if (val === false) {
+        this.allColumnsSelected = true
+        return
+      }
+      this.tableColumns.forEach((column) => {
+        if (!column.visible) {
+          column.visible = true
+          this.updateColumnVisible(column)
+        }
+      })
+      this.allColumnsSelected = val
+      this.allColumnsSelectedIndeterminate = false
+    },
+
+    handleCheckedTableColumnsChange(item) {
+      let totalCount = 0
+      let selectedCount = 0
+      this.tableColumns.forEach((column) => {
+        ++totalCount
+        selectedCount += column.visible ? 1 : 0
+      })
+
+      if (selectedCount === 0) {
+        this.crud.notify('请至少选择一列', CRUD.NOTIFICATION_TYPE.WARNING)
+        this.$nextTick(function() {
+          item.visible = true
+        })
+        return
+      }
+      this.allColumnsSelected = selectedCount === totalCount
+      this.allColumnsSelectedIndeterminate =
+        selectedCount !== totalCount && selectedCount !== 0
+      this.updateColumnVisible(item)
+    },
+
+    updateColumnVisible(item) {
+      const table = this.crud.props.table
+      const vm = table.$children.find((e) => e.prop === item.property)
+      const columnConfig = vm.columnConfig
+
+      if (item.visible) {
+        // 找出合适的插入点
+        const columnIndex = this.tableColumns.indexOf(item)
+        vm.owner.store.commit(
+          'insertColumn',
+          columnConfig,
+          columnIndex + 1,
+          null
+        )
+      } else {
+        vm.owner.store.commit('removeColumn', columnConfig, null)
+      }
+      this.ignoreNextTableColumnsChange = true
+    }
+  }
+}
 </script>
 
 <style>

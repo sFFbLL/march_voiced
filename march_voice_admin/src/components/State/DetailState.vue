@@ -20,14 +20,14 @@
 
 <script>
 export default {
-  name: "State",
+  name: 'State',
   props: {
     data: {
       type: Object,
-      required: true,
-    },
-  },
-};
+      required: true
+    }
+  }
+}
 </script>
 
 <style>
