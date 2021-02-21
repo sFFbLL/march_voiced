@@ -3,7 +3,7 @@
 
 	
 		<!-- 用户头像公共组件 -->
-		<attentionAndFansCell :nickname="messageInfo.user.nickname" :avatarPath="messageInfo.user.avatarPath">
+		<attentionAndFansCell :nickname="messageInfo.nickname" :avatarPath="messageInfo.avatarPath">
 			<template v-slot:afterNicknameText>
 				<text class="slot">{{tip}}
 				</text>
@@ -17,7 +17,7 @@
 			</template>
 		</attentionAndFansCell>
 		<!-- 评论内容 -->
-		<text v-if="messageInfo.commentId" class="comment">{{messageInfo.commentId}}</text>
+		<text v-if="messageInfo.comment" class="comment">{{messageInfo.comment}}</text>
 		<!-- 文章/想法部分 -->
 		<view class="thecontent">
 			<articleTitle class="thewords" v-if="messageInfo.type==0" :articleTitle="messageInfo.title" :articleId="messageInfo.articleId" />
@@ -40,19 +40,16 @@
 				default () {
 					return {
 						type: 0,
-						status: 0,
+						status: 1,
+						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
 						articleId: 1,
-						commentId: "",
-						image: "",
-						content: "",
-						createTime: "",
-						title: "",
-						user: {
-							avatarPath: "",
-							nickname: "",
-							id: "",
-							isFollow: ""
-						}
+						comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
+						image: require('static/img/2.jpg'),
+						createTime: "2020/12/12",
+						userId: "1",
+						avatarPath: require('static/img/1.jpg'),
+						nickname: "张三",
 					}
 				}
 			}

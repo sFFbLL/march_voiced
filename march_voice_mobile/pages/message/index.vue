@@ -5,13 +5,13 @@
 		</view>
 		<view class="content">
 			<!-- 互动消息 -->
-			<view v-if="tabIndex==0" v-for="item in interactList">
+			<view v-if="tabIndex==0" v-for="item in interactList.records">
 				<!-- 单个消息组件 -->
 				<singleMessage :messageInfo="item"></singleMessage>
 			</view>
 			<!-- 关注消息 -->
-			<view v-if="tabIndex==1" v-for="item in attentionList">
-				<attentionAndFansCell :nickname="item.user.nickname" :avatarPath="item.user.avatarPath" :isFollow="item.user.isFollow">
+			<view v-if="tabIndex==1" v-for="item in attentionList.records">
+				<attentionAndFansCell :nickname="item.nickname" :avatarPath="item.avatarPath" :isFollow="item.isFollow">
 					<template v-slot:afterNicknameText>
 						<text class="slot">关注了你
 						</text>
@@ -19,7 +19,7 @@
 				</attentionAndFansCell>
 			</view>
 			<!-- 系统消息 -->
-			<view v-if="tabIndex==2" v-for="item in otherList">
+			<view v-if="tabIndex==2" v-for="item in otherList.records">
 				<!-- 其他消息组件 -->
 				<otherMessage :otherList="item"></otherMessage>
 				<!-- 间隔槽 -->
@@ -89,176 +89,136 @@
 					}
 				],
 				// 互动消息
-				interactList: [{
-						type: 0,
-						status: 1,
-						articleId: 1,
-						commentId: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
-						image: require('static/img/2.jpg'),
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
-						createTime: "2020/12/12",
-						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
-						user: {
+				interactList: {
+					pages: "22",
+					total: "100",
+					current: "1",
+					size: "1",
+					records: [{
+							type: 0,
+							status: 1,
+							title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+							articleId: 1,
+							comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
+							content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
+							image: require('static/img/2.jpg'),
+							createTime: "2020/12/12",
+							userId: "1",
 							avatarPath: require('static/img/1.jpg'),
 							nickname: "张三",
-							id: 1,
-						}
 
+						},
+						{
+							type: 0,
+							status: 1,
+							title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+							articleId: 1,
+							comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
+							content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
+							image: require('static/img/2.jpg'),
+							createTime: "2020/12/12",
+							userId: "1",
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+
+						},
+						{
+							type: 0,
+							status: 1,
+							title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+							articleId: 1,
+							comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
+							content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
+							image: require('static/img/2.jpg'),
+							createTime: "2020/12/12",
+							userId: "1",
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+
+						},
+						{
+							type: 0,
+							status: 1,
+							title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+							articleId: 1,
+							comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
+							content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
+							image: require('static/img/2.jpg'),
+							createTime: "2020/12/12",
+							userId: "1",
+							avatarPath: require('static/img/1.jpg'),
+							nickname: "张三",
+
+						},
+					]
+				},
+
+
+			//关注消息
+			attentionList: {
+					pages: "22",
+					total: "100",
+					current: "1",
+					size: "1",
+					records: [
+						{
+						avatarPath: require('static/img/1.jpg'),
+						nickname: "张三",
+						id: 1,
+						isFollow: 0,
+						createTime: ""
 					}, {
-						type: 1,
-						status: 3,
-						articleId: 1,
-						commentId: "",
-						image: require('static/img/2.jpg'),
-						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
-						createTime: "更新时间",
-						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
-						user: {
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
-							id: 1,
-						}
-
+						avatarPath: require('static/img/1.jpg'),
+						nickname: "张三",
+						id: 1,
+						isFollow: 0,
+						createTime: ""
 					}, {
-						type: 0,
-						status: 2,
-						articleId: 1,
-						commentId: "",
-						image: require('static/img/2.jpg'),
-						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
-						createTime: "更新时间",
-						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
-						user: {
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
-							id: 1,
-						}
-
+						avatarPath: require('static/img/1.jpg'),
+						nickname: "张三",
+						id: 1,
+						isFollow: 0,
+						createTime: ""
 					}, {
-						type: 0,
-						status: 3,
-						articleId: 1,
-						commentId: "",
-						image: require('static/img/2.jpg'),
-						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
-						createTime: "更新时间",
-						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
-						user: {
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
-							id: 1,
-						}
-
-					}, {
-						type: 1,
-						status: 4,
-						articleId: 1,
-						commentId: "",
-						image: require('static/img/2.jpg'),
-						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
-						createTime: "更新时间",
-						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
-						user: {
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
-							id: 1,
-						}
-
-					}, {
-						type: 1,
-						status: 2,
-						articleId: 1,
-						commentId: "",
-						image: require('static/img/2.jpg'),
-						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
-						createTime: "更新时间",
-						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
-						user: {
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
-							id: 1,
-						}
-
+						avatarPath: require('static/img/1.jpg'),
+						nickname: "张三",
+						id: 1,
+						isFollow: 0,
+						createTime: ""
 					},
-					{
-						type: 1,
-						status: 1,
-						articleId: 1,
-						commentId: "哈哈哈哈在法国夫是德国人头地方杠",
-						image: require('static/img/2.jpg'),
-						content: "哈哈哈哈在法国夫是德国人头地方杠。一件是言情大神匪",
-						createTime: "更新时间",
-						title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
-						user: {
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
-							id: 1,
-						}
+					]
+				},
 
-					},
-				],
-
-
-				//关注消息
-				attentionList: [{
-						createTime: "",
-						user: {
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
-							id: 1,
-							isFollow: 0
-						}
-					},
-					{
-						createTime: "",
-						user: {
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
-							id: 1,
-							isFollow: 1
-						}
-					}
-				],
 
 				//其他消息
-				otherList: [{
-						type: 1,
-						status: 0,
-						createTime: "2020-15-12 8:03",
-						articleId: 1,
-						title: "*这是一个文章标题*"
+				otherList:{
+					pages: "22",
+					total: "100",
+					current: "1",
+					size: "1",
+					records:[{
+					type:"0",
+					status:"1",
+					createTime:"2020-12-12"
+					},{
+					type:"1",
+					status:"1",
+					createTime:"2020-12-12"
+					},{
+					type:"1",
+					status:"0",
+					createTime:"2020-12-12"
+					},{
+					type:"0",
+					status:"0",
+					createTime:"2020-12-12"
+					},]
+				},
 
-					},
-					{
-						type: 0,
-						status: 0,
-						createTime: "2020-15-12 8:03",
-						articleId: 1,
-						title: "*这是这是一个文章标题一个文章标题*"
-
-					},
-					{
-						type: 0,
-						status: 1,
-						createTime: "2020-15-12 8:03",
-						articleId: 1,
-						title: "*这是一个文章标题*"
-
-					},
-					{
-						type: 1,
-						status: 1,
-						createTime: "2020-15-12 8:03",
-						articleId: 1,
-						title: "*这是一个文章标题*"
-
-					}
-				],
-
-			}
-		},
-		//上拉触底函数
-		onReachBottom() {
+		}
+	},
+	//上拉触底函数
+	onReachBottom() {
 			if (!this.isLoadMore && this.tabIndex == 0) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true
 				this.interactCurrent += 1
@@ -364,6 +324,7 @@
 			// 请求互动消息数据，并发送已读请求
 			interact() {
 				let _this = this;
+				let total = "";
 				// 查询所有数据
 				// let params = {
 				// current: this.interactCurrent,
@@ -375,6 +336,7 @@
 				// 	_this.loadStatus='nomore';
 				// }
 				// })
+				// 如果长度大于总条数
 				if (this.interactList.length > 16) {
 					_this.loadStatus = "nomore";
 					_this.interactLoadStatus = "nomore";

@@ -19,6 +19,8 @@
 </template>
 
 <script>
+	
+	import unloadImage from "../../utils/api.js"
 	export default {
 		data() {
 			return {
@@ -54,7 +56,7 @@
 					    count: 6, //默认9
 					    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					    sourceType: ['album'], //从相册选择
-					success(res) {
+						success(res) {
 						for(let value of res.tempFilePaths){
 								_this.srcList.push(value);
 						}
@@ -91,14 +93,19 @@
 					    duration: 2000
 					});
 				}else{
-					let params={
-						content:this.ideaWords,
-						imageList:this.srcList,
-						}
-						
+						let imageList=""
 						// 调用接口转化imgurl
+						let file=this.srcList
 						
-						// 调用发布接口
+						unloadImage(file).then(res=>{
+						imageList=	res.data.full_path
+						})
+						let params={
+							content:this.ideaWords,
+							imageList:imageList,
+							image:imageList[0]
+							}
+						// 调用发布接口,
 					// marchCircleList(params).then(res=>{
 					// 		 uni.showToast({
 					// 			title: '发布成功',
