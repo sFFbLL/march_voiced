@@ -1,0 +1,158 @@
+/*新样式-布局*/
+.position-box{
+    position:relative;
+    margin:auto;
+    display:flex;
+}
+// .el-textarea__inner{
+//    border-radius: 10px;
+// }
+tr td:nth-child(2){
+    word-break:break-all;
+}
+/* ==============页面标题=============== */
+.style-a4 {
+    padding: 40px 0px;
+    display: flex;
+}
+.head-box {
+    margin-bottom: 26px;
+    text-align: center;
+    // display: flex;
+}
+/* 标题盒子 */
+.tittle-box {
+    position: relative;
+    flex-grow: 20;
+    line-height: 150%;
+    word-break: break-all;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.status-box {
+    color:white;
+    position: relative;
+    transform: translateX(-60px) translateY(-40px);
+    display: inline-block;
+    // border-radius: 10px;
+    padding: 0px 10px;
+    border-radius: 0px 0px 10px 0px;
+    text-align: center;
+    line-height:150%;
+    cursor: default;
+}
+
+/* 状态盒子共用的属性 */
+.status-box {
+    color:white;
+    position: relative;
+    transform: translateX(-60px) translateY(-40px);
+    display: inline-block;
+    // border-radius: 10px;
+    padding: 0px 10px;
+    border-radius: 0px 0px 10px 0px;
+    text-align: center;
+    line-height:150%;
+    cursor: default;
+}
+.status-box span{
+    font-size: 14px;
+}
+/* 已通过状态的样式 */
+.success {
+    // border: rgba(67, 207, 124, 1) solid 2px;
+    background: rgba(67, 207, 124, 1);
+    min-width: 72px;
+}
+/* 待审核状态的样式 */
+.wait {
+    // border: rgba(42, 130, 228, 1) solid 2px;
+    // color: rgba(42, 130, 228, 1);
+    background: rgba(42, 130, 228, 1);
+    min-width: 155px;
+    // display: none;
+}
+/* 驳回状态的样式 */
+.failed {
+    // border: rgba(255, 87, 51, 1) solid 2px;
+    // color: rgba(255, 87, 51, 1);
+    background: rgba(255, 87, 51, 1);
+    min-width: 75px;
+    // display: none;
+}
+/* 标题内容 */
+.tittle-box span {
+    vertical-align: middle;
+    color: rgba(80, 80, 80, 1);
+    font-size: 24px;
+    font-weight: bold;
+}
+/* ==============页面标题=============== */
+/* ==============页面内容=============== */
+.body-box {
+    position: relative;
+    padding: 40px 60px;
+    // border-radius: 10px;
+    margin-right:10px;
+    width: 70%;
+    max-width: 1010px;
+    min-width: 790px;
+    box-shadow: 0px 0px 10px lightgray;
+    min-height: 800px;
+}
+/* 小标题的盒子 */
+.text-tittle {
+    color: rgba(80, 80, 80, 1);
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+    word-break: keep-all;
+    padding:5px 0;
+}
+/* ==============页面内容=============== */
+
+/* ==============Reject组件样式========= */
+.reject-box{
+    background-color: white;
+    display:table;
+    position:relative;
+    width: 300px;
+    height: 245px;
+    // border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 5px lightgray;
+    padding: 12px;
+    text-align: center;
+}
+.text-box{
+    display: inline-block;
+    width: 300px;
+}
+.buttons {
+    margin-top: 10px;
+    text-align: left;
+}
+.button {
+    font-size: 16px;
+}
+.el-button--success {
+    color: #fff;
+    background-color: #13ce66;
+    border-color: #13ce66;
+}
+.el-button--mini {
+    padding: 7px 15px;
+    font-size: 12px;
+    border-radius: 3px;
+}
+.el-button--primary {
+    color: #fff;
+    background-color: #1890ff;
+    border-color: #1890ff;
+}
+.el-button--danger {
+    color: #fff;
+    background-color: #ff4949;
+    border-color: #ff4949;
+}
