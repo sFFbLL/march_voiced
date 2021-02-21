@@ -42,7 +42,10 @@
 			articleDetails() {
 				// 跳转到编辑页面
 				uni.navigateTo({
-					url: '../publish/richTextEditor?id=' + this.articleId
+					url: '../articleDetails/index?id=' + this.articleId,
+					fail: (res) => {
+						console.log(res);
+					}
 				})
 			}
 		},

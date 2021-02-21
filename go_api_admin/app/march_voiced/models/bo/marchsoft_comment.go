@@ -9,7 +9,7 @@ type SignalMarchsoftComment struct {
 	ChildComments []MarchsoftComment
 }
 
-type ChildrenArticleComment struct {
+type ChildrenMarchsoftComment struct {
 	Comment []MarchsoftComment
 }
 
@@ -22,13 +22,13 @@ type MarchsoftComment struct {
 }
 
 type MarchsoftCreate struct {
-	CreateBy     int    `json:"create_by"`
+	CreateBy     uint   `json:"create_by"`
 	CreateByName string `json:"create_by_name"`
 	IdAvatar     string `json:"id_avatar"`
 }
 
 type MarchsoftReply struct {
-	ReplyId     int    `json:"reply_id"`
+	ReplyId     uint   `json:"reply_id"`
 	ReplyName   string `json:"reply_name"`
 	ReplyAvatar string `json:"reply_avatar"`
 }

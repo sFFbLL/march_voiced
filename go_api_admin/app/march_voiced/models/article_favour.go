@@ -25,7 +25,7 @@ func (a *ArticleFavour) AddArticleFavour(p *dto.ArticleFavourDto) (err error) {
 	if err != nil {
 		return errors.New("查询操作失败")
 	}
-	if count>0 {
+	if count > 0 {
 		a.IsDeleted = 1
 		return table.Where("create_by=? and article_id=? and is_deleted=?", a.CreateBy, a.ArticleId, 0).Updates(a).Error
 	}
@@ -47,3 +47,13 @@ func (a *ArticleFavour) ArticleFavourCount() (count int64, err error) {
 	return
 }
 
+func (a *ArticleFavour) IsFavourByArticleId() (signal int, err error) {
+	var count int64
+	err = global.Eloquent.Table(a.TableName()).
+		Where("article_id=? AND is_deleted=0 AND create_by = ?", a.ArticleId, a.CreateBy).Count(&count).Error
+	if err != nil || count == 0 {
+		return
+	}
+	signal = 1
+	return
+}

@@ -5,6 +5,7 @@ import (
 	"project/app/march_voiced/service"
 	"project/common/api"
 	"project/utils/app"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -16,12 +17,12 @@ var mc = new(service.MarchsoftComment)
 // AddMarchsoftComment	新增文章评论
 // @Summary 新增文章评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：评论管理 Comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object body dto.AddMarchsoftComment false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseMarchsoftComment
+// @Success 200 {object} models._ResponseSuccess
 // @Router /api/comment/marchsoft [post]
 func AddMarchsoftComment(c *gin.Context) {
 	p := new(dto.AddMarchsoftComment)
@@ -44,7 +45,7 @@ func AddMarchsoftComment(c *gin.Context) {
 		return
 	}
 	// 业务逻辑处理
-	err = mc.AddMarchsoftComment(user.UserId, p)
+	err = mc.AddMarchsoftComment(uint(user.UserId), p)
 	if err != nil {
 		c.Error(err)
 		zap.L().Error("add marchsoft comment failed", zap.String("Username", user.Username), zap.Error(err))
@@ -56,18 +57,17 @@ func AddMarchsoftComment(c *gin.Context) {
 	app.ResponseSuccess(c, nil)
 }
 
-// DeleteMarchsoftComment 删除文章详情页的评论
-// @Summary 删除文章详情页的评论
+// DeleteMarchsoftComment 删除评论
+// @Summary 删除评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：详情页评论 comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object body int false "查询参数"
+// @Param id path int false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseMarchsoftComment
+// @Success 200 {object} models._ResponseSuccess
 // @Router /api/comment/marchsoft [delete]
 func DeleteMarchsoftComment(c *gin.Context) {
-	p := new(dto.DeleteMarchsoftComment)
 	// 获取上下文信息
 	user, err := api.GetUserMessage(c)
 	if err != nil {
@@ -75,10 +75,10 @@ func DeleteMarchsoftComment(c *gin.Context) {
 		zap.L().Error("DeleteMarchsoftComment failed", zap.Error(err))
 		return
 	}
-	if err := c.ShouldBindJSON(&p); err != nil {
-		// 请求参数有误，直接返回响应
-		zap.L().Error("comment bind params failed", zap.String("username", user.Username), zap.Error(err))
-		c.Error(err)
+
+	idS := c.Param("id")
+	id, err := strconv.Atoi(idS)
+	if err != nil {
 		_, ok := err.(validator.ValidationErrors)
 		if !ok {
 			app.ResponseError(c, app.CodeParamIsInvalid)
@@ -87,7 +87,8 @@ func DeleteMarchsoftComment(c *gin.Context) {
 		app.ResponseSuccess(c, app.CodeParamNotComplete)
 		return
 	}
-	if err = mc.DeleteMarchsoftComment(user.UserId, p.ID); err != nil {
+
+	if err = mc.DeleteMarchsoftComment(int(user.UserId), id); err != nil {
 		c.Error(err)
 		zap.L().Error("delete marchsoft comment failed", zap.String("Username", user.Username), zap.Error(err))
 		return
@@ -95,15 +96,15 @@ func DeleteMarchsoftComment(c *gin.Context) {
 	app.ResponseSuccess(c, nil)
 }
 
-// GetMarchsoftComment 查询文章详情页的评论
+// GetMarchsoftComment 查询评论
 // @Summary 查询评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：评论管理 comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query dto.GetMarchsoftComment false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseMarchsoftComment
+// @Success 200 {object} models._ResponseGetMarchsoftComment
 // @Router /api/comment/marchsoft [get]
 func GetMarchsoftComment(c *gin.Context) {
 	p := new(dto.GetMarchsoftComment)
@@ -138,15 +139,15 @@ func GetMarchsoftComment(c *gin.Context) {
 	app.ResponseSuccess(c, res)
 }
 
-// GetMarchsoftChildComment 查询文章详情页一父评论的全部子评论
-// @Summary 查询评论
+// GetMarchsoftChildComment 查询一父评论的size条子评论
+// @Summary 查询一父评论的size条子评论
 // @Description Author：YanSongWu 2021/02/17
-// @Tags 评论：评论管理 comment Controller
+// @Tags 评论： Comment Controller
 // @Accept application/json
 // @Produce application/json
 // @Param object query dto.GetMarchsoftChildComment false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseMarchsoftChildComment
+// @Success 200 {object} models._ResponseGetMarchsoftChildComment
 // @Router /api/comment/children/marchsoft [get]
 func GetMarchsoftChildComment(c *gin.Context) {
 	p := new(dto.GetMarchsoftChildComment)

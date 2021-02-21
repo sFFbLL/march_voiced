@@ -11,23 +11,24 @@ type ArticleComment struct {
 }
 
 // AddArticleComment 新增文章详情页的评论
-func (co *ArticleComment) AddArticleComment(userId int, p *dto.AddArticleComment) (err error) {
+func (co *ArticleComment) AddArticleComment(userId uint, p *dto.AddArticleComment) (err error) {
 	comment := new(models.ArticleComment)
 	comment.Pid = p.Pid
 	comment.Content = p.Content
 	comment.ArticleId = p.ID
 	comment.ReplyId = p.ReplyId
-	comment.UpdateBy = uint(userId)
-	comment.CreateBy = uint(userId)
+	comment.UpdateBy = userId
+	comment.CreateBy = userId
 	err = comment.AddArticleComment()
+	go comment.AddArticleCommentMessage(userId)
 	return
 }
 
 // DeleteArticleComment 删除文章详情页的评论
-func (co *ArticleComment) DeleteArticleComment(userId int, id int) (err error) {
+func (co *ArticleComment) DeleteArticleComment(userId uint, id int) (err error) {
 	comment := new(models.ArticleComment)
 	comment.ID = id
-	comment.UpdateBy = uint(userId)
+	comment.UpdateBy = userId
 	err = comment.DeleteArticleComment()
 	return
 }
@@ -39,7 +40,6 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 	if p.Size == 0 || p.Current == 0 {
 		return nil, errors.New("参数缺失")
 	} else {
-
 		res = new(bo.GetArticleComment)
 		var SignalComments []bo.SignalArticleComment
 		var ChildComments []bo.ArticleComment
@@ -52,7 +52,7 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 			if err != nil {
 				return nil, errors.New("获取用户信息失败")
 			}
-			commentChild, err := comment.GetChildCommentList(p.ID, commentList[i].ID)
+			commentChild, err := comment.GetChildCommentList(int(p.ID), int(p.ChildSize), commentList[i].ID)
 			if err != nil {
 				return nil, errors.New("查询子评论失败")
 			}
@@ -70,10 +70,10 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 					ArticleCreate: bo.ArticleCreate{
 						CreateByName: userChildInfo.NickName,
 						IdAvatar:     userChildInfo.AvatarPath,
-						CreateBy:     int(commentChild.CreateBy),
+						CreateBy:     commentChild.CreateBy,
 					},
 					ArticleReply: bo.ArticleReply{
-						ReplyId:     int(commentChild.ReplyId),
+						ReplyId:     commentChild.ReplyId,
 						ReplyName:   userChildReplyInfo.NickName,
 						ReplyAvatar: userChildReplyInfo.AvatarPath,
 					},
@@ -85,12 +85,12 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 					Content:    commentList[i].Content,
 					CreateTime: commentList[i].CreateTime,
 					ArticleCreate: bo.ArticleCreate{
-						CreateBy:     int(commentList[i].CreateBy),
+						CreateBy:     commentList[i].CreateBy,
 						CreateByName: userInfo.NickName,
 						IdAvatar:     userInfo.AvatarPath,
 					},
 					ArticleReply: bo.ArticleReply{
-						ReplyId:     int(commentList[i].ReplyId),
+						ReplyId:     commentList[i].ReplyId,
 						ReplyName:   userReplyInfo.NickName,
 						ReplyAvatar: userReplyInfo.AvatarPath,
 					},
@@ -127,12 +127,12 @@ func (co *ArticleComment) GetArticleChildComment(p *dto.GetArticleChildComment) 
 				Content:    childComment.Content,
 				CreateTime: childComment.CreateTime,
 				ArticleCreate: bo.ArticleCreate{
-					CreateBy:     int(childComment.CreateBy),
+					CreateBy:     childComment.CreateBy,
 					CreateByName: userChildInfo.NickName,
 					IdAvatar:     userChildInfo.AvatarPath,
 				},
 				ArticleReply: bo.ArticleReply{
-					ReplyId:     int(childComment.ReplyId),
+					ReplyId:     childComment.ReplyId,
 					ReplyName:   replyUserChildInfo.NickName,
 					ReplyAvatar: replyUserChildInfo.AvatarPath,
 				},
