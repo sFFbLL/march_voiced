@@ -29,6 +29,13 @@
 				"navigationBarTitleText": "编辑",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/publish/richTextEditor",
+			"style": {
+				"navigationBarTitleText": "富文本编辑器",
+				"navigationStyle": "custom"
+			}
 		}, {
 			"path": "pages/personalCenter/index",
 			"style": {
@@ -76,16 +83,8 @@
 				"enablePullDownRefresh": true,
 				"onReachBottomDistance": 50
 			}
-		}, {
-			"path": "pages/publish/richTextEditor",
-			"style": {
-				"navigationBarTitleText": "富文本编辑器",
-				"navigationStyle": "custom"
-			}
-		}
-
-
-		, {
+		},
+		{
 			"path": "pages/pcLogin/pcLogin",
 			"style": {
 				"navigationBarTitleText": "",
@@ -173,7 +172,7 @@
 				"selectedIconPath": "static/img/publish1.png",
 				"text": "发布"
 			},
-		
+
 			{
 				"pagePath": "pages/message/index",
 				"iconPath": "static/img/message.png",

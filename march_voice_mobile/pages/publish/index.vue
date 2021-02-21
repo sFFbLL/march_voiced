@@ -1,4 +1,4 @@
- <template>
+<template>
  	<view class="content" :class="{'active':active}">
  		<view class="tabbar-box-wrap">
  			<view class="tabbar-box">
