@@ -11,6 +11,20 @@ import (
 	"go.uber.org/zap"
 )
 
+// SelectDept 我的收藏列表页
+// @Summary 我的收藏列表页
+// @Description Author：JiaKun Li 2021/02/16
+// @Tags 文章 article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object body dto.CollectArticleDto false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseSuccess
+// @Router /api/collect/article [get]
+func GetCollectArticle(c *gin.Context) {
+
+}
+
 // SelectDept 文章收藏
 // @Summary 文章收藏
 // @Description Author：JiaKun Li 2021/02/16
