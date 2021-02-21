@@ -30,17 +30,17 @@ function CRUD(options) {
     // Form 表单
     form: {},
     // 重置表单
-    defaultForm: () => {},
+    defaultForm: () => { },
     // 排序规则，默认 id 降序， 支持多字段排序 ['id,desc', 'createTime,asc']
     sort: [{ 'column': 'create_time', 'asc': 'false' }],
     // 等待时间
     time: 50,
     // CRUD Method
     crudMethod: {
-      add: (form) => {},
-      del: (id) => {},
-      edit: (form) => {},
-      get: (id) => {}
+      add: (form) => { },
+      del: (id) => { },
+      edit: (form) => { },
+      get: (id) => { }
     },
     // 主页操作栏显示哪些按钮
     optShow: {
@@ -706,6 +706,7 @@ function header() {
       return {
         crud: this.crud,
         query: this.crud.query
+
       }
     },
     beforeCreate() {

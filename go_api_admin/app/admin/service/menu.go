@@ -1,7 +1,6 @@
 package service
 
 import (
-	"bytes"
 	"encoding/json"
 	"project/app/admin/models"
 	"project/app/admin/models/bo"
@@ -14,19 +13,15 @@ import (
 type Menu struct {
 }
 
-func (m *Menu) InsertMenu(p *dto.InsertMenuDto, userID int) error {
-	typeInt, err := utils.StringToInt(p.Type)
-	if err != nil {
-		return err
-	}
+func (m *Menu) InsertMenu(p *dto.InsertMenuDto, flex *dto.InsertFlexMenuDto, userID int) error {
 	menu := &models.SysMenu{
 		Cache:      utils.BoolIntoByte(p.Cache),
-		Hidden:     utils.BoolIntoByte(p.Hidden),
-		IFrame:     utils.BoolIntoByte(p.Iframe),
+		Hidden:     flex.Hidden,
+		IFrame:     flex.Iframe,
 		MenuSort:   p.MenuSort,
 		Icon:       p.Icon,
 		Pid:        p.Pid,
-		Type:       typeInt,
+		Type:       flex.Type,
 		Component:  p.Component,
 		Name:       p.Name,
 		Path:       p.Path,
@@ -43,11 +38,13 @@ func (m *Menu) InsertMenu(p *dto.InsertMenuDto, userID int) error {
 
 func (m *Menu) SelectMenu(p *dto.SelectMenuDto) (data []*bo.SelectMenuBo, err error) {
 	////查询缓存
-	var redisData []byte
-	redisData, err = cache.GetMenuListCache("menu::pid:" + strconv.Itoa(p.Pid))
-	if redisData != nil && len(redisData) != 0 {
-		err = json.Unmarshal(redisData, &data)
-		return data, nil
+	if p.Blurry == "" && p.EndTime != 0 && p.StartTime != 0 {
+		var redisData []byte
+		redisData, err = cache.GetMenuListCache("menu::pid:" + strconv.Itoa(p.Pid))
+		if redisData != nil && len(redisData) != 0 {
+			err = json.Unmarshal(redisData, &data)
+			return data, nil
+		}
 	}
 	var Menus []*models.SysMenu
 	menu := new(models.SysMenu)
@@ -146,7 +143,7 @@ func (m *Menu) ReturnToAllMenus(pid int) (data []*bo.ReturnToAllMenusBo, err err
 	return data, nil
 }
 
-func (m *Menu) SuperiorMenu(p *dto.DataMenuDto) (data []*bo.SelectSuperMenuBo, err error) {
+func (m *Menu) SuperiorMenu(p []int) (data []*bo.SelectSuperMenuBo, err error) {
 	//var Menus []*models.SysMenu
 	var children []*bo.SelectSuperMenuBo
 	menu := new(models.SysMenu)
@@ -225,9 +222,9 @@ func (m *Menu) ChildMenu(p int) (data []int, err error) {
 	return data, err
 }
 
-func (m *Menu) DownloadMenuInfoBo(p *dto.DownloadMenuDto, orderData []bo.Order) (menuData []*bo.DownloadMenuInfoBo, err error) {
+func (m *Menu) DownloadMenuInfoBo(p *dto.DownloadMenuDto) (menuData []*bo.DownloadMenuInfoBo, err error) {
 	menu := new(models.SysMenu)
-	sysMenu, err := menu.DownloadMenu(*p, orderData)
+	sysMenu, err := menu.DownloadMenu(p)
 	if err != nil {
 		return
 	}
@@ -239,15 +236,25 @@ func (m *Menu) DownloadMenuInfoBo(p *dto.DownloadMenuDto, orderData []bo.Order) 
 			IFrame:     "否",
 			Hidden:     "否",
 			Cache:      "否",
-			CreateTime: utils.Int64ToString(v.CreateTime),
+			CreateTime: utils.UnixTimeToString(v.CreateTime),
+		}
+
+		if v.IFrame[0] == 1 {
+			tmp.IFrame = "是"
+		}
+		if v.Hidden[0] == 0 {
+			tmp.Hidden = "是"
+		}
+		if v.Cache[0] == 1 {
+			tmp.Cache = "是"
 		}
 		switch {
-		case bytes.Equal(v.IFrame, []byte{1}):
-			tmp.IFrame = "是"
-		case bytes.Equal(v.Hidden, []byte{1}):
-			tmp.Hidden = "是"
-		case bytes.Equal(v.Cache, []byte{1}):
-			tmp.Cache = "是"
+		case v.Type == 0:
+			tmp.Type = "目录"
+		case v.Type == 1:
+			tmp.Type = "菜单"
+		case v.Type == 2:
+			tmp.Type = "按钮"
 		}
 		menuData = append(menuData, tmp)
 	}
