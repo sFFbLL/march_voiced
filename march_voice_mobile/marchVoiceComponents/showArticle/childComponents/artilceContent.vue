@@ -40,10 +40,9 @@
 		},
 		methods: {
 			articleDetails() {
-				// console.log(1)
 				// 跳转到编辑页面
 				uni.navigateTo({
-					url: '../articleDetails/index?id=' + this.articleId
+					url: '../publish/richTextEditor?id=' + this.articleId
 				})
 			}
 		},

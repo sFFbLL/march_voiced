@@ -24,7 +24,8 @@
 				</view>
 			</view>
 			<view class="edit-user">
-				<button :plain="true">编辑个人信息</button>
+				<button :plain="true"
+				 @click="goToEdit()">编辑个人信息</button>
 			</view>
 		</view>
 		<view class="content">
@@ -370,6 +371,11 @@
 						_this.articleList = [..._this.articleList, ..._this.articleList1];
 					}, 2000);
 				}
+			},
+			goToEdit() {
+				uni.navigateTo({
+					url: '../personalInfo/index?id=' + this.userInfo.user.id
+				})
 			}
 		},
 		created() {
