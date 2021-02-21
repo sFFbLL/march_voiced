@@ -22,8 +22,9 @@ require (
 	github.com/mojocn/base64Captcha v1.3.1
 	github.com/mssola/user_agent v0.5.2
 	github.com/natefinch/lumberjack v2.0.0+incompatible
+	github.com/olivere/elastic/v7 v7.0.22
 	github.com/shamsher31/goimgext v1.0.0
-	github.com/spf13/cast v1.3.1 // indirect
+	github.com/silenceper/wechat/v2 v2.0.4
 	github.com/spf13/viper v1.7.1
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.7.0
