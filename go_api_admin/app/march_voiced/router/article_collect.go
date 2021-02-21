@@ -14,6 +14,7 @@ func init() {
 func articleCollectAuthRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/collect")
 	{
+		r.GET("article", apis.GetCollectArticle)
 		r.POST("article", apis.CollectArticle)
 	}
 }
