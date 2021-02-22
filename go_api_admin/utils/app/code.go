@@ -122,6 +122,10 @@ const (
 	CodeWxEmpty
 	// 微信wxCode失效或不正确请重新获取
 	CodeWxOuttime
+	// 微信生成二维码失败
+	CodeWxTickerFail
+	//微信登录用户为扫码
+	UserWxTickerFail
 )
 
 var codeMsgMap = map[ResCode]string{
