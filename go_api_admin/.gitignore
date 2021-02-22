@@ -4,7 +4,7 @@
 
 # Editor directories and files
 
-.idea
+#.idea
 .log
 .exe
 main.exe
