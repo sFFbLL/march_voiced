@@ -1,9 +1,11 @@
 package apis
 
 import (
+	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
 	"project/app/march_voiced/service"
 	"project/common/api"
+	"project/utils"
 	"project/utils/app"
 
 	"github.com/gin-gonic/gin"
@@ -137,4 +139,239 @@ func MarchPass(c *gin.Context) {
 	}
 
 	app.ResponseSuccess(c, nil)
+}
+
+// GetMarchMsg 三月圈条数与成员数与是否为三月
+// @Summary 三月圈条数与成员数与是否为三月
+// @Description Author：lbl 2021/02/20
+// @Tags 三月圈 marchsoft Controller
+// @Accept application/json
+// @Produce application/json
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseApplyMarchUser
+// @Router /api/march/msg [get]
+func GetMarchMsg(c *gin.Context) {
+	marchMsg := new(bo.MarchSoftInfo)
+	s := new(service.Marchsoft)
+	var err error
+
+	// 获取缓存信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("GetMarchMsg GetUserMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeLoginExpire)
+		return
+	}
+
+	//业务逻辑处理
+	marchMsg, err = s.GetMarchMsg(user.Username, user.UserId)
+	if err != nil {
+		zap.L().Error("GetMarchApplyUser service failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	app.ResponseSuccess(c, marchMsg)
+}
+
+// InsertMarchSoft 发布三月圈
+// @Summary 发布三月圈
+// @Description Author：lbl 2021/02/20
+// @Tags 三月圈 marchsoft Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object body dto.InsertMarchSoft false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseSuccess
+// @Router /api/march [post]
+func InsertMarchSoft(c *gin.Context) {
+	march := new(dto.InsertMarchSoft)
+	s := new(service.Marchsoft)
+	var err error
+
+	// 获取缓存信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("InsertMarchSoft GetUserMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeLoginExpire)
+		return
+	}
+
+	// 获取参数 校验参数
+	if err := c.ShouldBindJSON(march); err != nil {
+		// 请求参数有误， 直接返回响应
+		zap.L().Error("InsertMarchSoft params failed", zap.String("Username", user.Username), zap.Error(err))
+		_, ok := err.(validator.ValidationErrors)
+		if !ok {
+			app.ResponseError(c, app.CodeParamIsInvalid)
+			return
+		}
+		app.ResponseError(c, app.CodeParamTypeBindError)
+		return
+	}
+
+	//业务逻辑处理
+	err = s.InsertMarchSoft(march, uint(user.UserId))
+	if err != nil {
+		zap.L().Error("InsertMarchSoft service failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeInsertOperationFail)
+		return
+	}
+
+	app.ResponseSuccess(c, nil)
+}
+
+// DeleteMarchHandler 删除三月圈
+// @Summary 删除三月圈
+// @Description Author：Lbl 2021/02/17 获得身份令牌
+// @Tags 应用：文章管理 Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param id path int false "修改参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseSuccess
+// @Router /api/march/{id} [delete]
+func DeleteMarchHandler(c *gin.Context) {
+	// 声明必要变量
+	a := new(service.Marchsoft)
+	userMsg := new(api.UserMessage)
+	var err error
+	var id int
+
+	// 获取上下文中的用户信息
+	userMsg, err = api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("DeleteMarchHandler Get userId failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
+		return
+	}
+
+	// 获取参数
+	id, err = utils.StringToInt(c.Param("id"))
+	if err != nil {
+		zap.L().Error("DeleteMarchHandler bind Query Failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamNotComplete)
+		return
+	}
+
+	// 进入service层对数据操作
+	err = a.DeleteMarchSoft(id, userMsg.UserId)
+	if err != nil {
+		zap.L().Error("DeleteMarchHandler service failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeDeleteOperationFail)
+		return
+	}
+
+	// 成功返回状态
+	app.ResponseSuccess(c, nil)
+}
+
+// SelectMarchList 三月圈文章列表
+// @Summary 三月圈文章列表
+// @Description Author：lbl 2021/02/20
+// @Tags 三月圈 marchsoft Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object query dto.Paging false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._march
+// @Router /api/march [get]
+func SelectMarchList(c *gin.Context) {
+	userMsg := new(api.UserMessage)
+	MarchList := new([]bo.March)
+	m := new(service.Marchsoft)
+	var paging dto.Paging
+	var err error
+
+	// 获取上下文用户信息
+	userMsg, err = api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("SelectMarchList Get userId failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
+		return
+	}
+
+	// 参数绑定
+	paging.Current, err = utils.StringToInt(c.DefaultQuery("current", "1"))
+	if err != nil {
+		// 请求参数有误， 直接返回响应
+		zap.L().Error("SelectMarchList params Current failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamTypeBindError)
+		return
+	}
+	paging.Size, err = utils.StringToInt(c.DefaultQuery("size", "10"))
+	if err != nil {
+		// 请求参数有误， 直接返回响应
+		zap.L().Error("SelectMarchList params Size failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamTypeBindError)
+		return
+	}
+
+	// 进入service层对数据操作
+	MarchList, err = m.SelectMarchList(paging, uint(userMsg.UserId))
+	if err != nil {
+		zap.L().Error("SelectMarchList service failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	// 成功返回状态
+	app.ResponseSuccess(c, MarchList)
+
+}
+
+// SelectMarchListById 用户三月圈文章列表
+// @Summary 用户三月圈文章列表
+// @Description Author：lbl 2021/02/20
+// @Tags 三月圈 marchsoft Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object query dto.SelectMarchListById false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._march
+// @Router /api/march [get]
+func SelectMarchListById(c *gin.Context) {
+	// 声明必要变量
+	m := new(service.Marchsoft)
+	userMsg := new(api.UserMessage)
+	MarchList := new([]bo.MarchByUserId)
+	var paging dto.SelectMarchListById
+	var err error
+
+	// 获取上下文用户信息
+	userMsg, err = api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("SelectMarchListById Get userMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
+		return
+	}
+	err = c.ShouldBindQuery(&paging)
+	if err != nil {
+		zap.L().Error("SelectMarchListById ShouldBindQuery Params Failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		_, ok := err.(validator.ValidationErrors)
+		if !ok {
+			app.ResponseError(c, app.CodeParamIsInvalid)
+			return
+		}
+		app.ResponseError(c, app.CodeParamNotComplete)
+		return
+	}
+
+	if paging.Current == 0 {
+		paging.Current = 1
+	}
+	if paging.Size == 0 {
+		paging.Current = 10
+	}
+
+	// 进入service层对数据操作
+	MarchList, err = m.SelectMarchListById(paging, uint(userMsg.UserId))
+	if err != nil {
+		zap.L().Error("SelectMarchListById service failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	// 成功返回状态
+	app.ResponseSuccess(c, MarchList)
 }

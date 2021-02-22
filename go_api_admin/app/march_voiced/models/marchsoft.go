@@ -4,6 +4,8 @@ import (
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
 	"project/common/global"
+
+	"go.uber.org/zap"
 )
 
 type MarchSoft struct {
@@ -33,5 +35,66 @@ func (e *MarchSoft) GetMarchApplyUser(applyMarchUser *bo.ApplyMarchUser, p *dto.
 			Order("sys_user.march_update_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
 			Find(applyMarchUser.Records).Error
 	}
+	return
+}
+
+func (e *MarchSoft) InsertMarchSoft(imgList []string) (err error) {
+	var marchSoftImage MarchSoftImage
+	marchSoftImageList := new([]MarchSoftImage)
+
+	// 开启事务
+	tx := global.Eloquent.Begin()
+	err = tx.Table(e.TableName()).Create(e).Error
+	if err != nil {
+		zap.L().Error("InsertMarchSoft Dao Creat Failed", zap.Error(err))
+		tx.Rollback()
+		return
+	}
+
+	for i := 0; i < len(imgList); i++ {
+		marchSoftImage = MarchSoftImage{
+			MarchsoftId: uint(e.ID),
+			Image:       imgList[i],
+			CreateBy:    e.CreateBy,
+			UpdateBy:    e.UpdateBy,
+		}
+		*marchSoftImageList = append(*marchSoftImageList, marchSoftImage)
+	}
+	if len(*marchSoftImageList) > 0 {
+		err = tx.Table(marchSoftImage.TableName()).Create(marchSoftImageList).Error
+		if err != nil {
+			zap.L().Error("InsertMarchSoft Insert MarchSoftImages Failed", zap.Error(err))
+			tx.Rollback()
+			return
+		}
+	}
+
+	err = tx.Commit().Error
+	if err != nil {
+		zap.L().Error("InsertMarchSoft Commit Failed", zap.Error(err))
+	}
+	return
+}
+
+func (e *MarchSoft) DeleteMarchSoft() (err error) {
+	err = global.Eloquent.Table(e.TableName()).Where("id = ? and is_deleted = 0", e.ID).Updates(e).Error
+	return
+}
+
+func (e *MarchSoft) SelectMarchSoftList(paging dto.Paging) (marchList *[]bo.March, err error) {
+	marchList = new([]bo.March)
+	err = global.Eloquent.Table(e.TableName()).
+		Select("marchsoft.id, marchsoft.content, marchsoft.image, marchsoft.create_time, marchsoft.create_by, marchsoft.update_by, marchsoft.update_time, sys_user.nick_name, sys_user.avatar_path").
+		Joins("JOIN sys_user ON marchsoft.create_by = sys_user.id").
+		Where("marchsoft.is_deleted = 0").
+		Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(marchList).Error
+	return
+}
+
+func (e *MarchSoft) SelectMarchSoftListByUserId(paging dto.SelectMarchListById) (marchList *[]MarchSoft, err error) {
+	marchList = new([]MarchSoft)
+	err = global.Eloquent.Table(e.TableName()).
+		Where("create_by = ? AND is_deleted = 0", paging.ID).
+		Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(marchList).Error
 	return
 }

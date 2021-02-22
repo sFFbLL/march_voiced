@@ -305,7 +305,7 @@ func DeleteArticleHandler(c *gin.Context) {
 	err = a.DeleteArticle(id, userMsg.UserId)
 	if err != nil {
 		zap.L().Error("DeleteArticleHandle service failed", zap.String("Username", userMsg.Username), zap.Error(err))
-		app.ResponseError(c, app.CodeUpdateOperationFail)
+		app.ResponseError(c, app.CodeDeleteOperationFail)
 		return
 	}
 
