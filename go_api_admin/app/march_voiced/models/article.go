@@ -29,6 +29,15 @@ func (a *Article) TableName() string {
 	return `article`
 }
 
+func (a *Article) ArticleSearchContent(data *bo.ArticleCollectByUserId, p *dto.ArticleSearchPaginator, userId int) error {
+	return global.Eloquent.Table(a.TableName()).
+		Select("article.id, article.title, article.content, article.image, article.word_count, article.type, article.create_by, article.create_time, sys_user.nick_name").
+		Joins("left join sys_user on article.create_by = sys_user.id").
+		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article.status=1 and article.content like ?", "%" + p.SearchWord + "%").Count(&data.Total).
+		Order("article.create_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
+		Find(data.Records).Error
+}
+
 func (a *Article) ArticleCollectByUserId(data *bo.ArticleCollectByUserId, p *dto.Paginator, userId int) error {
 	return global.Eloquent.Table("article_collect").
 		Select("article.id, article.title, article.content, article.image, article.word_count, article.type, article.create_by, article.create_time, sys_user.nick_name").

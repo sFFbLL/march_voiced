@@ -15,6 +15,52 @@ import (
 	"go.uber.org/zap"
 )
 
+// ArticleSearch 文章搜索
+// @Summary 文章搜索
+// @Description Author：JiaKun Li 2021/02/20
+// @Tags 文章：Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object query dto.ArticleSearchPaginator false "添加参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseGetCollectArticle
+// @Router /api/base/searchArticle [get]
+func ArticleSearch(c *gin.Context) {
+	p := new(dto.ArticleSearchPaginator)
+
+	// 获取缓存信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("ArticleSearch GetUserMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeLoginExpire)
+		return
+	}
+
+	// 获取参数 校验参数
+	if err := c.ShouldBindQuery(p); err != nil {
+		// 请求参数有误， 直接返回响应
+		zap.L().Error("ArticleSearch params failed", zap.String("Username", user.Username), zap.Error(err))
+		_, ok := err.(validator.ValidationErrors)
+		if !ok {
+			app.ResponseError(c, app.CodeParamIsInvalid)
+			return
+		}
+		app.ResponseError(c, app.CodeParamTypeBindError)
+		return
+	}
+
+	//业务逻辑处理
+	s := new(service.Article)
+	data, err := s.ArticleSearch(p, user.UserId)
+	if err != nil {
+		zap.L().Error("ArticleSearch service params failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	app.ResponseSuccess(c, data)
+}
+
 // ArticleRecommend （后台）文章设置推荐
 // @Summary （后台）文章设置推荐
 // @Description Author：JiaKun Li 2021/02/20

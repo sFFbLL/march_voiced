@@ -28,4 +28,5 @@ func articleAuthRouter(v1 *gin.RouterGroup) {
 		r.GET("/admin", apis.ApplyArticleList)
 		r.GET("recommend/:id", apis.ArticleRecommend)
 	}
+	v1.GET("/base/searchArticle", apis.ArticleSearch)
 }

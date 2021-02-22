@@ -16,6 +16,54 @@ import (
 
 type Article struct{}
 
+func (a *Article) ArticleSearch(p *dto.ArticleSearchPaginator, userId int) (data *bo.ArticleCollectByUserId, err error) {
+	article := new(models.Article)
+	data = new(bo.ArticleCollectByUserId)
+	records1 := new([]bo.Article)
+	records2 := new([]bo.Article)
+	var goArticle bo.GoArticleMsg
+	var keys []int
+	data.Records = records1
+	err = article.ArticleSearchContent(data, p, userId)
+
+
+	articleMapList := make(map[int]*bo.Article, len(*data.Records))
+	for _, i := range *data.Records {
+		var articleBo bo.Article
+		articleBo = i
+		articleMapList[i.ID] = &articleBo
+		keys = append(keys, i.ID)
+	}
+	// 数据拼接
+	var wg sync.WaitGroup
+	articleCh := make(chan *bo.GoArticleMsg, len(*data.Records))
+	for _, v := range *data.Records {
+		wg.Add(1)
+		goArticle.ArticleId = uint(v.ID)
+		goArticle.ArticleUserId = v.CreateBy
+		goArticle.UserId = uint(userId)
+		go goArticleMsg(&articleCh, &wg, goArticle)
+	}
+	wg.Wait()
+	close(articleCh)
+
+	//articleMap 排序 遍历
+	for i := range articleCh {
+		goArticle = *i
+		articleMapList[int(goArticle.ArticleId)].ArticleTotal = goArticle.ArticleTotal
+	}
+
+	for _, i := range *data.Records {
+		*records2 = append(*records2, *articleMapList[i.ID])
+	}
+	data.Records = records2
+
+	data.Current = p.Current
+	data.Size = p.Size
+	data.Pages = utils.PagesCount(int(data.Current), int(p.Size))
+	return
+}
+
 // GetCollectArticle 我的收藏列表页
 func (a *Article) GetCollectArticle(p *dto.Paginator, userId int) (data *bo.ArticleCollectByUserId, err error) {
 	article := new(models.Article)
