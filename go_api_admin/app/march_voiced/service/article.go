@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"sort"
 	"sync"
 
 	"project/app/march_voiced/models"
@@ -234,14 +233,14 @@ func (a *Article) DeleteArticle(articleId int, userId int) (err error) {
 }
 
 // 文章详情
-func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err error) {
+func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.ArticleDetail, err error) {
 	//初始化
 	article := new(models.Article)
 	articleCollect := new(models.ArticleCollect)
 	articleComment := new(models.ArticleComment)
 	articleFavour := new(models.ArticleFavour)
 	follow := new(models.Follow)
-	articleMsg = new(bo.Article)
+	articleMsg = new(bo.ArticleDetail)
 
 	// 获取数据
 	article.ID = id
@@ -285,11 +284,13 @@ func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err
 }
 
 // 转载文章
-func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleMsg, signal int, err error) {
+func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleDetailMsg, signal int, err error) {
 	// 实例化要修改的文章
 	article := new(models.Article)
+	articleTag := new(models.ArticleTag)
 	var t uint
 	var s uint8 = 1
+	var tag string
 
 	// 获取该文章原内容
 	article.ID = id
@@ -299,6 +300,14 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleMsg,
 	}
 	if *article.Status != 1 {
 		signal = 1
+		return
+	}
+
+	// 获取文章tag
+	articleTag.ID = int(article.Tag)
+	tag, err = articleTag.GetTagById()
+	if err != nil {
+		zap.L().Error("ReprintArticle GetTagById Failed ", zap.Error(err))
 		return
 	}
 
@@ -315,16 +324,18 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleMsg,
 	// 调用dao方法
 	err = article.InsertArticle()
 	if err != nil {
+		zap.L().Error("ReprintArticle InsertArticle failed", zap.Error(err))
 		return
 	}
 	// 返回数据
-	articleMsg = &bo.ArticleMsg{
+	articleMsg = &bo.ArticleDetailMsg{
 		ID:         article.ID,
 		Title:      article.Title,
 		Content:    article.Content,
-		Tag:        article.Tag,
+		Tag:        tag,
 		Kind:       article.Kind,
 		WordCount:  article.WordCount,
+		Status:     *article.Status,
 		Type:       *article.Type,
 		UpdateBy:   article.UpdateBy,
 		CreateBy:   article.CreateBy,
@@ -342,7 +353,6 @@ func (a *Article) TopArticleList(paging dto.Paging, userId uint) (articleList *[
 	articleList = new([]bo.Article)
 	article := new(models.Article)
 	var goArticle bo.GoArticleMsg
-	var keys []int
 
 	// 取出要返回文章信息
 	articleArray, err := article.ArticleList(paging, 1)
@@ -356,8 +366,7 @@ func (a *Article) TopArticleList(paging dto.Paging, userId uint) (articleList *[
 	for _, i := range *articleArray {
 		var articleBo bo.Article
 		articleBo = i
-		articleMapList[int(i.CreateTime)] = &articleBo
-		keys = append(keys, int(i.CreateTime))
+		articleMapList[i.ID] = &articleBo
 	}
 
 	// 数据拼接
@@ -368,7 +377,6 @@ func (a *Article) TopArticleList(paging dto.Paging, userId uint) (articleList *[
 		goArticle.ArticleId = uint(v.ID)
 		goArticle.ArticleUserId = v.CreateBy
 		goArticle.UserId = userId
-		goArticle.CreateTime = v.CreateTime
 		go goArticleMsg(&articleCh, &wg, goArticle)
 	}
 	wg.Wait()
@@ -377,13 +385,12 @@ func (a *Article) TopArticleList(paging dto.Paging, userId uint) (articleList *[
 	//articleMap 排序 遍历
 	for i := range articleCh {
 		goArticle = *i
-		articleMapList[int(goArticle.CreateTime)].ArticleTotal = goArticle.ArticleTotal
+		articleMapList[int(goArticle.ArticleId)].ArticleTotal = goArticle.ArticleTotal
 	}
-	// 排序
-	sort.Ints(keys)
+
 	// 遍历
-	for _, key := range keys {
-		*articleList = append(*articleList, *articleMapList[key])
+	for _, v := range *articleArray {
+		*articleList = append(*articleList, *articleMapList[v.ID])
 	}
 	return
 }
@@ -394,7 +401,6 @@ func (a *Article) SelectArticleListIndex(paging dto.Paging, userId uint) (articl
 	articleList = new([]bo.Article)
 	article := new(models.Article)
 	var goArticle bo.GoArticleMsg
-	var keys []int
 
 	// 取出要返回文章信息
 	articleArray, err := article.ArticleList(paging, 0)
@@ -408,8 +414,7 @@ func (a *Article) SelectArticleListIndex(paging dto.Paging, userId uint) (articl
 	for _, i := range *articleArray {
 		var articleBo bo.Article
 		articleBo = i
-		articleMapList[int(i.CreateTime)] = &articleBo
-		keys = append(keys, int(i.CreateTime))
+		articleMapList[i.ID] = &articleBo
 	}
 
 	// 数据拼接
@@ -420,7 +425,6 @@ func (a *Article) SelectArticleListIndex(paging dto.Paging, userId uint) (articl
 		goArticle.ArticleId = uint(v.ID)
 		goArticle.ArticleUserId = v.CreateBy
 		goArticle.UserId = userId
-		goArticle.CreateTime = v.CreateTime
 		go goArticleMsg(&articleCh, &wg, goArticle)
 	}
 	wg.Wait()
@@ -429,13 +433,12 @@ func (a *Article) SelectArticleListIndex(paging dto.Paging, userId uint) (articl
 	//articleMap 排序 遍历
 	for i := range articleCh {
 		goArticle = *i
-		articleMapList[int(goArticle.CreateTime)].ArticleTotal = goArticle.ArticleTotal
+		articleMapList[int(goArticle.ArticleId)].ArticleTotal = goArticle.ArticleTotal
 	}
-	// 排序
-	sort.Ints(keys)
+
 	// 遍历
-	for _, key := range keys {
-		*articleList = append(*articleList, *articleMapList[key])
+	for _, v := range *articleArray {
+		*articleList = append(*articleList, *articleMapList[v.ID])
 	}
 	return
 }
@@ -446,7 +449,6 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser, user
 	articleList = new([]bo.ArticleUser)
 	article := new(models.Article)
 	var goArticle bo.GoArticleMsg
-	var keys []int
 
 	// 取出要返回文章信息
 	articleArray, err := article.SelectArticleListByUserId(paging)
@@ -459,24 +461,10 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser, user
 	articleMapList := make(map[int]*bo.ArticleUser, len(*articleArray))
 	for _, i := range *articleArray {
 		articleBo := &bo.ArticleUser{
-			ArticleMsg: bo.ArticleMsg{
-				ID:         i.ID,
-				Title:      i.Title,
-				Content:    i.Content,
-				Image:      i.Image,
-				Tag:        i.Tag,
-				Kind:       i.Kind,
-				WordCount:  i.WordCount,
-				Type:       *i.Type,
-				UpdateBy:   i.UpdateBy,
-				CreateBy:   i.CreateBy,
-				CreateTime: i.CreateTime,
-				UpdateTime: i.UpdateTime,
-			},
+			ArticleMsg: i,
 		}
 
-		articleMapList[int(i.CreateTime)] = articleBo
-		keys = append(keys, int(i.CreateTime))
+		articleMapList[i.ID] = articleBo
 	}
 
 	// 数据拼接
@@ -487,7 +475,6 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser, user
 		goArticle.ArticleId = uint(v.ID)
 		goArticle.ArticleUserId = v.CreateBy
 		goArticle.UserId = userId
-		goArticle.CreateTime = v.CreateTime
 		go goArticleMsg(&articleCh, &wg, goArticle)
 	}
 	wg.Wait()
@@ -496,13 +483,12 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser, user
 	//articleMap 排序 遍历
 	for i := range articleCh {
 		goArticle = *i
-		articleMapList[int(goArticle.CreateTime)].ArticleTotal = goArticle.ArticleTotal
+		articleMapList[int(goArticle.ArticleId)].ArticleTotal = goArticle.ArticleTotal
 	}
-	// 排序
-	sort.Ints(keys)
+
 	// 遍历
-	for _, key := range keys {
-		*articleList = append(*articleList, *articleMapList[key])
+	for _, v := range *articleArray {
+		*articleList = append(*articleList, *articleMapList[v.ID])
 	}
 	return
 }

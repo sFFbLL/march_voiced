@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"sort"
 	"sync"
 
 	models2 "project/app/admin/models"
@@ -129,7 +128,6 @@ func (e *Marchsoft) SelectMarchList(paging dto.Paging, userId uint) (marchList *
 	m := new(models.MarchSoft)
 	marchList = new([]bo.March)
 	var goMarch bo.GoMarchMsg
-	var keys []int
 
 	// 取出要返回文章信息
 	marchArray, err := m.SelectMarchSoftList(paging)
@@ -143,8 +141,7 @@ func (e *Marchsoft) SelectMarchList(paging dto.Paging, userId uint) (marchList *
 	for _, i := range *marchArray {
 		var marchBo bo.March
 		marchBo = i
-		marchMapList[int(i.CreateTime)] = &marchBo
-		keys = append(keys, int(i.CreateTime))
+		marchMapList[i.ID] = &marchBo
 	}
 
 	// 数据拼接
@@ -155,7 +152,6 @@ func (e *Marchsoft) SelectMarchList(paging dto.Paging, userId uint) (marchList *
 		goMarch.MarchId = uint(v.ID)
 		goMarch.MarchUserId = v.CreateBy
 		goMarch.UserId = userId
-		goMarch.CreateTime = v.CreateTime
 		go goMarchMsg(&marchCh, &wg, goMarch)
 	}
 	wg.Wait()
@@ -164,14 +160,13 @@ func (e *Marchsoft) SelectMarchList(paging dto.Paging, userId uint) (marchList *
 	//articleMap 排序 遍历
 	for i := range marchCh {
 		goMarch = *i
-		marchMapList[int(goMarch.CreateTime)].MarchTotal = goMarch.MarchTotal
+		marchMapList[int(goMarch.MarchId)].MarchTotal = goMarch.MarchTotal
 	}
-	// 排序
-	sort.Ints(keys)
-	// 遍历
-	for _, key := range keys {
-		*marchList = append(*marchList, *marchMapList[key])
+
+	for _, v := range *marchArray {
+		*marchList = append(*marchList, *marchMapList[v.ID])
 	}
+
 	return
 }
 
@@ -181,7 +176,6 @@ func (e *Marchsoft) SelectMarchListById(paging dto.SelectMarchListById, userId u
 	m := new(models.MarchSoft)
 	marchList = new([]bo.MarchByUserId)
 	var goArticle bo.GoMarchMsg
-	var keys []int
 
 	// 取出要返回文章信息
 	marchArray, err := m.SelectMarchSoftListByUserId(paging)
@@ -204,8 +198,8 @@ func (e *Marchsoft) SelectMarchListById(paging dto.SelectMarchListById, userId u
 				UpdateTime: i.UpdateTime,
 			},
 		}
-		marchMapList[int(i.CreateTime)] = marchBo
-		keys = append(keys, int(i.CreateTime))
+		marchMapList[i.ID] = marchBo
+
 	}
 
 	// 数据拼接
@@ -216,7 +210,6 @@ func (e *Marchsoft) SelectMarchListById(paging dto.SelectMarchListById, userId u
 		goArticle.MarchId = uint(v.ID)
 		goArticle.MarchUserId = v.CreateBy
 		goArticle.UserId = userId
-		goArticle.CreateTime = v.CreateTime
 		go goMarchMsg(&marchCh, &wg, goArticle)
 	}
 	wg.Wait()
@@ -225,13 +218,85 @@ func (e *Marchsoft) SelectMarchListById(paging dto.SelectMarchListById, userId u
 	//articleMap 排序 遍历
 	for i := range marchCh {
 		goArticle = *i
-		marchMapList[int(goArticle.CreateTime)].MarchTotal = goArticle.MarchTotal
+		marchMapList[int(goArticle.MarchId)].MarchTotal = goArticle.MarchTotal
 	}
-	// 排序
-	sort.Ints(keys)
+
 	// 遍历
-	for _, key := range keys {
-		*marchList = append(*marchList, *marchMapList[key])
+	for _, v := range *marchArray {
+		*marchList = append(*marchList, *marchMapList[v.ID])
+	}
+	return
+}
+
+// 三月圈详情页
+func (e *Marchsoft) MarchDetail(id int, userId int) (march *bo.March, err error) {
+	//初始化
+	m := new(models.MarchSoft)
+	marchComment := new(models.MarchsoftComment)
+	marchFavour := new(models.MarchSoftFavour)
+	marchImage := new(models.MarchSoftImage)
+	marchFavourTotal := new([]bo.MarchSoftFavourTotal)
+	follow := new(models.Follow)
+	march = new(bo.March)
+
+	// 获取数据
+	m.ID = id
+	march, err = m.MarchDetail()
+	if err != nil {
+		zap.L().Error("MarchDetail GetMarchSoftCommentCount failed", zap.Error(err))
+		return
+	}
+
+	// 文章图片列表
+	marchImage.MarchsoftId = uint(id)
+	march.ImageList, err = marchImage.GetImageListById()
+	if err != nil {
+		zap.L().Error("MarchDetail GetImageListById failed", zap.Error(err))
+		return
+	}
+
+	// 文章评论数
+	marchComment.MarchsoftId = uint(id)
+	march.CommentTotal, err = marchComment.GetMarchSoftCommentCount()
+	if err != nil {
+		zap.L().Error("MarchDetail GetMarchSoftCommentCount count failed", zap.Error(err))
+		return
+	}
+
+	// 文章喜欢数
+	marchFavour.MarchsoftId = uint(id)
+	marchFavourTotal, err = marchFavour.MarchFavourCountByType()
+	if err != nil {
+		zap.L().Error("MarchDetail MarchFavourCountByType failed", zap.Error(err))
+		return
+	}
+	for _, v := range *marchFavourTotal {
+		switch v.Type {
+		case 1:
+			march.FaceTotal = v.Total
+		case 2:
+			march.LikeTotal = v.Total
+		case 3:
+			march.FavourTotal = v.Total
+		}
+	}
+
+	// 文章喜欢类型
+	march.Type, err = marchFavour.GetMarchFavourType()
+	if err != nil {
+		zap.L().Error("MarchDetail GetMarchFavourType failed", zap.Error(err))
+		return
+	}
+
+	// 是否关注
+	if userId == int(march.CreateBy) {
+		march.IsFollow = 0
+	} else {
+		march.IsFollow, err = follow.IsFollow(userId, int(march.CreateBy))
+		if err != nil {
+			zap.L().Error("MarchDetail IsFollow failed", zap.Error(err))
+			return
+		}
 	}
 	return
 }
@@ -240,7 +305,7 @@ func goMarchMsg(marchCh *chan *bo.GoMarchMsg, wg *sync.WaitGroup, marchMsg bo.Go
 	marchComment := new(models.MarchsoftComment)
 	marchFavour := new(models.MarchSoftFavour)
 	marchImage := new(models.MarchSoftImage)
-	//follow := new(models.Follow)
+	follow := new(models.Follow)
 	marchFavourTotal := new([]bo.MarchSoftFavourTotal)
 	var err error
 
@@ -274,16 +339,15 @@ func goMarchMsg(marchCh *chan *bo.GoMarchMsg, wg *sync.WaitGroup, marchMsg bo.Go
 	if err != nil {
 		zap.L().Error("goMarchMsg GetImageListById failed", zap.Error(err))
 	}
-	//// 是否关注
-	//if marchMsg.UserId == marchMsg.MarchUserId {
-	//	marchMsg.IsFollow = 0
-	//} else {
-	//	marchMsg.IsFollow, err = follow.IsFollow(int(marchMsg.UserId), int(marchMsg.MarchUserId))
-	//	if err != nil {
-	//		zap.L().Error("goArticleMsg IsFollow failed", zap.Error(err))
-	//		err = nil
-	//	}
-	//}
+	// 是否关注
+	if marchMsg.UserId == marchMsg.MarchUserId {
+		marchMsg.IsFollow = 0
+	} else {
+		marchMsg.IsFollow, err = follow.IsFollow(int(marchMsg.UserId), int(marchMsg.MarchUserId))
+		if err != nil {
+			zap.L().Error("goArticleMsg IsFollow failed", zap.Error(err))
+		}
+	}
 	// 管道放数据
 	*marchCh <- &marchMsg
 	wg.Done()

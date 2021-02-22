@@ -36,6 +36,7 @@ require (
 	golang.org/x/sys v0.0.0-20210218155724-8ebf48af031b // indirect
 	golang.org/x/tools v0.1.0 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
+	gopkg.in/errgo.v2 v2.1.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/gorm v1.20.11

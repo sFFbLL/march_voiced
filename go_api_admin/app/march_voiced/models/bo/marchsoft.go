@@ -58,6 +58,7 @@ type MarchTotal struct {
 	Type         int      `json:"type"`
 	ImageList    []string `json:"imageList"`
 	CommentTotal int64    `json:"commentTotal"`
+	IsFollow     int      `json:"isFollow"`
 }
 
 type GoMarchMsg struct {
@@ -65,5 +66,4 @@ type GoMarchMsg struct {
 	MarchId     uint
 	UserId      uint
 	MarchUserId uint
-	CreateTime  int64
 }

@@ -24,3 +24,9 @@ func (a *ArticleTag) GetTagList() (tagList *[]bo.ArticleTagList, err error) {
 		Where("is_deleted = 0").Find(tagList).Error
 	return
 }
+
+func (a *ArticleTag) GetTagById() (tag string, err error) {
+	err = global.Eloquent.Table(a.TableName()).Select("tag").
+		Where("id = ? AND is_deleted = 0", a.ID).Find(&tag).Error
+	return
+}

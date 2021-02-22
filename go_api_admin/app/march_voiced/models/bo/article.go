@@ -11,8 +11,28 @@ type ArticleMsg struct {
 	Title      string `json:"title"`
 	Content    string `json:"content"`
 	Image      string `json:"image"`
-	Tag        uint8  `json:"tag"`
+	Status     uint8  `json:"status"`
+	Type       uint   `json:"type"`
+	UpdateBy   uint   `json:"update_by"`
+	CreateBy   uint   `json:"create_by"`
+	CreateTime int64  `json:"create_time"`
+	UpdateTime int64  `json:"update_time"`
+}
+
+type ArticleDetail struct {
+	ArticleDetailMsg
+	UserMsg
+	ArticleTotal
+}
+
+type ArticleDetailMsg struct {
+	ID         int    `json:"id"`
+	Title      string `json:"title"`
+	Content    string `json:"content"`
+	Image      string `json:"image"`
+	Tag        string `json:"tag"`
 	Kind       uint8  `json:"kind"`
+	Status     uint8  `json:"status"`
 	WordCount  uint   `json:"word_count"`
 	Type       uint   `json:"type"`
 	UpdateBy   uint   `json:"update_by"`
@@ -48,7 +68,6 @@ type GoArticleMsg struct {
 	UserId        uint
 	ArticleId     uint
 	ArticleUserId uint
-	CreateTime    int64
 }
 
 type ArticleUser struct {
