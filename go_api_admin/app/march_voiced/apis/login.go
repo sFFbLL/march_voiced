@@ -19,9 +19,9 @@ import (
 func LoginHandler(c *gin.Context) {
 	wx.Init()
 	code := c.Query("code")
-	status := c.Query("status")
-	code ="0414i60w3y7JRV2Qut0w3ZHOUa44i60H"
-	fmt.Println(status,"dddd")
+	//status := c.Query("status")
+	//code ="0414i60w3y7JRV2Qut0w3ZHOUa44i60H"
+	//fmt.Println(status,"dddd")
 	oauth := global.Wx.GetOauth()
 	token, err := oauth.GetUserAccessToken(code)
 	if err != nil {
