@@ -77,9 +77,8 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 					CreateBy:     commentChild.CreateBy,
 				},
 				ArticleReply: bo.ArticleReply{
-					ReplyId:     commentChild.ReplyId,
-					ReplyName:   userChildReplyInfo.NickName,
-					ReplyAvatar: userChildReplyInfo.AvatarPath,
+					ReplyId:   commentChild.ReplyId,
+					ReplyName: userChildReplyInfo.NickName,
 				},
 			})
 		}
@@ -94,9 +93,8 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 					IdAvatar:     userInfo.AvatarPath,
 				},
 				ArticleReply: bo.ArticleReply{
-					ReplyId:     commentList[i].ReplyId,
-					ReplyName:   userReplyInfo.NickName,
-					ReplyAvatar: userReplyInfo.AvatarPath,
+					ReplyId:   commentList[i].ReplyId,
+					ReplyName: userReplyInfo.NickName,
 				},
 			},
 			ChildComments: ChildComments,
@@ -136,9 +134,8 @@ func (co *ArticleComment) GetArticleChildComment(p *dto.GetArticleChildComment) 
 				IdAvatar:     userChildInfo.AvatarPath,
 			},
 			ArticleReply: bo.ArticleReply{
-				ReplyId:     childComment.ReplyId,
-				ReplyName:   replyUserChildInfo.NickName,
-				ReplyAvatar: replyUserChildInfo.AvatarPath,
+				ReplyId:   childComment.ReplyId,
+				ReplyName: replyUserChildInfo.NickName,
 			},
 		})
 	}

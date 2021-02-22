@@ -76,9 +76,8 @@ func (mc *MarchsoftComment) GetMarchsoftComment(p *dto.GetMarchsoftComment) (res
 					CreateBy:     commentChild.CreateBy,
 				},
 				MarchsoftReply: bo.MarchsoftReply{
-					ReplyId:     commentChild.ReplyId,
-					ReplyName:   userChildReplyInfo.NickName,
-					ReplyAvatar: userChildReplyInfo.AvatarPath,
+					ReplyId:   commentChild.ReplyId,
+					ReplyName: userChildReplyInfo.NickName,
 				},
 			})
 		}
@@ -93,9 +92,8 @@ func (mc *MarchsoftComment) GetMarchsoftComment(p *dto.GetMarchsoftComment) (res
 					IdAvatar:     userInfo.AvatarPath,
 				},
 				MarchsoftReply: bo.MarchsoftReply{
-					ReplyId:     commentList[i].ReplyId,
-					ReplyName:   userReplyInfo.NickName,
-					ReplyAvatar: userReplyInfo.AvatarPath,
+					ReplyId:   commentList[i].ReplyId,
+					ReplyName: userReplyInfo.NickName,
 				},
 			},
 			ChildComments: ChildComments,
@@ -135,9 +133,8 @@ func (mc *MarchsoftComment) GetMarchsoftChildComment(p *dto.GetMarchsoftChildCom
 				IdAvatar:     userChildInfo.AvatarPath,
 			},
 			MarchsoftReply: bo.MarchsoftReply{
-				ReplyId:     childComment.ReplyId,
-				ReplyName:   replyUserChildInfo.NickName,
-				ReplyAvatar: replyUserChildInfo.AvatarPath,
+				ReplyId:   childComment.ReplyId,
+				ReplyName: replyUserChildInfo.NickName,
 			},
 		})
 	}

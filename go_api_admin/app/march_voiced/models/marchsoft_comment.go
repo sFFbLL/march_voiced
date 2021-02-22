@@ -55,6 +55,12 @@ func (co *MarchsoftComment) GetChildCommentList(marchsoftId uint, size uint, pid
 
 // GetUserInfo 获取与评论有关的用户的信息
 func (co *MarchsoftComment) GetUserInfo(id uint) (userInfo *UserInfo, err error) {
+	if id == 0 {
+		return &UserInfo{
+			NickName:   "",
+			AvatarPath: "",
+		}, nil
+	}
 	userInfo = new(UserInfo)
 	idI := int(id)
 	table := global.Eloquent.Table("sys_user").Where("is_deleted=?", []byte{0})
