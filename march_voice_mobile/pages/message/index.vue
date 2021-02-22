@@ -90,129 +90,129 @@
 				],
 				// 互动消息
 				interactList: {
-					pages: "22",
-					total: "100",
-					current: "1",
-					size: "1",
-					records: [{
-							type: 0,
-							status: 1,
-							title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
-							articleId: 1,
-							comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
-							content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
-							image: require('static/img/2.jpg'),
-							createTime: "2020/12/12",
-							userId: "1",
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
+					// pages: "22",
+					// total: "100",
+					// current: "1",
+					// size: "1",
+					// records: [{
+					// 		type: 0,
+					// 		status: 1,
+					// 		title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+					// 		articleId: 1,
+					// 		comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
+					// 		content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
+					// 		image: require('static/img/2.jpg'),
+					// 		createTime: "2020/12/12",
+					// 		userId: "1",
+					// 		avatarPath: require('static/img/1.jpg'),
+					// 		nickname: "张三",
 
-						},
-						{
-							type: 0,
-							status: 1,
-							title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
-							articleId: 1,
-							comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
-							content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
-							image: require('static/img/2.jpg'),
-							createTime: "2020/12/12",
-							userId: "1",
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
+					// 	},
+					// 	{
+					// 		type: 0,
+					// 		status: 1,
+					// 		title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+					// 		articleId: 1,
+					// 		comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
+					// 		content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
+					// 		image: require('static/img/2.jpg'),
+					// 		createTime: "2020/12/12",
+					// 		userId: "1",
+					// 		avatarPath: require('static/img/1.jpg'),
+					// 		nickname: "张三",
 
-						},
-						{
-							type: 0,
-							status: 1,
-							title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
-							articleId: 1,
-							comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
-							content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
-							image: require('static/img/2.jpg'),
-							createTime: "2020/12/12",
-							userId: "1",
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
+					// 	},
+					// 	{
+					// 		type: 0,
+					// 		status: 1,
+					// 		title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+					// 		articleId: 1,
+					// 		comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
+					// 		content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
+					// 		image: require('static/img/2.jpg'),
+					// 		createTime: "2020/12/12",
+					// 		userId: "1",
+					// 		avatarPath: require('static/img/1.jpg'),
+					// 		nickname: "张三",
 
-						},
-						{
-							type: 0,
-							status: 1,
-							title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
-							articleId: 1,
-							comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
-							content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
-							image: require('static/img/2.jpg'),
-							createTime: "2020/12/12",
-							userId: "1",
-							avatarPath: require('static/img/1.jpg'),
-							nickname: "张三",
+					// 	},
+					// 	{
+					// 		type: 0,
+					// 		status: 1,
+					// 		title: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件今年春天在写作圈发生了几件不大不小的抄袭洗稿事件",
+					// 		articleId: 1,
+					// 		comment: "哈哈哈哈在哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠哈哈哈哈在法国夫是德国人头地方杠法国夫是德国人头地方杠",
+					// 		content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪",
+					// 		image: require('static/img/2.jpg'),
+					// 		createTime: "2020/12/12",
+					// 		userId: "1",
+					// 		avatarPath: require('static/img/1.jpg'),
+					// 		nickname: "张三",
 
-						},
-					]
+					// 	},
+					// ]
 				},
 
 
 			//关注消息
 			attentionList: {
-					pages: "22",
-					total: "100",
-					current: "1",
-					size: "1",
-					records: [
-						{
-						avatarPath: require('static/img/1.jpg'),
-						nickname: "张三",
-						id: 1,
-						isFollow: 0,
-						createTime: ""
-					}, {
-						avatarPath: require('static/img/1.jpg'),
-						nickname: "张三",
-						id: 1,
-						isFollow: 0,
-						createTime: ""
-					}, {
-						avatarPath: require('static/img/1.jpg'),
-						nickname: "张三",
-						id: 1,
-						isFollow: 0,
-						createTime: ""
-					}, {
-						avatarPath: require('static/img/1.jpg'),
-						nickname: "张三",
-						id: 1,
-						isFollow: 0,
-						createTime: ""
-					},
-					]
+					// pages: "22",
+					// total: "100",
+					// current: "1",
+					// size: "1",
+					// records: [
+					// 	{
+					// 	avatarPath: require('static/img/1.jpg'),
+					// 	nickname: "张三",
+					// 	id: 1,
+					// 	isFollow: 0,
+					// 	createTime: ""
+					// }, {
+					// 	avatarPath: require('static/img/1.jpg'),
+					// 	nickname: "张三",
+					// 	id: 1,
+					// 	isFollow: 0,
+					// 	createTime: ""
+					// }, {
+					// 	avatarPath: require('static/img/1.jpg'),
+					// 	nickname: "张三",
+					// 	id: 1,
+					// 	isFollow: 0,
+					// 	createTime: ""
+					// }, {
+					// 	avatarPath: require('static/img/1.jpg'),
+					// 	nickname: "张三",
+					// 	id: 1,
+					// 	isFollow: 0,
+					// 	createTime: ""
+					// },
+					// ]
 				},
 
 
 				//其他消息
 				otherList:{
-					pages: "22",
-					total: "100",
-					current: "1",
-					size: "1",
-					records:[{
-					type:"0",
-					status:"1",
-					createTime:"2020-12-12"
-					},{
-					type:"1",
-					status:"1",
-					createTime:"2020-12-12"
-					},{
-					type:"1",
-					status:"0",
-					createTime:"2020-12-12"
-					},{
-					type:"0",
-					status:"0",
-					createTime:"2020-12-12"
-					},]
+					// pages: "22",
+					// total: "100",
+					// current: "1",
+					// size: "1",
+					// records:[{
+					// type:"0",
+					// status:"1",
+					// createTime:"2020-12-12"
+					// },{
+					// type:"1",
+					// status:"1",
+					// createTime:"2020-12-12"
+					// },{
+					// type:"1",
+					// status:"0",
+					// createTime:"2020-12-12"
+					// },{
+					// type:"0",
+					// status:"0",
+					// createTime:"2020-12-12"
+					// },]
 				},
 
 		}
