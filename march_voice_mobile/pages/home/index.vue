@@ -53,9 +53,18 @@
 		getRecommend,
 		getFollow
 	} from '@/utils/api/home-api.js'
-	import {returnWxcode,getWxCode} from "../../utils/wxcode.js"
-	import {getToken,setToken} from "../../utils/auth.js"
-	import {login,creatNewUser} from "../../utils/login.js"
+	import {
+		returnWxcode,
+		getWxCode
+	} from "../../utils/wxcode.js"
+	import {
+		getToken,
+		setToken
+	} from "../../utils/auth.js"
+	import {
+		login,
+		creatNewUser
+	} from "../../utils/login.js"
 	export default {
 		components: {
 			uniIcons,
@@ -90,33 +99,33 @@
 			}
 		},
 		beforeCreate() {
-		// 判断是否有token
-		// if(!getToken()){
-		// 	//没有token，没登陆过，获取wxcode
-		// 	let code = returnWxcode();
-		// 	login(code).then(res=>{
-		// 		if(res.data.status==1){
-		// 			// 跳转注册页面
-		// 			uni.navigateTo({
-		// 				url:"../login/login"
-		// 			})
-					
-		// 		}else{
-		// 			// 登陆成功
-		// 			setToken(res.data.token);
-		// 			setOpenId(res.data.openid)
-		// 		}
-		// 	})
-			
-		// }
-			
+			// 判断是否有token
+			// if(!getToken()){
+			// 	//没有token，没登陆过，获取wxcode
+			// 	let code = returnWxcode();
+			// 	login(code).then(res=>{
+			// 		if(res.data.status==1){
+			// 			// 跳转注册页面
+			// 			uni.navigateTo({
+			// 				url:"../login/login"
+			// 			})
+
+			// 		}else{
+			// 			// 登陆成功
+			// 			setToken(res.data.token);
+			// 			setOpenId(res.data.openid)
+			// 		}
+			// 	})
+
+			// }
+
 		},
 		onShow() {
 			check()
 		},
 		onLoad() {
-				this.recommend();
-				this.follow();
+			this.recommend();
+			this.follow();
 		},
 
 		onReachBottom() { //上拉触底函数
@@ -147,7 +156,7 @@
 			},
 			// 推荐
 			recommend() {
-				let recommendList = [{
+				/* let recommendList = [{
 					id: 1,
 					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
 					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
@@ -207,35 +216,32 @@
 						avatarPath: require('../../static/img/1.jpg'),
 						isFollow: 0
 					}
-				}];
+				}]; */
 				let _this = this;
-				/* let params = {
-					current: this.current,
-					size:this.size
+				let params = {
+					current: this.recommendCurrent,
+					size: this.size
 				}
 				getRecommend(params).then(res => {
-					_this.recommendList = [..._this.recommend,...res.data];
-					if(res.data.length<=_this.size){
-						_this.loadStatus=nomore;
-					}
-				}) */
-				if (this.recommendList.length > 16) {
-					_this.loadStatus = "nomore";
-					_this.recommendLoadStatus = "nomore";
-				} else if (this.recommendCurrent === 1) {
-					_this.isLoadMore = false;
-					_this.recommendList = [..._this.recommendList, ...recommendList];
-				} else {
-					setTimeout(function () {
+					console.log(res);
+					_this.recommendList = [..._this.recommendList, ...res.data];
+					if (res.data.length <= _this.size) {
+						_this.loadStatus = "nomore";
+						_this.recommendLoadStatus = "nomore";
+					} else if (this.recommendCurrent === 1) {
 						_this.isLoadMore = false;
 						_this.recommendList = [..._this.recommendList, ...recommendList];
-					}, 2000);
-				}
+					} else {
+						setTimeout(function () {
+							_this.isLoadMore = false;
+							_this.recommendList = [..._this.recommendList, ...recommendList];
+						}, 2000);
+					}
+				})
 			},
 			// 关注
 			follow() {
-				// console.log(2);
-				let followList = [{
+				/* let followList = [{
 						articleId: 2,
 						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
 						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
@@ -297,30 +303,27 @@
 							avatarPath: require('../../static/img/1.jpg')
 						}
 					}
-				];
+				]; */
 				let _this = this;
-				/* let params = {
-					current: this.current,
-					size:this.size
+				let params = {
+					current: this.followCurrent,
+					size: this.size
 				}
 				getFollow(params).then(res => {
-					_this.recommendList = [..._this.recommend,...res.data];
-					if(res.data.length<=_this.size){
-						_this.loadStatus=nomore;
-					}
-				}) */
-				if (this.followList.length > 16) {
-					_this.loadStatus = "nomore";
-				} else if (this.followCurrent === 1) {
-					_this.isLoadMore = false;
-					_this.followList = [..._this.followList, ...followList];
-				} else {
-					setTimeout(function () {
-						_this.isLoadMore = false;
+					_this.recommendList = [..._this.recommend, ...res.data];
+					if (res.data.length <= _this.size) {
+						_this.loadStatus = "nomore";
 						_this.follLoadStatus = "nomore";
+					} else if (this.followCurrent === 1) {
+						_this.isLoadMore = false;
 						_this.followList = [..._this.followList, ...followList];
-					}, 2000);
-				}
+					} else {
+						setTimeout(function () {
+							_this.isLoadMore = false;
+							_this.followList = [..._this.followList, ...followList];
+						}, 2000);
+					}
+				})
 			},
 			search() {
 				uni.navigateTo({
