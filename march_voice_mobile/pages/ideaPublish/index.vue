@@ -93,13 +93,11 @@
 					    duration: 2000
 					});
 				}else{
-						let imageList=""
+						
 						// 调用接口转化imgurl
 						let file=this.srcList
+						let imageList = unloadImage(file);
 						
-						unloadImage(file).then(res=>{
-						imageList=	res.data.full_path
-						})
 						let params={
 							content:this.ideaWords,
 							imageList:imageList,

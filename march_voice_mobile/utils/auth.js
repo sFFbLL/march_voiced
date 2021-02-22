@@ -1,7 +1,7 @@
 /**
  * token处理
  */
-// import Cookies from 'js-cookie'
+import Cookies from 'js-cookie'
 import Config from '@/settings' 
 
 const TokenKey = Config.TokenKey;

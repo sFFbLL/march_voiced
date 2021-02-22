@@ -133,11 +133,8 @@
 					success: function(res) {
 						_this.info.avatarPath = res.tempFilePaths[0];
 						// 调用接口转化imgurl
-						let avatarPath="";
-						let file=_this.info.avatarPath
-						unloadImage(file).then(res=>{
-						avatarPath=	res.data.full_path
-						})
+						let file = res.tempFilePaths
+						let avatarPath = unloadImage(file);
 						// 调用修改信息接口
 						let that = _this
 						modInformation(avatarPath).then(res => {
@@ -177,40 +174,39 @@
 						_this.toptip()
 					})
 
+				} else {
+					this.$refs.wnpopup.open();
+					return;
+				}
+
+				// TODO 做一些其他的事情，手动执行 done 才会关闭对话框
+				// ...
+				done()
+			},
+
+			changeInfoOpen() {
+				this.$refs.popup1.open()
+			},
+
+			changeInfoConfirm(done, value) {
+				// 输入框的值0-50个字符
+				if (/^.{2,50}$/.test(value)) {
+					//true
+					this.info.signature = value;
+					let signature = this.info.signature
+					let _this = this;
+					modInformation(signature).then(res => {
+						_this.toptip()
+					})
+				} else {
+					this.$refs.popup1Up.open();
+					return;
+				}
+				// TODO 做一些其他的事情，手动执行 done 才会关闭对话框
+				// ...
+				done()
+			},
 		}
-		else {
-			this.$refs.wnpopup.open();
-			return;
-		}
-
-		// TODO 做一些其他的事情，手动执行 done 才会关闭对话框
-		// ...
-		done()
-	},
-
-	changeInfoOpen() {
-			this.$refs.popup1.open()
-		},
-
-		changeInfoConfirm(done, value) {
-			// 输入框的值0-50个字符
-			if (/^.{2,50}$/.test(value)) {
-				//true
-				this.info.signature = value;
-				let signature = this.info.signature
-				let _this = this;
-				modInformation(signature).then(res => {
-					_this.toptip()
-				})
-			} else {
-				this.$refs.popup1Up.open();
-				return;
-			}
-			// TODO 做一些其他的事情，手动执行 done 才会关闭对话框
-			// ...
-			done()
-		},
-	}
 	}
 </script>
 
