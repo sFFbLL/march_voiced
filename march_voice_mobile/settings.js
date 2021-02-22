@@ -23,7 +23,7 @@ module.exports = {
 	timeout: 10000,
 	// 本地
 	appId:'wxeafec80fffe34544',
-	serveName:"http://120.26.141.144:8080",
+	// serveName:"http://120.26.141.144:8080",
 
 	// 服务器
 	// appId:'wxa346375168174534',

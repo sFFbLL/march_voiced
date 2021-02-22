@@ -3,16 +3,11 @@
 	<view class="home">
 		<view class="header">
 			<!-- 头部选项卡 -->
-			<tabs class="tag-nav"
-			 :tabs='tablist'
-			 v-on:tabActive='tabActive' />
+			<tabs class="tag-nav" :tabs='tablist' v-on:tabActive='tabActive' />
 			<!-- 搜索图标 -->
-			<view class="search"
-			 @click="search()">
+			<view class="search" @click="search()">
 				<view class="search-icon">
-					<uni-icons type="search"
-					 size="25"
-					 color="#999"></uni-icons>
+					<uni-icons type="search" size="25" color="#999"></uni-icons>
 				</view>
 			</view>
 		</view>
@@ -25,16 +20,13 @@
 			</view>
 			<!-- 关注 -->
 			<view v-if="tabIndex">
-				<view v-for="(item,index) in followList"
-				 :key="index">
+				<view v-for="(item,index) in followList" :key="index">
 					<follow :articleInfo="item" />
 				</view>
 			</view>
 			<!-- 下拉加载更多 -->
 			<view v-show="isLoadMore">
-				<uni-load-more class="loading"
-				 :status="loadStatus"
-				 iconType="circle"></uni-load-more>
+				<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
 			</view>
 		</view>
 	</view>
@@ -53,9 +45,18 @@
 		getRecommend,
 		getFollow
 	} from '@/utils/api/home-api.js'
-	import {returnWxcode,getWxCode} from "../../utils/wxcode.js"
-	import {getToken,setToken} from "../../utils/auth.js"
-	import {login,creatNewUser} from "../../utils/login.js"
+	import {
+		returnWxcode,
+		getWxCode
+	} from "../../utils/wxcode.js"
+	import {
+		getToken,
+		setToken
+	} from "../../utils/auth.js"
+	import {
+		login,
+		creatNewUser
+	} from "../../utils/login.js"
 	export default {
 		components: {
 			uniIcons,
@@ -90,33 +91,34 @@
 			}
 		},
 		beforeCreate() {
-		// 判断是否有token
-		// if(!getToken()){
-		// 	//没有token，没登陆过，获取wxcode
-		// 	let code = returnWxcode();
-		// 	login(code).then(res=>{
-		// 		if(res.data.status==1){
-		// 			// 跳转注册页面
-		// 			uni.navigateTo({
-		// 				url:"../login/login"
-		// 			})
-					
-		// 		}else{
-		// 			// 登陆成功
-		// 			setToken(res.data.token);
-		// 			setOpenId(res.data.openid)
-		// 		}
-		// 	})
-			
-		// }
-			
+			// 判断是否有token
+			if (!getToken()) {
+				//没有token，没登陆过，获取wxcode
+				let code = returnWxcode();
+				console.log(code)
+				login(code).then(res => {
+					if (res.data.status == 1) {
+						// 跳转注册页面
+						uni.navigateTo({
+							url: "../login/login"
+						})
+
+					} else {
+						// 登陆成功
+						setToken(res.data.token);
+						setOpenId(res.data.openid)
+					}
+				})
+
+			}
+
 		},
 		onShow() {
 			check()
 		},
 		onLoad() {
-				this.recommend();
-				this.follow();
+			this.recommend();
+			this.follow();
 		},
 
 		onReachBottom() { //上拉触底函数
@@ -226,7 +228,7 @@
 					_this.isLoadMore = false;
 					_this.recommendList = [..._this.recommendList, ...recommendList];
 				} else {
-					setTimeout(function () {
+					setTimeout(function() {
 						_this.isLoadMore = false;
 						_this.recommendList = [..._this.recommendList, ...recommendList];
 					}, 2000);
@@ -315,7 +317,7 @@
 					_this.isLoadMore = false;
 					_this.followList = [..._this.followList, ...followList];
 				} else {
-					setTimeout(function () {
+					setTimeout(function() {
 						_this.isLoadMore = false;
 						_this.follLoadStatus = "nomore";
 						_this.followList = [..._this.followList, ...followList];

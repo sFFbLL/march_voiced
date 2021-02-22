@@ -294,9 +294,9 @@
 		},
 		created() {
 			// 获取三月基本信息接口
-			// getMarchCircleInfo().then(res=>{
-			// 	this.marchCircleInfo=res.data;
-			// })
+			getMarchCircleInfo().then(res=>{
+				this.marchCircleInfo=res.data;
+			})
 			if (this.marchCircleInfo.ismarch == 0) {
 				this.sanyueMumber = false;
 			}
