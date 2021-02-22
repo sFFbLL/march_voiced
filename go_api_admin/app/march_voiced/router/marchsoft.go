@@ -27,5 +27,6 @@ func marchRouter(v1 *gin.RouterGroup) {
 		mr.DELETE(":id", apis.DeleteMarchHandler)
 		mr.GET("", apis.SelectMarchList)
 		mr.GET("/user", apis.SelectMarchListById)
+		mr.GET("/detail/:id", apis.MarchDetail)
 	}
 }
