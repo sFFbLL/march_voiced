@@ -316,13 +316,13 @@
 			// 获取想法列表接口
 			getCircleList(params) {
 				let _this = this;
-				// marchCircleList(params).then(res=>{
-				// _this.ideasList=[...this.ideasList,...res.data];
-				// if(res.data.length<=_this.size){
-				// 	_this.loadStatus='nomore';
-				// }
+				marchCircleList(params).then(res=>{
+				_this.ideasList=[...this.ideasList,...res.data];
+				if(res.data.length<=_this.size){
+					_this.loadStatus='nomore';
+				}
 
-				// })
+				})
 
 				if (this.ideasList.length > 16) {
 					_this.loadStatus = "nomore";
@@ -361,9 +361,9 @@
 				this.fontSize = 21;
 				this.disabledJoin = true;
 				// 调申请加入三月圈接口
-				// joinMarchCircle().then(res => {
-				// 	console.log(res)
-				// })
+				joinMarchCircle().then(res => {
+					console.log(res)
+				})
 			},
 			publish() {
 				// 跳转到编辑页面
@@ -384,7 +384,7 @@
 		display: flex;
 		position: fixed;
 		z-index: 222;
-		top: 980rpx;
+		top:1080rpx;
 		right: 30rpx;
 		/* background-image: linear-gradient(to top, #4481eb 0%, #04befe 100%); */
 		background-image: linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%);
@@ -392,6 +392,7 @@
 
 	.addicon {
 		margin-left: 8rpx;
+		margin-top: 5rpx;
 	}
 
 	/* 微信分享 遮罩层*/

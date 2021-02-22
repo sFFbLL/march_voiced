@@ -32,6 +32,7 @@
 			}
 		},
 		created() {
+			console.log("getWxCode()")
 			console.log(getWxCode())
 			
 		},
