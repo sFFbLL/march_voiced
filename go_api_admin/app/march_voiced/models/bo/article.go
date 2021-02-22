@@ -56,7 +56,6 @@ type ArticleUser struct {
 	ArticleTotal
 }
 
-
 type IsFavourCollectByArticleId struct {
 	IsFavour  int `json:"isFavour"`
 	IsCollect int `json:"isCollect"`
@@ -81,7 +80,16 @@ type ApplyArticleListData struct {
 	Title       string `json:"title"`
 	Tag         string `json:"tag"`
 	Nickname    string `json:"nickname" gorm:"column:nick_name"`
+	Id          uint   `json:"id"`
 	CreateTime  int64  `json:"createTime" gorm:"column:status_update_time"`
 	Status      uint8  `json:"status"`
 	IsRecommend uint8  `json:"recommend" gorm:"column:is_recommend"`
+}
+
+type ArticleCollectByUserId struct {
+	Current uint       `json:"current"` //页码
+	Size    uint       `json:"size"`    //页内大小
+	Pages   int        `json:"pages"`   //总页数
+	Total   int64      `json:"total"`   //总条数
+	Records *[]Article `json:"records"` //消息
 }

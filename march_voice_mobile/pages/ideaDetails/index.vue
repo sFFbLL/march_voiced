@@ -44,20 +44,20 @@
 				sendDisabled: true,
 				comment: null,
 				ideaInfoList: {
-					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					updateTime: '2020/12/12',
-					faceTotal: 2,
-					likeTotal: 3,
-					favourTotal: 0,
-					commentTotal: 0,
-					ideaId: 0,
-					imgList: [
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg'
-					],
-					create_by: 0,
-					nickname: "xianer",
-					avatarPath: '../../static/img/cat.jpg',
-					isFollow: 0
+					// content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+					// updateTime: '2020/12/12',
+					// faceTotal: 2,
+					// likeTotal: 3,
+					// favourTotal: 0,
+					// commentTotal: 0,
+					// ideaId: 0,
+					// imgList: [
+					// 	'../../static/img/cat.jpg', '../../static/img/cat.jpg'
+					// ],
+					// create_by: 0,
+					// nickname: "xianer",
+					// avatarPath: '../../static/img/cat.jpg',
+					// isFollow: 0
 
 				}
 			}
@@ -69,9 +69,9 @@
 			let id = this.ideaId
 
 			// 获取想法详细信息接口
-			// ideaDetail(id).then(res=>{
-			// 	this.ideaInfoList=res.data;
-			// })
+			ideaDetail(id).then(res=>{
+				this.ideaInfoList=res.data;
+			})
 
 
 		},

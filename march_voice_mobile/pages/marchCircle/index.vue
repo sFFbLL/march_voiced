@@ -106,169 +106,171 @@
 					ismarch: 1,
 					brief: "啊士大夫艰苦的萨拉就",
 				},
-				ideasList: [{
-					id: 6,
-					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					updateTime: '2020/12/12',
-					faceTotal: 0,
-					likeTotal: 3,
-					favourTotal: 0,
-					commentTotal: 0,
-					imgList: [
-						'../../static/img/cat.jpg'
-					],
-					create_by: 1,
-					nickname: "仙儿",
-					avatarPath: "",
-					isFollow: 0
-				}, {
-					id: 6,
-					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					updateTime: '2020/12/12',
-					faceTotal: 2,
-					likeTotal: 3,
-					favourTotal: 42,
-					commentTotal: 0,
-					imgList: [
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+				ideasList: [
+					// {
+				// 	id: 6,
+				// 	content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+				// 	updateTime: '2020/12/12',
+				// 	faceTotal: 0,
+				// 	likeTotal: 3,
+				// 	favourTotal: 0,
+				// 	commentTotal: 0,
+				// 	imgList: [
+				// 		'../../static/img/cat.jpg'
+				// 	],
+				// 	create_by: 1,
+				// 	nickname: "仙儿",
+				// 	avatarPath: "",
+				// 	isFollow: 0
+				// }, {
+				// 	id: 6,
+				// 	content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+				// 	updateTime: '2020/12/12',
+				// 	faceTotal: 2,
+				// 	likeTotal: 3,
+				// 	favourTotal: 42,
+				// 	commentTotal: 0,
+				// 	imgList: [
+				// 		'../../static/img/cat.jpg', '../../static/img/cat.jpg',
 
-					],
-					create_by: 1,
-					nickname: "仙儿",
-					avatarPath: "",
-					isFollow: 0
-				}, {
-					id: 6,
-					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					updateTime: '2020/12/12',
-					faceTotal: 2,
-					likeTotal: 3,
-					favourTotal: 42,
-					commentTotal: 0,
-					imgList: [
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-					],
-					create_by: 1,
-					nickname: "仙儿",
-					avatarPath: "",
-					isFollow: 0
-				}, {
-					id: 6,
-					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					updateTime: '2020/12/12',
-					faceTotal: 2,
-					likeTotal: 3,
-					favourTotal: 42,
-					commentTotal: 0,
-					imgList: [
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg'
-					],
-					create_by: 1,
-					nickname: "仙儿",
-					avatarPath: "",
-					isFollow: 0
-				}, {
-					id: 6,
-					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					updateTime: '2020/12/12',
-					faceTotal: 2,
-					likeTotal: 3,
-					favourTotal: 42,
-					commentTotal: 0,
-					imgList: [
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg'
-					],
-					create_by: 1,
-					nickname: "仙儿",
-					avatarPath: "",
-					isFollow: 0
-				}, {
-					id: 6,
-					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					updateTime: '2020/12/12',
-					faceTotal: 2,
-					likeTotal: 3,
-					favourTotal: 42,
-					commentTotal: 0,
-					imgList: [
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg'
-					],
-					create_by: 1,
-					nickname: "仙儿",
-					avatarPath: "",
-					isFollow: 0
-				}, {
-					id: 6,
-					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					updateTime: '2020/12/12',
-					faceTotal: 2,
-					likeTotal: 3,
-					favourTotal: 42,
-					commentTotal: 0,
-					imgList: [
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg'
-					],
-					create_by: 1,
-					nickname: "仙儿",
-					avatarPath: "",
-					isFollow: 0
-				}, {
-					id: 6,
-					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					updateTime: '2020/12/12',
-					faceTotal: 2,
-					likeTotal: 3,
-					favourTotal: 42,
-					commentTotal: 0,
-					imgList: [
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg'
-					],
-					create_by: 1,
-					nickname: "仙儿",
-					avatarPath: "",
-					isFollow: 0
-				}, {
-					id: 6,
-					content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					updateTime: '2020/12/12',
-					faceTotal: 2,
-					likeTotal: 3,
-					favourTotal: 42,
-					commentTotal: 0,
-					imgList: [
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg', '../../static/img/cat.jpg', '../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-						'../../static/img/cat.jpg',
-					],
-					create_by: 1,
-					nickname: "仙儿",
-					avatarPath: "",
-					isFollow: 0
-				}, ]
+				// 	],
+				// 	create_by: 1,
+				// 	nickname: "仙儿",
+				// 	avatarPath: "",
+				// 	isFollow: 0
+				// }, {
+				// 	id: 6,
+				// 	content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+				// 	updateTime: '2020/12/12',
+				// 	faceTotal: 2,
+				// 	likeTotal: 3,
+				// 	favourTotal: 42,
+				// 	commentTotal: 0,
+				// 	imgList: [
+				// 		'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 	],
+				// 	create_by: 1,
+				// 	nickname: "仙儿",
+				// 	avatarPath: "",
+				// 	isFollow: 0
+				// }, {
+				// 	id: 6,
+				// 	content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+				// 	updateTime: '2020/12/12',
+				// 	faceTotal: 2,
+				// 	likeTotal: 3,
+				// 	favourTotal: 42,
+				// 	commentTotal: 0,
+				// 	imgList: [
+				// 		'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg'
+				// 	],
+				// 	create_by: 1,
+				// 	nickname: "仙儿",
+				// 	avatarPath: "",
+				// 	isFollow: 0
+				// }, {
+				// 	id: 6,
+				// 	content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+				// 	updateTime: '2020/12/12',
+				// 	faceTotal: 2,
+				// 	likeTotal: 3,
+				// 	favourTotal: 42,
+				// 	commentTotal: 0,
+				// 	imgList: [
+				// 		'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg'
+				// 	],
+				// 	create_by: 1,
+				// 	nickname: "仙儿",
+				// 	avatarPath: "",
+				// 	isFollow: 0
+				// }, {
+				// 	id: 6,
+				// 	content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+				// 	updateTime: '2020/12/12',
+				// 	faceTotal: 2,
+				// 	likeTotal: 3,
+				// 	favourTotal: 42,
+				// 	commentTotal: 0,
+				// 	imgList: [
+				// 		'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg'
+				// 	],
+				// 	create_by: 1,
+				// 	nickname: "仙儿",
+				// 	avatarPath: "",
+				// 	isFollow: 0
+				// }, {
+				// 	id: 6,
+				// 	content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+				// 	updateTime: '2020/12/12',
+				// 	faceTotal: 2,
+				// 	likeTotal: 3,
+				// 	favourTotal: 42,
+				// 	commentTotal: 0,
+				// 	imgList: [
+				// 		'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg'
+				// 	],
+				// 	create_by: 1,
+				// 	nickname: "仙儿",
+				// 	avatarPath: "",
+				// 	isFollow: 0
+				// }, {
+				// 	id: 6,
+				// 	content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+				// 	updateTime: '2020/12/12',
+				// 	faceTotal: 2,
+				// 	likeTotal: 3,
+				// 	favourTotal: 42,
+				// 	commentTotal: 0,
+				// 	imgList: [
+				// 		'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg'
+				// 	],
+				// 	create_by: 1,
+				// 	nickname: "仙儿",
+				// 	avatarPath: "",
+				// 	isFollow: 0
+				// }, {
+				// 	id: 6,
+				// 	content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
+				// 	updateTime: '2020/12/12',
+				// 	faceTotal: 2,
+				// 	likeTotal: 3,
+				// 	favourTotal: 42,
+				// 	commentTotal: 0,
+				// 	imgList: [
+				// 		'../../static/img/cat.jpg', '../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg', '../../static/img/cat.jpg', '../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 		'../../static/img/cat.jpg',
+				// 	],
+				// 	create_by: 1,
+				// 	nickname: "仙儿",
+				// 	avatarPath: "",
+				// 	isFollow: 0
+				// }, 
+				]
 
 
 			}
@@ -316,13 +318,13 @@
 			// 获取想法列表接口
 			getCircleList(params) {
 				let _this = this;
-				// marchCircleList(params).then(res=>{
-				// _this.ideasList=[...this.ideasList,...res.data];
-				// if(res.data.length<=_this.size){
-				// 	_this.loadStatus='nomore';
-				// }
+				marchCircleList(params).then(res=>{
+				_this.ideasList=[...this.ideasList,...res.data];
+				if(res.data.length<=_this.size){
+					_this.loadStatus='nomore';
+				}
 
-				// })
+				})
 
 				if (this.ideasList.length > 16) {
 					_this.loadStatus = "nomore";
@@ -361,9 +363,9 @@
 				this.fontSize = 21;
 				this.disabledJoin = true;
 				// 调申请加入三月圈接口
-				// joinMarchCircle().then(res => {
-				// 	console.log(res)
-				// })
+				joinMarchCircle().then(res => {
+					console.log(res)
+				})
 			},
 			publish() {
 				// 跳转到编辑页面
@@ -384,7 +386,7 @@
 		display: flex;
 		position: fixed;
 		z-index: 222;
-		top: 980rpx;
+		top:1080rpx;
 		right: 30rpx;
 		/* background-image: linear-gradient(to top, #4481eb 0%, #04befe 100%); */
 		background-image: linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%);
@@ -392,6 +394,7 @@
 
 	.addicon {
 		margin-left: 8rpx;
+		margin-top: 5rpx;
 	}
 
 	/* 微信分享 遮罩层*/

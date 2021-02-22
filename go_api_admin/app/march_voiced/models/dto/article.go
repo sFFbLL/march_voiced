@@ -7,7 +7,7 @@ type ApplyArticlePaginator struct {
 	StartTime uint   `form:"startTime"` //创建时间
 	Status    uint8  `form:"status"`    //1通过 2审核中
 	Nickname  string `form:"nickname"`
-	Content   string `form:"content"`
+	Title     string `form:"title"`
 }
 
 type InsertArticleDto struct {
@@ -47,4 +47,10 @@ type SelectArticleByUser struct {
 type ArticlePass struct {
 	Id     uint   `json:"id" binding:"required"`
 	Status *uint8 `json:"status" binding:"required,lte=1"`
+}
+
+type ArticleSearchPaginator struct {
+	Current    uint   `form:"current"`
+	Size       uint   `form:"size" binding:"lte=10"`
+	SearchWord string `form:"searchWord" binding:"required"`
 }
