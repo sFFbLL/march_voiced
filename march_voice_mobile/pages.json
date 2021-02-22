@@ -118,7 +118,7 @@
 				"navigationBarTitleText": "搜索",
 				"navigationStyle": "custom"
 			}
-		},{
+		}, {
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "注册三月之声",
