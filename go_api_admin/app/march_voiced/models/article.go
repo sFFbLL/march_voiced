@@ -29,6 +29,16 @@ func (a *Article) TableName() string {
 	return `article`
 }
 
+func (a *Article) ArticleCollectByUserId(data *bo.ArticleCollectByUserId, p *dto.Paginator, userId int) error {
+	return global.Eloquent.Table("article_collect").
+		Select("article.id, article.title, article.content, article.image, article.word_count, article.type, article.create_by, article.create_time, sys_user.nick_name").
+		Joins("left join article on article_collect.article_id = article.id").
+		Joins("left join sys_user on article.create_by = sys_user.id").
+		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article_collect.is_deleted=0 and article.status=1").Count(&data.Total).
+		Order("article.create_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
+		Find(data.Records).Error
+}
+
 // ArticleRecommend
 func (a *Article) ArticleRecommend(articleId int) error {
 	return global.Eloquent.Table(a.TableName()).Where("id=? and status=1 and is_deleted=0", articleId).First(a).Error
@@ -53,13 +63,13 @@ func (a *Article) GetArticle() (err error) {
 // GetApplyArticle （后台）文章审核列表页
 func (a *Article) GetApplyArticle(applyArticleList *bo.ApplyArticleList, p *dto.ApplyArticlePaginator, userId int) (err error) {
 	nickname := "%" + p.Nickname + "%"
-	content := "%" + p.Content + "%"
+	title := "%" + p.Title + "%"
 	table := global.Eloquent.Table(a.TableName()).
-		Select("article.title, article.is_recommend, article.status, article.status_update_time, article_tag.tag, sys_user.nick_name").
+		Select("article.id, article.title, article.is_recommend, article.status, article.status_update_time, article_tag.tag, sys_user.nick_name").
 		Joins("left join sys_user on sys_user.id = article.create_by").
 		Joins("left join article_tag on article_tag.id = article.tag").
 		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article.status!=0").
-		Where("sys_user.nick_name like ? and article.content like ?", nickname, content)
+		Where("sys_user.nick_name like ? and article.title like ?", nickname, title)
 	if p.EndTime != 0 && p.StartTime != 0 {
 		err = table.Where("article.status_update_time > ? AND article.status_update_time < ?", p.StartTime, p.EndTime).
 			Count(&applyArticleList.Total).

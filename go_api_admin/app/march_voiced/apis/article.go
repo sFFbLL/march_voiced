@@ -71,7 +71,7 @@ func ArticleRecommend(c *gin.Context) {
 // @Param object query dto.ApplyArticlePaginator false "添加参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseApplyArticleList
-// @Router /api/apply/article [get]
+// @Router /api/article/admin [get]
 func ApplyArticleList(c *gin.Context) {
 	p := new(dto.ApplyArticlePaginator)
 

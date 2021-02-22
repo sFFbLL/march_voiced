@@ -17,12 +17,49 @@ import (
 // @Tags 文章 article Controller
 // @Accept application/json
 // @Produce application/json
-// @Param object body dto.CollectArticleDto false "查询参数"
+// @Param object query dto.Paginator false "查询参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseSuccess
 // @Router /api/collect/article [get]
 func GetCollectArticle(c *gin.Context) {
+	p := new(dto.Paginator)
 
+	// 获取缓存信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("GetCollectArticle GetUserMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeLoginExpire)
+		return
+	}
+
+	// 获取参数 校验参数
+	if err := c.ShouldBindQuery(p); err != nil {
+		// 请求参数有误， 直接返回响应
+		zap.L().Error("GetCollectArticle params failed", zap.String("Username", user.Username), zap.Error(err))
+		_, ok := err.(validator.ValidationErrors)
+		if !ok {
+			app.ResponseError(c, app.CodeParamIsInvalid)
+			return
+		}
+		app.ResponseError(c, app.CodeParamTypeBindError)
+		return
+	}
+
+	if p.Size == 0 && p.Current == 0 {
+		p.Size = 10
+		p.Current = 1
+	}
+
+	//业务逻辑处理
+	s := new(service.Article)
+	data, err := s.GetCollectArticle(p, user.UserId)
+	if err != nil {
+		zap.L().Error("GetCollectArticle service params failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	app.ResponseSuccess(c, data)
 }
 
 // SelectDept 文章收藏
