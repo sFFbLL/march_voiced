@@ -16,6 +16,55 @@ import (
 
 type Article struct{}
 
+// GetCollectArticle 我的收藏列表页
+func (a *Article) GetCollectArticle(p *dto.Paginator, userId int) (data *bo.ArticleCollectByUserId, err error) {
+	article := new(models.Article)
+	data = new(bo.ArticleCollectByUserId)
+	records1 := new([]bo.Article)
+	records2 := new([]bo.Article)
+	var goArticle bo.GoArticleMsg
+	var keys []int
+	data.Records = records1
+	err = article.ArticleCollectByUserId(data, p, userId)
+
+
+	articleMapList := make(map[int]*bo.Article, len(*data.Records))
+	for _, i := range *data.Records {
+		var articleBo bo.Article
+		articleBo = i
+		articleMapList[i.ID] = &articleBo
+		keys = append(keys, i.ID)
+	}
+	// 数据拼接
+	var wg sync.WaitGroup
+	articleCh := make(chan *bo.GoArticleMsg, len(*data.Records))
+	for _, v := range *data.Records {
+		wg.Add(1)
+		goArticle.ArticleId = uint(v.ID)
+		goArticle.ArticleUserId = v.CreateBy
+		goArticle.UserId = uint(userId)
+		go goArticleMsg(&articleCh, &wg, goArticle)
+	}
+	wg.Wait()
+	close(articleCh)
+
+	//articleMap 排序 遍历
+	for i := range articleCh {
+		goArticle = *i
+		articleMapList[int(goArticle.ArticleId)].ArticleTotal = goArticle.ArticleTotal
+	}
+
+	for _, i := range *data.Records {
+		*records2 = append(*records2, *articleMapList[i.ID])
+	}
+	data.Records = records2
+	
+	data.Current = p.Current
+	data.Size = p.Size
+	data.Pages = utils.PagesCount(int(data.Current), int(p.Size))
+	return
+}
+
 // ArticleRecommend （后台）文章设置推荐
 func (a *Article) ArticleRecommend(articleId int) (err error) {
 	article := new(models.Article)
@@ -145,11 +194,10 @@ func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err
 	articleFavour := new(models.ArticleFavour)
 	follow := new(models.Follow)
 	articleMsg = new(bo.Article)
-	var userMsg bo.Article
 
 	// 获取数据
 	article.ID = id
-	userMsg, err = article.ArticleDetail()
+	articleMsg, err = article.ArticleDetail()
 	if err != nil {
 		return
 	}
@@ -175,10 +223,10 @@ func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err
 		err = nil
 	}
 	// 是否关注
-	if userId == userMsg.UserID {
+	if userId == int(articleMsg.CreateBy) {
 		articleMsg.IsFollow = 0
 	} else {
-		articleMsg.IsFollow, err = follow.IsFollow(userId, userMsg.UserID)
+		articleMsg.IsFollow, err = follow.IsFollow(userId, int(articleMsg.CreateBy))
 		if err != nil {
 			zap.L().Error("IsFollow failed", zap.Error(err))
 			err = nil
@@ -192,7 +240,7 @@ func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.Article, err
 func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleMsg, signal int, err error) {
 	// 实例化要修改的文章
 	article := new(models.Article)
-	var t uint = 1
+	var t uint
 	var s uint8 = 1
 
 	// 获取该文章原内容
@@ -207,6 +255,7 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleMsg,
 	}
 
 	// 更新文章内容
+	t = uint(article.ID)
 	article.UpdateBy = uint(userId)
 	article.CreateBy = uint(userId)
 	article.UpdateTime = 0
@@ -235,6 +284,7 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleMsg,
 		UpdateTime: article.UpdateTime,
 	}
 
+	go models.AddMessage(0, 1, uint(id), uint(userId), "")
 	return
 }
 

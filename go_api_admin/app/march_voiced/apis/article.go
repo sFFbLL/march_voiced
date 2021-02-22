@@ -71,7 +71,7 @@ func ArticleRecommend(c *gin.Context) {
 // @Param object query dto.ApplyArticlePaginator false "添加参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseApplyArticleList
-// @Router /api/apply/article [get]
+// @Router /api/article/admin [get]
 func ApplyArticleList(c *gin.Context) {
 	p := new(dto.ApplyArticlePaginator)
 
@@ -305,7 +305,7 @@ func DeleteArticleHandler(c *gin.Context) {
 	err = a.DeleteArticle(id, userMsg.UserId)
 	if err != nil {
 		zap.L().Error("DeleteArticleHandle service failed", zap.String("Username", userMsg.Username), zap.Error(err))
-		app.ResponseError(c, app.CodeUpdateOperationFail)
+		app.ResponseError(c, app.CodeDeleteOperationFail)
 		return
 	}
 

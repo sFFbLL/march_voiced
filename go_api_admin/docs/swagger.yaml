@@ -114,8 +114,6 @@ definitions:
         type: integer
       update_time:
         type: integer
-      user_id:
-        type: integer
       word_count:
         type: integer
     type: object
@@ -414,6 +412,41 @@ definitions:
         type: integer
       name:
         type: string
+    type: object
+  bo.March:
+    properties:
+      avatarPath:
+        type: string
+      commentTotal:
+        type: integer
+      content:
+        type: string
+      create_by:
+        type: integer
+      create_time:
+        type: integer
+      faceTotal:
+        type: integer
+      favourTotal:
+        type: integer
+      id:
+        type: integer
+      image:
+        type: string
+      imageList:
+        items:
+          type: string
+        type: array
+      likeTotal:
+        type: integer
+      nickname:
+        type: string
+      type:
+        type: integer
+      update_by:
+        type: integer
+      update_time:
+        type: integer
     type: object
   bo.MarchsoftComment:
     properties:
@@ -880,13 +913,6 @@ definitions:
     - id
     type: object
   dto.DataMenuDto:
-    properties:
-      ids:
-        items:
-          type: integer
-        type: array
-    required:
-    - ids
     type: object
   dto.DeleteMenuDto:
     type: object
@@ -1069,20 +1095,37 @@ definitions:
     - pid
     - subCount
     type: object
+  dto.InsertMarchSoft:
+    properties:
+      content:
+        type: string
+      image:
+        type: string
+      imageList:
+        items:
+          type: string
+        type: array
+    required:
+    - content
+    type: object
   dto.InsertMenuDto:
     properties:
+      action:
+        type: string
+      address:
+        type: string
       cache:
         type: boolean
       component:
         type: string
       hidden:
-        type: boolean
+        type: object
       icon:
         type: string
       id:
         type: integer
       iframe:
-        type: boolean
+        type: object
       menuSort:
         type: integer
       name:
@@ -1100,7 +1143,7 @@ definitions:
       title:
         type: string
       type:
-        type: string
+        type: object
     type: object
   dto.MarchPass:
     properties:
@@ -1179,6 +1222,15 @@ definitions:
         type: string
       startTime:
         description: 创建时间
+        type: integer
+    type: object
+  dto.SelectMarchListById:
+    properties:
+      current:
+        type: integer
+      id:
+        type: integer
+      size:
         type: integer
     type: object
   dto.SelectMenuDto:
@@ -1297,7 +1349,6 @@ definitions:
     - id
     - name
     - pid
-    - subCount
     type: object
   dto.UpdateJob:
     properties:
@@ -1875,6 +1926,19 @@ definitions:
         description: 提示信息
         type: string
     type: object
+  models._march:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.March'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
   models.FileResponse:
     properties:
       full_path:
@@ -2426,6 +2490,28 @@ paths:
       tags:
       - 系统：系统授权接口 Menu Controller
   /api/collect/article:
+    get:
+      consumes:
+      - application/json
+      description: Author：JiaKun Li 2021/02/16
+      parameters:
+      - description: 查询参数
+        in: body
+        name: object
+        schema:
+          $ref: '#/definitions/dto.CollectArticleDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseSuccess'
+      security:
+      - ApiKeyAuth: []
+      summary: 我的收藏列表页
+      tags:
+      - 文章 article Controller
     post:
       consumes:
       - application/json
@@ -2667,7 +2753,7 @@ paths:
       tags:
       - 评论： Comment Controller
   /api/dept:
-    get:
+    delete:
       consumes:
       - application/json
       description: Author：Lbl 2021/02/2 获得身份令牌
@@ -2676,7 +2762,62 @@ paths:
         in: body
         name: object
         schema:
-          $ref: '#/definitions/dto.SelectDeptDto'
+          items:
+            type: integer
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseDept'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除部门
+      tags:
+      - 系统：部门管理 Dept Controller
+    get:
+      consumes:
+      - application/json
+      description: Author：Lbl 2021/02/2 获得身份令牌
+      parameters:
+      - description: 当前页
+        in: query
+        name: current
+        type: integer
+      - description: 状态：1启用（默认）、0禁用
+        in: query
+        name: enabled
+        type: boolean
+      - description: 过期时间
+        in: query
+        name: endTime
+        type: integer
+      - description: 模糊
+        in: query
+        name: name
+        type: string
+      - description: 排序规则
+        in: query
+        name: orders
+        type: string
+      - description: 上级部门（顶级部门为0，默认为0）
+        in: query
+        name: pid
+        type: integer
+      - description: 每页数据
+        in: query
+        name: size
+        type: integer
+      - description: id排序
+        in: query
+        name: sort
+        type: string
+      - description: 创建时间
+        in: query
+        name: startTime
+        type: integer
       produces:
       - application/json
       responses:
@@ -2690,6 +2831,28 @@ paths:
       tags:
       - 系统：部门管理 Dept Controller
     post:
+      consumes:
+      - application/json
+      description: Author：Lbl 2021/02/2 获得身份令牌
+      parameters:
+      - description: 查询参数
+        in: body
+        name: object
+        schema:
+          $ref: '#/definitions/dto.InsertDeptDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseDept'
+      security:
+      - ApiKeyAuth: []
+      summary: 添加部门
+      tags:
+      - 系统：部门管理 Dept Controller
+    put:
       consumes:
       - application/json
       description: Author：Lbl 2021/02/2 获得身份令牌
@@ -3144,31 +3307,117 @@ paths:
       summary: 导出岗位数据
       tags:
       - 系统：岗位管理 job Controller
-  /api/menus:
-    delete:
+  /api/march:
+    get:
       consumes:
       - application/json
-      description: Author：Lbl 2021/02/2 获得身份令牌
+      description: Author：lbl 2021/02/20
       parameters:
-      - description: 查询参数
-        in: body
-        name: object
-        schema:
-          items:
-            type: integer
-          type: array
+      - in: query
+        name: current
+        type: integer
+      - in: query
+        name: id
+        type: integer
+      - in: query
+        name: size
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._ResponseDept'
+            $ref: '#/definitions/models._march'
       security:
       - ApiKeyAuth: []
-      summary: 删除部门
+      summary: 用户三月圈文章列表
       tags:
-      - 系统：部门管理 Dept Controller
+      - 三月圈 marchsoft Controller
+    post:
+      consumes:
+      - application/json
+      description: Author：lbl 2021/02/20
+      parameters:
+      - description: 查询参数
+        in: body
+        name: object
+        schema:
+          $ref: '#/definitions/dto.InsertMarchSoft'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseSuccess'
+      security:
+      - ApiKeyAuth: []
+      summary: 发布三月圈
+      tags:
+      - 三月圈 marchsoft Controller
+  /api/march/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Author：Lbl 2021/02/17 获得身份令牌
+      parameters:
+      - description: 修改参数
+        in: path
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseSuccess'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除三月圈
+      tags:
+      - 应用：文章管理 Article Controller
+  /api/march/msg:
+    get:
+      consumes:
+      - application/json
+      description: Author：lbl 2021/02/20
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseApplyMarchUser'
+      security:
+      - ApiKeyAuth: []
+      summary: 三月圈条数与成员数与是否为三月
+      tags:
+      - 三月圈 marchsoft Controller
+  /api/menus:
+    delete:
+      consumes:
+      - application/json
+      description: Author：Cgl 2021/01/30 获得身份令牌
+      parameters:
+      - description: 查询参数
+        in: body
+        name: object
+        schema:
+          $ref: '#/definitions/dto.DeleteMenuDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseDeleteMenu'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除菜单
+      tags:
+      - 系统：菜单管理 Menu Controller
     get:
       consumes:
       - application/json

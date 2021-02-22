@@ -29,6 +29,16 @@ func (a *Article) TableName() string {
 	return `article`
 }
 
+func (a *Article) ArticleCollectByUserId(data *bo.ArticleCollectByUserId, p *dto.Paginator, userId int) error {
+	return global.Eloquent.Table("article_collect").
+		Select("article.id, article.title, article.content, article.image, article.word_count, article.type, article.create_by, article.create_time, sys_user.nick_name").
+		Joins("left join article on article_collect.article_id = article.id").
+		Joins("left join sys_user on article.create_by = sys_user.id").
+		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article_collect.is_deleted=0 and article.status=1").Count(&data.Total).
+		Order("article.create_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
+		Find(data.Records).Error
+}
+
 // ArticleRecommend
 func (a *Article) ArticleRecommend(articleId int) error {
 	return global.Eloquent.Table(a.TableName()).Where("id=? and status=1 and is_deleted=0", articleId).First(a).Error
@@ -53,13 +63,13 @@ func (a *Article) GetArticle() (err error) {
 // GetApplyArticle （后台）文章审核列表页
 func (a *Article) GetApplyArticle(applyArticleList *bo.ApplyArticleList, p *dto.ApplyArticlePaginator, userId int) (err error) {
 	nickname := "%" + p.Nickname + "%"
-	content := "%" + p.Content + "%"
+	title := "%" + p.Title + "%"
 	table := global.Eloquent.Table(a.TableName()).
-		Select("article.title, article.is_recommend, article.status, article.status_update_time, article_tag.tag, sys_user.nick_name").
+		Select("article.id, article.title, article.is_recommend, article.status, article.status_update_time, article_tag.tag, sys_user.nick_name").
 		Joins("left join sys_user on sys_user.id = article.create_by").
 		Joins("left join article_tag on article_tag.id = article.tag").
 		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article.status!=0").
-		Where("sys_user.nick_name like ? and article.content like ?", nickname, content)
+		Where("sys_user.nick_name like ? and article.title like ?", nickname, title)
 	if p.EndTime != 0 && p.StartTime != 0 {
 		err = table.Where("article.status_update_time > ? AND article.status_update_time < ?", p.StartTime, p.EndTime).
 			Count(&applyArticleList.Total).
@@ -94,22 +104,23 @@ func (a *Article) DeleteArticle() (err error) {
 	return
 }
 
-func (a *Article) ArticleDetail() (userMsg bo.Article, err error) {
+func (a *Article) ArticleDetail() (articleMsg *bo.Article, err error) {
+	articleMsg = new(bo.Article)
 	// 获取文章信息
 	err = global.Eloquent.Table(a.TableName()).
-		Select("article.id, article.title, article.content, article.image, article.word_count, article.tag, article.kind, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.id AS user_id, sys_user.nick_name, sys_user.avatar_path").
+		Select("article.id, article.title, article.content, article.image, article.word_count, article.tag, article.kind, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.nick_name, sys_user.avatar_path").
 		Joins("JOIN sys_user ON article.create_by = sys_user.id").
-		Where("article.is_deleted = 0 AND article.id = ? ", a.ID).
-		First(userMsg).Error
+		Where("article.id = ? AND article.is_deleted = 0", a.ID).
+		First(articleMsg).Error
 	return
 }
 
 func (a *Article) ArticleList(paging dto.Paging, IsRecommend int) (articleArray *[]bo.Article, err error) {
 	articleArray = new([]bo.Article)
 	err = global.Eloquent.Table(a.TableName()).
-		Select("article.id, article.title, article.content, article.image, article.word_count, article.tag, article.kind, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.id AS user_id, sys_user.nick_name, sys_user.avatar_path").
+		Select("article.id, article.title, article.content, article.image, article.word_count, article.tag, article.kind, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.nick_name, sys_user.avatar_path").
 		Joins("JOIN sys_user ON article.create_by = sys_user.id").
-		Where("article.is_deleted = 0 AND article.is_recommend = ? AND article.status = 1", IsRecommend).
+		Where("article.is_recommend = ? AND article.is_deleted = 0 AND article.status = 1", IsRecommend).
 		Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(articleArray).Error
 	return
 }
@@ -118,12 +129,12 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser) (art
 	articleArray = new([]Article)
 	if paging.Kind == 1 {
 		err = global.Eloquent.Table(a.TableName()).
-			Where("is_deleted = 0  AND create_id = ? AND status = ?", paging.ID, paging.Kind).
+			Where("create_id = ? AND status = ? AND is_deleted = 0", paging.ID, paging.Kind).
 			Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(articleArray).Error
 		return
 	}
 	err = global.Eloquent.Table(a.TableName()).
-		Where("is_deleted = 0  AND create_by = ?", paging.ID).
+		Where("create_by = ? AND is_deleted = 0", paging.ID).
 		Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(articleArray).Error
 	return
 }

@@ -39,11 +39,6 @@ func (co *MarchsoftComment) DeleteMarchsoftComment() (err error) {
 
 // GetCommentList 先查询size个一级评论的相关信息
 func (co *MarchsoftComment) GetCommentList(p *dto.GetMarchsoftComment) (commentList []*MarchsoftComment, err error) {
-
-	if p.Size == 0 && p.Current == 0 {
-		p.Size = 5
-		p.Current = 1
-	}
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=? AND marchsoft_id=?", []byte{0}, p.ID)
 	err = table.Where("pid=? AND reply_id=?", 0, 0).
 		Offset(int((p.Current - 1) * p.Size)).Limit(int(p.Size)).Order("create_time desc").
@@ -61,11 +56,10 @@ func (co *MarchsoftComment) GetChildCommentList(marchsoftId uint, size uint, pid
 // GetUserInfo 获取与评论有关的用户的信息
 func (co *MarchsoftComment) GetUserInfo(id uint) (userInfo *UserInfo, err error) {
 	if id == 0 {
-		userInfo = &UserInfo{
+		return &UserInfo{
 			NickName:   "",
 			AvatarPath: "",
-		}
-		return
+		}, nil
 	}
 	userInfo = new(UserInfo)
 	idI := int(id)
@@ -76,11 +70,13 @@ func (co *MarchsoftComment) GetUserInfo(id uint) (userInfo *UserInfo, err error)
 
 // GetMarchsoftChildComment 查询指定文章下某一条一级评论的size条二级评论
 func (co *MarchsoftComment) GetMarchsoftChildComment(p *dto.GetMarchsoftChildComment) (commentList *[]MarchsoftComment, err error) {
-	if p.Size == 0 {
-		p.Size = 4
-	}
 	commentList = new([]MarchsoftComment)
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=?", []byte{0})
 	err = table.Where("pid=?", p.ID).Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).Order("create_time desc").Find(commentList).Error
+	return
+}
+
+func (co *MarchsoftComment) GetMarchSoftCommentCount() (count int64, err error) {
+	err = global.Eloquent.Table(co.TableName()).Where("marchsoft_id = ?", co.MarchsoftId).Count(&count).Error
 	return
 }

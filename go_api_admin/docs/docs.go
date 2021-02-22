@@ -885,6 +885,42 @@ var doc = `{
             }
         },
         "/api/collect/article": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：JiaKun Li 2021/02/16",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章 article Controller"
+                ],
+                "summary": "我的收藏列表页",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CollectArticleDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -1291,12 +1327,58 @@ var doc = `{
                 "summary": "查询部门",
                 "parameters": [
                     {
-                        "description": "查询参数",
-                        "name": "object",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/dto.SelectDeptDto"
-                        }
+                        "type": "integer",
+                        "description": "当前页",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "状态：1启用（默认）、0禁用",
+                        "name": "enabled",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "过期时间",
+                        "name": "endTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "模糊",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "排序规则",
+                        "name": "orders",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "上级部门（顶级部门为0，默认为0）",
+                        "name": "pid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数据",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "id排序",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "创建时间",
+                        "name": "startTime",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1308,7 +1390,7 @@ var doc = `{
                     }
                 }
             },
-            "post": {
+            "put": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -1332,6 +1414,81 @@ var doc = `{
                         "in": "body",
                         "schema": {
                             "$ref": "#/definitions/dto.UpdateDeptDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseDept"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lbl 2021/02/2 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统：部门管理 Dept Controller"
+                ],
+                "summary": "添加部门",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.InsertDeptDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseDept"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lbl 2021/02/2 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统：部门管理 Dept Controller"
+                ],
+                "summary": "删除部门",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
                         }
                     }
                 ],
@@ -2041,6 +2198,151 @@ var doc = `{
                 }
             }
         },
+        "/api/march": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：lbl 2021/02/20",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "三月圈 marchsoft Controller"
+                ],
+                "summary": "用户三月圈文章列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._march"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：lbl 2021/02/20",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "三月圈 marchsoft Controller"
+                ],
+                "summary": "发布三月圈",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.InsertMarchSoft"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/march/msg": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：lbl 2021/02/20",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "三月圈 marchsoft Controller"
+                ],
+                "summary": "三月圈条数与成员数与是否为三月",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseApplyMarchUser"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/march/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lbl 2021/02/17 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用：文章管理 Article Controller"
+                ],
+                "summary": "删除三月圈",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "修改参数",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseSuccess"
+                        }
+                    }
+                }
+            }
+        },
         "/api/menus": {
             "get": {
                 "security": [
@@ -2156,7 +2458,7 @@ var doc = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Author：Lbl 2021/02/2 获得身份令牌",
+                "description": "Author：Cgl 2021/01/30 获得身份令牌",
                 "consumes": [
                     "application/json"
                 ],
@@ -2164,19 +2466,16 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "系统：部门管理 Dept Controller"
+                    "系统：菜单管理 Menu Controller"
                 ],
-                "summary": "删除部门",
+                "summary": "删除菜单",
                 "parameters": [
                     {
                         "description": "查询参数",
                         "name": "object",
                         "in": "body",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
+                            "$ref": "#/definitions/dto.DeleteMenuDto"
                         }
                     }
                 ],
@@ -2184,7 +2483,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._ResponseDept"
+                            "$ref": "#/definitions/models._ResponseDeleteMenu"
                         }
                     }
                 }
@@ -3418,9 +3717,6 @@ var doc = `{
                 "update_time": {
                     "type": "integer"
                 },
-                "user_id": {
-                    "type": "integer"
-                },
                 "word_count": {
                     "type": "integer"
                 }
@@ -3859,6 +4155,59 @@ var doc = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "bo.March": {
+            "type": "object",
+            "properties": {
+                "avatarPath": {
+                    "type": "string"
+                },
+                "commentTotal": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "create_by": {
+                    "type": "integer"
+                },
+                "create_time": {
+                    "type": "integer"
+                },
+                "faceTotal": {
+                    "type": "integer"
+                },
+                "favourTotal": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "imageList": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "likeTotal": {
+                    "type": "integer"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "update_by": {
+                    "type": "integer"
+                },
+                "update_time": {
+                    "type": "integer"
                 }
             }
         },
@@ -4559,18 +4908,7 @@ var doc = `{
             }
         },
         "dto.DataMenuDto": {
-            "type": "object",
-            "required": [
-                "ids"
-            ],
-            "properties": {
-                "ids": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
+            "type": "object"
         },
         "dto.DeleteMenuDto": {
             "type": "object"
@@ -4825,9 +5163,35 @@ var doc = `{
                 }
             }
         },
+        "dto.InsertMarchSoft": {
+            "type": "object",
+            "required": [
+                "content"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "imageList": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "dto.InsertMenuDto": {
             "type": "object",
             "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
                 "cache": {
                     "type": "boolean"
                 },
@@ -4835,7 +5199,7 @@ var doc = `{
                     "type": "string"
                 },
                 "hidden": {
-                    "type": "boolean"
+                    "type": "object"
                 },
                 "icon": {
                     "type": "string"
@@ -4844,7 +5208,7 @@ var doc = `{
                     "type": "integer"
                 },
                 "iframe": {
-                    "type": "boolean"
+                    "type": "object"
                 },
                 "menuSort": {
                     "type": "integer"
@@ -4871,7 +5235,7 @@ var doc = `{
                     "type": "string"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "object"
                 }
             }
         },
@@ -4991,6 +5355,20 @@ var doc = `{
                 }
             }
         },
+        "dto.SelectMarchListById": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.SelectMenuDto": {
             "type": "object",
             "properties": {
@@ -5099,8 +5477,7 @@ var doc = `{
                 "enabled",
                 "id",
                 "name",
-                "pid",
-                "subCount"
+                "pid"
             ],
             "properties": {
                 "creatTime": {
@@ -5979,6 +6356,24 @@ var doc = `{
                 "code": {
                     "description": "业务响应状态码",
                     "type": "integer"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._march": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.March"
                 },
                 "message": {
                     "description": "提示信息",

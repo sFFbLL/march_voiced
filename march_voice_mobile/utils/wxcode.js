@@ -15,12 +15,10 @@ export function parseCode() {
 	let startIndex = parmas.indexOf("=") + 1;
 	let endIndex = parmas.indexOf("&");
 	let code = parmas.substring(startIndex, endIndex);
-	console.log(code)
 	return code;
 }
 
 export function returnWxcode() {
-
 	//拿code
 	let wxCode = parseCode();
 	if (!wxCode) {

@@ -131,7 +131,19 @@ type _ArticleReprint struct {
 
 // _ResponseApplyArticleList （后台）文章审核列表页响应
 type _ResponseApplyArticleList struct {
-	Code    app.ResCode           `json:"code"`    // 业务响应状态码
-	Message string                `json:"message"` // 提示信息
+	Code    app.ResCode         `json:"code"`    // 业务响应状态码
+	Message string              `json:"message"` // 提示信息
 	Data    bo.ApplyArticleList `json:"data"`    // 数据
+}
+
+type _marchSoftInfo struct {
+	Code    app.ResCode      `json:"code"`    // 业务响应状态码
+	Message string           `json:"message"` // 提示信息
+	Data    bo.MarchSoftInfo `json:"data"`    // 数据
+}
+
+type _march struct {
+	Code    app.ResCode `json:"code"`    // 业务响应状态码
+	Message string      `json:"message"` // 提示信息
+	Data    bo.March    `json:"data"`    // 数据
 }
