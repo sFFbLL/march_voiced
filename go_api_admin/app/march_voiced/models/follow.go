@@ -41,7 +41,7 @@ func (fo *Follow) GetFollowList(p *dto.GetFollowList) (followList *[]bo.FollowIn
 	followList = new([]bo.FollowInfo)
 	err = global.Eloquent.Table("sys_user").Joins("left join follow on sys_user.id = follow.follow_id").
 		Where("follow.create_by=? AND follow.is_deleted=?", p.Id, []byte{0}).
-		Offset(int((p.Current - 1) * p.Current)).Limit(int(p.Size)).Scan(followList).Error
+		Offset(int((p.Current - 1) * p.Current)).Limit(int(p.Size) + 1).Scan(followList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func (fo *Follow) GetFansList(p *dto.GetFollowList) (followList *[]bo.FollowInfo
 	followList = new([]bo.FollowInfo)
 	err = global.Eloquent.Table("sys_user").Joins("left join follow on sys_user.id = follow.create_by").
 		Where("follow.follow_id=? AND follow.is_deleted=?", p.Id, []byte{0}).
-		Offset(int((p.Current - 1) * p.Current)).Limit(int(p.Size)).Scan(followList).Error
+		Offset(int((p.Current - 1) * p.Current)).Limit(int(p.Size) + 1).Scan(followList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -99,6 +99,7 @@ func (fo *Follow) UpdateStatus(id int, me int) (err error) {
 		if err != nil {
 			return err
 		}
+		go AddFollowMessage(uint(me), uint(id))
 		return nil
 	} else {
 		// 已关注的情况(要改为未关注):
