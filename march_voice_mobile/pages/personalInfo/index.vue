@@ -83,10 +83,10 @@
 				array: ['男', '女'],
 				id: 0,
 				info: {
-					nickname: "xianer",
-					sex: "0",
-					signature: "这个人很懒，什么也没有写",
-					avatarPath: "../../static/img/my1.png"
+					// nickname: "xianer",
+					// sex: "0",
+					// signature: "这个人很懒，什么也没有写",
+					// avatarPath: "../../static/img/my1.png"
 
 				},
 
@@ -100,9 +100,9 @@
 			// 调用查询用户信息的接口
 			let id = this.id;
 			let _this = this;
-			// information(id).then(res=>{
-			// 	_this.info=res.data[0];
-			// })
+			information(id).then(res=>{
+				_this.info=res.data[0];
+			})
 		},
 
 		methods: {

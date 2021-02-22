@@ -5,6 +5,7 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			 new Vconsole();
 		},
 		onShow: function() {
 			console.log('App Show')
