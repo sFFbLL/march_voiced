@@ -14,9 +14,9 @@ Axios.defaults.timeout = 8000;
 Axios.interceptors.request.use(
     // 在发送请求前要做的事儿
     (config) => {
-		uni.showLoading({
-		    title: '加载中'
-		});
+		// uni.showLoading({
+		//     title: '加载中'
+		// });
       config.headers['Authorization'] = getToken() //让每个请求携带自定义token
         config.headers['Content-type'] = 'application/json';
         return config;
@@ -28,7 +28,7 @@ Axios.interceptors.request.use(
 // 响应拦截器
 Axios.interceptors.response.use(
     (response) => {
-       uni.hideLoading();
+       // uni.hideLoading();
 		uni.showToast({
 		    title: '来到了response拦截success中',
 		    duration: 2000,

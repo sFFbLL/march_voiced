@@ -104,14 +104,14 @@
 							image:imageList[0]
 							}
 						// 调用发布接口,
-					// marchCircleList(params).then(res=>{
-					// 		 uni.showToast({
-					// 			title: '发布成功',
-					// 			icon:"none",
-					// 			position:"top",
-					// 			 duration: 2000
-					// 			});
-					// })
+					marchCircleList(params).then(res=>{
+							 uni.showToast({
+								title: '发布成功',
+								icon:"none",
+								position:"top",
+								 duration: 2000
+								});
+					})
 					
 					}
 				
@@ -137,7 +137,7 @@
 		text-align: center;
 		line-height: 2.3;
 		position: fixed;
-		bottom: 10rpx;
+		bottom:30rpx;
 		left: 120rpx;
 	}
 	.publishimg{

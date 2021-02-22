@@ -103,14 +103,16 @@
 			if (!getToken()) {
 				//没有token，没登陆过，获取wxcode
 				let code = returnWxcode();
-				console.log(code)
-				login(code).then(res => {
+				let params = {
+					code: code,
+					status: 1
+				}
+				login(params).then(res => {
 					if (res.data.status == 1) {
 						// 跳转注册页面
 						uni.navigateTo({
 							url: "../login/login"
 						})
-
 					} else {
 						// 登陆成功
 						setToken(res.data.token);

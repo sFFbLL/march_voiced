@@ -11,7 +11,7 @@
 			</view>
 			<!-- 关注消息 -->
 			<view v-if="tabIndex==1" v-for="item in attentionList.records">
-				<attentionAndFansCell :nickname="item.nickname" :avatarPath="item.avatarPath" :isFollow="item.isFollow">
+				<attentionAndFansCell class="attention" :nickname="item.nickname" :avatarPath="item.avatarPath" :isFollow="item.isFollow">
 					<template v-slot:afterNicknameText>
 						<text class="slot">关注了你
 						</text>
@@ -236,21 +236,21 @@
 		// 下拉刷新获取最新数据
 		onPullDownRefresh() {
 			// 查询是否有未读消息
-			// unreadMessage(1).then(res=>{
-			// 	if(res.data.count>0){
-			// 		this.$store.commit('changeInteract',0);
-			// 	}
-			// })
-			// unreadMessage(2).then(res=>{
-			// 	if(res.data.count>0){
-			// 		this.$store.commit('changeAttention',0);
-			// 	}
-			// })
-			// unreadMessage(3).then(res=>{
-			// 	if(res.data.count>0){
-			// 		this.$store.commit('changeOther',0);
-			// 	}
-			// })
+			unreadMessage(1).then(res=>{
+				if(res.data.count>0){
+					this.$store.commit('changeInteract',0);
+				}
+			})
+			unreadMessage(2).then(res=>{
+				if(res.data.count>0){
+					this.$store.commit('changeAttention',0);
+				}
+			})
+			unreadMessage(3).then(res=>{
+				if(res.data.count>0){
+					this.$store.commit('changeOther',0);
+				}
+			})
 			if (this.tabIndex == 0) {
 				// 获取最新消息数据
 				// this.interact();
@@ -282,25 +282,25 @@
 		created() {
 			// 互动消息已读
 			this.$store.commit('changeInteract', 1);
-			// readMessage(1).then(res => {
-			// 	
-			// })
+			readMessage(1).then(res => {
+				
+			})
 
 			// 查询所有互动消息
 			this.interact()
 			// 查询关注和其他是否有未读消息
-			// unreadMessage(2).then(res=>{
-			// 	if(res.data.count>0){
+			unreadMessage(2).then(res=>{
+				if(res.data.count>0){
 			// 增加红点
-			// 		this.$store.commit('changeAttention',0);
-			// 	}
-			// })
-			// unreadMessage(3).then(res=>{
-			// 	if(res.data.count>0){
+					this.$store.commit('changeAttention',0);
+				}
+			})
+			unreadMessage(3).then(res=>{
+				if(res.data.count>0){
 			// 增加红点
-			// 		this.$store.commit('changeOther',0);
-			// 	}
-			// })
+					this.$store.commit('changeOther',0);
+				}
+			})
 		},
 
 		methods: {
@@ -326,16 +326,16 @@
 				let _this = this;
 				let total = "";
 				// 查询所有数据
-				// let params = {
-				// current: this.interactCurrent,
-				// 	size:this.size
-				// }
-				// interactList(params).then(res => {
-				// _this.interactList = [..._this.interactList,...res.data];
-				// if(res.data.length<=_this.size){
-				// 	_this.loadStatus='nomore';
-				// }
-				// })
+				let params = {
+				current: this.interactCurrent,
+					size:this.size
+				}
+				interactList(params).then(res => {
+				_this.interactList = [..._this.interactList,...res.data];
+				if(res.data.length<=_this.size){
+					_this.loadStatus='nomore';
+				}
+				})
 				// 如果长度大于总条数
 				if (this.interactList.length > 16) {
 					_this.loadStatus = "nomore";
@@ -348,23 +348,23 @@
 					}, 2000);
 				}
 				// 数据已读
-				// readMessage(1).then(res => {
-				// 	
-				// })
+				readMessage(1).then(res => {
+					
+				})
 			},
 			// 请求关注消息数据，并发送已读请求
 			attention() {
 				let _this = this;
-				// let params = {
-				// current: this.attentionCurrent,
-				// 	size:this.size
-				// }
-				// attentionList(params).then(res => {
-				// _this.attentionList = [..._this.attentionList,...res.data];
-				// if(res.data.length<=_this.size){
-				// 	_this.loadStatus='nomore';
-				// }
-				// })
+				let params = {
+				current: this.attentionCurrent,
+					size:this.size
+				}
+				attentionList(params).then(res => {
+				_this.attentionList = [..._this.attentionList,...res.data];
+				if(res.data.length<=_this.size){
+					_this.loadStatus='nomore';
+				}
+				})
 				if (this.attentionList.length > 16) {
 					_this.loadStatus = "nomore";
 					_this.attentionLoadStatus = "nomore";
@@ -376,23 +376,23 @@
 					}, 2000);
 				}
 				// 数据已读
-				// readMessage(1).then(res => {
-				// 	
-				// })
+				readMessage(1).then(res => {
+					
+				})
 			},
 			// 请求系统消息数据，并发送已读请求
 			other() {
 				let _this = this;
-				// let params = {
-				// current: this.otherCurrent,
-				// 	size:this.size
-				// }
-				// otherList(params).then(res => {
-				// _this.otherList = [..._this.otherList,...res.data];
-				// if(res.data.length<=_this.size){
-				// 	_this.loadStatus='nomore';
-				// }
-				// })
+				let params = {
+				current: this.otherCurrent,
+					size:this.size
+				}
+				otherList(params).then(res => {
+				_this.otherList = [..._this.otherList,...res.data];
+				if(res.data.length<=_this.size){
+					_this.loadStatus='nomore';
+				}
+				})
 				if (this.otherList.length > 16) {
 					_this.loadStatus = "nomore";
 					_this.otherLoadStatus = "nomore";
@@ -404,9 +404,9 @@
 					}, 2000);
 				}
 				// 数据已读
-				// readMessage(1).then(res => {
-				// 	
-				// })
+				readMessage(1).then(res => {
+					
+				})
 			}
 		},
 
