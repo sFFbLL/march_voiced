@@ -6,7 +6,9 @@ import uView from "uview-ui";
 //在main.js内
 import Vconsole from "vconsole";
 //开发环境使用，生产环境自动取消
-
+if (process.env.NODE_ENV == "development") {
+    new Vconsole();
+}
 Vue.use(uView);
 //把vuex定义成全局组件
 Vue.prototype.$store = store

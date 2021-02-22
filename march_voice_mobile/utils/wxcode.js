@@ -12,7 +12,7 @@ export function getWxCode() {
 		window.location.href =
 			"https://open.weixin.qq.com/connect/oauth2/authorize?" +
 			"appid="+Config.appId+"&redirect_uri=" +
-			"http://linbolun.cn/mobile/" +
+			"http://linbolun.cn/h5/" +
 			"&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
 			
 	
