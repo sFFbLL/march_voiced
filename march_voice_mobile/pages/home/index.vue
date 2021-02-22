@@ -107,14 +107,17 @@
 					code: code,
 					status: 1
 				}
+				console.log(code)
 				login(params).then(res => {
 					if (res.data.status == 1) {
 						// 跳转注册页面
+						console.log("未登录")
 						uni.navigateTo({
 							url: "../login/login"
 						})
 					} else {
 						// 登陆成功
+						console.log(res.data.token)
 						setToken(res.data.token);
 						setOpenId(res.data.openid)
 					}
