@@ -41,13 +41,13 @@ settings:
     # 用户名
     user: root
     # 密码
-    password: 123456
+    password: 991012
     # 服务器地址
-    host: 127.0.0.1
+    host: 121.196.160.185
     # 端口
     port: 3306
     # 数据库名
-    dbname: bluebell
+    dbname: march_voiced
     # 数据库最大连接数
     maxopen: 20
     # 数据库最大空闲

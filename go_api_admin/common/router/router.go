@@ -2,6 +2,7 @@ package router
 
 import (
 	"net/http"
+	"project/app/march_voiced/apis"
 	"project/utils/config"
 
 	admin "project/app/admin/router"
@@ -39,6 +40,7 @@ func Setup(cfg *config.Application) *gin.Engine {
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
+	r.POST("/", apis.WxGetTicket)
 
 	pprof.Register(r) // 注册pprof相关路由
 	return r
