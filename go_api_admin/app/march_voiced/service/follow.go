@@ -14,7 +14,7 @@ func (fo *Follow) GetFollowList(p *dto.GetFollowList) (*bo.GetFollowList, error)
 	follow := new(models.Follow)
 	var res bo.GetFollowList
 	var signalFollowList []bo.FollowInfo
-	if p.Size == 0 || p.Current == 0 {
+	if p.Size == 0 && p.Current == 0 {
 		p.Size = 5
 		p.Current = 1
 	}
