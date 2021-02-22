@@ -48,3 +48,9 @@ type ArticlePass struct {
 	Id     uint   `json:"id" binding:"required"`
 	Status *uint8 `json:"status" binding:"required,lte=1"`
 }
+
+type ArticleSearchPaginator struct {
+	Current    uint   `form:"current"`
+	Size       uint   `form:"size" binding:"lte=10"`
+	SearchWord string `form:"searchWord" binding:"required"`
+}

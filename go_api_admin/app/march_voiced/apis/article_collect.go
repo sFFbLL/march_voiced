@@ -19,7 +19,7 @@ import (
 // @Produce application/json
 // @Param object query dto.Paginator false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseSuccess
+// @Success 200 {object} models._ResponseGetCollectArticle
 // @Router /api/collect/article [get]
 func GetCollectArticle(c *gin.Context) {
 	p := new(dto.Paginator)
