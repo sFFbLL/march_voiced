@@ -28,7 +28,6 @@ type MarchsoftCreate struct {
 }
 
 type MarchsoftReply struct {
-	ReplyId     uint   `json:"reply_id"`
-	ReplyName   string `json:"reply_name"`
-	ReplyAvatar string `json:"reply_avatar"`
+	ReplyId   uint   `json:"reply_id"`
+	ReplyName string `json:"reply_name"`
 }
