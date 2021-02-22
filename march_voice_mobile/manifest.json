@@ -60,7 +60,7 @@
         "domain" : "linbolun.cn",
         "router" : {
             "mode" : "hash",
-            "base" : "mobile"
+            "base" : "h5"
         },
         "devServer" : {
             "https" : false

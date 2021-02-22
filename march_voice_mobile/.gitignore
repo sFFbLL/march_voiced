@@ -4,6 +4,7 @@ yarn-debug.log*
 yarn-error.log*
 **/*.log
 node_modules/
+unpackage\dist\build\.automator
 
 
 
