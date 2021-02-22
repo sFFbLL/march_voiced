@@ -7,7 +7,7 @@ type ApplyArticlePaginator struct {
 	StartTime uint   `form:"startTime"` //创建时间
 	Status    uint8  `form:"status"`    //1通过 2审核中
 	Nickname  string `form:"nickname"`
-	Content   string `form:"content"`
+	Title     string `form:"title"`
 }
 
 type InsertArticleDto struct {
