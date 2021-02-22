@@ -35,7 +35,7 @@ type UpdateArticleDto struct {
 
 type Paging struct {
 	Current int `form:"current"`
-	Size    int `form:"size"`
+	Size    int `form:"size" binding:"lte=10"`
 }
 
 type SelectArticleByUser struct {

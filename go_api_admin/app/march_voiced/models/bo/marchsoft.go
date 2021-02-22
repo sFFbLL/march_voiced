@@ -21,3 +21,49 @@ type GetMessageData struct {
 	AvatarPath string `json:"avatarPath" gorm:"column:avatar_path"` //头像
 	Nickname   string `json:"nickname" gorm:"column:nick_name"`     //昵称
 }
+
+type MarchSoftInfo struct {
+	Title        string `json:"title"`
+	Brief        string `json:"brief"`
+	PersonTotal  uint   `json:"personTotal"`
+	ArticleTotal uint   `json:"articleTotal"`
+	IsMarch      uint8  `json:"is_march"`
+}
+
+type March struct {
+	MarchMsg
+	UserMsg
+	MarchTotal
+}
+
+type MarchByUserId struct {
+	MarchMsg
+	MarchTotal
+}
+
+type MarchMsg struct {
+	ID         int    `json:"id"`
+	Content    string `json:"content"`
+	Image      string `json:"image"`
+	UpdateBy   uint   `json:"update_by"`
+	CreateBy   uint   `json:"create_by"`
+	CreateTime int64  `json:"create_time"`
+	UpdateTime int64  `json:"update_time"`
+}
+
+type MarchTotal struct {
+	FaceTotal    int      `json:"faceTotal"`
+	LikeTotal    int      `json:"likeTotal"`
+	FavourTotal  int      `json:"favourTotal"`
+	Type         int      `json:"type"`
+	ImageList    []string `json:"imageList"`
+	CommentTotal int64    `json:"commentTotal"`
+}
+
+type GoMarchMsg struct {
+	MarchTotal
+	MarchId     uint
+	UserId      uint
+	MarchUserId uint
+	CreateTime  int64
+}

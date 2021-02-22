@@ -94,22 +94,23 @@ func (a *Article) DeleteArticle() (err error) {
 	return
 }
 
-func (a *Article) ArticleDetail() (userMsg bo.Article, err error) {
+func (a *Article) ArticleDetail() (articleMsg *bo.Article, err error) {
+	articleMsg = new(bo.Article)
 	// 获取文章信息
 	err = global.Eloquent.Table(a.TableName()).
-		Select("article.id, article.title, article.content, article.image, article.word_count, article.tag, article.kind, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.id AS user_id, sys_user.nick_name, sys_user.avatar_path").
+		Select("article.id, article.title, article.content, article.image, article.word_count, article.tag, article.kind, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.nick_name, sys_user.avatar_path").
 		Joins("JOIN sys_user ON article.create_by = sys_user.id").
-		Where("article.is_deleted = 0 AND article.id = ? ", a.ID).
-		First(userMsg).Error
+		Where("article.id = ? AND article.is_deleted = 0", a.ID).
+		First(articleMsg).Error
 	return
 }
 
 func (a *Article) ArticleList(paging dto.Paging, IsRecommend int) (articleArray *[]bo.Article, err error) {
 	articleArray = new([]bo.Article)
 	err = global.Eloquent.Table(a.TableName()).
-		Select("article.id, article.title, article.content, article.image, article.word_count, article.tag, article.kind, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.id AS user_id, sys_user.nick_name, sys_user.avatar_path").
+		Select("article.id, article.title, article.content, article.image, article.word_count, article.tag, article.kind, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.nick_name, sys_user.avatar_path").
 		Joins("JOIN sys_user ON article.create_by = sys_user.id").
-		Where("article.is_deleted = 0 AND article.is_recommend = ? AND article.status = 1", IsRecommend).
+		Where("article.is_recommend = ? AND article.is_deleted = 0 AND article.status = 1", IsRecommend).
 		Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(articleArray).Error
 	return
 }
@@ -118,12 +119,12 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser) (art
 	articleArray = new([]Article)
 	if paging.Kind == 1 {
 		err = global.Eloquent.Table(a.TableName()).
-			Where("is_deleted = 0  AND create_id = ? AND status = ?", paging.ID, paging.Kind).
+			Where("create_id = ? AND status = ? AND is_deleted = 0", paging.ID, paging.Kind).
 			Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(articleArray).Error
 		return
 	}
 	err = global.Eloquent.Table(a.TableName()).
-		Where("is_deleted = 0  AND create_by = ?", paging.ID).
+		Where("create_by = ? AND is_deleted = 0", paging.ID).
 		Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(articleArray).Error
 	return
 }
