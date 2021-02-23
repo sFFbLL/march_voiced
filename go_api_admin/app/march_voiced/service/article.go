@@ -13,6 +13,7 @@ import (
 	"go.uber.org/zap"
 )
 
+
 type Article struct{}
 
 func (a *Article) ArticleSearch(p *dto.ArticleSearchPaginator, userId int) (data *bo.ArticleCollectByUserId, err error) {
