@@ -133,6 +133,11 @@ func MarchPass(c *gin.Context) {
 	s := new(service.Marchsoft)
 	err = s.MarchPass(p, user.UserId)
 	if err != nil {
+		if err.Error() == "该用户未申请三月圈" {
+			zap.L().Error("ArticlePass service params failed", zap.String("Username", user.Username), zap.Error(err))
+			app.ResponseError(c, app.CodeMarchIsNotApply)
+			return
+		}
 		zap.L().Error("MarchPass service params failed", zap.String("Username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeUpdateOperationFail)
 		return
