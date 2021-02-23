@@ -4,7 +4,7 @@
 		 :articleId="articleInfo.articleId"></articleTitle>
 
 		<articleContent :articleContent="articleInfo.content"
-		 :articleId="articleInfo.id"></articleContent>
+		 :id="articleInfo.id"></articleContent>
 
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal"

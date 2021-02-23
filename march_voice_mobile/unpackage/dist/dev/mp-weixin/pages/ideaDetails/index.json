@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "详情",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-gap": "/node-modules/uview-ui/components/u-gap/u-gap",
+    "emoji-control": "/marchVoiceComponents/marchCircle/emojiControl",
+    "attention-and-fans-cell": "/marchVoiceComponents/attentionAndFansCell",
+    "image-adaptation": "/marchVoiceComponents/marchCircle/imageAdaptation",
+    "article-content": "/marchVoiceComponents/showArticle/childComponents/artilceContent"
+  }
+}

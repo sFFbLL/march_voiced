@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "三月之声",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "uni-icons": "/components/uni-icons/uni-icons",
+    "uni-load-more": "/components/uni-load-more/uni-load-more",
+    "tabs": "/marchVoiceComponents/tabCard",
+    "recommend": "/marchVoiceComponents/showArticle/recommend",
+    "follow": "/marchVoiceComponents/showArticle/follow"
+  }
+}
