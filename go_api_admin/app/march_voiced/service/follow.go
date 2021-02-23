@@ -12,6 +12,7 @@ type Follow struct {
 // GetFollowList 查询某人的关注列表
 func (fo *Follow) GetFollowList(p *dto.GetFollowList) (*bo.GetFollowList, error) {
 	follow := new(models.Follow)
+	a := new(models.Article)
 	var res bo.GetFollowList
 	var signalFollowList []bo.FollowInfo
 	if p.Size == 0 && p.Current == 0 {
@@ -31,8 +32,18 @@ func (fo *Follow) GetFollowList(p *dto.GetFollowList) (*bo.GetFollowList, error)
 		if err != nil {
 			return nil, err
 		}
+		isFollow, err := follow.IsFollow(int(p.Id), int(followTwo.User.Id))
+		if err != nil {
+			return nil, err
+		}
+		articleTotal, err := a.ArticleCountByUserId(int(followTwo.Id))
+		if err != nil {
+			return nil, err
+		}
 		followTwo.FansTotal = fansTotal
 		followTwo.FollowTotal = followTotal
+		followTwo.ArticleTotal = articleTotal
+		followTwo.IsFollow = isFollow
 		signalFollowList = append(signalFollowList, followTwo)
 	}
 	res.Follow = signalFollowList
@@ -42,6 +53,7 @@ func (fo *Follow) GetFollowList(p *dto.GetFollowList) (*bo.GetFollowList, error)
 // GetFansList 查询粉丝列表
 func (fo *Follow) GetFansList(p *dto.GetFollowList) (*bo.GetFollowList, error) {
 	follow := new(models.Follow)
+	a := new(models.Article)
 	var res bo.GetFollowList
 	var signalFollowList []bo.FollowInfo
 	if p.Size == 0 && p.Current == 0 {
@@ -61,8 +73,18 @@ func (fo *Follow) GetFansList(p *dto.GetFollowList) (*bo.GetFollowList, error) {
 		if err != nil {
 			return nil, err
 		}
+		isFollow, err := follow.IsFollow(int(p.Id), int(followTwo.User.Id))
+		if err != nil {
+			return nil, err
+		}
+		article, err := a.ArticleCountByUserId(int(followTwo.Id))
+		if err != nil {
+			return nil, err
+		}
+		followTwo.ArticleTotal = article
 		followTwo.FansTotal = fansTotal
 		followTwo.FollowTotal = followTotal
+		followTwo.IsFollow = isFollow
 		signalFollowList = append(signalFollowList, followTwo)
 	}
 	res.Follow = signalFollowList

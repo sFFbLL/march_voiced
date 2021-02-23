@@ -16,18 +16,18 @@ type ChildrenComment struct {
 type ArticleComment struct {
 	Id         int    `json:"id"`
 	Content    string `json:"content"`
-	CreateTime int64  `json:"create_time"`
+	CreateTime int64  `json:"createTime"`
 	ArticleCreate
 	ArticleReply
 }
 
 type ArticleCreate struct {
-	CreateBy     uint   `json:"create_by"`
-	CreateByName string `json:"create_by_name"`
+	CreateBy     uint   `json:"createBy"`
+	CreateByName string `json:"createByName"`
 	IdAvatar     string `json:"id_avatar"`
 }
 
 type ArticleReply struct {
-	ReplyId   uint   `json:"reply_id"`
-	ReplyName string `json:"reply_name"`
+	ReplyId   uint   `json:"replyId"`
+	ReplyName string `json:"replyName"`
 }
