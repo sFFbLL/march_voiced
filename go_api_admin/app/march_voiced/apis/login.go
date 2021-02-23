@@ -1,29 +1,42 @@
 package apis
 
 import (
+	"bytes"
+	"errors"
+	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
+	"io/ioutil"
 	"net/http"
 	"project/app/march_voiced/models"
 	"project/app/march_voiced/models/dto"
 	"project/app/march_voiced/service"
 	"project/common/database/wx"
 	"project/common/global"
+	"project/utils"
 	"project/utils/app"
 	"strconv"
+	"time"
 )
 
 //登录验证获取token
 func LoginHandler(c *gin.Context) {
 	wx.Init()
-	code := c.Query("code")
+	type Name struct {
+		Code string `json:"code"`
+	}
+	p := new(Name)
+	c.ShouldBindJSON(p)
+	fmt.Println(p.Code,"============")
+	//code := c.Query("code")
 	//status := c.Query("status")
 	//code ="0414i60w3y7JRV2Qut0w3ZHOUa44i60H"
 	//fmt.Println(status,"dddd")
 	oauth := global.Wx.GetOauth()
-	token, err := oauth.GetUserAccessToken(code)
+	token, err := oauth.GetUserAccessToken(p.Code)
 	if err != nil {
 		zap.L().Error("GetAccessToken failed", zap.Error(err))
 		app.ResponseError(c, app.CodeWxOuttime)
@@ -132,6 +145,79 @@ func ModInformation(c *gin.Context)  {
 	app.ResponseSuccess(c,app.CodeSuccess)
 }
 
+//生成带参数的二维码
+func GetTicket(c *gin.Context) {
+	var accessToken string
+	//wxAccessToken
+	token, err := global.Rdb.Get("wxAccessToken").Result()
+	if err != nil {
+		access, err := utils.GetAccess()
+		if err != nil {
+			app.ResponseError(c, app.CodeWxTickerFail)
+			return
+		}
+		global.Rdb.Set("wxAccessToken",access,300*time.Second)
+		accessToken = access
+	}else{
+		accessToken = token
+	}
+	fmt.Println(accessToken,"-----------------")
+	wxTicket, err := WxTicket(accessToken)
+	if err != nil {
+		app.ResponseError(c, app.CodeWxTickerFail )
+	}
+	app.ResponseSuccess(c,wxTicket)
+}
+
+func WxTicket(token string)(dto.WxTokenMessages,error){
+	//token := "42_bxJkHtccnA6EnfqnQjzC8z3SfoxUsZd9gTEw6oKW_wCDPa3bqJ-6O_D-byqt1HXhLuiJIGZhPp1vVJO-tnCDmjR35Jv-ht8vFdPZo6eQtXgt_UurAhni7-EPhJkFvhwPpd0Juuhs2RAQvl0NPZLcAEAVFR"
+	//sceneStr:="test"
+	post := `{
+	"expire_seconds":300,
+	"action_name": "QR_LIMIT_STR_SCENE",
+		"action_info": {
+		"scene": {
+			"scene_str": "%s"
+			}
+		}
+	}`
+	str := string(utils.Krand(16, utils.KC_RAND_KIND_ALL))
+	_, err1 := global.Rdb.Get(str).Result()
+	if err1 != nil {
+		global.Rdb.Set(str, "", 300*time.Second)
+		aa :=fmt.Sprintf(post,str)
+		var ticket dto.WxTokenMessages
+		var jsonstr = []byte(aa) //转换二进制
+		buffer:= bytes.NewBuffer(jsonstr)
+		request, err := http.NewRequest("POST", "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token, buffer)
+		if err != nil {
+			fmt.Printf("http.NewRequest%v", err)
+			return ticket,err
+		}
+		client := http.Client{} //创建客户端
+		resp, err := client.Do(request.WithContext(context.TODO())) //发送请求
+		if err != nil {
+			fmt.Printf("client.Do%v", err)
+			return ticket,err
+		}
+
+		respBytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Printf("ioutil.ReadAll%v", err)
+			return ticket,err
+		}
+		err = json.Unmarshal(respBytes, &ticket)
+		if err != nil {
+			fmt.Println(err)
+			return ticket,err
+		}
+		ticket.Strdata = str
+		fmt.Println(ticket)
+		return ticket ,nil
+	}else{
+		return dto.WxTokenMessages{},errors.New("请重新请求")
+	}
+}
 //测试接口
 func Aaa(c *gin.Context) {
 	user := new(models.Model)

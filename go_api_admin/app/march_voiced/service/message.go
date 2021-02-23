@@ -5,30 +5,66 @@ import (
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
 	"project/utils"
+	"sync"
 )
 
 type Message struct {
 }
 
 // GetMessageMe 我的消息
-func (e *Message) GetMessageMe(p *dto.Paginator, userId int) (getMessage *bo.GetMessage, err error) {
+func (e *Message) GetMessageMe(p *dto.Paginator, userId int) (data *bo.GetMessage, err error) {
 	message := new(models.Message)
-	getMessage = new(bo.GetMessage)
-	getMessageData := new([]bo.GetMessageData)
-	getMessage.Records = getMessageData
-	err = message.GetMessageMe(getMessage, p, userId)
-	getMessage.Pages = utils.PagesCount(int(getMessage.Total), int(p.Size))
+	data = new(bo.GetMessage)
+	records := new([]bo.GetMessageData)
+	data.Records = records
+	err = message.GetMessageMe(data, p, userId)
+	data.Pages = utils.PagesCount(int(data.Total), int(p.Size))
 	return
 }
 
 // GetMessage 获取关注的人动态业务方法
-func (e *Message) GetMessage(p *dto.Paginator, userId int) (getMessage *bo.GetMessage, err error) {
+func (e *Message) GetMessage(p *dto.Paginator, userId int) (data *bo.GetMessage, err error) {
 	message := new(models.Message)
-	getMessage = new(bo.GetMessage)
-	getMessageData := new([]bo.GetMessageData)
-	getMessage.Records = getMessageData
-	err = message.GetMessage(getMessage, p, userId)
-	getMessage.Pages = utils.PagesCount(int(getMessage.Total), int(p.Size))
+	data = new(bo.GetMessage)
+	records1 := new([]bo.GetMessageData)
+	records2 := new([]bo.GetMessageData)
+
+	var goArticle bo.GoArticleMsg
+	var keys []uint
+	data.Records = records1
+	err = message.GetMessage(data, p, userId)
+	data.Pages = utils.PagesCount(int(data.Total), int(p.Size))
+
+	articleMapList := make(map[uint]*bo.GetMessageData, len(*data.Records))
+	for _, i := range *data.Records {
+		var articleBo bo.GetMessageData
+		articleBo = i
+		articleMapList[i.ArticleId] = &articleBo
+		keys = append(keys, i.ArticleId)
+	}
+	// 数据拼接
+	var wg sync.WaitGroup
+	articleCh := make(chan *bo.GoArticleMsg, len(*data.Records))
+	for _, v := range *data.Records {
+		wg.Add(1)
+		goArticle.ArticleId = v.ArticleId
+		goArticle.ArticleUserId = v.UserId
+		goArticle.UserId = v.UserId
+		go goArticleMsg(&articleCh, &wg, goArticle)
+	}
+	wg.Wait()
+	close(articleCh)
+
+	//articleMap 排序 遍历
+	for i := range articleCh {
+		goArticle = *i
+		articleMapList[goArticle.ArticleId].ArticleTotal = goArticle.ArticleTotal
+	}
+
+	for _, i := range *data.Records {
+		*records2 = append(*records2, *articleMapList[i.ArticleId])
+	}
+	data.Records = records2
 	return
 }
 

@@ -1,5 +1,12 @@
 package dto
 
+type WxTokenMessages struct {
+	Ticket string	`json:"Ticket"`
+	Url string		`json:"url"`
+	Strdata string   `json:"strdata"`
+	Errmsg string `json:"errmsg"`
+	Errcode int	`json:"errcode"`
+}
 //InsertUserDto 新增用户
 type InsertUserDto struct {
 	//DeptId   int    `json:"deptid" binding:"required"`   //部门

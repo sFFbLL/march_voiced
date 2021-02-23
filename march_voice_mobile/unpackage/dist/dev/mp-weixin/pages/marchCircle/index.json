@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "三月圈",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast",
+    "u-gap": "/node-modules/uview-ui/components/u-gap/u-gap",
+    "uni-icons": "/components/uni-icons/uni-icons",
+    "emoji-control": "/marchVoiceComponents/marchCircle/emojiControl",
+    "attention-and-fans-cell": "/marchVoiceComponents/attentionAndFansCell",
+    "image-adaptation": "/marchVoiceComponents/marchCircle/imageAdaptation",
+    "article-content": "/marchVoiceComponents/showArticle/childComponents/artilceContent"
+  }
+}

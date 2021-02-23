@@ -1,0 +1,1 @@
+<view><view class="allImage"><block wx:for="{{imgList}}" wx:for-item="item" wx:for-index="index" wx:key="index"><view class="images"><image class="oneimg" style="{{'width:'+(imgWidth+'rpx')+';'+('height:'+(imgHeight+'rpx')+';')}}" src="{{item}}" mode="aspectFill" data-event-opts="{{[['tap',[['previewImg']]]]}}" bindtap="__e"></image></view></block></view></view>

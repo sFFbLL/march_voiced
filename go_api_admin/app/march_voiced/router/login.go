@@ -18,12 +18,12 @@ func init() {
 func usersRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/user")
 	{
-		r.GET("ll", apis.Aaa)
+		r.GET("getTicket", apis.GetTicket)
 
 		r.POST("login", apis.LoginHandler)
 		r.POST("creatNewUser",apis.CreatSysUser)
 		r.GET("isExist",apis.SearchUsername)
-
+		r.GET("check",apis.CheckIsSucess)
 	}
 }
 

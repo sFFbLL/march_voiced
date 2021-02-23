@@ -54,5 +54,16 @@
             "urlCheck" : false
         },
         "usingComponents" : true
+    },
+    "h5" : {
+        "title" : "march_voice_mobile",
+        "domain" : "linbolun.cn",
+        "router" : {
+            "mode" : "hash",
+            "base" : "h5"
+        },
+        "devServer" : {
+            "https" : false
+        }
     }
 }

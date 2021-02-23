@@ -148,7 +148,7 @@ func MarchPass(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseApplyMarchUser
+// @Success 200 {object} models._ResponseSoftInfo
 // @Router /api/march/msg [get]
 func GetMarchMsg(c *gin.Context) {
 	marchMsg := new(bo.MarchSoftInfo)
@@ -274,7 +274,7 @@ func DeleteMarchHandler(c *gin.Context) {
 // @Produce application/json
 // @Param object query dto.Paging false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._march
+// @Success 200 {object} models._ResponseMarch
 // @Router /api/march [get]
 func SelectMarchList(c *gin.Context) {
 	userMsg := new(api.UserMessage)
@@ -292,14 +292,14 @@ func SelectMarchList(c *gin.Context) {
 	}
 
 	// 参数绑定
-	paging.Current, err = utils.StringToInt(c.DefaultQuery("current", "1"))
+	paging.Current, err = utils.StringToUint(c.DefaultQuery("current", "1"))
 	if err != nil {
 		// 请求参数有误， 直接返回响应
 		zap.L().Error("SelectMarchList params Current failed", zap.String("Username", userMsg.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeParamTypeBindError)
 		return
 	}
-	paging.Size, err = utils.StringToInt(c.DefaultQuery("size", "10"))
+	paging.Size, err = utils.StringToUint(c.DefaultQuery("size", "10"))
 	if err != nil {
 		// 请求参数有误， 直接返回响应
 		zap.L().Error("SelectMarchList params Size failed", zap.String("Username", userMsg.Username), zap.Error(err))
@@ -328,7 +328,7 @@ func SelectMarchList(c *gin.Context) {
 // @Produce application/json
 // @Param object query dto.SelectMarchListById false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._march
+// @Success 200 {object} models._ResponseMarch
 // @Router /api/march [get]
 func SelectMarchListById(c *gin.Context) {
 	// 声明必要变量
@@ -374,4 +374,50 @@ func SelectMarchListById(c *gin.Context) {
 
 	// 成功返回状态
 	app.ResponseSuccess(c, MarchList)
+}
+
+// MarchDetail 三月圈文章详情页
+// @Summary 三月圈文章详情页
+// @Description Author：Lbl 2021/02/17 获得身份令牌
+// @Tags 三月圈 marchsoft Controller
+// @Accept application/json
+// @Produce application/json
+// @Param id path int false "修改参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseMarch
+// @Router /api/march/{id} [get]
+func MarchDetail(c *gin.Context) {
+	// 声明必要变量
+	m := new(service.Marchsoft)
+	userMsg := new(api.UserMessage)
+	march := new(bo.March)
+	var id int
+	var err error
+
+	// 获取上下文中的用户信息
+	userMsg, err = api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("MarchDetail Get userId failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
+		return
+	}
+
+	// 获取参数
+	id, err = utils.StringToInt(c.Param("id"))
+	if err != nil {
+		zap.L().Error("MarchDetail bind Query Failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeParamNotComplete)
+		return
+	}
+
+	// 进入service层对数据操作
+	march, err = m.MarchDetail(id, userMsg.UserId)
+	if err != nil {
+		zap.L().Error("MarchDetail service failed", zap.String("Username", userMsg.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	// 成功返回状态
+	app.ResponseSuccess(c, march)
 }

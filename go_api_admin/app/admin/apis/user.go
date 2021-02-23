@@ -3,6 +3,7 @@ package apis
 import (
 	"errors"
 	"fmt"
+
 	"project/app/admin/models"
 	"project/app/admin/models/bo"
 	"project/app/admin/models/dto"
@@ -14,11 +15,11 @@ import (
 	"project/utils/app"
 	"project/utils/config"
 
-	"github.com/mojocn/base64Captcha"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
+	"github.com/mojocn/base64Captcha"
 	"go.uber.org/zap"
 )
 
@@ -49,11 +50,11 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	// 校验验证码
-	//if !store.Verify(p.UuId, p.Code, true) {
-	//	app.ResponseError(c, app.CodeLoginFailCode)
-	//	return
-	//}
+	//校验验证码
+	if !store.Verify(p.UuId, p.Code, true) {
+		app.ResponseError(c, app.CodeLoginFailCode)
+		return
+	}
 
 	// 2.业务逻辑处理
 	value, err := utils.RsaPriDecode(p.Password)

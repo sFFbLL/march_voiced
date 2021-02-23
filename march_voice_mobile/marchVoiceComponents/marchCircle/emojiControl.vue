@@ -11,12 +11,20 @@
 				 mode=""></image>
 				<span>{{faceTotal}}</span>
 			</view>
-			<view class="emoji" :class="{'clickEmoji':clickLike}" @click="clickAni('like')">
-				<image class="aixin" src="../../static/img/aixin.png" mode=""></image>
+			<view class="emoji"
+			 :class="{'clickEmoji':clickLike}"
+			 @click="clickAni('like')">
+				<image class="aixin"
+				 src="../../static/img/aixin.png"
+				 mode=""></image>
 				<span>{{likeTotal}}</span>
 			</view>
-			<view class="emoji" :class="{'clickEmoji':clickFavour,'isDisplay':favourDisplay}" @click="clickAni('favour')">
-				<image class="qingzhu" src="../../static/img/qingzhu.png" mode=""></image>
+			<view class="emoji"
+			 :class="{'clickEmoji':clickFavour,'isDisplay':favourDisplay}"
+			 @click="clickAni('favour')">
+				<image class="qingzhu"
+				 src="../../static/img/qingzhu.png"
+				 mode=""></image>
 				<span>{{favourTotal}}</span>
 			</view>
 			<!-- 添加表情 -->
@@ -43,13 +51,20 @@
 					 @click="addAEmoji('favour')"
 					 src="../../static/img/qingzhu.png"
 					 mode=""></image>
-					 <u-icon class="arrow" name="arrow-down-fill" color="#f5f5f5" size="30"></u-icon>
+					<u-icon class="arrow"
+					 name="arrow-down-fill"
+					 color="#f5f5f5"
+					 size="30"></u-icon>
 				</view>
 			</view>
 			<!-- 评论+评论数量 -->
 
-			<view class="comment" v-if="isShow">
-				<u-icon name="chat" color="#999999" size="40" class="chat"></u-icon>
+			<view class="comment"
+			 v-if="isShow">
+				<u-icon name="chat"
+				 color="#999999"
+				 size="40"
+				 class="chat"></u-icon>
 				<span class="commentTotal">{{commentTotal}}</span>
 
 
@@ -134,11 +149,13 @@
 				}
 
 			},
+			
+			
 			// 调用接口对点赞状态改变
 			emjoiInterface(params) {
-				// changeFavour(params).then(res=>{
-				// 	console.log("表情点赞状态改变")
-				// })
+				changeFavour(params).then(res=>{
+					console.log("表情点赞状态改变")
+				})
 			},
 			// 点击表情事件处理
 			clickAni(emoji) {

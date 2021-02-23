@@ -93,37 +93,37 @@ type _ResponseGetMarchApplyUser struct {
 	Data    bo.GetMessage `json:"data"`    // 数据
 }
 
-type _ResponseTopArticleListHandler struct {
+type _ResponseArticleList struct {
 	Code    app.ResCode  `json:"code"`    // 业务响应状态码
 	Message string       `json:"message"` // 提示信息
 	Data    []bo.Article `json:"data"`    // 数据
 }
 
-type _Article struct {
-	Code    app.ResCode `json:"code"`    // 业务响应状态码
-	Message string      `json:"message"` // 提示信息
-	Data    bo.Article  `json:"data"`    // 数据
+type _ResponseArticleDetail struct {
+	Code    app.ResCode      `json:"code"`    // 业务响应状态码
+	Message string           `json:"message"` // 提示信息
+	Data    bo.ArticleDetail `json:"data"`    // 数据
 }
 
-type _ArticleUser struct {
+type _ResponseArticleListByUserId struct {
 	Code    app.ResCode    `json:"code"`    // 业务响应状态码
 	Message string         `json:"message"` // 提示信息
 	Data    bo.ArticleUser `json:"data"`    // 数据
 }
 
-type _IsFavourCollectByArticleId struct {
+type _ResponseIsFavourCollectByArticleId struct {
 	Code    app.ResCode                   `json:"code"`    // 业务响应状态码
 	Message string                        `json:"message"` // 提示信息
 	Data    bo.IsFavourCollectByArticleId `json:"data"`    // 数据
 }
 
-type _ArticleTagList struct {
+type _ResponseArticleTagList struct {
 	Code    app.ResCode       `json:"code"`    // 业务响应状态码
 	Message string            `json:"message"` // 提示信息
 	Data    bo.ArticleTagList `json:"data"`    // 数据
 }
 
-type _ArticleReprint struct {
+type _ResponseArticleReprint struct {
 	Code    app.ResCode   `json:"code"`    // 业务响应状态码
 	Message string        `json:"message"` // 提示信息
 	Data    bo.ArticleMsg `json:"data"`    // 数据
@@ -136,14 +136,21 @@ type _ResponseApplyArticleList struct {
 	Data    bo.ApplyArticleList `json:"data"`    // 数据
 }
 
-type _marchSoftInfo struct {
+type _ResponseSoftInfo struct {
 	Code    app.ResCode      `json:"code"`    // 业务响应状态码
 	Message string           `json:"message"` // 提示信息
 	Data    bo.MarchSoftInfo `json:"data"`    // 数据
 }
 
-type _march struct {
+type _ResponseMarch struct {
 	Code    app.ResCode `json:"code"`    // 业务响应状态码
 	Message string      `json:"message"` // 提示信息
 	Data    bo.March    `json:"data"`    // 数据
+}
+
+// _ResponseApplyArticleList （后台）文章审核列表页响应
+type _ResponseGetCollectArticle struct {
+	Code    app.ResCode         `json:"code"`    // 业务响应状态码
+	Message string              `json:"message"` // 提示信息
+	Data    bo.ArticleCollectByUserId `json:"data"`    // 数据
 }

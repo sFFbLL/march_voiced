@@ -23,6 +23,8 @@ definitions:
     properties:
       createTime:
         type: integer
+      id:
+        type: integer
       nickname:
         type: string
       recommend:
@@ -117,6 +119,26 @@ definitions:
       word_count:
         type: integer
     type: object
+  bo.ArticleCollectByUserId:
+    properties:
+      current:
+        description: 页码
+        type: integer
+      pages:
+        description: 总页数
+        type: integer
+      records:
+        description: 消息
+        items:
+          $ref: '#/definitions/bo.Article'
+        type: array
+      size:
+        description: 页内大小
+        type: integer
+      total:
+        description: 总条数
+        type: integer
+    type: object
   bo.ArticleComment:
     properties:
       content:
@@ -130,8 +152,6 @@ definitions:
       id:
         type: integer
       id_avatar:
-        type: string
-      reply_avatar:
         type: string
       reply_id:
         type: integer
@@ -462,8 +482,6 @@ definitions:
         type: integer
       id_avatar:
         type: string
-      reply_avatar:
-        type: string
       reply_id:
         type: integer
       reply_name:
@@ -685,27 +703,6 @@ definitions:
       updatedBy:
         type: integer
     type: object
-  bo.SelectUserInfo:
-    properties:
-      articleTotal:
-        type: integer
-      avatarPath:
-        type: string
-      collectTotal:
-        type: integer
-      fansTotal:
-        type: integer
-      followTotal:
-        type: integer
-      id:
-        type: integer
-      isFollow:
-        type: integer
-      nickname:
-        type: string
-      signature:
-        type: string
-    type: object
   bo.SensitiveWord:
     properties:
       indexes:
@@ -735,8 +732,6 @@ definitions:
         type: integer
       id_avatar:
         type: string
-      reply_avatar:
-        type: string
       reply_id:
         type: integer
       reply_name:
@@ -760,12 +755,24 @@ definitions:
         type: integer
       id_avatar:
         type: string
-      reply_avatar:
-        type: string
       reply_id:
         type: integer
       reply_name:
         type: string
+    type: object
+  bo.UserCenterInfoBo:
+    properties:
+      dataScopes:
+        items:
+          type: string
+        type: array
+      roles:
+        items:
+          type: string
+        type: array
+      user:
+        $ref: '#/definitions/bo.RecordUser'
+        type: object
     type: object
   bo.UserInfoListBo:
     properties:
@@ -855,8 +862,6 @@ definitions:
     type: object
   dto.ApplyArticlePaginator:
     properties:
-      content:
-        type: string
       current:
         type: integer
       endTime:
@@ -872,6 +877,8 @@ definitions:
       status:
         description: 1通过 2审核中
         type: integer
+      title:
+        type: string
     type: object
   dto.ApplyMarchPaginator:
     properties:
@@ -904,6 +911,17 @@ definitions:
     required:
     - id
     - status
+    type: object
+  dto.ArticleSearchPaginator:
+    properties:
+      current:
+        type: integer
+      searchWord:
+        type: string
+      size:
+        type: integer
+    required:
+    - searchWord
     type: object
   dto.CollectArticleDto:
     properties:
@@ -1637,6 +1655,19 @@ definitions:
         description: 提示信息
         type: string
     type: object
+  models._ResponseGetCollectArticle:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.ArticleCollectByUserId'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
   models._ResponseGetFansList:
     properties:
       code:
@@ -1856,7 +1887,10 @@ definitions:
   models._ResponseSelectUserInfo:
     properties:
       code:
-        $ref: '#/definitions/bo.SelectUserInfo'
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.UserCenterInfoBo'
         description: 数据
         type: object
       message:
@@ -1968,47 +2002,6 @@ info:
   version: 0.1.0
 paths:
   /api/apply/article:
-    get:
-      consumes:
-      - application/json
-      description: Author：JiaKun Li 2021/02/20
-      parameters:
-      - in: query
-        name: content
-        type: string
-      - in: query
-        name: current
-        type: integer
-      - description: 结束时间
-        in: query
-        name: endTime
-        type: integer
-      - in: query
-        name: nickname
-        type: string
-      - in: query
-        name: size
-        type: integer
-      - description: 创建时间
-        in: query
-        name: startTime
-        type: integer
-      - description: 1通过 2审核中
-        in: query
-        name: status
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models._ResponseApplyArticleList'
-      security:
-      - ApiKeyAuth: []
-      summary: （后台）文章审核列表页
-      tags:
-      - 文章：Article Controller
     put:
       consumes:
       - application/json
@@ -2198,6 +2191,48 @@ paths:
       summary: 文章详情
       tags:
       - 应用：文章管理 Article Controller
+  /api/article/admin:
+    get:
+      consumes:
+      - application/json
+      description: Author：JiaKun Li 2021/02/20
+      parameters:
+      - in: query
+        name: current
+        type: integer
+      - description: 结束时间
+        in: query
+        name: endTime
+        type: integer
+      - in: query
+        name: nickname
+        type: string
+      - in: query
+        name: size
+        type: integer
+      - description: 创建时间
+        in: query
+        name: startTime
+        type: integer
+      - description: 1通过 2审核中
+        in: query
+        name: status
+        type: integer
+      - in: query
+        name: title
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseApplyArticleList'
+      security:
+      - ApiKeyAuth: []
+      summary: （后台）文章审核列表页
+      tags:
+      - 文章：Article Controller
   /api/article/favour-collect/{id}:
     get:
       consumes:
@@ -2466,6 +2501,34 @@ paths:
       summary: 用户注销接口
       tags:
       - 系统：系统授权接口 Authorization Controller
+  /api/base/searchArticle:
+    get:
+      consumes:
+      - application/json
+      description: Author：JiaKun Li 2021/02/20
+      parameters:
+      - in: query
+        name: current
+        type: integer
+      - in: query
+        name: searchWord
+        required: true
+        type: string
+      - in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseGetCollectArticle'
+      security:
+      - ApiKeyAuth: []
+      summary: 文章搜索
+      tags:
+      - 文章：Article Controller
   /api/child:
     get:
       consumes:
@@ -2495,18 +2558,19 @@ paths:
       - application/json
       description: Author：JiaKun Li 2021/02/16
       parameters:
-      - description: 查询参数
-        in: body
-        name: object
-        schema:
-          $ref: '#/definitions/dto.CollectArticleDto'
+      - in: query
+        name: current
+        type: integer
+      - in: query
+        name: size
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._ResponseSuccess'
+            $ref: '#/definitions/models._ResponseGetCollectArticle'
       security:
       - ApiKeyAuth: []
       summary: 我的收藏列表页

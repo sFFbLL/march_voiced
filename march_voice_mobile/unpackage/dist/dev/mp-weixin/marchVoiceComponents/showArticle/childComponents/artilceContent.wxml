@@ -1,0 +1,1 @@
+<view data-event-opts="{{[['tap',[['articleDetails',['$event']]]]]}}" class="article-content" bindtap="__e"><view><text class="article-text"><rich-text nodes="{{articleContent}}"></rich-text></text></view><block wx:if="{{articleImg!=''}}"><view class="article-img"><image src="{{articleImg}}" mode="aspectFill"></image></view></block></view>

@@ -1,7 +1,6 @@
 package apis
 
 import (
-	"gorm.io/gorm"
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
 	"project/app/march_voiced/service"
@@ -10,10 +9,58 @@ import (
 	"project/utils/app"
 	"strconv"
 
+	"gorm.io/gorm"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
 )
+
+// ArticleSearch 文章搜索
+// @Summary 文章搜索
+// @Description Author：JiaKun Li 2021/02/20
+// @Tags 文章：Article Controller
+// @Accept application/json
+// @Produce application/json
+// @Param object query dto.ArticleSearchPaginator false "添加参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} models._ResponseGetCollectArticle
+// @Router /api/base/searchArticle [get]
+func ArticleSearch(c *gin.Context) {
+	p := new(dto.ArticleSearchPaginator)
+
+	// 获取缓存信息
+	user, err := api.GetUserMessage(c)
+	if err != nil {
+		zap.L().Error("ArticleSearch GetUserMsg failed", zap.Error(err))
+		app.ResponseError(c, app.CodeLoginExpire)
+		return
+	}
+
+	// 获取参数 校验参数
+	if err := c.ShouldBindQuery(p); err != nil {
+		// 请求参数有误， 直接返回响应
+		zap.L().Error("ArticleSearch params failed", zap.String("Username", user.Username), zap.Error(err))
+		_, ok := err.(validator.ValidationErrors)
+		if !ok {
+			app.ResponseError(c, app.CodeParamIsInvalid)
+			return
+		}
+		app.ResponseError(c, app.CodeParamTypeBindError)
+		return
+	}
+
+	//业务逻辑处理
+	s := new(service.Article)
+	data, err := s.ArticleSearch(p, user.UserId)
+	if err != nil {
+		zap.L().Error("ArticleSearch service params failed", zap.String("Username", user.Username), zap.Error(err))
+		app.ResponseError(c, app.CodeSelectOperationFail)
+		return
+	}
+
+	app.ResponseSuccess(c, data)
+}
 
 // ArticleRecommend （后台）文章设置推荐
 // @Summary （后台）文章设置推荐
@@ -71,7 +118,7 @@ func ArticleRecommend(c *gin.Context) {
 // @Param object query dto.ApplyArticlePaginator false "添加参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseApplyArticleList
-// @Router /api/apply/article [get]
+// @Router /api/article/admin [get]
 func ApplyArticleList(c *gin.Context) {
 	p := new(dto.ApplyArticlePaginator)
 
@@ -112,7 +159,6 @@ func ApplyArticleList(c *gin.Context) {
 
 	app.ResponseSuccess(c, applyArticleList)
 }
-
 
 // ArticlePass 文章审核通过或驳回
 // @Summary 文章审核通过或驳回
@@ -321,13 +367,13 @@ func DeleteArticleHandler(c *gin.Context) {
 // @Produce application/json
 // @Param id path int false "修改参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseSuccess
+// @Success 200 {object} models._ResponseArticleDetail
 // @Router /api/article/{id} [get]
 func ArticleDetailHandler(c *gin.Context) {
 	// 声明必要变量
 	a := new(service.Article)
 	userMsg := new(api.UserMessage)
-	article := new(bo.Article)
+	article := new(bo.ArticleDetail)
 	var id int
 	var err error
 
@@ -367,13 +413,13 @@ func ArticleDetailHandler(c *gin.Context) {
 // @Produce application/json
 // @Param object body []int false "添加参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ArticleReprint
+// @Success 200 {object} models._ResponseArticleReprint
 // @Router /api/article/reprint [post]
 func ReprintArticleHandler(c *gin.Context) {
 	// 声明必要变量
 	a := new(service.Article)
 	userMsg := new(api.UserMessage)
-	articleMsg := new(bo.ArticleMsg)
+	articleMsg := new(bo.ArticleDetailMsg)
 	var id []int
 	var signal int
 	var err error
@@ -420,7 +466,7 @@ func ReprintArticleHandler(c *gin.Context) {
 // @Produce application/json
 // @Param object query dto.Paging false "添加参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ResponseTopArticleListHandler
+// @Success 200 {object} models._ResponseArticleList
 // @Router /api/article/top [get]
 func TopArticleListHandler(c *gin.Context) {
 	// 声明必要变量
@@ -439,14 +485,14 @@ func TopArticleListHandler(c *gin.Context) {
 	}
 
 	// 参数绑定
-	paging.Current, err = utils.StringToInt(c.DefaultQuery("current", "1"))
+	paging.Current, err = utils.StringToUint(c.DefaultQuery("current", "1"))
 	if err != nil {
 		// 请求参数有误， 直接返回响应
 		zap.L().Error("TopArticleListHandler params Current failed", zap.String("Username", userMsg.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeParamTypeBindError)
 		return
 	}
-	paging.Size, err = utils.StringToInt(c.DefaultQuery("size", "10"))
+	paging.Size, err = utils.StringToUint(c.DefaultQuery("size", "10"))
 	if err != nil {
 		// 请求参数有误， 直接返回响应
 		zap.L().Error("TopArticleListHandler params Size failed", zap.String("Username", userMsg.Username), zap.Error(err))
@@ -512,7 +558,7 @@ func MatchSensitiveWord(c *gin.Context) {
 // @Produce application/json
 // @Param object query dto.Paging false "添加参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._Article
+// @Success 200 {object} models._ResponseArticleList
 // @Router /api/article/index [get]
 func SelectArticleListIndex(c *gin.Context) {
 	// 声明必要变量
@@ -531,14 +577,14 @@ func SelectArticleListIndex(c *gin.Context) {
 	}
 
 	// 参数绑定
-	paging.Current, err = utils.StringToInt(c.DefaultQuery("current", "1"))
+	paging.Current, err = utils.StringToUint(c.DefaultQuery("current", "1"))
 	if err != nil {
 		// 请求参数有误， 直接返回响应
 		zap.L().Error("TopArticleListHandler params Current failed", zap.String("Username", userMsg.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeParamTypeBindError)
 		return
 	}
-	paging.Size, err = utils.StringToInt(c.DefaultQuery("size", "10"))
+	paging.Size, err = utils.StringToUint(c.DefaultQuery("size", "10"))
 	if err != nil {
 		// 请求参数有误， 直接返回响应
 		zap.L().Error("TopArticleListHandler params Size failed", zap.String("Username", userMsg.Username), zap.Error(err))
@@ -566,7 +612,7 @@ func SelectArticleListIndex(c *gin.Context) {
 // @Produce application/json
 // @Param object query dto.SelectArticleByUser false "添加参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ArticleUser
+// @Success 200 {object} models._ResponseArticleListByUserId
 // @Router /api/article/user [get]
 func SelectArticleListByUserId(c *gin.Context) {
 	// 声明必要变量
@@ -601,6 +647,9 @@ func SelectArticleListByUserId(c *gin.Context) {
 	if paging.Size == 0 {
 		paging.Current = 10
 	}
+	if paging.ID == 0 {
+		paging.ID = uint(userMsg.UserId)
+	}
 
 	// 进入service层对数据操作
 	articleList, err = a.SelectArticleListByUserId(paging, uint(userMsg.UserId))
@@ -622,7 +671,7 @@ func SelectArticleListByUserId(c *gin.Context) {
 // @Produce application/json
 // @Param id path int false "修改参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} models._IsFavourCollectByArticleId
+// @Success 200 {object} models._ResponseIsFavourCollectByArticleId
 // @Router /api/article/favour-collect/{id} [get]
 func IsFavourCollectByArticleId(c *gin.Context) {
 	// 声明必要变量
@@ -667,7 +716,7 @@ func IsFavourCollectByArticleId(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Security ApiKeyAuth
-// @Success 200 {object} models._ArticleTagList
+// @Success 200 {object} models._ResponseArticleTagList
 // @Router /api/article/tag [get]
 func GetArticleTagList(c *gin.Context) {
 	// 声明必要变量
