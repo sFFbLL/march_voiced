@@ -25,12 +25,18 @@ import (
 //登录验证获取token
 func LoginHandler(c *gin.Context) {
 	wx.Init()
-	code := c.Query("code")
+	type Name struct {
+		Code string `json:"code"`
+	}
+	p := new(Name)
+	c.ShouldBindJSON(p)
+	fmt.Println(p.Code,"============")
+	//code := c.Query("code")
 	//status := c.Query("status")
 	//code ="0414i60w3y7JRV2Qut0w3ZHOUa44i60H"
 	//fmt.Println(status,"dddd")
 	oauth := global.Wx.GetOauth()
-	token, err := oauth.GetUserAccessToken(code)
+	token, err := oauth.GetUserAccessToken(p.Code)
 	if err != nil {
 		zap.L().Error("GetAccessToken failed", zap.Error(err))
 		app.ResponseError(c, app.CodeWxOuttime)
@@ -150,7 +156,7 @@ func GetTicket(c *gin.Context) {
 			app.ResponseError(c, app.CodeWxTickerFail)
 			return
 		}
-		global.Rdb.Set("wxAccessToken",access,5000*time.Second)
+		global.Rdb.Set("wxAccessToken",access,300*time.Second)
 		accessToken = access
 	}else{
 		accessToken = token
