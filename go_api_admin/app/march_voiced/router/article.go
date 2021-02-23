@@ -26,7 +26,7 @@ func articleAuthRouter(v1 *gin.RouterGroup) {
 		r.GET("/tag", apis.GetArticleTagList)
 		r.POST("/reprint", apis.ReprintArticleHandler)
 		r.GET("/admin", apis.ApplyArticleList)
-		r.GET("recommend/:id", apis.ArticleRecommend)
+		r.PUT("recommend/:id", apis.ArticleRecommend)
 	}
 	v1.GET("/base/searchArticle", apis.ArticleSearch)
 }
