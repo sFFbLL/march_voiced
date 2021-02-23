@@ -3,12 +3,8 @@
 
 		<!-- 各种表情 -->
 		<view class="idea">
-			<view class="emoji"
-			 :class="{'clickEmoji':clickFace,'isDisplay':faceDisplay}"
-			 @click="clickAni('face')">
-				<image class=" xiaoku"
-				 src="../../static/img/xiaoku.png"
-				 mode=""></image>
+			<view class="emoji" :class="{'clickEmoji':clickFace,'isDisplay':faceDisplay}" @click="clickAni('face')">
+				<image class=" xiaoku" src="../../static/img/xiaoku.png" mode=""></image>
 				<span>{{faceTotal}}</span>
 			</view>
 			<view class="emoji"
@@ -28,33 +24,15 @@
 				<span>{{favourTotal}}</span>
 			</view>
 			<!-- 添加表情 -->
-			<view class="emoji"
-			 @click="addEmoji()">
-				<image class="addemoji"
-				 src="../../static/img/emoji.png"
-				 mode=""></image>
-				<image class="addemoji add"
-				 src="../../static/img/add.png"
-				 mode=""></image>
+			<view class="emoji" @click="addEmoji()">
+				<image class="addemoji" src="../../static/img/emoji.png" mode=""></image>
+				<image class="addemoji add" src="../../static/img/add.png" mode=""></image>
 				<!-- 添加表情上方提示框 -->
-				<view class="allEmoji"
-				 :class="{'visible':visible}">
-					<image class="addxiaoku oneemoji"
-					 @click="addAEmoji('face')"
-					 src="../../static/img/xiaoku.png"
-					 mode=""></image>
-					<image class="addaixin oneemoji"
-					 @click="addAEmoji('like')"
-					 src="../../static/img/aixin.png"
-					 mode=""></image>
-					<image class="addqingzhu oneemoji"
-					 @click="addAEmoji('favour')"
-					 src="../../static/img/qingzhu.png"
-					 mode=""></image>
-					<u-icon class="arrow"
-					 name="arrow-down-fill"
-					 color="#f5f5f5"
-					 size="30"></u-icon>
+				<view class="allEmoji" :class="{'visible':visible}">
+					<image class="addxiaoku oneemoji" @click="addAEmoji('face')" src="../../static/img/xiaoku.png" mode=""></image>
+					<image class="addaixin oneemoji" @click="addAEmoji('like')" src="../../static/img/aixin.png" mode=""></image>
+					<image class="addqingzhu oneemoji" @click="addAEmoji('favour')" src="../../static/img/qingzhu.png" mode=""></image>
+					<u-icon class="arrow" name="arrow-down-fill" color="#f5f5f5" size="30"></u-icon>
 				</view>
 			</view>
 			<!-- 评论+评论数量 -->
@@ -74,7 +52,7 @@
 </template>
 
 <script>
-	import changeFavour from '../../utils/api/marchCircle-api.js'
+	import {changeFavour} from '../../utils/api/marchCircle-api.js'
 	export default {
 		props: {
 			id: {
@@ -149,12 +127,14 @@
 				}
 
 			},
-			
-			
+
+
 			// 调用接口对点赞状态改变
 			emjoiInterface(params) {
-				changeFavour(params).then(res=>{
+				changeFavour(params).then(res => {
 					console.log("表情点赞状态改变")
+				}).catch(err=>{
+					console.log("err")
 				})
 			},
 			// 点击表情事件处理
@@ -167,7 +147,7 @@
 				switch (emoji) {
 
 					case 'face':
-						this.emjoiInterface(params)
+
 						// 如果face表情已经处于点击状态
 						if (this.clickFace) {
 							this.faceTotal--;
@@ -192,12 +172,11 @@
 								this.clickFavour = !this.clickFavour;
 							}
 						}
-
+						this.emjoiInterface(params)
 						break
 
 					case 'like':
-						params.type = 1;
-						this.emjoiInterface(params)
+
 						if (this.clickLike) {
 							this.likeTotal--;
 							this.clickLike = !this.clickLike;
@@ -219,11 +198,12 @@
 								this.clickFavour = !this.clickFavour;
 							}
 						}
+						params.type = 1;
+						this.emjoiInterface(params)
 						break
 
 					case 'favour':
-						params.type = 2;
-						this.emjoiInterface(params)
+
 						if (this.clickFavour) {
 							this.favourTotal--;
 							this.clickFavour = !this.clickFavour;
@@ -248,6 +228,8 @@
 								this.clickFace = !this.clickFace;
 							}
 						}
+						params.type = 2;
+						this.emjoiInterface(params)
 
 						break
 

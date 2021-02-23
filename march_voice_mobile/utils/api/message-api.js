@@ -17,7 +17,7 @@ export function attentionList(params) {
 
 // 查询所有其他消息
 export function otherList(params) {
-	return Axios.get(baseUrl + '/api/message/other', {
+	return Axios.get(baseUrl + '/api/message/system', {
 		params: params,
 	})
 }

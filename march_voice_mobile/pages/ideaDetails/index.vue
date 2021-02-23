@@ -70,7 +70,7 @@
 		},
 		created() {
 			let id = this.ideaId
-
+			
 			// 获取想法详细信息接口
 			ideaDetail(id).then(res => {
 				this.ideaInfoList = res.data;

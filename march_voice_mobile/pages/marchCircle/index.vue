@@ -4,7 +4,7 @@
 		<view class="titlebg">
 			<view class="title">
 				<span class="marchcicrle">三月圈</span>
-				<span class="member">成员:{{marchCircleInfo.people}}</span><span class="total">条数:{{marchCircleInfo.articles}}</span>
+				<span class="member">成员:{{marchCircleInfo.personTotal}}</span><span class="total">条数:{{marchCircleInfo.articleTotal}}</span>
 
 				<p class="info">简介: {{marchCircleInfo.brief}}</p>
 			</view>
@@ -108,8 +108,8 @@
 					height: '50rpx'
 				},
 				marchCircleInfo: {
-					people: 1222,
-					articles: 2048,
+					articleTotal: 1222,
+					personTotal: 2048,
 					ismarch: 1,
 					brief: "啊士大夫艰苦的萨拉就",
 				},
