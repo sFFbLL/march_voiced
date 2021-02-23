@@ -145,8 +145,8 @@
 		onLoad() {
 			console.log("onload")
 
-			// this.recommend();
-			// this.follow();
+			this.recommend();
+
 		},
 
 		onReachBottom() { //上拉触底函数

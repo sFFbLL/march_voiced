@@ -27,8 +27,8 @@
 			console.log("beforeCreate");
 			if (!getToken()) {
 				//没有token，没登陆过，获取wxcode
-				// let code = returnWxcode();
-				let code = "051WRBHa1LAcBA0FAtJa1TVqio1WRBHY"
+				let code = returnWxcode();
+				// let code = "011SeGkl2pG3z64JQ0ol2eb0Fd0SeGk"
 				let params ={
 					code: code,
 					status: 1

@@ -3,22 +3,22 @@ import baseUrl from '../env.js'
 
 // 是否是三月圈成员，三月圈成员数量，简介
 export function getMarchCircleInfo(params) {
-    return Axios.get(baseUrl + '/api/march/total', {
+    return Axios.get(baseUrl + '/api/march/msg', {
         params: params,
     })
 }
 
 
-// 三月圈文章列表获取s
+// 三月圈文章列表获取
 export function marchCircleList(params){
-	return Axios.get(baseUrl+'/api/march-user-article/',{
+	return Axios.get(baseUrl+'/api/march',{
 		params:params,
 	})
 }
 
 // 用户发布按钮
 export function publishIdea(params){
-	return Axios.post(baseUrl+'/api/march-article',{
+	return Axios.post(baseUrl+'/api/march',{
 		content:params.content,
 		imageList:params.imageList,
 		image:params.image
@@ -34,7 +34,7 @@ export function joinMarchCircle(params){
 
 // 点赞表情
 export function changeFavour(params){
-	return Axios.post(baseUrl+'/api/apply/march',{
+	return Axios.post(baseUrl+'/api/favour/march',{
 		id:params.id,
 		type:params.type,
 	})
@@ -42,16 +42,16 @@ export function changeFavour(params){
 
 
 // 点击微信进行分享，调用微信接口获取签名信息
-export function getScanCode(params){
-	return Axios.get(baseUrl+'/api/apply/march',{
-		params:params,
-	})
-}
+// export function getScanCode(params){
+// 	return Axios.get(baseUrl+'/api/apply/march',{
+// 		params:params,
+// 	})
+// }
 
 
 // 三月圈详情页调用
 export function ideaDetail(params){
-	return  Axios.get(baseUrl+'/api/march-artcle/:id',{
+	return  Axios.get(baseUrl+'/api/march/detail/id',{
 		params:params,
 	})
 }
