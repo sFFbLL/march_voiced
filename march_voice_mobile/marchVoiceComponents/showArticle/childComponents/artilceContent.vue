@@ -1,7 +1,7 @@
 <template>
 	<!-- 文章内容显示 -->
 	<view class="article-content"
-	 @click="articleDetails">
+	 @click="toDetails">
 		<view>
 			<text class="article-text"
 			 v-html="articleContent"></text>
@@ -22,7 +22,7 @@
 			};
 		},
 		props: {
-			articleId: {
+			id: {
 				type: Number,
 				default: null
 			},
@@ -33,20 +33,32 @@
 			articleImg: {
 				type: String,
 				default: ""
+			},
+			isIdea: {
+				type: Boolean,
+				default: false
 			}
 		},
 		components: {
 
 		},
 		methods: {
-			articleDetails() {
-				// 跳转到编辑页面
-				uni.navigateTo({
-					url: '../articleDetails/index?id=' + this.articleId,
-					fail: (res) => {
-						console.log(res);
-					}
-				})
+			toDetails() {
+				console.log(this.isIdea);
+				if (this.isIdea) {
+					// 跳转详情页面
+					uni.navigateTo({
+						url: '../ideaDetails/index?id=' + this.id
+					})
+				} else {
+					// 跳转到编辑页面
+					uni.navigateTo({
+						url: '../articleDetails/index?id=' + this.id,
+						fail: (res) => {
+							console.log(res);
+						}
+					})
+				}
 			}
 		},
 		mounted() {}

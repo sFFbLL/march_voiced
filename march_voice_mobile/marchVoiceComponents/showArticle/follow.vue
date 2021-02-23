@@ -2,9 +2,9 @@
 	<!-- 推荐页面文章展示组件 -->
 	<view class="recommend-component">
 		<!-- 作者信息 -->
-		<attentionAndFansCell :id="articleInfo.user.id"
-		 :nickname="articleInfo.user.nickname"
-		 :avatarPath="articleInfo.user.avatarPath">
+		<attentionAndFansCell :id="articleInfo.userId"
+		 :nickname="articleInfo.nickname"
+		 :avatarPath="articleInfo.avatarPath">
 			<view slot="underText"
 			 class="followMessage">
 				<text v-if="articleInfo.status===0">
@@ -30,8 +30,8 @@
 		 :articleId="articleInfo.articleId" />
 		<!-- 文章内容 -->
 		<articleContent :articleContent="articleInfo.content"
-		 :articleImg="articleInfo.articleImg"
-		 :articleId="articleInfo.articleId" />
+		 :articleImg="articleInfo.image"
+		 :id="articleInfo.articleId" />
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal"
 		 :commentTotal="articleInfo.commentTotal"
@@ -47,7 +47,7 @@
 	export default {
 		data() {
 			return {
-				
+
 			};
 		},
 		props: {

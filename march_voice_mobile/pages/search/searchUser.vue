@@ -167,19 +167,20 @@
 	}
 
 	>>>.attention-cell .flex-item {
+		padding: 30rpx;
 		border-bottom: 1rpx solid #f0f0f0;
 	}
 
 	>>>.inner-img {
-		height: 60rpx;
-		width: 60rpx;
+		height: 70rpx;
+		width: 70rpx;
 	}
 
 	>>>.right-button {
-		width: 115rpx;
-		height: 48rpx;
-		font-size: 20rpx;
-		line-height: 46rpx;
+		width: 130rpx;
+		height: 54rpx;
+		font-size: 24rpx;
+		line-height: 54rpx;
 	}
 
 

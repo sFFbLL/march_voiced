@@ -5,15 +5,15 @@
 		<articleTitle :articleTitle="articleInfo.title"
 		 :articleId="articleInfo.id" />
 		<!-- 作者信息 -->
-		<attentionAndFansCell v-if="articleInfo.user"
-		 :id="articleInfo.user.id"
-		 :nickname="articleInfo.user.nickname"
-		 :avatarPath="articleInfo.user.avatarPath"
-		 :isFollow="articleInfo.user.isFollow"></attentionAndFansCell>
+		<attentionAndFansCell v-if="articleInfo.create_by"
+		 :id="articleInfo.create_by"
+		 :nickname="articleInfo.nickname"
+		 :avatarPath="articleInfo.avatarPath"
+		 :isFollow="articleInfo.isFollow"></attentionAndFansCell>
 		<!-- 文章内容 -->
 		<articleContent :articleContent="articleInfo.content"
 		 :articleImg="articleInfo.image"
-		 :articleId="articleInfo.id" />
+		 :id="articleInfo.id" />
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal"
 		 :commentTotal="articleInfo.commentTotal"
