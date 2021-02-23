@@ -3,16 +3,11 @@
 	<view class="home">
 		<view class="header">
 			<!-- 头部选项卡 -->
-			<tabs class="tag-nav"
-			 :tabs='tablist'
-			 v-on:tabActive='tabActive' />
+			<tabs class="tag-nav" :tabs='tablist' v-on:tabActive='tabActive' />
 			<!-- 搜索图标 -->
-			<view class="search"
-			 @click="search()">
+			<view class="search" @click="search()">
 				<view class="search-icon">
-					<uni-icons type="search"
-					 size="25"
-					 color="#999"></uni-icons>
+					<uni-icons type="search" size="25" color="#999"></uni-icons>
 				</view>
 			</view>
 		</view>
@@ -25,16 +20,13 @@
 			</view>
 			<!-- 关注 -->
 			<view v-if="tabIndex">
-				<view v-for="(item,index) in followList"
-				 :key="index">
+				<view v-for="(item,index) in followList" :key="index">
 					<follow :articleInfo="item" />
 				</view>
 			</view>
 			<!-- 下拉加载更多 -->
 			<view v-show="isLoadMore">
-				<uni-load-more class="loading"
-				 :status="loadStatus"
-				 iconType="circle"></uni-load-more>
+				<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
 			</view>
 		</view>
 	</view>
@@ -98,39 +90,55 @@
 				isLoadMore: false, //是否加载中
 			}
 		},
-		beforeCreate() {
+		created() {
 			// 判断是否有token
-			if (!getToken()) {
-				//没有token，没登陆过，获取wxcode
-				let code = returnWxcode();
-				let params = {
-					code: code,
-					status: 1
-				}
-				console.log(code)
-				login(params).then(res => {
-					if (res.data.status == 1) {
-						// 跳转注册页面
-						console.log("未登录")
-						uni.navigateTo({
-							url: "../login/login"
-						})
-					} else {
-						// 登陆成功
-						console.log(res.data.token)
-						setToken(res.data.token);
-						setOpenId(res.data.openid)
-					}
-				})
+			// console.log("beforeCreate");
+			// if (!getToken()) {
+			// 	console.log("没有token")
+			// 	//没有token，没登陆过，获取wxcode
+				// let code = returnWxcode();
+			// 	// let code = "091gYW0w3l4BSV2qdq1w3eQqgG3gYW0"
+			// 	let params = {
+			// 		code: code,
+			// 		status: 1
+			// 	}
+				
+				console.log( "555")
+				
+			// 	// 判断该用户是否注册
+			// 	login(params).then(res => {
+			// 		console.log(res, "注册")
+			// 		if (res.data.status == 1) {
+			// 			// 跳转注册页面
+			// 			console.log("未登录")
+			// 			uni.navigateTo({
+			// 				url: "../login/login"
+			// 			})
+			// 		} else {
+			// 			// 登陆成功
+			// 			console.log(res.data.token)
+			// 			setToken(res.data.token);
+			// 			setOpenId(res.data.openid)
+			// 		}
+			// 	}).catch(err =>{
+			// 		console.log(err,"err login")
+			// 	})
 
-			}
+			// } else {
+			// 	uni.navigateTo({
+			// 		url: "../login/login"
+			// 	})
+			// }
 		},
 		onShow() {
+			console.log("onshow")
 			check()
 		},
 		onLoad() {
-			this.recommend();
-			this.follow();
+			console.log("onload")
+			
+			// this.recommend();
+			// this.follow();
 		},
 
 		onReachBottom() { //上拉触底函数
@@ -236,7 +244,7 @@
 						_this.isLoadMore = false;
 						_this.recommendList = [..._this.recommendList, ...recommendList];
 					} else {
-						setTimeout(function () {
+						setTimeout(function() {
 							_this.isLoadMore = false;
 							_this.recommendList = [..._this.recommendList, ...recommendList];
 						}, 2000);
@@ -322,7 +330,7 @@
 						_this.isLoadMore = false;
 						_this.followList = [..._this.followList, ...followList];
 					} else {
-						setTimeout(function () {
+						setTimeout(function() {
 							_this.isLoadMore = false;
 							_this.followList = [..._this.followList, ...followList];
 						}, 2000);
