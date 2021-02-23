@@ -33,7 +33,8 @@
 		</view>
 
 		<!-- 底部导航 -->
-		<view class="bottom-nav">
+		<view class="bottom-nav"
+		 v-if="!isComment">
 			<view class="bottom-nav-centre">
 				<!-- 评论图标 -->
 				<view class="attention-icon comment">
@@ -65,6 +66,8 @@
 				</view>
 			</view>
 		</view>
+		<commentInput v-on:sendComment='sendComment'
+		 v-if="isComment" />
 	</view>
 </template>
 
@@ -73,6 +76,7 @@
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
 	import jinEdit from '../../components/jin-edit/jin-edit.vue';
 	import comment from '../../marchVoiceComponents/comment/index.vue'
+	import commentInput from '../../marchVoiceComponents/comment/commentInput.vue'
 	export default {
 		data() {
 			return {
@@ -175,21 +179,31 @@
 							"commentKids": []
 						}
 					]
-				}]
-			};
+				}],
+				isComment: false
+			}
 		},
 		components: {
 			articleTitle,
 			attentionAndFansCell,
 			jinEdit,
-			comment
+			comment,
+			commentInput
 		},
 		onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数
 			this.id = option //打印出上个页面传递的参数。
 		},
+		created() {
+			
+		},
 		methods: {
+			// 评论
 			comment() {
-
+				this.isComment = true;
+			},
+			// 发布评论
+			sendComment() {
+				console.log("发布评论");
 			}
 		},
 		mounted() {

@@ -98,39 +98,55 @@
 				isLoadMore: false, //是否加载中
 			}
 		},
-		beforeCreate() {
+		created() {
 			// 判断是否有token
-			if (!getToken()) {
-				//没有token，没登陆过，获取wxcode
-				let code = returnWxcode();
-				let params = {
-					code: code,
-					status: 1
-				}
-				console.log(code)
-				login(params).then(res => {
-					if (res.data.status == 1) {
-						// 跳转注册页面
-						console.log("未登录")
-						uni.navigateTo({
-							url: "../login/login"
-						})
-					} else {
-						// 登陆成功
-						console.log(res.data.token)
-						setToken(res.data.token);
-						setOpenId(res.data.openid)
-					}
-				})
+			// console.log("beforeCreate");
+			// if (!getToken()) {
+			// 	console.log("没有token")
+			// 	//没有token，没登陆过，获取wxcode
+			// let code = returnWxcode();
+			// 	// let code = "091gYW0w3l4BSV2qdq1w3eQqgG3gYW0"
+			// 	let params = {
+			// 		code: code,
+			// 		status: 1
+			// 	}
 
-			}
+
+			console.log("555")
+
+			// 	// 判断该用户是否注册
+			// 	login(params).then(res => {
+			// 		console.log(res, "注册")
+			// 		if (res.data.status == 1) {
+			// 			// 跳转注册页面
+			// 			console.log("未登录")
+			// 			uni.navigateTo({
+			// 				url: "../login/login"
+			// 			})
+			// 		} else {
+			// 			// 登陆成功
+			// 			console.log(res.data.token)
+			// 			setToken(res.data.token);
+			// 			setOpenId(res.data.openid)
+			// 	}).catch(err =>{
+			// 		console.log(err,"err login")
+			// 	})
+
+			// } else {
+			// 	uni.navigateTo({
+			// 		url: "../login/login"
+			// 	})
+			// }
 		},
 		onShow() {
+			console.log("onshow")
 			check()
 		},
 		onLoad() {
-			this.recommend();
-			this.follow();
+			console.log("onload")
+
+			// this.recommend();
+			// this.follow();
 		},
 
 		onReachBottom() { //上拉触底函数
@@ -161,67 +177,6 @@
 			},
 			// 推荐
 			recommend() {
-				/* let recommendList = [{
-					id: 1,
-					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					image: require('static/img/2.jpg'),
-					upDateTime: "更新时间",
-					favourTotal: 1,
-					collectTotal: 1,
-					commentTotal: 1,
-					user: {
-						id: 1,
-						nickname: "张三",
-						avatarPath: require('../../static/img/1.jpg'),
-						isFollow: 0
-					}
-				}, {
-					id: 2,
-					title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
-					image: "",
-					upDateTime: "更新时间",
-					favourTotal: 1,
-					collectTotal: 1,
-					commentTotal: 1,
-					user: {
-						id: 2,
-						nickname: "李四",
-						avatarPath: require('../../static/img/1.jpg'),
-						isFollow: 1
-					}
-				}, {
-					id: 1,
-					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					image: require('static/img/2.jpg'),
-					upDateTime: "更新时间",
-					favourTotal: 1,
-					collectTotal: 1,
-					commentTotal: 1,
-					user: {
-						id: 1,
-						nickname: "张三",
-						avatarPath: require('../../static/img/1.jpg'),
-						isFollow: 0
-					}
-				}, {
-					id: 1,
-					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					image: require('static/img/2.jpg'),
-					upDateTime: "更新时间",
-					favourTotal: 1,
-					collectTotal: 1,
-					commentTotal: 1,
-					user: {
-						id: 1,
-						nickname: "张三",
-						avatarPath: require('../../static/img/1.jpg'),
-						isFollow: 0
-					}
-				}]; */
 				let _this = this;
 				let params = {
 					current: this.recommendCurrent,
@@ -245,76 +200,13 @@
 			},
 			// 关注
 			follow() {
-				/* let followList = [{
-						articleId: 2,
-						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						image: "",
-						createTime: "2020-08-24",
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						status: 0,
-						user: {
-							id: 2,
-							nickname: "李四",
-							avatarPath: require('../../static/img/1.jpg')
-						}
-					}, {
-						articleId: 2,
-						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						image: require('static/img/2.jpg'),
-						createTime: "2020-08-24",
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						status: 1,
-						user: {
-							id: 2,
-							nickname: "李四",
-							avatarPath: require('../../static/img/1.jpg')
-						}
-					},
-					{
-						articleId: 2,
-						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						image: "",
-						createTime: "2020-08-24",
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						status: 2,
-						user: {
-							id: 2,
-							nickname: "李四",
-							avatarPath: require('../../static/img/1.jpg')
-						}
-					}, {
-						articleId: 2,
-						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						image: require('static/img/2.jpg'),
-						createTime: "2020-08-24",
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						status: 3,
-						user: {
-							id: 2,
-							nickname: "李四",
-							avatarPath: require('../../static/img/1.jpg')
-						}
-					}
-				]; */
 				let _this = this;
 				let params = {
 					current: this.followCurrent,
 					size: this.size
 				}
 				getFollow(params).then(res => {
-					_this.recommendList = [..._this.recommend, ...res.data];
+					_this.followList = [..._this.followList, ...res.data.records];
 					if (res.data.length <= _this.size) {
 						_this.loadStatus = "nomore";
 						_this.follLoadStatus = "nomore";

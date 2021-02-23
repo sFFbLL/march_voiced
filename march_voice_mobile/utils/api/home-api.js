@@ -5,8 +5,8 @@ import baseUrl from '../env.js'
  * @param {Object} params {页码 页大小}
  */
 export function getRecommend (params) {
-	return Axios.get(baseUrl + '/api/base/article-recom', {
-		params: params,
+	return Axios.get(baseUrl + '/api/article/top', {
+		params: params
 	})
 }
 
@@ -16,7 +16,7 @@ export function getRecommend (params) {
  */
 export function getFollow (params) {
 	return Axios.get(baseUrl + '/api/base/follow', {
-		params: params,
+		params: params
 	})
 }
 
@@ -26,7 +26,7 @@ export function getFollow (params) {
  */
 export function searchArticle (params) {
 	return Axios.get(baseUrl + '/api/base/searchArticle', {
-		params: params,
+		params: params
 	})
 }
 
@@ -36,6 +36,6 @@ export function searchArticle (params) {
  */
 export function searchUser (params) {
 	return Axios.get(baseUrl + '/api/base/searchUser', {
-		params: params,
+		params: params
 	})
 }

@@ -1,5 +1,6 @@
 <template>
 	<view class="personal-center">
+		<!-- 头部用户信息 -->
 		<view class="header">
 			<attentionAndFansCell :id="userInfo.user.id"
 			 :nickname="userInfo.user.nickname"
@@ -28,17 +29,21 @@
 				 @click="goToEdit()">编辑个人信息</button>
 			</view>
 		</view>
+
+		<!-- 用户文章想法列表 -->
 		<view class="content">
 			<view class="tab-nav">
 				<tabCarb :tabs="tabs"
 				 v-on:tabActive='tabActive'></tabCarb>
 			</view>
 			<view class="kind-article-list">
+				<!-- 文章列表 -->
 				<view v-for="(item,index) in articleList"
 				 v-if="!tabIndex">
 					<recommend :articleInfo="item"
 					 class="arcitle-item item"></recommend>
 				</view>
+				<!-- 想法列表 -->
 				<view v-for="(item,index) in ideaList"
 				 v-if="tabIndex === 1">
 					<view class="ideacontent item">
@@ -49,7 +54,9 @@
 							<view slot="underText">{{item.updateTime}}</view>
 						</attentionAndFansCell>
 						<!-- 想法的文字部分 -->
-						<articleContent :articleContent="item.content"></articleContent>
+						<articleContent :articleContent="item.content"
+						 :isIdea="true"
+						 :id="item.id"></articleContent>
 						<!-- 想法的图片部分组件 -->
 						<imageAdaptation :imgList="item.imgList"></imageAdaptation>
 						<!-- 点赞表情组件 -->

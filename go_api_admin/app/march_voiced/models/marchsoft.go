@@ -21,11 +21,11 @@ func (e *MarchSoft) TableName() string {
 }
 
 func (e *MarchSoft) GetMarchApplyUser(applyMarchUser *bo.ApplyMarchUser, p *dto.ApplyMarchPaginator) (err error) {
-	nickname :="%" + p.Nickname + "%"
+	nickname := "%" + p.Nickname + "%"
 	table := global.Eloquent.Table("sys_user").
 		Select("sys_user.id, sys_user.nick_name, sys_user.avatar_path, sys_user.phone, sys_user.march_update_time, sys_user.is_march, sys_dept.name").
 		Joins("left join sys_dept on sys_user.dept_id = sys_dept.id").
-		Where("sys_user.is_deleted=0 and sys_user.is_march=2 and sys_user.nickname like ?", nickname)
+		Where("sys_user.is_deleted=0 and sys_user.is_march=2 and sys_user.nick_name like ?", nickname)
 	if p.EndTime != 0 && p.StartTime != 0 {
 		err = table.Where("sys_user.march_update_time > ? AND sys_user.march_update_time < ?", p.StartTime, p.EndTime).Count(&applyMarchUser.Total).
 			Order("sys_user.march_update_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
@@ -87,7 +87,7 @@ func (e *MarchSoft) SelectMarchSoftList(paging dto.Paging) (marchList *[]bo.Marc
 		Select("marchsoft.id, marchsoft.content, marchsoft.image, marchsoft.create_time, marchsoft.create_by, marchsoft.update_by, marchsoft.update_time, sys_user.nick_name, sys_user.avatar_path").
 		Joins("JOIN sys_user ON marchsoft.create_by = sys_user.id").
 		Where("marchsoft.is_deleted = 0").
-		Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(marchList).Error
+		Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(marchList).Error
 	return
 }
 
@@ -95,6 +95,15 @@ func (e *MarchSoft) SelectMarchSoftListByUserId(paging dto.SelectMarchListById) 
 	marchList = new([]MarchSoft)
 	err = global.Eloquent.Table(e.TableName()).
 		Where("create_by = ? AND is_deleted = 0", paging.ID).
-		Limit(paging.Size).Offset((paging.Current - 1) * paging.Size).Find(marchList).Error
+		Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(marchList).Error
+	return
+}
+
+func (e *MarchSoft) MarchDetail() (march *bo.March, err error) {
+	march = new(bo.March)
+	err = global.Eloquent.Table(e.TableName()).
+		Select("marchsoft.id, marchsoft.content, marchsoft.image , marchsoft.create_time, marchsoft.create_by, marchsoft.update_by, marchsoft.update_time, sys_user.nick_name, sys_user.avatar_path").
+		Joins("JOIN sys_user ON marchsoft.create_by = sys_user.id").
+		Where("marchsoft.id = ? AND marchsoft.is_deleted = 0", e.ID).First(march).Error
 	return
 }

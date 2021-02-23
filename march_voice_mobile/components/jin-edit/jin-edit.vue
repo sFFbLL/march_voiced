@@ -123,9 +123,6 @@ export default {
 	components: {
 		jinIcon
 	},
-	created() {
-		
-	},
 	methods: {
 		onEditorReady(d) {
 			uni.createSelectorQuery()
@@ -253,8 +250,17 @@ export default {
 		},
 		editChange(e){
 			// console.log(e.detail.text)
+			// console.log(e.detail.html)
 			this.textLength = e.detail.text.replace(/[\r\n\s+]/g,"").length
+			this.$emit('eidtorChange',this.textLength);
 			// console.log(e.detail.text)
+		},
+		reLoadEditor(params){
+			if(params){
+				this.html = params.html
+				this.textLength = params.textLength
+			}
+			this.onEditorReady()
 		},
 		release(isPublic) {
 			this.showSettingLayer = false;

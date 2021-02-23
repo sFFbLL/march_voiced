@@ -4,10 +4,23 @@ import (
 	"encoding/json"
 	"strconv"
 	"time"
+
+	"gopkg.in/errgo.v2/errors"
 )
 
 func StringToInt(e string) (int, error) {
 	return strconv.Atoi(e)
+}
+
+func StringToUint(e string) (a uint, err error) {
+	var i int
+	i, err = strconv.Atoi(e)
+	if err != nil || i < 0 {
+		err = errors.New("StringToUint Failed")
+		return
+	}
+	a = uint(i)
+	return
 }
 
 func GetCurrentTimeStr() string {
