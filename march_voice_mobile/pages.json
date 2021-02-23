@@ -94,8 +94,8 @@
 		}, {
 			"path": "pages/pcPublish/pcPublish",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": ""
+				// "enablePullDownRefresh": false
 			}
 
 		}, {
