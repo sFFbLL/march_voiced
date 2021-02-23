@@ -98,17 +98,25 @@
 				isLoadMore: false, //是否加载中
 			}
 		},
-		beforeCreate() {
+		created() {
 			// 判断是否有token
+			// console.log("beforeCreate");
 			// if (!getToken()) {
+			// 	console.log("没有token")
 			// 	//没有token，没登陆过，获取wxcode
-			// 	let code = returnWxcode();
+			// let code = returnWxcode();
+			// 	// let code = "091gYW0w3l4BSV2qdq1w3eQqgG3gYW0"
 			// 	let params = {
 			// 		code: code,
 			// 		status: 1
 			// 	}
-			// 	console.log(code)
+
+
+			console.log("555")
+
+			// 	// 判断该用户是否注册
 			// 	login(params).then(res => {
+			// 		console.log(res, "注册")
 			// 		if (res.data.status == 1) {
 			// 			// 跳转注册页面
 			// 			console.log("未登录")
@@ -120,17 +128,25 @@
 			// 			console.log(res.data.token)
 			// 			setToken(res.data.token);
 			// 			setOpenId(res.data.openid)
-			// 		}
+			// 	}).catch(err =>{
+			// 		console.log(err,"err login")
 			// 	})
 
+			// } else {
+			// 	uni.navigateTo({
+			// 		url: "../login/login"
+			// 	})
 			// }
 		},
 		onShow() {
+			console.log("onshow")
 			check()
 		},
 		onLoad() {
-			this.recommend();
-			this.follow();
+			console.log("onload")
+
+			// this.recommend();
+			// this.follow();
 		},
 
 		onReachBottom() { //上拉触底函数

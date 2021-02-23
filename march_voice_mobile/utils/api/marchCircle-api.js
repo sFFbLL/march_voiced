@@ -19,21 +19,24 @@ export function marchCircleList(params){
 // 用户发布按钮
 export function publishIdea(params){
 	return Axios.post(baseUrl+'/api/march-article',{
-		params:params,
+		content:params.content,
+		imageList:params.imageList,
+		image:params.image
 	})
 }
 
 // 申请加入三月圈
 export function joinMarchCircle(params){
 	return Axios.post(baseUrl+'/api/apply/march',{
-		params:params,
+	params:params,
 	})
 }
 
 // 点赞表情
 export function changeFavour(params){
 	return Axios.post(baseUrl+'/api/apply/march',{
-		params:params,
+		id:params.id,
+		type:params.type,
 	})
 }
 
@@ -59,5 +62,3 @@ export function publishComment(params){
 		params:params,
 	})
 }
-
-// 调用接口转化imgurl

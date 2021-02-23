@@ -25,7 +25,7 @@ func (e *MarchSoft) GetMarchApplyUser(applyMarchUser *bo.ApplyMarchUser, p *dto.
 	table := global.Eloquent.Table("sys_user").
 		Select("sys_user.id, sys_user.nick_name, sys_user.avatar_path, sys_user.phone, sys_user.march_update_time, sys_user.is_march, sys_dept.name").
 		Joins("left join sys_dept on sys_user.dept_id = sys_dept.id").
-		Where("sys_user.is_deleted=0 and sys_user.is_march=2 and sys_user.nickname like ?", nickname)
+		Where("sys_user.is_deleted=0 and sys_user.is_march=2 and sys_user.nick_name like ?", nickname)
 	if p.EndTime != 0 && p.StartTime != 0 {
 		err = table.Where("sys_user.march_update_time > ? AND sys_user.march_update_time < ?", p.StartTime, p.EndTime).Count(&applyMarchUser.Total).
 			Order("sys_user.march_update_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).

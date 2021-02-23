@@ -376,7 +376,7 @@
 					}, 2000);
 				}
 				// 数据已读
-				readMessage(1).then(res => {
+				readMessage(2).then(res => {
 					
 				})
 			},
@@ -404,7 +404,7 @@
 					}, 2000);
 				}
 				// 数据已读
-				readMessage(1).then(res => {
+				readMessage(3).then(res => {
 					
 				})
 			}

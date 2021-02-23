@@ -4,7 +4,8 @@ import baseUrl from './env.js'
 // 补全用户信息
 export function creatNewUser(params) {
 	return Axios.post(baseUrl + '/api/user/creatNewUser', {
-		params: params,
+		username: params.username,
+		password: params.password
 	})
 }
 
@@ -18,6 +19,6 @@ export function isExist(params) {
 // 用户登录
 export function login(params) {
 	return Axios.post(baseUrl + '/api/user/login', {
-		params: params,
+		code: params.code,
 	})
 }

@@ -149,11 +149,13 @@
 				}
 
 			},
+			
+			
 			// 调用接口对点赞状态改变
 			emjoiInterface(params) {
-				// changeFavour(params).then(res=>{
-				// 	console.log("表情点赞状态改变")
-				// })
+				changeFavour(params).then(res=>{
+					console.log("表情点赞状态改变")
+				})
 			},
 			// 点击表情事件处理
 			clickAni(emoji) {

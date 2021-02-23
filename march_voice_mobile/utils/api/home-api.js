@@ -5,7 +5,7 @@ import baseUrl from '../env.js'
  * @param {Object} params {页码 页大小}
  */
 export function getRecommend (params) {
-	return Axios.get(baseUrl + '/api/base/article-recom', {
+	return Axios.get(baseUrl + '/api/article/top', {
 		params: params
 	})
 }
