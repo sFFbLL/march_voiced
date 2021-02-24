@@ -79,16 +79,18 @@ func (a *Article) GetApplyArticle(applyArticleList *bo.ApplyArticleList, p *dto.
 		Joins("left join article_tag on article_tag.id = article.tag").
 		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article.status!=0").
 		Where("sys_user.nick_name like ? and article.title like ?", nickname, title)
-	if p.EndTime != 0 && p.StartTime != 0 {
-		err = table.Where("article.status_update_time > ? AND article.status_update_time < ?", p.StartTime, p.EndTime).
-			Count(&applyArticleList.Total).
-			Order("article.status_update_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
-			Find(applyArticleList.Records).Error
-	} else {
-		err = table.Count(&applyArticleList.Total).
-			Order("sys_user.march_update_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
-			Find(applyArticleList.Records).Error
+	if p.Status !=0 && p.Status < 3 {
+		table = table.Where("article.status = ?", p.Status)
 	}
+	if p.Tag != 0 {
+		table = table.Where("article.tag = ?", p.Tag)
+	}
+	if p.EndTime != 0 && p.StartTime != 0 {
+		table = table.Where("article.status_update_time > ? AND article.status_update_time < ?", p.StartTime, p.EndTime)
+	}
+	err = table.Count(&applyArticleList.Total).
+		Order("sys_user.march_update_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
+		Find(applyArticleList.Records).Error
 	return
 }
 

@@ -63,7 +63,7 @@ func QueryHeight(search dto.SearchActileDto,client *elastic.Client) (hightmap []
 	//两个里面必须有
 	//query :=elastic.NewBoolQuery().Must(elastic.NewMatchPhraseQuery("title","css"),elastic.NewMatchPhraseQuery("text","css"))
 	query :=elastic.NewBoolQuery().Should(elastic.NewMatchPhraseQuery("title",search.SearchWord),elastic.NewMatchPhraseQuery("content",search.SearchWord))
-	res, err := client.Search("article").Query(query).Highlight(higthFild).Size(search.Size).From((search.Current-1)*search.Size).Do(context.Background())
+	res, err := client.Search("article").Query(query).Highlight(higthFild).Size(int(search.Size)).From(int((search.Current - 1) * search.Size)).Do(context.Background())
 	if err != nil {
 		return nil,err
 	}
