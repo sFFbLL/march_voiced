@@ -33,6 +33,7 @@ func GetFollowList(c *gin.Context) {
 	if err != nil {
 		c.Error(err)
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
 		return
 	}
 
@@ -48,12 +49,11 @@ func GetFollowList(c *gin.Context) {
 		app.ResponseError(c, app.CodeParamNotComplete)
 		return
 	}
-
 	// 业务逻辑处理
 	if p.Id == 0 {
 		p.Id = uint(user.UserId)
 	}
-	res, err := fo.GetFollowList(p)
+	res, err := fo.GetFollowList(p, user.UserId)
 	if err != nil {
 		zap.L().Error("get follow list failed", zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
@@ -75,11 +75,13 @@ func GetFollowList(c *gin.Context) {
 // @Router /api/follow/fans [get]
 func GetFansList(c *gin.Context) {
 	p := new(dto.GetFollowList)
+
 	// 获取上下文消息
 	user, err := api.GetUserMessage(c)
 	if err != nil {
 		c.Error(err)
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
 		return
 	}
 	if err := c.ShouldBindQuery(p); err != nil {
@@ -98,7 +100,7 @@ func GetFansList(c *gin.Context) {
 	if p.Id == 0 {
 		p.Id = uint(user.UserId)
 	}
-	res, err := fo.GetFansList(p)
+	res, err := fo.GetFansList(p, user.UserId)
 	if err != nil {
 		zap.L().Error("get fans list failed", zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
@@ -122,6 +124,7 @@ func GetStatus(c *gin.Context) {
 	user, err := api.GetUserMessage(c)
 	if err != nil {
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
 	}
 	// 1.获取参数，设置默认值，校验参数
 	id := c.Query("id")
@@ -157,9 +160,10 @@ func UpdateStatus(c *gin.Context) {
 	user, err := api.GetUserMessage(c)
 	if err != nil {
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
 		return
 	}
-	if err = c.ShouldBindJSON(id); err != nil || id.Id == 0 {
+	if err = c.ShouldBindJSON(id); err != nil || id.Id == 0 || id.Id == uint(user.UserId) {
 		zap.L().Error("UpdateStatus failed", zap.String("username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeParamIsInvalid)
 		return
