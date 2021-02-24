@@ -1,15 +1,15 @@
 <template>
   <div class="status">
-    <p v-if="data.objectState == 1" class="status">待审核</p>
+    <p v-if="data.status == '1'" class="status">审核通过</p>
     <p
-      v-else-if="data.objectState == 2"
+      v-else-if="data.status == '2'"
       class="status"
       style="color: rgba(67, 207, 124, 1)"
     >
-      审核通过
+      待审核
     </p>
     <p
-      v-else-if="data.objectState == 3"
+      v-else-if="data.status == '3'"
       class="status"
       style="color: rgba(255, 87, 51, 1)"
     >
