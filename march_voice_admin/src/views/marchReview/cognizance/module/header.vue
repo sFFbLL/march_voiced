@@ -1,7 +1,11 @@
 <template>
-  <div class="header">
+  <div
+    v-if="crud.props.searchToggle"
+    style="max-width: 1500px"
+    class="header style-header"
+  >
     <el-input
-      v-model="query.authorNickname"
+      v-model="query.nickname"
       clearable
       size="small"
       placeholder="作者昵称"
@@ -18,7 +22,7 @@
 </template>
 
 <script>
-import header from '@crud/crud'
+import { header } from '@crud/crud'
 import DateRangePicker from '@/components/DateRangePicker'
 export default {
   components: { DateRangePicker },
@@ -32,7 +36,7 @@ export default {
   },
   data() {
     return {
-      authorNickname: '',
+      nickname: '',
       createTime: ''
     }
   },
@@ -43,3 +47,4 @@ export default {
   }
 }
 </script>
+

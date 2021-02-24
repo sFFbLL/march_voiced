@@ -7,28 +7,35 @@
     <div class="style-a4">
       <div class="position-box">
         <div class="body-box">
-          <!-- 状态显示 -->
-          <div v-if="data.objectState == 2" class="status-box success">
-            <span>已通过</span>
+          <div class="header-but">
+            <!-- 状态显示 -->
+            <div
+              v-if="this.$route.query.status == 1"
+              class="status-box success"
+            >
+              <span>已通过</span>
+            </div>
+            <div v-if="this.$route.query.status == 2" class="status-box wait">
+              <span>待审核</span>
+            </div>
+            <div class="status-box reject">
+              <Reject v-if="this.showReject" :content="content" :data="data" />
+            </div>
           </div>
-          <div v-if="this.data.objectState == 1" class="status-box wait">
-            <span>待审核</span>
-          </div>
-          <div v-if="this.data.objectState == 3" class="status-box failed">
-            <span>已驳回</span>
-          </div>
-          <div class="button-box">
-            <Reject
-              v-if="this.showReject"
-              :content="this.$route.query.values"
-              :data="data"
+          <div v-if="nois" class="ee">
+            <el-alert
+              title="该文章含有敏感词汇，请自行选择是否推荐！"
+              type="warning"
+              :closable="false"
+              show-icon
             />
           </div>
-          <div class="head-box">
-            <!-- 获奖成果标题 -->
-            <div class="tittle-box">
-              <span class="ql-editor" v-html="showHtml(contents)" />
+          <div class="tittttt">
+            <div class="tittle">
+              <span>{{ title }}</span>
             </div>
+            <!-- 获奖成果标题 -->
+            <span class="ql-editor" v-html="showKeyWord(contents)" />
           </div>
         </div>
       </div>
@@ -37,30 +44,80 @@
 </template>
 
 <script>
-import Reject from '@/components/MarchAffirmation/MarchAffirmation.vue'
-// import DetailState from '@/components/State/DetailState.vue'
-// import { getInfoById } from "@/api/data";
-// import Cookies from "js-cookie";
-// import { validateSelectOptionId, getAllName } from "@/utils/validate.js";
+import Reject from '@/components/Affirmation/DetailAffirmation.vue'
+import { getInfoById, sensitive } from '@/api/review/articleReview.js'
 
 export default {
   name: 'Detail',
   components: { Reject },
-
   data() {
     return {
-      data: { objectState: 1 },
+      nois: false,
+      recommend: null,
+      content: {
+        status: this.$route.query.status,
+        recommend: this.$route.query.recommend,
+        id: this.$route.query.id
+      },
+      title: null,
+      data: {
+        status: null
+      },
       loading: false,
       showReject: true,
-      contents:
-        '<p>爱搜IDno为阿斯兰的框架内</p><hr><p><br></p><hr><h2>我是test</h2><p>我是<strong>加粗</strong></p><p><em>我是斜体</em><span class="ql-cursor">﻿</span></p>'
+      contents: null,
+      Sensitive1: [],
+      arrnew: []
     }
   },
   created() {
-    this.data.objectState = 3
+    getInfoById('/api/article/detail', this.$route.query.id).then(
+      data => {
+        this.title = data.data.title
+        this.contents = data.data.content
+      }
+    )
+    sensitive('/api/article/word', this.$route.query.id).then(
+      data => {
+        if (data.data.Sensitive != null) {
+          this.arrnew = data.data.Sensitive.map((obj, index) => {
+            return obj.word
+          }).join(',').split(',')
+          if (this.arrnew && this.arrnew != null) {
+            this.nois = true
+          }
+          // this.Sensitive1 = data.data.Sensitive;
+          // console.log(data.data.Sensitive)
+        }
+      }
+    )
+    // console.log(this.nois)
   },
 
   methods: {
+    showKeyWord(val) {
+      if (val) {
+        val = val + '' // 转化为字符串类型
+      } else {
+        return
+      }
+      // 1.传入关键词数组keyWordArr
+      const keyWordArr = this.arrnew
+      let str = val
+
+      if (keyWordArr && keyWordArr != '') {
+        // 2.定制关键词对应正则
+        keyWordArr.forEach(e => {
+          const regStr = '' + `(${e})`
+          const reg = new RegExp(regStr, 'g')
+          // 3.正则替换，关键词飘红
+          str = str.replace(reg, '<span style="color:red;">' + e + '</span>')
+        })
+      }
+      return str
+    },
+    sensitive,
+    getInfoById,
     showHtml(contents) {
       return contents
         .replace(contents ? /&(?!#?\w+;)/g : /&/g, '&amp;')
@@ -69,9 +126,6 @@ export default {
         .replace(/&quot;/g, '"')
         .replace(/&#39;/g, "'")
     }
-    // getInfoById,
-    // getAllName,
-    // validateSelectOptionId
   }
 }
 </script>

@@ -1,23 +1,25 @@
 <template>
   <div class="crud-opts">
     <span class="crud-opts-left">
-      <span>
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="success"
-          icon="el-icon-search"
-          @click="toQuery"
-        >搜索</el-button>
-        <el-button
-          v-if="crud.optShow.reset"
-          class="filter-item"
-          size="mini"
-          type="warning"
-          icon="el-icon-refresh-left"
-          @click="crud.resetQuery(true, role, deptId)"
-        >重置</el-button>
-      </span>
+      <!--左侧插槽-->
+      <slot name="left" />
+      <el-button
+        class="filter-item"
+        size="mini"
+        type="success"
+        icon="el-icon-search"
+        @click="crud.toQuery"
+      >搜索</el-button>
+      <el-button
+        v-if="crud.optShow.reset"
+        class="filter-item"
+        size="mini"
+        type="warning"
+        icon="el-icon-refresh-left"
+        @click="crud.resetQuery()"
+      >重置</el-button>
+      <!--右侧-->
+      <slot name="right" />
     </span>
     <el-button-group class="crud-opts-right">
       <!-- 查询图标 -->
@@ -29,7 +31,7 @@
         @click="toggleSearch()"
       />
       <!-- 刷新图标 -->
-      <el-button size="mini" icon="el-icon-refresh" @click="crud.refresh()" />
+      <el-button size="mini" icon="el-icon-refresh" @click="toQuery" />
 
       <el-popover placement="bottom-end" width="150" trigger="click">
         <el-button slot="reference" size="mini" icon="el-icon-s-grid">
@@ -53,6 +55,22 @@
 </template>
 <script>
 import CRUD, { crud } from '@crud/crud'
+
+function sortWithRef(src, ref) {
+  const result = Object.assign([], ref)
+  let cursor = -1
+  src.forEach(e => {
+    const idx = result.indexOf(e)
+    if (idx === -1) {
+      cursor += 1
+      result.splice(cursor, 0, e)
+    } else {
+      cursor = idx
+    }
+  })
+  return result
+}
+
 export default {
   mixins: [crud()],
   props: {
@@ -62,18 +80,20 @@ export default {
         return {}
       }
     },
+    ignoreColumns: {
+      type: Array,
+      default: () => { return [] }
+    },
+    hiddenColumns: {
+      type: Array,
+      default: () => { return [] }
+    },
     url: {
       type: String,
       default: () => {
         return ''
       }
     }
-    // identity: {
-    //   type: String,
-    //   default: () => {
-    //     return "cognizanceObjectStateArray";
-    //   },
-    // },
   },
   isMyExport: {
     type: Boolean,
@@ -83,13 +103,61 @@ export default {
   },
   data() {
     return {
-      tableColumns: ['上海', '北京', '广州', '深圳'],
+      tableColumns: [],
       allColumnsSelected: true,
-      allColumnsSelectedIndeterminate: false
+      allColumnsSelectedIndeterminate: false,
+      tableUnwatcher: null,
+      // 忽略下次表格列变动
+      ignoreNextTableColumnsChange: false
     }
   },
+  watch: {
+    'crud.props.table'() {
+      this.updateTableColumns()
+      this.tableColumns.forEach(column => {
+        if (this.hiddenColumns.indexOf(column.property) !== -1) {
+          column.visible = false
+          this.updateColumnVisible(column)
+        }
+      })
+    },
+    'crud.props.table.store.states.columns'() {
+      this.updateTableColumns()
+    }
+  },
+  created() {
+    this.crud.updateProp('searchToggle', true)
+  },
   methods: {
+    updateTableColumns() {
+      const table = this.crud.getTable()
+      if (!table) {
+        this.tableColumns = []
+        return
+      }
+      let cols = null
+      const columnFilter = e => e && e.type === 'default' && e.property && this.ignoreColumns.indexOf(e.property) === -1
+      const refCols = table.columns.filter(columnFilter)
+      if (this.ignoreNextTableColumnsChange) {
+        this.ignoreNextTableColumnsChange = false
+        return
+      }
+      this.ignoreNextTableColumnsChange = false
+      const columns = []
+      const fullTableColumns = table.$children.map(e => e.columnConfig).filter(columnFilter)
+      cols = sortWithRef(fullTableColumns, refCols)
+      cols.forEach(config => {
+        const column = {
+          property: config.property,
+          label: config.label,
+          visible: refCols.indexOf(config) !== -1
+        }
+        columns.push(column)
+      })
+      this.tableColumns = columns
+    },
     toQuery() {
+      console.log(111)
       this.crud.toQuery()
     },
     toggleSearch() {
@@ -160,6 +228,9 @@ export default {
   display: -webkit-flex;
   display: flex;
   align-items: center;
+  margin-left: auto;
+}
+.crud-opts .crud-opts-right {
   margin-left: auto;
 }
 </style>

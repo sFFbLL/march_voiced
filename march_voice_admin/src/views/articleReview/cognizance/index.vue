@@ -10,21 +10,23 @@
       v-loading="crud.loading"
       stripe
       lazy
-      :data="tableData"
+      :data="unsigns"
       row-key="id"
       style="width: 100%"
     >
-      <el-table-column prop="articleTitle" label="文章题目" />
-      <el-table-column prop="type" label="所属类别" />
-      <el-table-column prop="authorNickname" label="作者昵称" />
-      <el-table-column prop="time" label="时间" width="85" />
-      <!-- <el-table-column prop="objectState" label="状态" /> -->
+      <el-table-column prop="title" label="文章题目" />
+      <el-table-column prop="tag" label="所属类别" />
+      <el-table-column prop="nickname" label="作者昵称" />
+      <el-table-column prop="createTime" label="时间" width="285">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
-        prop="statee"
+        prop="status"
         class="colum-name"
-        fixed="right"
         label="状态"
-        width="130"
+        width="180"
       >
         <template slot-scope="scope">
           <State :data="scope.row" />
@@ -36,7 +38,15 @@
         align="center"
         fixed="right"
         :width="operateWidth"
-      />
+      >
+        <template slot-scope="scope">
+          <Affirmation
+            :data="scope.row"
+            :content="content"
+            @btnSetWidthEvent="getBtnSetWidth"
+          />
+        </template>
+      </el-table-column>
     </el-table>
     <!--分页组件-->
     <pagination />
@@ -45,20 +55,19 @@
 
 <script>
 import eHeader from './module/header'
-// import { validatePoint, validateSelectOptionId } from "@/utils/validate.js";
 import CRUD, { presenter } from '@crud/crud'
 import crudOperation from '@/components/AffirmationSearch/AffirmationSearch.vue'
 import pagination from '@crud/Pagination'
-import State from './module/State.vue'
-// import Affirmation from "@/components/Affirmation/Affirmation.vue";
-
+import State from '@/components/State/State.vue'
+import Affirmation from '@/components/Affirmation/Affirmation.vue'
 export default {
   name: 'ArticleReview',
-  components: { eHeader, pagination, State, crudOperation },
+  components: { Affirmation, eHeader, pagination, State, crudOperation },
   cruds() {
     return CRUD({
       title: '文章审核',
-      // url: "api/expertLectures/condition-query-sel",
+      url: '/api/article/admin',
+      sort: [{ column: 'level', asc: 'true' }],
       // 主页操作栏显示哪些按钮
       optShow: {
         add: false,
@@ -72,39 +81,12 @@ export default {
   mixins: [presenter()],
   data() {
     return {
-      tableData: [
-        {
-          articleTitle: '2016-05-02',
-          type: '王小虎',
-          authorNickname: '上海市普陀区金沙江路 1518 弄',
-          time: '上海市普陀区金沙江路 1518 弄',
-          objectState: 1
-        },
-        {
-          articleTitle: '2016-05-04',
-          type: '王小虎',
-          authorNickname: '上海市普陀区金沙江路 1518 弄',
-          time: '上海市普陀区金沙江路 1518 弄',
-          objectState: 2
-        },
-        {
-          articleTitle: '2016-05-01',
-          type: '王小虎',
-          authorNickname: '上海市普陀区金沙江路 1518 弄',
-          time: '上海市普陀区金沙江路 1518 弄',
-          objectState: 2
-        },
-        {
-          articleTitle: '2016-05-03',
-          type: '王小虎',
-          authorNickname: '上海市普陀区金沙江路 1518 弄',
-          time: '上海市普陀区金沙江路 1518 弄',
-          objectState: 3
-        }
-      ],
+      recommend: null,
       content: {
-        // identity: "expert_lectures",
-        toDetialPath: 'details'
+        recommend: '',
+        toDetialPath: 'Detail',
+        arrnew: [],
+        arr: []
       },
       permission: {
         add: ['admin', 'job:add'],
@@ -113,19 +95,19 @@ export default {
       },
       // 操作列宽度
       operateWidth: 150
-      // exportUrl: "api/expertLectures/export-excel",
-      // identity: "expert_lectures",
     }
   },
+  computed: {
+    unsigns() {
+      return this.crud.data.filter((item) => item.status === 1 || item.status === 2)
+    }
+  },
+
   methods: {
-    // validate(scope, identity) {
-    //   validatePoint(scope, identity, this);
-    // },
     getBtnSetWidth(width) {
       width += 15
       this.operateWidth = width > this.operateWidth ? width : this.operateWidth
     }
-    // validateSelectOptionId,
   }
 }
 </script>
