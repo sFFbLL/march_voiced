@@ -3,19 +3,19 @@ import Config from '../settings.js'
 //向微信发送请求，获取code（在url上）
 export function getWxCode() {
 	// window.location.href =
-	// 	"https://open.weixin.qq.com/connect/oauth2/authorize?" +
-	// 	"appid=" + Config.appId + "&redirect_uri=" +
-	// 	encodeURIComponent(location.href) +
-	// 	"&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
-		
-		
-		window.location.href =
-			"https://open.weixin.qq.com/connect/oauth2/authorize?" +
-			"appid="+Config.appId+"&redirect_uri=" +
-			"http://linbolun.cn/h5/" +
-			"&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
-			
-	
+		// "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+		// "appid=" + Config.appId + "&redirect_uri=" +
+		// encodeURIComponent(location.href) +
+		// "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+
+
+	window.location.href =
+		"https://open.weixin.qq.com/connect/oauth2/authorize?" +
+		"appid=" + Config.appId + "&redirect_uri=" +
+		"http://linbolun.cn/h5/" +
+		"&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+
+
 }
 //解析url，拿到code
 export function parseCode() {

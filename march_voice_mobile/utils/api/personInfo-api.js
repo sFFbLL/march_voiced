@@ -5,7 +5,7 @@ import baseUrl from '../env.js'
 // 查询用户信息
 export function information(params) {
 	return Axios.get(baseUrl + '/api/user/information', {
-		params: params,
+		id: params.id,
 	})
 }
 
