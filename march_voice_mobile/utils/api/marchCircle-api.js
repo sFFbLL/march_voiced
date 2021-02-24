@@ -52,7 +52,7 @@ export function changeFavour(params){
 // 三月圈详情页调用
 export function ideaDetail(params){
 	return  Axios.get(baseUrl+'/api/march/detail/id',{
-		params:params,
+		id:params.id,
 	})
 }
 

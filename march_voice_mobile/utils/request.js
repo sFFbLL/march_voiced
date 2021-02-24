@@ -15,17 +15,12 @@ Axios.defaults.timeout = 8000;
 Axios.interceptors.request.use(
   // 在发送请求前要做的事儿
   (config) => {
-    // uni.showLoading({
-    //     title: '加载中'
-    // });
     console.log("来到了全局request中");
 
     setToken(
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNjE3NjY0NDc1LCJpc3MiOiJteS1wcm9qZWN0In0.myzEmcmmfdceYzMrsLBHSrGZudUmNhEN8fLGy0yBg8g"
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNjE3NzM2NTIxLCJpc3MiOiJteS1wcm9qZWN0In0.l3-dvGSa41PUIybA_Dmq50ZtePo6qgwe5YVBRTs8K8Q"
     )
     config.headers['Authorization'] = getToken() //让每个请求携带自定义token
-	
-	// config.headers['Authorization'] = getToken() //让每个请求携带自定义token
     config.headers['Content-type'] = "application/json;charset=utf-8";
     config.data = JSON.stringify(config.data);
     console.log(config);
@@ -38,37 +33,42 @@ Axios.interceptors.request.use(
 )
 // 响应拦截器
 Axios.interceptors.response.use(
-    (response) => {
-       // uni.hideLoading();
-		uni.showToast({
-		    title: '来到了response拦截success中',
-		    duration: 2000,
-			// icon:success
-		});
-        return response.data;
-    },
-    (err) => {
-        console.log(err);
-        if(err && err.response) {
-            switch (err.response.status) {
-                case 400:
-                    err.message = '参数错误（400）';
-                    break;
-                case 401:
-                    err.message = '未授权访问（401）';
-                    break;
-                case 403:
-                    err.message = '权限错误（403）';
-                    break;
-                case 404:
-                    err.message = '访问资源错误（404）';
-                case 500:
-                    err.message = '服务器错误（500）'
-            }
-			
-        } else if (err.response.status < 200 || err.response.status > 300 ) {
-            err.message = '请求失败';
-        }
+	(response) => {
+		console.log(response.data.message, "success");
+		// uni.showToast({
+		// 	title: response.data.message,
+		// 	duration: 2000,
+		// 	icon: "none"
+		// });
+		return response.data;
+	},
+	(err) => {
+		console.log("error33333");
+		if (err && err.response) {
+			switch (err.response.status) {
+				case 400:
+					err.message = '参数错误（400）';
+					break;
+				case 401:
+					err.message = '未授权访问（401）';
+					break;
+				case 403:
+					err.message = '权限错误（403）';
+					break;
+				case 404:
+					err.message = '访问资源错误（404）';
+				case 500:
+					err.message = '服务器错误（500）';
+				
+			}
+			// uni.showToast({
+			// 	title: err.message,
+			// 	duration: 2000,
+			// 	icon: "none"
+			// });
+		} else if (err.response.status < 200 || err.response.status > 300) {
+			err.message = '请求失败';
+		}
 		uni.showToast({
 			title: err.message,
 			duration: 2000,
