@@ -25,15 +25,16 @@
 		},
 		beforeCreate() {
 			console.log("beforeCreate");
+			console.log(!getToken());
 			if (!getToken()) {
+				console.log("没有token，");
 				//没有token，没登陆过，获取wxcode
 				let code = returnWxcode();
-				// let code = "011SeGkl2pG3z64JQ0ol2eb0Fd0SeGk"
-				let params ={
+				console.log(code, "app.vue")
+				let params = {
 					code: code,
 					status: 1
 				}
-				console.log(code, "code")
 				// 判断该用户是否注册
 				login(params).then(res => {
 					console.log(res, "注册")
