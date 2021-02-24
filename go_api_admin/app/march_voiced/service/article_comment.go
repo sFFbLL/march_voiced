@@ -42,7 +42,7 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 		p.Current = 1
 	}
 	if p.ChildSize == 0 {
-		p.ChildSize = 3
+		p.ChildSize = 4
 	}
 	res = new(bo.GetArticleComment)
 	var SignalComments []bo.SignalArticleComment
@@ -109,7 +109,7 @@ func (co *ArticleComment) GetArticleChildComment(p *dto.GetArticleChildComment) 
 	comment := new(models.ArticleComment)
 	res := new(bo.ChildrenComment)
 	if p.Size == 0 && p.Current == 0 {
-		p.Size = 3
+		p.Size = 4
 		p.Current = 2
 	}
 	commentList, err := comment.GetArticleChildComment(p)

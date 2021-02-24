@@ -22,12 +22,12 @@ type MarchsoftComment struct {
 }
 
 type MarchsoftCreate struct {
-	CreateBy     uint   `json:"create_by"`
-	CreateByName string `json:"create_by_name"`
+	CreateBy     uint   `json:"createBy"`
+	CreateByName string `json:"createByName"`
 	IdAvatar     string `json:"id_avatar"`
 }
 
 type MarchsoftReply struct {
-	ReplyId   uint   `json:"reply_id"`
-	ReplyName string `json:"reply_name"`
+	ReplyId   uint   `json:"replyId"`
+	ReplyName string `json:"replyName"`
 }

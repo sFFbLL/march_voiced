@@ -1,6 +1,6 @@
 <template>
-	<view>
-		<view class="header">
+	<view class="page-warp">
+		<view class="header top-warp">
 			<view class="header-left-box">
 				<view class="header-img-box">
 					<u-image src="../../static/img/sanyue.png" height="96rpx" width="96rpx"></u-image>
@@ -15,7 +15,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="my-tool-box">
+		<view class="my-tool-box top-warp">
 			<view class="my-tool">
 				<jinIcon class="single" type="&#xe6e7;" font-size="44rpx" title="加粗" @click="setBold" :color="showBold ? activeColor : '#666666'"></jinIcon>
 				<jinIcon class="single" type="&#xe6fe;" font-size="44rpx" title="斜体" @click="setItalic" :color="showItalic ? activeColor : '#666666'"></jinIcon>
@@ -29,19 +29,60 @@
 				<jinIcon class="single" type="&#xe705;" font-size="44rpx" title="重做" @click="redo"></jinIcon>
 			</view>
 		</view>
-		<view class="body-box">
+		<view class="body-box center-warp">
 			<view class="body">
+				<view class="body-left-box right-warp" ref="test">
+					<view class="body-left-header">
+						<mescroll-uni :fixed="false" ref="mescrollRef" @init="mescrollInit" @down="downCallback" @up="upCallback">
+							<view class="add-article-btn" @click="newArticle">
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" fill="rgba(153, 153, 153, 1)">
+									<path d="M0 0h48v48H0z" fill="none"></path>
+									<path d="M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm10 22h-8v8h-4v-8h-8v-4h8v-8h4v8h8v4z"></path>
+								</svg>
+								<span>新建文章</span>
+							</view>
 
-				<view class="body-left-box">
-
+							<view class="article-card" v-for="item,index in list" :key="index" @click="showArticleInEditor(item.title,item.tag,item.content,item.wordCount)">
+								<u-image src="../../static/img/aiticleLogo.png" mode="widthFix" width="50rpx"></u-image>
+								<view class="article-card-text-box">
+									<span class="article-card-title">{{item.title}}</span>
+									<span class="article-card-tag" style="color: rgba(128, 128, 128, 1);" v-if="item.status === 0">草稿</span>
+									<span class="article-card-tag" style="color: #19be6b" v-if="item.status === 1">已发布</span>
+									<span class="article-card-tag" style="color: rgba(42, 130, 228, 1);" v-if="item.status === 2">审核中</span>
+								</view>
+							</view>
+						</mescroll-uni>
+					</view>
 				</view>
+				<!-- <scroll-view class="left-warp" :scroll-y="true"> -->
 				<view class="body-right-box">
 					<view class="title-box">
 						<input class="title-text" type="text" v-model="title" placeholder="标题" placeholder-class="placeholder" />
 					</view>
+					<view  class="tags-box">
+						<view class="uni-list">
+							<view class="uni-list-cell">
+								<view class="uni-list-cell-db">
+									<picker @change="bindPickerChange" :value="index" :range="tags">
+										<view class="uni-input">{{tags[index]}}</view>
+									</picker>
+								</view>
+							</view>
+						</view>
+					</view>
 					<!-- http://www.kuntong.site/api/file/uploadImage -->
-					<jinEdit ref="child" placeholder="请输入内容" :html="html" :readOnly="false" @editOk="editOk" uploadFileUrl="http://www.kuntong.site/api/file/uploadImage"></jinEdit>
+					<jinEdit ref="child" placeholder="请输入内容" :readOnly="false" @editOk="editOk" uploadFileUrl="http://www.kuntong.site/api/file/uploadImage" @eidtorChange="eidtorChange"></jinEdit>
+					<view class="body-right-foot-box">
+						<view class="text-box">
+							<span>正文字数 {{wordCount}}</span>
+						</view>
+						<view class="btn-box">
+							<u-button :custom-style="save" type="primary" size="medium " @click="release(0)">保存到草稿箱</u-button>
+							<u-button :custom-style="publish" type="info" size="medium " @click="release(2)">发布</u-button>
+						</view>
+					</view>
 				</view>
+				<!-- </scroll-view> -->
 			</view>
 		</view>
 	</view>
@@ -51,14 +92,25 @@
 	import jinEdit from '../../components/jin-edit/jin-edit.vue';
 	import jinIcon from '../../components/jin-edit/jin-icons.vue';
 	import {
-		publishArticle
+		publishArticle,
+		getArticleList,
+		upDateArticle,
+		getTags
 	} from '@/utils/api/publish-api.js'
+	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
+
 	export default {
+		mixins: [MescrollMixin], // 使用mixin
 		data() {
 			return {
-				option: null,
 				title: null,
-				html: '<p>爱搜IDno为阿斯兰的框架内</p><hr><p><br></p><hr><h2>我是test</h2><p>我是<strong>加粗</strong></p><p><em>我是斜体</em><span class="ql-cursor">﻿</span></p>', // 编辑时候跳过来绑定的html内容
+				html: '',
+				wordCount:null,
+				
+				tags: ['生活', '情感', '学习', '其他'],
+				tagsId:[0,1,9,3],
+				index: 0, // tags默认选中的下标
+				
 				showBold: false,
 				showItalic: false,
 				showIns: false,
@@ -66,68 +118,617 @@
 				showCenter: false,
 				showRight: false,
 				showSettingLayer: false,
-				activeColor: '#F56C6C'
+				activeColor: '#F56C6C',
+
+				save: {
+					borderRadius: "6rpx"
+				},
+				publish: {
+					borderRadius: "6rpx",
+					color: "rgba(0, 145, 255, 1)"
+				},
+
+				list: [{
+						id: 1,
+						title: "标题",
+						content: "CDSDGSDSDFSDF",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 0,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 1
+					}
+				],
+				list1: [{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					},
+					{
+						id: 1,
+						title: "文章标题",
+						content: "阿萨德",
+						image: "",
+						kind: 1,
+						tag: 1,
+						type: 1,
+						updateTime: 1,
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1,
+						wordCount: 1,
+						status: 0
+					}
+				],
+				
+				isUpdate:false, // 是否是编辑文章，用来调不同的接口
+				num: 1,
+				size: 15,
+				current:1
 			}
 		},
 		components: {
 			jinEdit,
 			jinIcon
 		},
-		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
-			console.log(option)
-			this.option = option //打印出上个页面传递的参数。
+		beforeMount(){
+			getTags().then(res =>{
+				for(item in res.data){
+					this.tags = item.tag
+					this.tagsId = item.id
+				}
+			})
 		},
 		methods: {
+			newArticle(){
+				this.isUpdate = false // 表示是否编辑文章
+				this.index = 0
+				let params = {
+					html:'',
+					wordCount:0
+				}
+
+				// this.$refs.child.html = ``
+				this.$refs.child.reLoadEditor(params);
+			},
+			bindPickerChange: function(e) {
+				console.log('picker发送选择改变，携带值为', e.target.value)
+				this.index = e.target.value
+				console.log(this.tagsId[this.index])
+			},
+			open(){
+			         // 通过组件定义的ref调用uni-popup方法
+			         this.$refs.popup.open()
+			      },
+			upCallback() {
+				let params = {
+					id: 0,
+					current: this.current,
+					size: 15
+				}
+				getArticleList(params).then(res => {
+					resList = res.data
+					this.current++;
+					//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+					this.mescroll.endSuccess(this.resList.length);
+					//设置列表数据
+					if (this.num == 1) this.list = []; //如果是第一页需手动制空列表
+					this.list = this.list.concat(this.resList); //追加新数据
+				}).catch(() => {
+					// this.current++
+					//联网失败, 结束加载
+					// if(this.current === 3){
+					// 	this.list1 = 
+					// 		[{
+					// 				id: 1,
+					// 				title: "asd",
+					// 				content: "阿萨德",
+					// 				image: "",
+					// 				kind: 1,
+					// 				tag: 1,
+					// 				type: 1,
+					// 				updateTime: 1,
+					// 				favourTotal: 1,
+					// 				collectTotal: 1,
+					// 				commentTotal: 1,
+					// 				wordCount: 1,
+					// 				status: 0
+					// 			},
+					// 			{
+					// 				id: 1,
+					// 				title: "文章标题",
+					// 				content: "阿萨德",
+					// 				image: "",
+					// 				kind: 1,
+					// 				tag: 1,
+					// 				type: 1,
+					// 				updateTime: 1,
+					// 				favourTotal: 1,
+					// 				collectTotal: 1,
+					// 				commentTotal: 1,
+					// 				wordCount: 1,
+					// 				status: 0
+					// 			}
+					// 		]
+					// 	}
+					// this.mescroll.endSuccess(this.list1.length);
+					//设置列表数据
+					// if (params.current == 1) this.list = []; //如果是第一页需手动制空列表
+					// this.list = this.list.concat(this.list1); //追加新数据
+					this.mescroll.endErr();
+				})
+			},
+			// upCallback(page) {
+			// 	let current = 1; // 页码, 默认从1开始
+			// 	let size = 16; // 页长, 默认每页10条
+
+			// 	uni.request({
+			// 		url: '/api/article/user?current='+this.current+'&size='+this.size,
+			// 		success: (data) => {
+
+			// 			// 接口返回的当前页数据列表 (数组)
+			// 			let curPageData = this.list1; 
+			// 			// 接口返回的当前页数据长度 (如列表有26个数据,当前页返回8个,则curPageLen=8)
+			// 			let curPageLen = 15; 
+			// 			// 接口返回的总页数 (如列表有26个数据,每页10条,共3页; 则totalPage=3)
+			// 			// let totalPage = 2; 
+			// 			// 接口返回的总数据量(如列表有26个数据,每页10条,共3页; 则totalSize=26)
+			// 			// let totalSize = data.xxx; 
+			// 			// 接口返回的是否有下一页 (true/false)
+			// 			// let hasNext = data.xxx; 
+
+			// 			//设置列表数据
+			// 			if(page.num == 1) this.list = []; //如果是第一页需手动置空列表
+			// 			this.list = this.list.concat(curPageData); //追加新数据
+
+			// 			// 请求成功,隐藏加载状态
+			// 			//方法一(推荐): 后台接口有返回列表的总页数 totalPage
+			// 			// this.mescroll.endByPage(curPageLen, totalPage); 
+
+			// 			//方法二(推荐): 后台接口有返回列表的总数据量 totalSize
+			// 			//this.mescroll.endBySize(curPageLen, totalSize); 
+
+			// 			//方法三(推荐): 您有其他方式知道是否有下一页 hasNext
+			// 			// this.mescroll.endSuccess(curPageLen, hasNext); 
+			// 			//方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.
+			// 			//如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据
+			// 			//如果传了hasNext,则翻到第二页即可显示无更多数据.
+			// 			if(this.size >= this.curPageLen){
+			// 				setTimeout(()=>{
+			// 					this.mescroll.endSuccess(this.curPageLen)
+			// 				},20)
+			// 			}
+			// 			// 如果数据较复杂,可等到渲染完成之后再隐藏下拉加载状态: 如
+			// 			// 建议使用setTimeout,因为this.$nextTick某些情况某些机型不触发
+			// 			// setTimeout(()=>{
+			// 			// 	this.mescroll.endSuccess(curPageLen)
+			// 			// },20)
+
+			// 			// 上拉加载的 curPageLen 必传, 否则会一直显示'加载中...':
+			// 			// 1. 使配置的noMoreSize 和 empty生效
+			// 			// 2. 判断是否有下一页的首要依据: 
+			// 			//    当传的值小于page.size时(说明不满页了),则一定会认为无更多数据;
+			// 			//    比传入的totalPage, totalSize, hasNext具有更高的判断优先级;
+			// 			// 3. 当传的值等于page.size时(满页),才取totalPage, totalSize, hasNext判断是否有下一页
+			// 			// 传totalPage, totalSize, hasNext目的是避免方法四描述的小问题
+
+			// 			// 提示: 您无需额外维护页码和判断显示空布局,mescroll已自动处理好.
+			// 			// 当您发现结果和预期不一样时, 建议再认真检查以上参数是否传正确
+			// 			// current++;
+
+			// 			this.curPageLen--;
+
+			// 			fail: () => {
+			// 				//  请求失败,隐藏加载状态
+			// 				alert("Faile!")
+			// 				this.mescroll.endErr()
+			// 			}
+			// 		}
+			// 	})
+			// 	this.current += 1;
+			// 	// 此处仍可以继续写其他接口请求...
+			// 	// 调用其他方法...
+			// },
+			
+			showArticleInEditor(title,tag,content,wordCount){
+				this.isUpdate = true // 表示编辑文章
+				this.index = tag
+				this.title = title
+				let params = {
+					html:content,
+					wordCount:wordCount
+				}
+				// this.$refs.child.html = content;
+				this.$refs.child.reLoadEditor(params);
+			},
 			// 点击发布
 			editOk(res) {
 				let url = null;
 				for (let i = 0; i < res.delta.ops.length; i++) {
 					if (res.delta.ops[i].insert.image) {
 						url = res.delta.ops[i].insert.image
+						return;
+					}
+				}
+				switch(this.isUpdate){
+					case false: 
+						var params = {
+							title: this.title,
+							contnet: res.html,
+							image: url,
+							kind: 1,
+							tag: this.tagsId[this.index],
+							type: 0,
+							status: res.isPublic,
+							wordCount: res.textLength
+						}
+						publishArticle(params).then( _res => {
+							if (_res.code === 200) {
+								console.log("发布成功")
+							}
+						})
 						break;
-					}
+					case true:
+						var params = {
+							title: this.title,
+							contnet: res.html,
+							image: url,
+							kind: 1,
+							tag: this.tagsId[this.index],
+							type: 0,
+							status: res.isPublic,
+							wordCount: res.textLength
+						}
+						upDateArticle(params).then( _res => {
+							if(_res.code === 200){
+								console.log("发布成功")
+							}
+						})
 				}
-				let params = {
-					title: this.title,
-					contnet: res.html,
-					image: url,
-					kind: 1,
-					tag: this.option.tag,
-					type: 0,
-					status: res.isPublic,
-					wordCount: res.textLength
-				}
-				// console.log(params)
-				publishArticle(params).then(res => {
-					if (res.code === 200) {
-						console.log("发布成功")
-					}
-				})
+				
 
-				// console.log(this.title)
-				// console.log(res.html)
-				// console.log(url)
-				// console.log(this.option.tag)
-				// console.log("kind:1")
-				// console.log("type:0")
-				// console.log(res.isPublic)
+			},
+			eidtorChange(textLength) {
+				this.wordCount = textLength
+				this.$refs.child.reLoadEditor();
 			},
 			setBold() {
+				this.showBold = !this.showBold;
 				this.$refs.child.setBold();
 			},
 			setItalic() {
+				this.showItalic = !this.showItalic;
 				this.$refs.child.setItalic();
 			},
 			setIns() {
+				this.showIns = !this.showIns;
 				this.$refs.child.setIns();
 			},
 			setHeader() {
+				this.showHeader = !this.showHeader;
 				this.$refs.child.setHeader();
 			},
 			setCenter() {
+				this.showCenter = !this.showCenter;
 				this.$refs.child.setCenter();
 			},
 			setRight() {
+				this.showRight = !this.showRight;
 				this.$refs.child.setRight();
 			},
 			insertImage() {
@@ -141,12 +742,31 @@
 			},
 			redo() {
 				this.$refs.child.redo();
+			},
+			release(num) {
+				this.$refs.child.release(num)
 			}
 		}
 	}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+	.tags-box{
+		padding: 20rpx 0px 0rpx 120rpx;
+	}
+	/deep/.uni-list{
+		background: rgba(191, 182, 172, 1.0) ;
+		color: rgba(232, 232, 232, 1.0);
+		border: 1px rgba(159, 159, 159, 1.0) solid;
+		width: 50px;
+		border-radius: 10%;
+		text-align: center;
+	}
+	.page-warp {
+		display: flex;
+		flex-direction: column;
+	}
+
 	/deep/ .tool-view {
 		display: none;
 	}
@@ -167,7 +787,7 @@
 	}
 
 	/deep/.ql-container {
-		max-height: 1640rpx;
+		height: 1490rpx;
 		overflow-y: scroll;
 		/* padding-bottom: 200rpx !important; */
 	}
@@ -180,7 +800,7 @@
 	}
 
 	.title-box {
-		padding: 30rpx 30rpx 30rpx 30rpx;
+		padding: 100rpx 120rpx 0rpx 120rpx;
 	}
 
 	.title-text {
@@ -190,7 +810,8 @@
 
 	/deep/.container {
 		box-sizing: border-box;
-		border-top: 2rpx #d2d5cc solid;
+		/* border-top: 2rpx #d2d5cc solid; */
+		padding: 30rpx 100rpx 0 100rpx !important;
 	}
 
 	.header {
@@ -217,8 +838,8 @@
 		width: 100%;
 		/* height: 90rpx; */
 		/* color: rgba(80, 80, 80, 1); */
-		background: #eee;
-		padding: 0 240rpx 0 1120rpx;
+		background: #dddddd;
+		padding: 0 7% 0 30.3%;
 	}
 
 	.my-tool {
@@ -227,18 +848,25 @@
 		align-items: center;
 		justify-content: space-around;
 		width: 100%;
-		background: #eee;
+		background: #dddddd;
 	}
 
 	.body-box {
+		background-color: rgb(241, 241, 241);
 		padding: 48rpx 300rpx 0 300rpx;
 		display: flex;
+		flex: 1;
 		justify-content: center;
 		padding-bottom: 20rpx;
 	}
 
 	.body {
 		width: 2500rpx;
+		// flex: 1;
+		// width: 100%;
+		// min-width: 0;
+		// min-height: 0;
+		// display: -webkit-box;
 		display: flex;
 		justify-content: space-between;
 	}
@@ -253,15 +881,164 @@
 		box-shadow: 0px 8rpx 8rpx 0rpx rgba(229, 228, 228, 1);
 	}
 
-	.body-left-box {
-		width: 614rpx;
-		height: 1662rpx;
+	.body-left-header {
+		height: 100%;
+	}
 
+	.body-left-box {
+		/* width: 614rpx; */
+		// flex: 1;
+		height: 100%;
+		overflow-y: scroll;
+		width: 20%;
+		height: 1662rpx;
 	}
 
 	.body-right-box {
-		width: 1570rpx;
+		position: relative;
+		max-height: inherit;
+		// overflow: hidden auto;
+		/* width: 1570rpx; */
+		width: 71%;
 		height: 1794rpx;
-		padding: 50rpx;
+
+	}
+
+	.body-right-foot-box {
+		width: 100%;
+		padding: 0 50rpx;
+		height: 132rpx;
+		color: rgba(80, 80, 80, 1);
+		background-color: rgba(255, 255, 255, 1);
+		font-size: 28rpx;
+		box-shadow: 0px -2px 4px 0px rgba(241, 241, 241, 1);
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.btn-box,
+	.text-box {
+		display: flex;
+		align-items: center;
+	}
+
+	.btn-box .u-btn {
+		margin-right: 30rpx;
+		flex: 1;
+	}
+
+	.add-article-btn {
+		display: flex;
+		align-items: center;
+		padding-left: 50rpx;
+		height: 100rpx;
+		border-bottom: 1rpx solid #C0C0C0;
+		/* background-color: #000000; */
+	}
+
+	.add-article-btn span {
+		margin-left: 2rpx;
+	}
+
+	.article-card {
+		height: 90prx;
+		position: relative;
+		/* display: flex; */
+		/* align-items: center; */
+		/* background-color: #55ffff; */
+	}
+
+	.article-card {
+		padding: 30rpx 20rpx 10rpx 40rpx;
+		border-bottom: 1rpx solid #d2d5cc;
+		display: flex;
+	}
+
+	/deep/.u-image {
+		display: flex;
+		align-items: center;
+	}
+
+	.article-card-title {
+		top: 10rpx;
+		line-height: 150%;
+	}
+
+	.article-card-text-box {
+		padding: 0 0 0 38rpx;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.article-card-tag {
+		color: rgba(128, 128, 128, 1);
+		font-size: 22rpx;
+		display: flex;
+		align-self: flex-end;
+	}
+
+	/*根元素需要有固定的高度*/
+	page {
+		height: 100%;
+		// 支付宝小程序,钉钉小程序需添加绝对定位,否则height:100%失效: https://opendocs.alipay.com/mini/framework/acss#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98
+		/* #ifdef MP-ALIPAY || MP-DINGTALK*/
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		/* #endif */
+
+		/*需给父元素设置height:100%*/
+		.page-warp {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+
+			/* 顶部区域 */
+			.top-warp {
+				font-size: 28rpx;
+				// padding: 20rpx;
+				// text-align: center;
+			}
+
+			/* 中间 */
+			.center-warp {
+				flex: 1;
+				// min-width: 0;
+				// min-height: 0;/* 需给flex:1的元素加上最小高,否则内容超过会溢出容器 (如:小程序Android真机) */
+				// border: 4px solid red;
+				display: flex;
+
+				// 左边
+				.left-warp {
+					// width: 180rpx;
+					height: 100%;
+					background-color: #eee;
+
+					.tab {
+						font-size: 28rpx;
+						padding: 28rpx;
+
+						&.active {
+							background-color: #fff;
+						}
+					}
+				}
+
+				// 右边
+				.right-warp {
+					// flex: 1;
+					// min-width: 0;
+				}
+			}
+
+			/* 底部区域 */
+			.bottom-warp {
+				padding: 20rpx;
+				text-align: center;
+				background-color: #FF6990;
+			}
+		}
 	}
 </style>

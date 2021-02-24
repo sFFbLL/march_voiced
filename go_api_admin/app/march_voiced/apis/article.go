@@ -194,10 +194,15 @@ func ArticlePass(c *gin.Context) {
 		return
 	}
 
-	//业务逻辑处理6
+	//业务逻辑处理
 	s := new(service.Article)
 	err = s.ArticlePass(p, user.UserId)
 	if err != nil {
+		if err.Error() == "文章不是发布未审核状态" {
+			zap.L().Error("ArticlePass service params failed", zap.String("Username", user.Username), zap.Error(err))
+			app.ResponseError(c, app.CodeArticleIsNotApply)
+			return
+		}
 		zap.L().Error("ArticlePass service params failed", zap.String("Username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeUpdateOperationFail)
 		return

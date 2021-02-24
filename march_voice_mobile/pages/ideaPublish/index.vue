@@ -20,7 +20,8 @@
 
 <script>
 	
-	import unloadImage from "../../utils/api.js"
+	import {unloadImage} from "../../utils/api.js"
+	import {publishIdea} from "../../utils/api/marchCircle-api.js"
 	export default {
 		data() {
 			return {
@@ -93,25 +94,33 @@
 					    duration: 2000
 					});
 				}else{
-						
 						// 调用接口转化imgurl
-						let file=this.srcList
-						let imageList = unloadImage(file);
+						// let file=this.srcList
+						// let imageList = unloadImage(file);
+						// console.log(file)
 						
-						let params={
-							content:this.ideaWords,
-							imageList:imageList,
-							image:imageList[0]
-							}
+						// let params={
+						// 	content:this.ideaWords,
+						// 	imageList:imageList,
+						// 	image:imageList[0]
+						// 	}
+						// let file = new FormData()
+						// file.append("file",this.srcList)
+						// unloadImage(file).then(res=>{
+						// 	res.data.full_path
+						// })
+						
+						
+						
 						// 调用发布接口,
-					marchCircleList(params).then(res=>{
-							 uni.showToast({
-								title: '发布成功',
-								icon:"none",
-								position:"top",
-								 duration: 2000
-								});
-					})
+					// publishIdea(params).then(res=>{
+					// 		 uni.showToast({
+					// 			title: '发布成功',
+					// 			icon:"none",
+					// 			position:"top",
+					// 			 duration: 2000
+					// 			});
+					// })
 					
 					}
 				
