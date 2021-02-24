@@ -12,18 +12,18 @@
 		creatNewUser
 	} from "./utils/login.js"
 	export default {
-		onLaunch: function() {
+		onLaunch: function () {
 
 			console.log('App Launch')
 
 		},
-		onShow: function() {
+		onShow: function () {
 			console.log('App Show')
 		},
-		onHide: function() {
+		onHide: function () {
 			console.log('App Hide')
 		},
-		beforeCreate() {
+		/* beforeCreate() {
 			console.log("beforeCreate");
 			if (!getToken()) {
 				//没有token，没登陆过，获取wxcode
@@ -61,7 +61,7 @@
 
 		},
 
-
+ */
 	}
 </script>
 

@@ -11,11 +11,21 @@ export function getRecommend (params) {
 }
 
 /**
+ * 获取文章列表接口
+ * @param {Object} params {页码 页大小}
+ */
+export function getArticleList (params) {
+	return Axios.get(baseUrl + '/api/article/index', {
+		params: params
+	})
+}
+
+/**
  * 获取关注动态接口
  * @param {Object} params {页码 页大小}
  */
 export function getFollow (params) {
-	return Axios.get(baseUrl + '/api/base/follow', {
+	return Axios.get(baseUrl + '/api/message/follow', {
 		params: params
 	})
 }
