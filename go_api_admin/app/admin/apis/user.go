@@ -15,7 +15,6 @@ import (
 	"project/utils/app"
 	"project/utils/config"
 
-
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
@@ -50,11 +49,11 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	//校验验证码
-	if !store.Verify(p.UuId, p.Code, true) {
-		app.ResponseError(c, app.CodeLoginFailCode)
-		return
-	}
+	////校验验证码
+	//if !store.Verify(p.UuId, p.Code, true) {
+	//	app.ResponseError(c, app.CodeLoginFailCode)
+	//	return
+	//}
 
 	// 2.业务逻辑处理
 	value, err := utils.RsaPriDecode(p.Password)

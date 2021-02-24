@@ -33,7 +33,9 @@ func GetFollowList(c *gin.Context) {
 	if err != nil {
 		c.Error(err)
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
 		return
+
 	}
 
 	if err := c.ShouldBindQuery(p); err != nil {
@@ -80,6 +82,7 @@ func GetFansList(c *gin.Context) {
 	if err != nil {
 		c.Error(err)
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
 		return
 	}
 	if err := c.ShouldBindQuery(p); err != nil {
@@ -122,6 +125,7 @@ func GetStatus(c *gin.Context) {
 	user, err := api.GetUserMessage(c)
 	if err != nil {
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
 	}
 	// 1.获取参数，设置默认值，校验参数
 	id := c.Query("id")
@@ -157,9 +161,10 @@ func UpdateStatus(c *gin.Context) {
 	user, err := api.GetUserMessage(c)
 	if err != nil {
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
 		return
 	}
-	if err = c.ShouldBindJSON(id); err != nil || id.Id == 0 {
+	if err = c.ShouldBindJSON(id); err != nil || id.Id == 0 || id.Id == uint(user.UserId) {
 		zap.L().Error("UpdateStatus failed", zap.String("username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeParamIsInvalid)
 		return

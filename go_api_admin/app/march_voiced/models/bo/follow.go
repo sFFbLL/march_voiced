@@ -1,7 +1,7 @@
 package bo
 
 type GetFollowList struct {
-	Follow []FollowInfo
+	Follow []FollowInfo `json:"follow"`
 }
 
 type FollowInfo struct {
