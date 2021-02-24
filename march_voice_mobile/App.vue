@@ -35,23 +35,23 @@
 					status: 1
 				}
 				// 判断该用户是否注册
-				// login(params).then(res => {
-				// 	console.log(res, "注册")
-				// 	if (res.data.status == 1) {
-				// 		// 跳转注册页面
-				// 		console.log("未登录")
-				// 		uni.navigateTo({
-				// 			url: "../login/login"
-				// 		})
-				// 	} else {
-				// 		// 登陆成功
-				// 		console.log(res.data.token)
-				// 		setToken(res.data.token);
-				// 		setOpenId(res.data.openid)
-				// 	}
-				// }).catch(err => {
-				// 	console.log(err, "err login")
-				// })
+				login(params).then(res => {
+					console.log(res, "注册")
+					if (res.data.status == 1) {
+						// 跳转注册页面
+						console.log("未登录")
+						uni.navigateTo({
+							url: "../login/login"
+						})
+					} else {
+						// 登陆成功
+						console.log(res.data.token)
+						setToken(res.data.token);
+						setOpenId(res.data.openid)
+					}
+				}).catch(err => {
+					console.log(err, "err login")
+				})
 
 			} else {
 			

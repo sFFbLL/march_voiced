@@ -7,8 +7,6 @@ export function getMarchCircleInfo(params) {
         params: params,
     })
 }
-
-
 // 三月圈文章列表获取
 export function marchCircleList(params){
 	return Axios.get(baseUrl+'/api/march',{
