@@ -17,9 +17,9 @@ Axios.interceptors.request.use(
   (config) => {
     console.log("来到了全局request中");
 
-    setToken(
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNjE3NzM2NTIxLCJpc3MiOiJteS1wcm9qZWN0In0.l3-dvGSa41PUIybA_Dmq50ZtePo6qgwe5YVBRTs8K8Q"
-    )
+    // setToken(
+    //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNjE3NzM2NTIxLCJpc3MiOiJteS1wcm9qZWN0In0.l3-dvGSa41PUIybA_Dmq50ZtePo6qgwe5YVBRTs8K8Q"
+    // )
     config.headers['Authorization'] = getToken() //让每个请求携带自定义token
     config.headers['Content-type'] = "application/json;charset=utf-8";
     config.data = JSON.stringify(config.data);
