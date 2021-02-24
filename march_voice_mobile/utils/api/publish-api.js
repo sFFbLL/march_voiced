@@ -3,7 +3,7 @@ import baseUrl from '../env.js'
 /**
  * 获取文章标签接口
  */
-export function getT按时ags () {
+export function getTags () {
 	return Axios.get(baseUrl + '/api/article-recom')
 }
 

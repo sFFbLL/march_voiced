@@ -85,12 +85,17 @@
 			}
 		},
 		{
-			"path": "pages/pcLogin/pcLogin",
+			"path": "pages/pcLogin/index",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-
+		}, {
+			"path": "pages/pcLogin/registered",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}, {
 			"path": "pages/pcPublish/pcPublish",
 			"style": {
