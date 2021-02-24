@@ -35,7 +35,6 @@ func GetFollowList(c *gin.Context) {
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
 		app.ResponseError(c, app.CodeNoUser)
 		return
-
 	}
 
 	if err := c.ShouldBindQuery(p); err != nil {
@@ -50,12 +49,11 @@ func GetFollowList(c *gin.Context) {
 		app.ResponseError(c, app.CodeParamNotComplete)
 		return
 	}
-
 	// 业务逻辑处理
 	if p.Id == 0 {
 		p.Id = uint(user.UserId)
 	}
-	res, err := fo.GetFollowList(p)
+	res, err := fo.GetFollowList(p, user.UserId)
 	if err != nil {
 		zap.L().Error("get follow list failed", zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
@@ -77,6 +75,7 @@ func GetFollowList(c *gin.Context) {
 // @Router /api/follow/fans [get]
 func GetFansList(c *gin.Context) {
 	p := new(dto.GetFollowList)
+
 	// 获取上下文消息
 	user, err := api.GetUserMessage(c)
 	if err != nil {
@@ -101,7 +100,7 @@ func GetFansList(c *gin.Context) {
 	if p.Id == 0 {
 		p.Id = uint(user.UserId)
 	}
-	res, err := fo.GetFansList(p)
+	res, err := fo.GetFansList(p, user.UserId)
 	if err != nil {
 		zap.L().Error("get fans list failed", zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
