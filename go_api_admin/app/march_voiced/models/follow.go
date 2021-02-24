@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"project/common/global"
 
 	"errors"
@@ -52,15 +51,13 @@ func (fo *Follow) GetFollowList(p *dto.GetFollowList) (followList *[]bo.FollowIn
 // GetFollowList 查询粉丝列表信息的数据持久层
 func (fo *Follow) GetFansList(p *dto.GetFollowList) (followList *[]bo.FansInfo, err error) {
 	followList = new([]bo.FansInfo)
-	err = global.Eloquent.Table("sys_user").Joins("left join follow on sys_user.id = follow.create_by").
+	err = global.Eloquent.Table("sys_user").
+		Joins("left join follow on sys_user.id = follow.create_by").
 		Where("follow.follow_id=? AND follow.is_deleted=?", p.Id, []byte{0}).
 		Offset(int((p.Current - 1) * p.Size)).Limit(int(p.Size)).Scan(followList).Error
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("=============")
-	fmt.Printf("%#v", followList)
-	fmt.Println("=============")
 	return followList, nil
 }
 
