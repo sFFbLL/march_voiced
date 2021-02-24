@@ -3,7 +3,7 @@ import {getToken,setToken} from "./auth.js"
 import baseUrl from './env.js'
 import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据，某些请求会用得到
 
-Axios.defaults.baseURL = "http://linbolun.cn";
+Axios.defaults.baseURL = baseUrl;
 Axios.defaults.timeout = 8000;
 /****** 创建axios实例 ******/
 // const Axios = axios.create({
@@ -15,17 +15,12 @@ Axios.defaults.timeout = 8000;
 Axios.interceptors.request.use(
   // 在发送请求前要做的事儿
   (config) => {
-    // uni.showLoading({
-    //     title: '加载中'
-    // });
     console.log("来到了全局request中");
 
-    // setToken(
-    //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNjE3NjY0NDc1LCJpc3MiOiJteS1wcm9qZWN0In0.myzEmcmmfdceYzMrsLBHSrGZudUmNhEN8fLGy0yBg8g"
-    // )
+    setToken(
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNjE3NzM2NTIxLCJpc3MiOiJteS1wcm9qZWN0In0.l3-dvGSa41PUIybA_Dmq50ZtePo6qgwe5YVBRTs8K8Q"
+    )
     config.headers['Authorization'] = getToken() //让每个请求携带自定义token
-	
-	// config.headers['Authorization'] = getToken() //让每个请求携带自定义token
     config.headers['Content-type'] = "application/json;charset=utf-8";
     config.data = JSON.stringify(config.data);
     console.log(config);
