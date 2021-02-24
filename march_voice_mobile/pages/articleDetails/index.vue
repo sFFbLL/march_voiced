@@ -194,7 +194,7 @@
 			this.id = option //打印出上个页面传递的参数。
 		},
 		created() {
-			
+
 		},
 		methods: {
 			// 评论
@@ -204,6 +204,7 @@
 			// 发布评论
 			sendComment() {
 				console.log("发布评论");
+				this.isComment = false;
 			}
 		},
 		mounted() {

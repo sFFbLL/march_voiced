@@ -5,7 +5,7 @@
 			<a @click.stop="inToPageMine"
 			 class="left-img-box inner-box">
 				<image class="inner-img"
-				 :src="avatarPath"
+				 :src="getImgUrl(avatarPath)"
 				 mode="aspectFill"></image>
 			</a>
 			<!-- 中部文字 -->
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+	import settings from '../settings.js'
 	export default {
 		props: {
 			// 用于事件
@@ -94,6 +95,9 @@
 			// 进入其他页面
 			inToPageMine() {
 				this.$emit('inToPageMine')
+			},
+			getImgUrl(src) {
+				return settings.imgUrl + src;
 			}
 		}
 	}
@@ -135,6 +139,7 @@
 		height: 70rpx;
 		width: 70rpx;
 		border-radius: 50%;
+		box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
 	}
 
 	/* 中部文字盒子样式 */

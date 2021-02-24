@@ -4,7 +4,8 @@
 	 @click="toDetails">
 		<view>
 			<text class="article-text"
-			 v-html="articleContent"></text>
+			 v-html="textContent"
+			 ref="articleContent">{{textContent}}123</text>
 		</view>
 		<view v-if="articleImg != ''"
 		 class="article-img">
@@ -18,7 +19,7 @@
 	export default {
 		data() {
 			return {
-
+				textContent: ""
 			};
 		},
 		props: {
@@ -44,7 +45,6 @@
 		},
 		methods: {
 			toDetails() {
-				console.log(this.isIdea);
 				if (this.isIdea) {
 					// 跳转详情页面
 					uni.navigateTo({
@@ -53,15 +53,17 @@
 				} else {
 					// 跳转到编辑页面
 					uni.navigateTo({
-						url: '../articleDetails/index?id=' + this.id,
-						fail: (res) => {
-							console.log(res);
-						}
+						url: '../articleDetails/index?id=' + this.id
 					})
 				}
 			}
 		},
-		mounted() {}
+		created() {
+			this.textContent = this.articleContent;
+		},
+		mounted() {
+			this.textContent = this.$refs.articleContent.$el.innerText.replace(/\ +/g, "").replace(/[\r\n]/g, "");
+		},
 	}
 </script>
 

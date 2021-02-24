@@ -74,74 +74,7 @@
 				isLoadMore: false, //是否加载中
 				articleCurrent: 1, //关注当前页数
 				articleSize: 10,
-				userSize: 4,
-				articleList1: [{
-						id: 1,
-						title: "所以监听用户的截图操作，提示<font color=red>用户</font>进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。<font color=red>在写作</font>一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈今年春天圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
-						createTime: "2021-02-16",
-						favourTotal: 0,
-						commentTotal: 0,
-						nickname: "张三"
-					},
-					{
-						id: 2,
-						title: "个大学生啊，我该怎么学编程？我还是个大学生啊我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
-						createTime: "2021-02-16",
-						favourTotal: 0,
-						commentTotal: 0,
-						nickname: "张三"
-					},
-					{
-						id: 3,
-						title: "所以监听用户的截图操作，提示用户进生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
-						createTime: "2021-02-16",
-						favourTotal: 0,
-						commentTotal: 0,
-						nickname: "张三"
-					},
-					{
-						id: 4,
-						title: "所以监听用户的截图操怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
-						createTime: "2021-02-16",
-						favourTotal: 0,
-						commentTotal: 0,
-						nickname: "张三"
-					},
-					{
-						id: 5,
-						title: "所以监听用户的截图操怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈",
-						createTime: "2021-02-16",
-						favourTotal: 0,
-						commentTotal: 0,
-						nickname: "张三"
-					}
-				],
-				userList1: [{
-						id: 1,
-						nickname: "张三",
-						avatarPath: require('static/img/2.jpg')
-					},
-					{
-						id: 2,
-						nickname: "张四",
-						avatarPath: require('static/img/1.jpg')
-					},
-					{
-						id: 3,
-						nickname: "张五",
-						avatarPath: require('static/img/2.jpg')
-					},
-					{
-						id: 4,
-						nickname: "张六",
-						avatarPath: require('static/img/2.jpg')
-					}
-				]
+				userSize: 4
 			}
 		},
 		components: {
@@ -157,30 +90,14 @@
 		},
 		methods: {
 			search() {
-				// let _this = this;
-				if (this.searchText) {
-					// this.getArticleList();
-					// this.getUserList();
-					this.userList = this.userList1;
-					this.articleList = [...this.articleList, ...this.articleList1];
-				}
+				this.getArticleList();
+				this.getUserList();
 			},
 			clear() {
 				this.searchText = "";
 			},
 			getList() {
-				if (this.searchText) {
-					let _this = this;
-					if (this.articleList.length > 16) {
-						_this.loadStatus = "nomore";
-					} else {
-						setTimeout(function () {
-							_this.isLoadMore = false;
-							// this.getArticleList();
-							_this.articleList = [..._this.articleList, ..._this.articleList1];
-						}, 2000);
-					}
-				}
+
 			},
 			moreUser() {
 				uni.navigateTo({
@@ -190,26 +107,30 @@
 			getArticleList() {
 				let _this = this;
 				let params = {
-					searchText: this.searchText,
+					searchWord: this.searchText,
 					current: this.current,
-					size: this.articleSize
+					size: this.userSize
 				}
-				searchArticle().then(res => {
-					_this.articleList = [..._this.articleList, ...res.data.articleList];
+				searchArticle(params).then(res => {
+					_this.articleList = [..._this.articleList, ...res.data.records];
+					console.log(res);
 				})
 			},
 			getUserList() {
 				let _this = this;
 				let params = {
-					searchText: this.searchText,
-					size: this.userSize
+					searchWord: this.searchText,
+					current: 1,
+					size: this.articleSize
 				}
-				searchUser().then(res => {
-					_this.userList = res.data.userList;
+				searchUser(params).then(res => {
+					// _this.userList = res.data.userList;
+					console.log(res);
 				})
 			}
 
 		}
+
 	}
 </script>
 

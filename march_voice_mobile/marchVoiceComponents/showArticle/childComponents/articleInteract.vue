@@ -13,7 +13,7 @@
 			<text v-if="dateTime != null"
 			 class="dateTime">
 				<text class="point">·</text>
-				{{dateTime}}
+				{{format(dateTime)}}
 			</text>
 			<slot name="after"></slot>
 		</view>
@@ -21,6 +21,7 @@
 </template>
 
 <script scoped>
+	import moment from 'moment';
 	export default {
 		data() {
 			return {
@@ -41,7 +42,7 @@
 				default: null
 			},
 			dateTime: {
-				type: String,
+				type: Number,
 				default: null
 			}
 		},
@@ -49,7 +50,11 @@
 
 		},
 		methods: {
-
+			format(dateTime) {
+				let stamp = new Date(dateTime);
+				let time = moment(stamp).format('YYYY-MM-DD HH:mm:ss');
+				return time;
+			}
 		},
 		mounted() {}
 	}

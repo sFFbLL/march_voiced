@@ -22,12 +22,13 @@ module.exports = {
 	 */
 	timeout: 10000,
 	// 本地
-	appId:'wx58f1a0720acc69f4',
+	appId: 'wx58f1a0720acc69f4',
 	// serveName:"http://120.26.141.144:8080",
 
 	// 服务器
 	// appId:'wxa346375168174534',
 	// serveName:"http://paky.hist.edu.cn",
+	imgUrl:'http://linbolun.cn/api/file/download/'
 
-	
+
 };

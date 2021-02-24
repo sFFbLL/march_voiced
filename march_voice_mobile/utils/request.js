@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import getToken from "./auth.js"
+import {getToken,setToken} from "./auth.js"
 import baseUrl from './env.js'
 import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据，某些请求会用得到
 
@@ -20,12 +20,17 @@ Axios.interceptors.request.use(
 		// });
 		console.log("来到了全局request中");
 
+		setToken(
+			"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNjE3NjY0NDc1LCJpc3MiOiJteS1wcm9qZWN0In0.myzEmcmmfdceYzMrsLBHSrGZudUmNhEN8fLGy0yBg8g"
+		)
 		config.headers['Authorization'] = getToken() //让每个请求携带自定义token
+
+		// config.headers['Authorization'] = getToken() //让每个请求携带自定义token
 		config.headers['Content-type'] = "application/json;charset=utf-8";
 		config.data = JSON.stringify(config.data);
 		console.log(config);
 		return config;
-		
+
 	}, err => {
 		// 在请求错误时要做的事儿
 		return err;
