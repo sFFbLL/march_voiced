@@ -6,6 +6,7 @@ type ApplyArticlePaginator struct {
 	EndTime   uint   `form:"endTime"`   //结束时间
 	StartTime uint   `form:"startTime"` //创建时间
 	Status    uint8  `form:"status"`    //1通过 2审核中
+	Tag       uint16 `form:"tag"`       //标签
 	Nickname  string `form:"nickname"`
 	Title     string `form:"title"`
 }
