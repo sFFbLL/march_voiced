@@ -1,9 +1,5 @@
 import Axios from 'axios';
-<<<<<<< Updated upstream
 import {getToken,setToken} from "./auth.js"
-=======
-import { getToken,setToken } from "./auth.js"
->>>>>>> Stashed changes
 import baseUrl from './env.js'
 import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据，某些请求会用得到
 
