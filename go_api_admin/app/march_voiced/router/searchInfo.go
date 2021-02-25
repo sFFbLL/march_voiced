@@ -16,7 +16,6 @@ func searchRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/base")
 	{
 		r.GET("/searchActile",apis.SearchActile)
-		r.GET("/searchUser", apis.SearchUser)
 		r.GET("/ping", func(c *gin.Context) {
 			c.String(int(app.CodeSuccess), "ok")
 		})
@@ -29,6 +28,7 @@ func searchActileRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/base")
 	{
 		r.GET("/informationsss", apis.SearchUserInfo)
+		r.GET("/searchUser", apis.SearchUser)
 	}
 }
 

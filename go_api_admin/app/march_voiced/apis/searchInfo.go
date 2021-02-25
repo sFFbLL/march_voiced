@@ -30,6 +30,7 @@ func SearchActile(c *gin.Context)  {
 }
 
 func SearchUser(c *gin.Context)  {
+	userId, _ := c.Get("UserId")
 	p := new(dto.SearchActileDto)
 	if err := c.ShouldBindQuery(p); err != nil {
 		_, ok := err.(validator.ValidationErrors)
@@ -41,7 +42,7 @@ func SearchUser(c *gin.Context)  {
 		return
 	}
 	search := new(service.Search)
-	searchUser, err := search.SearchUser(*p)
+	searchUser, err := search.SearchUser(*p,userId)
 	if err != nil {
 		return
 	}

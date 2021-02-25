@@ -17,7 +17,7 @@ type SearchActileBo struct {
 type SearchUserBo struct {
 	AvatarPath string `json:"avatarPath"`
 	NickName string `json:"nickName"`
-	UserId string 	`json:"userId"`
+	UserId int 	`json:"userId"`
 	Signature string `json:"signature"`
-	IsFollow string `json:"isFollow"`
+	IsFollow int `json:"isFollow"`
 }
