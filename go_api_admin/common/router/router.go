@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 	"project/app/march_voiced/apis"
+	"project/common/global"
 	"project/utils/config"
 
 	admin "project/app/admin/router"
@@ -38,7 +39,12 @@ func Setup(cfg *config.Application) *gin.Engine {
 	march.InitMarchRouter(r)
 
 	r.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "ok")
+		server := global.Wx.GetServer(c.Request, c.Writer)
+		err := server.Serve()
+		if err != nil {
+			return
+		}
+		server.Send()
 	})
 	r.POST("/", apis.WxGetTicket)
 

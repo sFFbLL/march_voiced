@@ -161,7 +161,7 @@ func GetTicket(c *gin.Context) {
 	}else{
 		accessToken = token
 	}
-	fmt.Println(accessToken,"-----------------")
+	//fmt.Println(accessToken,"-----------------")
 	wxTicket, err := WxTicket(accessToken)
 	if err != nil {
 		app.ResponseError(c, app.CodeWxTickerFail )
