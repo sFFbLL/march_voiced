@@ -23,16 +23,17 @@ export function parseCode() {
 	let startIndex = parmas.indexOf("=") + 1;
 	let endIndex = parmas.indexOf("&");
 	let code = parmas.substring(startIndex, endIndex);
+	console.log(code)
 	return code;
 }
 
 export function returnWxcode() {
 	//拿code
-	console.log('//拿code')
 	let wxCode = parseCode();
 	if (!wxCode) {
 		// 如果code为空，向微信发送请求用于获取code
 		getWxCode();
+	return parseCode()
 	}
 	return wxCode;
 
