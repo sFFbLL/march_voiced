@@ -15,7 +15,6 @@ export function getWxCode() {
 		"http://linbolun.cn/h5" +
 		"&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
 
-
 }
 //解析url，拿到code
 export function parseCode() {
@@ -29,6 +28,7 @@ export function parseCode() {
 
 export function returnWxcode() {
 	//拿code
+	console.log("nacode")
 	let wxCode = parseCode();
 	if (!wxCode) {
 		// 如果code为空，向微信发送请求用于获取code
