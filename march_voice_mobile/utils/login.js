@@ -18,7 +18,6 @@ export function isExist(params) {
 
 // 用户登录
 export function login(params) {
-	console.log(baseUrl)
 	return Axios.post(baseUrl + '/api/user/login', {
 		code: params.code,
 	})

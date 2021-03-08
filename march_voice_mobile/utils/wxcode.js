@@ -12,7 +12,7 @@ export function getWxCode() {
 	window.location.href =
 		"https://open.weixin.qq.com/connect/oauth2/authorize?" +
 		"appid=" + Config.appId + "&redirect_uri=" +
-		"http://www.kuntong.site/h5" +
+		"http://linbolun.cn/h5" +
 		"&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
 
 
@@ -28,6 +28,7 @@ export function parseCode() {
 
 export function returnWxcode() {
 	//拿code
+	console.log('//拿code')
 	let wxCode = parseCode();
 	if (!wxCode) {
 		// 如果code为空，向微信发送请求用于获取code
