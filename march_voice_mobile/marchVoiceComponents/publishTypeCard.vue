@@ -18,8 +18,8 @@
 	export default {
 			props:{
 				tag:{
-					type:String,
-					default:"aeticle"
+					type:Number,
+					default:null
 				},
 				icon:{
 					type:String,
@@ -33,6 +33,7 @@
 			},
 			methods:{
 				toPublishPage(){
+					console.log(typeof(this.tag),"类型")
 					uni.navigateTo({
 						url:"richTextEditor?tag="+this.tag,
 					})

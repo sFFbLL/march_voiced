@@ -51,15 +51,23 @@ Axios.interceptors.request.use(
 				console.log(err, "err login")
 			})
 
+
+    // setToken(
+    //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNjE3NzM2NTIxLCJpc3MiOiJteS1wcm9qZWN0In0.l3-dvGSa41PUIybA_Dmq50ZtePo6qgwe5YVBRTs8K8Q"
+    // )
+    config.headers['Authorization'] = getToken() //让每个请求携带自定义token
+    config.headers['Content-type'] = "application/json;charset=utf-8";
+    config.data = JSON.stringify(config.data);
+    console.log(config);
+    return config;
 		}else{
 			config.headers['Authorization'] = getToken() //让每个请求携带自定义token
 		}
-		
-		
 		config.headers['Content-type'] = "application/json;charset=utf-8";
 		config.data = JSON.stringify(config.data);
 		console.log(config);
 		return config;
+
 
 	}, err => {
 		// 在请求错误时要做的事儿

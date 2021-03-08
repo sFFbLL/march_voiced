@@ -25,7 +25,7 @@ export function login(params) {
 
 // pc生成二维码
 export function pcLogin(){
-	return Axios.get(baseUrl + '/api/user/pcLogin')
+	return Axios.get(baseUrl + '/api/user/getTicket')
 }
 
 // pc扫码登录判断
