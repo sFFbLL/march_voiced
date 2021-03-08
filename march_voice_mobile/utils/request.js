@@ -8,6 +8,10 @@ import {
 	returnWxcode,
 	parseCode
 } from './wxcode.js'
+import {
+		login,
+		creatNewUser
+	} from "./login.js"
 import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据，某些请求会用得到
 
 Axios.defaults.baseURL = baseUrl;
