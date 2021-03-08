@@ -24,8 +24,8 @@ Axios.interceptors.request.use(
 			console.log("没有token");
 			//没有token，没登陆过，获取wxcode
 			let code = returnWxcode();
-			
-			console.log(returnWxcode())
+			// let code ="031AmqFa19T1EA00poFa1wVU2r2AmqFZ"
+			console.log(code)
 			console.log("成功拿到code")
 			let params = {
 				code: code,

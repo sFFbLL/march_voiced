@@ -1,13 +1,7 @@
 <template>
 	<uni-list class="list-item">
-<<<<<<< Updated upstream
-		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" @change="change(item.user.id)" @inToPageMine="inToPageMine(item.user.id)"
-		 :id="item.user.id" :nickname="item.user.nickname" :isFollow="item.isFollow" :avatarPath="item.user.avatarPath">
-			<!-- <span slot="afterNicknameText">关注了你</span> -->
-=======
 		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" @change="change(index)" @inToPageMine="inToPageMine(item.id)"
 		 :id="item.id" :nickname="item.nickname" :isFollow="item.isFollow" :avatarPath="item.avatarPath">
->>>>>>> Stashed changes
 			<span slot="middleText">
 				<span class="inner-text">关注 {{item.followTotal}}</span>
 				<span class="inner-text">粉丝 {{item.fansTotal}}</span>
