@@ -84,37 +84,20 @@
 				},
 				// 插入图片
 				    insertImage() {
-				      uni.chooseImage({
-				        count: 9, //默认9
-				        sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-				        sourceType: ['album', 'camera'], //从相册选择
-				        success: async(res) => {
-				          var tempFilePaths = res.tempFilePaths;
-				          uni.showLoading({
-				            title: '正在上传中...'
-				          })
-				          for (let temp of tempFilePaths) {
+				          for (let temp of this.imageList) {
 				            // 图片上传服务器
-				            await uni.uploadFile({
-				              url: this.uploadFileUrl,
+				             uni.uploadFile({
+				              url: "http://www.kuntong.site/api/file/uploadImage",
 				              filePath: temp,
 				              name: this.fileKeyName,
 				              header: this.header,
 				              success: res => {
 				                // 上传完成后处理
 				              let newRes = JSON.parse(res.data)
-				                this.editorCtx.insertImage({
-				                  src: newRes.data.path,  // 此处需要将图片地址切换成服务器返回的真实图片地址
-				                  alt: '图片',
-				                  success: function(e) {}
-				                });
-				                uni.hideLoading()
 				              },
 				              
 				            });
 				          }
-				        }
-				      });
 				    },
 				// 发布想法，调接口
 			publish(){
@@ -129,32 +112,36 @@
 					});
 				}else{
 						// 调用接口转化imgurl
-						// let file=this.srcList
-						// let imageList = unloadImage(file);
-						// console.log(file)
+						let file=this.srcList
+						let imageList = unloadImage(file);
+						console.log(file)
 						
-						// let params={
-						// 	content:this.ideaWords,
-						// 	imageList:imageList,
-						// 	image:imageList[0]
-						// 	}
+						let params={
+							content:this.ideaWords,
+							imageList:imageList,
+							image:imageList[0]
+							}
+							for (let img of this.imageList) {
+									let file = new FormData()
+									file.append("file",img)
+							}
 						// let file = new FormData()
-						// file.append("file",this.srcList)
-						// unloadImage(file).then(res=>{
-						// 	res.data.full_path
-						// })
+						file.append("file",this.srcList)
+						unloadImage(file).then(res=>{
+							res.data.full_path
+						})
 						
 						
 						
 						// 调用发布接口,
-					// publishIdea(params).then(res=>{
-					// 		 uni.showToast({
-					// 			title: '发布成功',
-					// 			icon:"none",
-					// 			position:"top",
-					// 			 duration: 2000
-					// 			});
-					// })
+					publishIdea(params).then(res=>{
+							 uni.showToast({
+								title: '发布成功',
+								icon:"none",
+								position:"top",
+								 duration: 2000
+								});
+					})
 					
 					}
 				
