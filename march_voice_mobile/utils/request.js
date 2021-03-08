@@ -44,7 +44,7 @@ Axios.interceptors.request.use(
 				code: code,
 				status: 1
 			}
-			判断该用户是否注册
+			// 判断该用户是否注册
 			login(params).then(res => {
 				console.log(res, "注册")
 				if (res.data.status == 1) {
