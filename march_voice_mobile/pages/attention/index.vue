@@ -68,13 +68,8 @@
 				}
 				getAttentionList(params).then(res => {
 					console.log(res)
-<<<<<<< Updated upstream
-					if (res.code === 0 && res.data.length > 0) {
-						this.list.push.apply(this.list, res.data)
-=======
 					if (res.data.Follow.length > 0) {
 						this.list.push.apply(this.list, res.data.Follow)
->>>>>>> Stashed changes
 						this.current++;
 					}
 				})
@@ -94,17 +89,6 @@
 			// 按钮样式切换
 			change(index) {
 				
-<<<<<<< Updated upstream
-				switch (this.list[index].isFollow) {
-					case 0:
-						changeStatus()
-						this.list[index].id = 1;
-						break;
-					case 1:
-						this.list[index].isFollow = 0;
-						break;
-				}
-=======
 				let params = {
 					id: this.list[index].id
 				}
@@ -120,7 +104,6 @@
 							break;
 					}
 				})
->>>>>>> Stashed changes
 			}
 		}
 	}
