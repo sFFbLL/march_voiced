@@ -103,30 +103,14 @@
 			}
 		},
 		created() {
-			console.log("homecreate");
-			console.log(parseCode())
-			let code = parseCode()
-			let params = {
-				code: code,
-				status: 1
-			}
-			login(params).then(res => {
-				console.log(res, "注册")
-				if (res.data.status == 1) {
-					// 跳转注册页面
-					console.log("未登录")
-					uni.navigateTo({
-						url: '../login/login'
-					})
-				} else {
-					// 登陆成功
-					console.log(res.data.token)
-					setToken(res.data.token);
-					setOpenId(res.data.openid)
-				}
-			}).catch(err => {
-				console.log(err, "err login")
-			})
+			// console.log("homecreate");
+			// console.log(parseCode())
+			// let code = parseCode()
+			// let params = {
+			// 	code: code,
+			// 	status: 1
+			// }
+			
 		},
 		onShow() {
 			check()
