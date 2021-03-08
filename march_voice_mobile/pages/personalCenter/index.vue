@@ -257,11 +257,14 @@
 			articleContent
 		},
 		onLoad() {
+			uni.$on('getOthersId',this.test)
 			this.getArticleList();
 			this.getIdeaList();
 			this.getDraftList();
 		},
-
+		beforeDestroy() {
+			uni.$off("getOthersId",this.test)
+		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true;
@@ -278,6 +281,11 @@
 			}
 		},
 		methods: {
+			// 从其他页面获取他人id，进行主页展示
+			getOthersId(e) {
+				// 抽离出来的uni.$on回调方法,获取id用，自行处理id嗷
+				console.log(e);
+			},
 			/* 切换选项卡选项 */
 			tabActive(tabIndex) {
 				this.tabs.map((value, index) => {

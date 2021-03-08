@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="background">
 		<image :src="src" mode=""></image>
 	</view>
 </template>
@@ -28,11 +28,9 @@
 		methods: {
 			login(){
 				pcLogin().then(res => {
-					if(res.code === 0){
 						console.log("res",res)
 						this.strData = res.data.strdata
-						this.src = this.baseSrc + res.data.ticket
-					}
+						this.src = this.baseSrc + res.data.Ticket
 				}).catch(err=>{
 					console.log("errlogin")
 				})
@@ -67,8 +65,9 @@
 	}
 </script>
 
-<style>
-uni-page-body{
-	background-color: #000000;
+<style scoped>
+/deep/uni-page-wrapper{
+	background-color: #000000 !important;
 }
+
 </style>

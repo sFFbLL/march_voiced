@@ -7,9 +7,17 @@ export function getAttentionList(params){
 		params: params,
 	})
 }
+
+// 获取粉丝列表
+export function getFansnList(params){
+	return Axios.get(baseUrl + '/api/follow/fans', {
+		params: params,
+	})
+}
+
 //修改关注状态
 export function changeStatus(params){
-	return Axios.get(baseUrl + '/api/follow/verify', {
-		params: params,
+	return Axios.post(baseUrl + '/api/follow', {
+		id:params.id,
 	})
 }

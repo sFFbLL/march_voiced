@@ -4,7 +4,7 @@ import baseUrl from '../env.js'
  * 获取文章标签接口
  */
 export function getTags () {
-	return Axios.get(baseUrl + '/api/article-recom')
+	return Axios.get(baseUrl + '/api/article/tag')
 }
 
 /**
@@ -13,7 +13,14 @@ export function getTags () {
  */
 export function publishArticle (params) {
 	return Axios.post(baseUrl + '/api/article', {
-	    params: params,
+	    title: params.title,
+		content: params.content,
+		image: params.image,
+		tag: params.tag,
+		kind: params.kind,
+		type: params.type,
+		status: params.status,
+		word_count:params.word_count
 	})
 }
 

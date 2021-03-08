@@ -42,7 +42,7 @@
 								<span>新建文章</span>
 							</view>
 
-							<view class="article-card" v-for="item,index in list" :key="index" @click="showArticleInEditor(item.title,item.tag,item.content,item.wordCount)">
+							<view class="article-card" v-for="item,index in list" :key="index" @click="showArticleInEditor(item.title,item.tag,item.content,item.word_count)">
 								<u-image src="../../static/img/aiticleLogo.png" mode="widthFix" width="50rpx"></u-image>
 								<view class="article-card-text-box">
 									<span class="article-card-title">{{item.title}}</span>
@@ -74,7 +74,7 @@
 					<jinEdit ref="child" placeholder="请输入内容" :readOnly="false" @editOk="editOk" uploadFileUrl="http://www.kuntong.site/api/file/uploadImage" @eidtorChange="eidtorChange"></jinEdit>
 					<view class="body-right-foot-box">
 						<view class="text-box">
-							<span>正文字数 {{wordCount}}</span>
+							<span>正文字数 {{word_count}}</span>
 						</view>
 						<view class="btn-box">
 							<u-button :custom-style="save" type="primary" size="medium " @click="release(0)">保存到草稿箱</u-button>
@@ -105,7 +105,7 @@
 			return {
 				title: null,
 				html: '',
-				wordCount:null,
+				word_count:null,
 				
 				tags: ['生活', '情感', '学习', '其他'],
 				tagsId:[0,1,9,3],
@@ -500,7 +500,7 @@
 				this.index = 0
 				let params = {
 					html:'',
-					wordCount:0
+					word_count:0
 				}
 
 				// this.$refs.child.html = ``
@@ -645,13 +645,13 @@
 			// 	// 调用其他方法...
 			// },
 			
-			showArticleInEditor(title,tag,content,wordCount){
+			showArticleInEditor(title,tag,content,word_count){
 				this.isUpdate = true // 表示编辑文章
 				this.index = tag
 				this.title = title
 				let params = {
 					html:content,
-					wordCount:wordCount
+					word_count:word_count
 				}
 				// this.$refs.child.html = content;
 				this.$refs.child.reLoadEditor(params);
@@ -669,13 +669,13 @@
 					case false: 
 						var params = {
 							title: this.title,
-							contnet: res.html,
+							content: res.html,
 							image: url,
 							kind: 1,
 							tag: this.tagsId[this.index],
 							type: 0,
 							status: res.isPublic,
-							wordCount: res.textLength
+							word_count: res.textLength
 						}
 						publishArticle(params).then( _res => {
 							if (_res.code === 200) {
@@ -692,7 +692,7 @@
 							tag: this.tagsId[this.index],
 							type: 0,
 							status: res.isPublic,
-							wordCount: res.textLength
+							word_count: res.textLength
 						}
 						upDateArticle(params).then( _res => {
 							if(_res.code === 200){
@@ -704,7 +704,7 @@
 
 			},
 			eidtorChange(textLength) {
-				this.wordCount = textLength
+				this.word_count = textLength
 				this.$refs.child.reLoadEditor();
 			},
 			setBold() {
@@ -857,7 +857,7 @@
 		display: flex;
 		flex: 1;
 		justify-content: center;
-		padding-bottom: 20rpx;
+		padding-bottom: 200rpx;
 	}
 
 	.body {
@@ -912,6 +912,7 @@
 		background-color: rgba(255, 255, 255, 1);
 		font-size: 28rpx;
 		box-shadow: 0px -2px 4px 0px rgba(241, 241, 241, 1);
+		border-radius: 10rpx;
 		display: flex;
 		justify-content: space-between;
 	}
