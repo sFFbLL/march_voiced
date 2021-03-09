@@ -14,6 +14,7 @@ type ApplyArticlePaginator struct {
 type InsertArticleDto struct {
 	Title     string `json:"title" binding:"required"`
 	Content   string `json:"content" binding:"required"`
+	Describe  string `json:"describe" binding:"required,max=20"`
 	Image     string `json:"image"`
 	Kind      uint8  `json:"kind" binding:"required"`
 	Status    *uint8 `json:"status" binding:"required"`
@@ -25,6 +26,7 @@ type InsertArticleDto struct {
 type UpdateArticleDto struct {
 	Title     string `json:"title" binding:"required"`
 	Content   string `json:"content" binding:"required"`
+	Describe  string `json:"describe" binding:"required,max=20"`
 	Image     string `json:"image"`
 	ID        uint   `json:"id"  binding:"required"`
 	WordCount uint   `json:"word_count" binding:"required"`
