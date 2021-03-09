@@ -3,7 +3,6 @@ import {
 	getToken,
 	setToken
 } from "./auth.js"
-import baseUrl from './env.js'
 import {
 	returnWxcode,
 	parseCode
@@ -14,7 +13,7 @@ import {
 } from "./login.js"
 import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据，某些请求会用得到
 
-Axios.defaults.baseURL = baseUrl;
+Axios.defaults.baseURL = "http://linbolun.cn";
 Axios.defaults.timeout = 8000;
 /****** 创建axios实例 ******/
 // const Axios = axios.create({
@@ -71,7 +70,7 @@ Axios.interceptors.request.use(
 			config.headers['Authorization'] =getToken()//让每个请求携带自定义token
 		}
 		config.headers['Content-type'] = "application/json;charset=utf-8";
-		config.data = JSON.stringify(config.data);
+		// config.data = JSON.stringify(config.data);
 		console.log(config);
 		return config;
 
