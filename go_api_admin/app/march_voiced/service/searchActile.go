@@ -33,13 +33,12 @@ func (search *Search) SearchActile(searchInfo dto.SearchActileDto)( []bo.SearchA
 	return actile,nil
 }
 
-func (search *Search) SearchUser(searchInfo dto.SearchActileDto)([]bo.SearchUserBo,error){
+func (search *Search) SearchUser(searchInfo dto.SearchActileDto,userid interface{})([]bo.SearchUserBo,error){
 	if searchInfo.Size<0 || searchInfo.Current<1 {
-		fmt.Println("错误")
 		return nil,errors.New("分页参数错误")
 	}
 	searchUserDao := new(models.Seach)
-	userInfo, err := searchUserDao.SearchUser(searchInfo)
+	userInfo, err := searchUserDao.SearchUser(searchInfo,userid)
 	if err != nil {
 		return nil, err
 	}
