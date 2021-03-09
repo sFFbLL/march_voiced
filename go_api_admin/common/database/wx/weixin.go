@@ -12,7 +12,7 @@ func Init()error {
 	//这里本地内存保存access_token，也可选择redis，memcache或者自定cache
 	memory := cache.NewMemory()
 	cfg := &offConfig.Config{
-		AppID:     "wx58f1a0720acc69f4",
+		AppID:     "wxeafec80fffe34544",
 		AppSecret: "24fed072517ffb84a7df0343aaeb6ada",
 		Token:     "wodeshijie",
 		//EncodingAESKey: "xxxx",
