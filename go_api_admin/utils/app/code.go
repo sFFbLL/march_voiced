@@ -56,6 +56,8 @@ const (
 	CodeParamsNotNull
 	// 用户未激活
 	CodeUserIsNotEnabled
+	// 角色名字已存在
+	CodeRoleNameExist
 	// 用户名字已存在
 	CodeUserNameExist
 
@@ -152,6 +154,7 @@ var codeMsgMap = map[ResCode]string{
 	CodeNoUserPhone:      "认证失败，手机号不存在",
 	CodeParamsNotNull:    "请求参数不能为空",
 	CodeUserIsNotEnabled: "用户未激活",
+	CodeRoleNameExist:       "角色名字已存在",
 
 	CodeSMSNotSend:    "短信发送失败",
 	CodeSMSCodeExpire: "短信验证码失效",
