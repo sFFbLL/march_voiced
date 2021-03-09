@@ -362,11 +362,12 @@ func SelectMarchListById(c *gin.Context) {
 		return
 	}
 
+	if paging.Current == 0 && paging.Size == 0 {
+		paging.Current = 1
+		paging.Current = 10
+	}
 	if paging.Current == 0 {
 		paging.Current = 1
-	}
-	if paging.Size == 0 {
-		paging.Current = 10
 	}
 
 	// 进入service层对数据操作

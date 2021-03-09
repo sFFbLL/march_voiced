@@ -13,7 +13,6 @@ import (
 	"go.uber.org/zap"
 )
 
-
 type Article struct{}
 
 func (a *Article) ArticleSearch(p *dto.ArticleSearchPaginator, userId int) (data *bo.ArticleCollectByUserId, err error) {
@@ -25,7 +24,6 @@ func (a *Article) ArticleSearch(p *dto.ArticleSearchPaginator, userId int) (data
 	var keys []int
 	data.Records = records1
 	err = article.ArticleSearchContent(data, p, userId)
-
 
 	articleMapList := make(map[int]*bo.Article, len(*data.Records))
 	for _, i := range *data.Records {
@@ -75,7 +73,6 @@ func (a *Article) GetCollectArticle(p *dto.Paginator, userId int) (data *bo.Arti
 	data.Records = records1
 	err = article.ArticleCollectByUserId(data, p, userId)
 
-
 	articleMapList := make(map[int]*bo.Article, len(*data.Records))
 	for _, i := range *data.Records {
 		var articleBo bo.Article
@@ -106,7 +103,7 @@ func (a *Article) GetCollectArticle(p *dto.Paginator, userId int) (data *bo.Arti
 		*records2 = append(*records2, *articleMapList[i.ID])
 	}
 	data.Records = records2
-	
+
 	data.Current = p.Current
 	data.Size = p.Size
 	data.Pages = utils.PagesCount(int(data.Current), int(p.Size))
@@ -175,6 +172,7 @@ func (a *Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (e
 		UpdateBy: uint(userId),
 		Title:    articleDto.Title,
 		Content:  articleDto.Content,
+		Describe: articleDto.Describe,
 		Image:    articleDto.Image,
 		Kind:     articleDto.Kind,
 		Tag:      articleDto.Tag,
@@ -195,6 +193,7 @@ func (a *Article) UpdateArticle(articleDto *dto.UpdateArticleDto, userId int) (e
 	article.ID = int(articleDto.ID)
 	err = article.GetArticle()
 	if err != nil {
+		zap.L().Error("UpdateArticle GetArticle failed", zap.Error(err))
 		return
 	}
 
@@ -203,6 +202,7 @@ func (a *Article) UpdateArticle(articleDto *dto.UpdateArticleDto, userId int) (e
 		UpdateBy: uint(userId),
 		Title:    articleDto.Title,
 		Content:  articleDto.Content,
+		Describe: articleDto.Describe,
 		Image:    articleDto.Image,
 		Kind:     articleDto.Kind,
 		Tag:      articleDto.Tag,

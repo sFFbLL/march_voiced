@@ -12,6 +12,7 @@ import (
 type Article struct {
 	Title            string `json:"title" gorm:"size:128;"`
 	Content          string `json:"content" gorm:"type(text)"`
+	Describe         string `json:"describe" gorm:"size:20"`
 	Image            string `json:"image" gorm:"size:128;"`
 	Kind             uint8  `json:"kind" gorm:"size:4;"`
 	Status           *uint8 `json:"status" gorm:"size:2;"`
@@ -31,16 +32,16 @@ func (a *Article) TableName() string {
 
 func (a *Article) ArticleSearchContent(data *bo.ArticleCollectByUserId, p *dto.ArticleSearchPaginator, userId int) error {
 	return global.Eloquent.Table(a.TableName()).
-		Select("article.id, article.title, article.content, article.image, article.word_count, article.type, article.create_by, article.create_time, sys_user.nick_name").
+		Select("article.id, article.title, article.describe, article.image, article.word_count, article.type, article.create_by, article.create_time, sys_user.nick_name").
 		Joins("left join sys_user on article.create_by = sys_user.id").
-		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article.status=1 and article.content like ?", "%" + p.SearchWord + "%").Count(&data.Total).
+		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article.status=1 and article.content like ?", "%"+p.SearchWord+"%").Count(&data.Total).
 		Order("article.create_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
 		Find(data.Records).Error
 }
 
 func (a *Article) ArticleCollectByUserId(data *bo.ArticleCollectByUserId, p *dto.Paginator, userId int) error {
 	return global.Eloquent.Table("article_collect").
-		Select("article.id, article.title, article.content, article.image, article.word_count, article.type, article.create_by, article.create_time, sys_user.nick_name").
+		Select("article.id, article.title, article.describe, article.image, article.word_count, article.type, article.create_by, article.create_time, sys_user.nick_name").
 		Joins("left join article on article_collect.article_id = article.id").
 		Joins("left join sys_user on article.create_by = sys_user.id").
 		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article_collect.is_deleted=0 and article.status=1").Count(&data.Total).
@@ -130,7 +131,7 @@ func (a *Article) ArticleDetail() (articleMsg *bo.ArticleDetail, err error) {
 func (a *Article) ArticleList(paging dto.Paging, IsRecommend int) (articleArray *[]bo.Article, err error) {
 	articleArray = new([]bo.Article)
 	err = global.Eloquent.Table(a.TableName()).
-		Select("article.id, article.title, article.content, article.image, article.status, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.nick_name, sys_user.avatar_path").
+		Select("article.id, article.title, article.describe, article.image, article.status, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.nick_name, sys_user.avatar_path").
 		Joins("JOIN sys_user ON article.create_by = sys_user.id").
 		Where("article.is_recommend = ? AND article.is_deleted = 0 AND article.status = 1", IsRecommend).
 		Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(articleArray).Error

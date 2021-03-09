@@ -9,7 +9,7 @@ type Article struct {
 type ArticleMsg struct {
 	ID         int    `json:"id"`
 	Title      string `json:"title"`
-	Content    string `json:"content"`
+	Describe   string `json:"describe"`
 	Image      string `json:"image"`
 	Status     uint8  `json:"status"`
 	Type       uint   `json:"type"`
