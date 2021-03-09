@@ -3,7 +3,6 @@ package apis
 import (
 	"errors"
 	"fmt"
-
 	"project/app/admin/models"
 	"project/app/admin/models/bo"
 	"project/app/admin/models/dto"
@@ -15,10 +14,11 @@ import (
 	"project/utils/app"
 	"project/utils/config"
 
+	"github.com/mojocn/base64Captcha"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
-	"github.com/mojocn/base64Captcha"
 	"go.uber.org/zap"
 )
 
@@ -49,11 +49,11 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	////校验验证码
-	//if !store.Verify(p.UuId, p.Code, true) {
-	//	app.ResponseError(c, app.CodeLoginFailCode)
-	//	return
-	//}
+	//校验验证码
+	if !store.Verify(p.UuId, p.Code, true) {
+		app.ResponseError(c, app.CodeLoginFailCode)
+		return
+	}
 
 	// 2.业务逻辑处理
 	value, err := utils.RsaPriDecode(p.Password)
@@ -133,6 +133,17 @@ func InsertUserHandler(c *gin.Context) {
 			return
 		}
 		app.ResponseError(c, app.CodeParamNotComplete)
+		return
+	}
+	userInfo, _ := api.GetUserData(c)
+	//验证数据权限
+	if permission := api.CheckDataScope(*userInfo.DataScopes, p.DeptId); !permission {
+		//app.ResponseError(c, app.CodeIdentityNotRow)
+		return
+	}
+	//验证角色等级
+	if permission := api.CheckLevel(*userInfo.Roles, p.ID); !permission {
+		//app.ResponseError(c, app.CodeIdentityNotRow)
 		return
 	}
 	//业务逻辑处理
@@ -272,6 +283,18 @@ func UpdateUserHandler(c *gin.Context) {
 		}
 		app.ResponseError(c, app.CodeParamNotComplete)
 	}
+	//获取当前用户
+	userInfo, _ := api.GetUserData(c)
+	//验证数据权限
+	if permission := api.CheckDataScope(*userInfo.DataScopes, p.DeptId); !permission {
+		app.ResponseError(c, app.CodeIdentityNotRow)
+		return
+	}
+	//验证角色等级
+	if permission := api.CheckLevel(*userInfo.Roles, p.ID); !permission {
+		app.ResponseError(c, app.CodeIdentityNotRow)
+		return
+	}
 	//处理逻辑
 	u := new(service.User)
 	if err := u.UpdateUser(p, user.UserId); err != nil {
@@ -346,6 +369,7 @@ func SelectUserInfoHandler(c *gin.Context) {
 		Username:       userMessage.Username,
 		UserId:         userMessage.UserId,
 		MenuPermission: userInfo.MenuPermission,
+		DataScopes:     userInfo.DataScopes,
 	})
 	if err != nil {
 		zap.L().Error("SelectUserInfo failed", zap.Error(err))

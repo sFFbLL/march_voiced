@@ -25,8 +25,6 @@ type SysRole struct {
 	Name         string `json:"name"`                                   //角色名称
 	Description  string `json:"description"`                            //描述
 	DataScope    string `json:"data_scope"`                             //数据权限
-	//Address      string `json:"address"`                                //路由
-	//Action       string `json:"action"`                                 //请求方法
 }
 
 type AddressAction struct {
@@ -275,16 +273,17 @@ func (e SysRole) UpdateRoleMenu(id int, p []int, userId int) (err error) {
 
 	//更新策略
 	newPolicys := make([][]string, 0, 0)
-	a := []int{2}
-	for _, menuId := range a {
+	for _, menuId := range p {
 		addressAction := new(AddressAction)
-		err = tx.Table("sys_menu").Where("id=?", menuId).Find(addressAction).Error
+		err = orm.Eloquent.Table("sys_menu").Select("address", "action").Where("id=?", menuId).Find(addressAction).Error
 		if err != nil {
 			zap.L().Error("Select addressAction failed", zap.Error(err))
 			tx.Rollback()
 			return err
 		}
-		newPolicys = append(newPolicys, []string{idStr, addressAction.Address, addressAction.Action})
+		if addressAction.Address != "" && addressAction.Action != "" {
+			newPolicys = append(newPolicys, []string{idStr, addressAction.Address, addressAction.Action})
+		}
 	}
 	_, err = orm.CasbinEnforcer.AddPolicies(newPolicys)
 	if err != nil {
