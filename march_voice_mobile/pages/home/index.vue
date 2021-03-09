@@ -102,15 +102,44 @@
 				isRecommend: true //是否是推荐文章
 			}
 		},
-		created() {
-			// console.log("homecreate");
-			// console.log(parseCode())
-			// let code = parseCode()
-			// let params = {
-			// 	code: code,
-			// 	status: 1
-			// }
+		beforeCreate() {
+			console.log("homebeforeCreate");
+			if (!getToken()) {
+				console.log("没有token");
+				let code ;
+				if (!parseCode()) {
+					console.log("当前没有wxCode，去获取");
+					//没有token，没登陆过，获取wxcode
+					code = returnWxcode();
+					
+				} else {
+					code = parseCode();
+				}
+				console.log("成功拿到code")
+				let params = {
+					code: code,
+					status: 1
+				}
+				// 判断该用户是否注册
+				login(params).then(res => {
+					console.log(res, "注册")
+					if (res.data.status == 1) {
+						// 跳转注册页面
+						console.log("未登录")
+						uni.navigateTo({
+							url: "../login/login"
+						})
+					} else {
+						// 登陆成功
+						console.log(res.data.token)
+						setToken(res.data.token);
+						setOpenId(res.data.openid)
+					}
+				}).catch(err => {
+					console.log(err, "err login")
+				})
 			
+			}
 		},
 		onShow() {
 			check()
