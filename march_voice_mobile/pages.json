@@ -130,6 +130,13 @@
 				"navigationStyle": "custom"
 			}
 		}
+		, {
+			"path": "pages/pastArticle/index",
+			"style": {
+				"navigationBarTitleText": "三月之声登录",
+				"navigationStyle": "custom"
+			}
+		}
 	],
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式（list 的索引项）

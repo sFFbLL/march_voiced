@@ -137,8 +137,8 @@
 			check()
 		},
 		created() {
-			this.recommend();
-			this.follow();
+			// this.recommend();
+			// this.follow();
 		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
