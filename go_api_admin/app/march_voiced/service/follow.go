@@ -19,6 +19,7 @@ func (fo *Follow) GetFollowList(p *dto.GetFollowList, me int) (*bo.GetFollowList
 		p.Size = 5
 		p.Current = 1
 	}
+
 	followList, err := follow.GetFollowList(p)
 	if err != nil {
 		return nil, err

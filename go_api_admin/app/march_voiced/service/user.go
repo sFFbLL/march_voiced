@@ -14,8 +14,10 @@ func (u *User) SelectUserInfo(id int, me int) (res *bo.SelectUserInfo, err error
 	user := new(models.User)
 	fo := new(models.Follow)
 	a := new(models.Article)
-	if id == 0 {
+	var isMe = 0
+	if id == 0 || id == me {
 		id = me
+		isMe = 1
 	}
 	userIn, err := user.SelectUserInfo(id)
 	if err != nil {
@@ -60,6 +62,7 @@ func (u *User) SelectUserInfo(id int, me int) (res *bo.SelectUserInfo, err error
 		ArticleTotal: articleTotal,
 		CollectTotal: collectTotal,
 		UserIn:       *info,
+		IsMe:         isMe,
 	}
 	return
 }
