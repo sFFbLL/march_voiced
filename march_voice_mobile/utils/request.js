@@ -15,62 +15,17 @@ import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据，�
 
 Axios.defaults.baseURL = "http://linbolun.cn";
 Axios.defaults.timeout = 8000;
-/****** 创建axios实例 ******/
-// const Axios = axios.create({
-//     baseURL: baseUrl, // api 的 base_url
-//     timeout: 8000  // 请求超时时间
-// });
 
 // 请求拦截器
 Axios.interceptors.request.use(
 	// 在发送请求前要做的事儿
 	(config) => {
 		console.log("来到了全局request中");
-		// if (!getToken()) {
-		// 	console.log("没有token");
-		// 	let code ;
-		// 	if (!parseCode()) {
-		// 		console.log("没有wxCode");
-		// 		//没有token，没登陆过，获取wxcode
-		// 		code = returnWxcode();
-		// 	} else {
-		// 		code = parseCode();
-		// 	}
-
-		// 	// let code ="031AmqFa19T1EA00poFa1wVU2r2AmqFZ"
-		// 	console.log("成功拿到code")
-		// 	let params = {
-		// 		code: code,
-		// 		status: 1
-		// 	}
-		// 	// 判断该用户是否注册
-		// 	login(params).then(res => {
-		// 		console.log(res, "注册")
-		// 		if (res.data.status == 1) {
-		// 			// 跳转注册页面
-		// 			console.log("未登录")
-		// 			uni.navigateTo({
-		// 				url: "../login/login"
-		// 			})
-		// 		} else {
-		// 			// 登陆成功
-		// 			console.log(res.data.token)
-		// 			setToken(res.data.token);
-		// 			config.headers['Authorization'] = getToken() //让每个请求携带自定义token
-		// 			setOpenId(res.data.openid)
-		// 		}
-		// 	}).catch(err => {
-		// 		console.log(err, "err login")
-		// 	})
-
-		// } else {
-		// 	config.headers['Authorization'] = getToken() //让每个请求携带自定义token
-		// }
-		if(getToken()){
-			config.headers['Authorization'] =getToken()//让每个请求携带自定义token
+		if (getToken()) {
+			config.headers['Authorization'] = getToken() //让每个请求携带自定义token
 		}
 		config.headers['Content-type'] = "application/json;charset=utf-8";
-		// config.data = JSON.stringify(config.data);
+		config.data = JSON.stringify(config.data);
 		console.log(config);
 		return config;
 
