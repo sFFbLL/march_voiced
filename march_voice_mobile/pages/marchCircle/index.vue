@@ -89,6 +89,19 @@
 	import {
 		check
 	} from '../../utils/checkUnRead.js'
+	import {
+		returnWxcode,
+		getWxCode,
+		parseCode
+	} from "../../utils/wxcode.js"
+	import {
+		getToken,
+		setToken
+	} from "../../utils/auth.js"
+	import {
+		login,
+		creatNewUser
+	} from "../../utils/login.js"
 	export default {
 		data() {
 			return {
@@ -303,18 +316,56 @@
 		},
 		created() {
 			// 获取三月基本信息接口
-			getMarchCircleInfo().then(res => {
-				this.marchCircleInfo = res.data;
-			})
-			if (this.marchCircleInfo.ismarch == 0) {
-				this.sanyueMumber = false;
-			}
-			let params = {
-				current: this.current,
-				size: this.size
-			}
+			// getMarchCircleInfo().then(res => {
+			// 	this.marchCircleInfo = res.data;
+			// })
+			// if (this.marchCircleInfo.ismarch == 0) {
+			// 	this.sanyueMumber = false;
+			// }
+			// let params = {
+			// 	current: this.current,
+			// 	size: this.size
+			// }
 
-			this.getCircleList(params);
+			// this.getCircleList(params);
+			
+			
+			if (!getToken()) {
+				console.log("没有token");
+				let code;
+				if (!parseCode()) {
+					console.log("当前没有wxCode，去获取");
+					//没有token，没登陆过，获取wxcode
+					code = returnWxcode();
+			
+				} else {
+					code = parseCode();
+				}
+				console.log("成功拿到code")
+				let params = {
+					code: code,
+					status: 1
+				}
+				// 判断该用户是否注册
+				login(params).then(res => {
+					console.log(res, "注册")
+					if (res.data.status == 1) {
+						// 跳转注册页面
+						console.log("未登录")
+						uni.navigateTo({
+							url: "../login/login"
+						})
+					} else {
+						// 登陆成功
+						console.log(res.data.token)
+						setToken(res.data.token);
+						setOpenId(res.data.openid)
+					}
+				}).catch(err => {
+					console.log(err, "err login")
+				})
+			
+			}
 		},
 		onShow() {
 			check()
