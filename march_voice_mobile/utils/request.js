@@ -67,8 +67,9 @@ Axios.interceptors.request.use(
 		// } else {
 		// 	config.headers['Authorization'] = getToken() //让每个请求携带自定义token
 		// }
-
-		config.headers['Authorization'] = getToken() ? getToken() : undefined //让每个请求携带自定义token
+		if(getToken()){
+			config.headers['Authorization'] =getToken()//让每个请求携带自定义token
+		}
 		config.headers['Content-type'] = "application/json;charset=utf-8";
 		config.data = JSON.stringify(config.data);
 		console.log(config);
@@ -83,7 +84,7 @@ Axios.interceptors.request.use(
 // 响应拦截器
 Axios.interceptors.response.use(
 	(response) => {
-		console.log(response.data.message, "success");
+		console.log(response.data, "success");
 		// uni.showToast({
 		// 	title: response.data.message,
 		// 	duration: 2000,
