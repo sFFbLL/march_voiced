@@ -9,14 +9,8 @@
 				<p class="info">简介: {{marchCircleInfo.brief}}</p>
 			</view>
 			<view>
-				<image @click="share()"
-				 class="wxlogo"
-				 src="../../static/img/wxlogo.png"></image>
-				<button v-if="sanyueMumber"
-				 class="join"
-				 :disabled="disabledJoin"
-				 :style="{fontSize:fontSize+'rpx'}"
-				 @click="join()">{{isjoin}}</button>
+				<image @click="share()" class="wxlogo" src="../../static/img/wxlogo.png"></image>
+				<button v-if="sanyueMumber" class="join" :disabled="disabledJoin" :style="{fontSize:fontSize+'rpx'}" @click="join()">{{isjoin}}</button>
 				<u-toast ref="uToast" />
 
 			</view>
@@ -29,25 +23,17 @@
 			<!-- 间隔槽 -->
 
 			<view v-for="item in reverseIdeaList">
-				<u-gap height="30"
-				 bg-color="#f5f5f5"></u-gap>
+				<u-gap height="30" bg-color="#f5f5f5"></u-gap>
 				<view class="ideacontent">
 					<!-- 用户头像公共组件 -->
-					<attentionAndFansCell :nickname="item.nickname"
-					 :avatarPath="item.avatarPath"
-					 :isFollow="item.isFollow"></attentionAndFansCell>
+					<attentionAndFansCell :nickname="item.nickname" :avatarPath="item.avatarPath" :isFollow="item.isFollow"></attentionAndFansCell>
 					<!-- 想法的文字部分 -->
-					<articleContent :articleContent="item.content"
-					 :isIdea="true"
-					 :id="item.id"></articleContent>
+					<articleContent :articleContent="item.content" :isIdea="true" :id="item.id"></articleContent>
 					<!-- 想法的图片部分组件 -->
 					<imageAdaptation :imgList="item.imgList"></imageAdaptation>
 					<!-- 点赞表情组件+评论 -->
-					<emojiControl :faceTotals="item.faceTotal"
-					 :likeTotals="item.likeTotal"
-					 :favourTotals="item.favourTotal"
-					 :commentTotals="item.commentTotal"
-					 :id="item.id"></emojiControl>
+					<emojiControl :faceTotals="item.faceTotal" :likeTotals="item.likeTotal" :favourTotals="item.favourTotal"
+					 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
 				</view>
 			</view>
 
@@ -56,19 +42,12 @@
 			<uni-load-more :status="loadStatus"></uni-load-more>
 		</view>
 		<!-- 微信分享遮罩层 -->
-		<view class="mcover"
-		 @click="isshow()"
-		 :style="{display:mcoverDisplay}">
+		<view class="mcover" @click="isshow()" :style="{display:mcoverDisplay}">
 			<image src="https://oscimg.oschina.net/oscnet/fd2170a448e37826ae9f4d7088f287b8f24.jpg" />
 		</view>
 		<!-- 发布三月圈悬浮按钮 -->
-		<view v-if="sanyueMumber"
-		 @click="publish()"
-		 class="publishbtn">
-			<uni-icons class="addicon"
-			 type="plusempty"
-			 size="43"
-			 color="white"></uni-icons>
+		<view v-if="sanyueMumber" @click="publish()" class="publishbtn">
+			<uni-icons class="addicon" type="plusempty" size="43" color="white"></uni-icons>
 		</view>
 
 	</view>
@@ -89,19 +68,6 @@
 	import {
 		check
 	} from '../../utils/checkUnRead.js'
-	import {
-		returnWxcode,
-		getWxCode,
-		parseCode
-	} from "../../utils/wxcode.js"
-	import {
-		getToken,
-		setToken
-	} from "../../utils/auth.js"
-	import {
-		login,
-		creatNewUser
-	} from "../../utils/login.js"
 	export default {
 		data() {
 			return {
@@ -316,56 +282,18 @@
 		},
 		created() {
 			// 获取三月基本信息接口
-			// getMarchCircleInfo().then(res => {
-			// 	this.marchCircleInfo = res.data;
-			// })
-			// if (this.marchCircleInfo.ismarch == 0) {
-			// 	this.sanyueMumber = false;
-			// }
-			// let params = {
-			// 	current: this.current,
-			// 	size: this.size
-			// }
-
-			// this.getCircleList(params);
-			
-			
-			if (!getToken()) {
-				console.log("没有token");
-				let code;
-				if (!parseCode()) {
-					console.log("当前没有wxCode，去获取");
-					//没有token，没登陆过，获取wxcode
-					code = returnWxcode();
-			
-				} else {
-					code = parseCode();
-				}
-				console.log("成功拿到code")
-				let params = {
-					code: code,
-					status: 1
-				}
-				// 判断该用户是否注册
-				login(params).then(res => {
-					console.log(res, "注册")
-					if (res.data.status == 1) {
-						// 跳转注册页面
-						console.log("未登录")
-						uni.navigateTo({
-							url: "../login/login"
-						})
-					} else {
-						// 登陆成功
-						console.log(res.data.token)
-						setToken(res.data.token);
-						setOpenId(res.data.openid)
-					}
-				}).catch(err => {
-					console.log(err, "err login")
-				})
-			
+			getMarchCircleInfo().then(res => {
+				this.marchCircleInfo = res.data;
+			})
+			if (this.marchCircleInfo.ismarch == 0) {
+				this.sanyueMumber = false;
 			}
+			let params = {
+				current: this.current,
+				size: this.size
+			}
+
+			this.getCircleList(params);
 		},
 		onShow() {
 			check()
@@ -389,7 +317,7 @@
 				} else if (this.current === 1) {
 					_this.isLoadMore = false;
 				} else {
-					setTimeout(function () {
+					setTimeout(function() {
 						_this.isLoadMore = false;
 					}, 2000);
 				}
