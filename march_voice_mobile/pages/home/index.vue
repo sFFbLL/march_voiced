@@ -3,16 +3,11 @@
 	<view class="home">
 		<view class="header">
 			<!-- 头部选项卡 -->
-			<tabs class="tag-nav"
-			 :tabs='tablist'
-			 v-on:tabActive='tabActive' />
+			<tabs class="tag-nav" :tabs='tablist' v-on:tabActive='tabActive' />
 			<!-- 搜索图标 -->
-			<view class="search"
-			 @click="search()">
+			<view class="search" @click="search()">
 				<view class="search-icon">
-					<uni-icons type="search"
-					 size="25"
-					 color="#999"></uni-icons>
+					<uni-icons type="search" size="25" color="#999"></uni-icons>
 				</view>
 			</view>
 		</view>
@@ -25,16 +20,13 @@
 			</view>
 			<!-- 关注 -->
 			<view v-if="tabIndex">
-				<view v-for="(item,index) in followList"
-				 :key="index">
+				<view v-for="(item,index) in followList" :key="index">
 					<follow :articleInfo="item" />
 				</view>
 			</view>
 			<!-- 下拉加载更多 -->
 			<view v-show="isLoadMore">
-				<uni-load-more class="loading"
-				 :status="loadStatus"
-				 iconType="circle"></uni-load-more>
+				<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
 			</view>
 		</view>
 	</view>
@@ -106,12 +98,12 @@
 			console.log("homebeforeCreate");
 			if (!getToken()) {
 				console.log("没有token");
-				let code ;
+				let code;
 				if (!parseCode()) {
 					console.log("当前没有wxCode，去获取");
 					//没有token，没登陆过，获取wxcode
 					code = returnWxcode();
-					
+
 				} else {
 					code = parseCode();
 				}
@@ -138,17 +130,16 @@
 				}).catch(err => {
 					console.log(err, "err login")
 				})
-			
+
 			}
 		},
 		onShow() {
 			check()
 		},
-		onLoad() {
+		created() {
 			this.recommend();
 			this.follow();
 		},
-
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true
@@ -198,7 +189,7 @@
 						_this.isLoadMore = false;
 						_this.recommendList = [..._this.recommendList, ...res.data];
 					} else {
-						setTimeout(function () {
+						setTimeout(function() {
 							_this.isLoadMore = false;
 							_this.recommendList = [..._this.recommendList, ...res.data];
 						}, 3000);
@@ -220,7 +211,7 @@
 						_this.isLoadMore = false;
 						_this.recommendList = [..._this.recommendList, ...res.data];
 					} else {
-						setTimeout(function () {
+						setTimeout(function() {
 							_this.isLoadMore = false;
 							_this.recommendList = [..._this.recommendList, ...res.data];
 						}, 3000);
@@ -243,7 +234,7 @@
 						_this.isLoadMore = false;
 						_this.followList = [..._this.followList, ...res.data.records];
 					} else {
-						setTimeout(function () {
+						setTimeout(function() {
 							_this.isLoadMore = false;
 							_this.followList = [..._this.followList, ...res.data.records];
 						}, 3000);

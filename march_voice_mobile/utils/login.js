@@ -1,9 +1,8 @@
 import Axios from './request.js';
-import baseUrl from './env.js'
 
 // 补全用户信息
 export function creatNewUser(params) {
-	return Axios.post(baseUrl + '/api/user/creatNewUser', {
+	return Axios.post('/api/user/creatNewUser', {
 		username: params.username,
 		password: params.password
 	})
@@ -11,7 +10,7 @@ export function creatNewUser(params) {
 
 // 查询用户是否存在
 export function isExist(params) {
-	return Axios.get(baseUrl + '/api/user/isExist', {
+	return Axios.get('/api/user/isExist', {
 		username: params,
 	})
 }
@@ -25,18 +24,18 @@ export function login(params) {
 
 // pc生成二维码
 export function pcLogin(){
-	return Axios.get(baseUrl + '/api/user/getTicket')
+	return Axios.get('/api/user/getTicket')
 }
 
 // pc扫码登录判断
 export function pcIsLogin(params){
-	return Axios.get(baseUrl + '/api/user/check',{
+	return Axios.get('/api/user/check',{
 		params
 	})
 }
 
 export function fixUserInfo(params){
-	return Axios.post(baseUrl + '/api/user/creatNewUser',{
+	return Axios.post('/api/user/creatNewUser',{
 		params
 	})
 }

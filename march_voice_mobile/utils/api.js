@@ -1,5 +1,4 @@
 import Axios from './request.js'
-import baseUrl from './env.js'
 
 
 
@@ -22,7 +21,7 @@ import baseUrl from './env.js'
 // }
 
 export function unloadImage(params) {
-	return Axios.post(baseUrl + '/api/file/uploadImage', {
+	return Axios.post('/api/file/uploadImage', {
 		file: params.file,
 	})
 }
