@@ -1,7 +1,8 @@
 <script>
 	import {
 		returnWxcode,
-		getWxCode
+		getWxCode,
+		parseCode 
 	} from "./utils/wxcode.js"
 	import {
 		getToken,
@@ -12,54 +13,17 @@
 		creatNewUser
 	} from "./utils/login.js"
 	export default {
-		onLaunch: function() {
+		onLaunch: function () {
 
 			console.log('App Launch')
 
 		},
-		onShow: function() {
+		onShow: function () {
 			console.log('App Show')
 		},
-		onHide: function() {
+		onHide: function () {
 			console.log('App Hide')
-		},
-		beforeCreate() {
-			console.log("beforeCreate");
-			if (!getToken()) {
-				//没有token，没登陆过，获取wxcode
-				// let code = returnWxcode();
-				let code = "051WRBHa1LAcBA0FAtJa1TVqio1WRBHY"
-				let params ={
-					code: code,
-					status: 1
-				}
-				console.log(code, "code")
-				// 判断该用户是否注册
-				login(params).then(res => {
-					console.log(res, "注册")
-					if (res.data.status == 1) {
-						// 跳转注册页面
-						console.log("未登录")
-						uni.navigateTo({
-							url: "../login/login"
-						})
-					} else {
-						// 登陆成功
-						console.log(res.data.token)
-						setToken(res.data.token);
-						setOpenId(res.data.openid)
-					}
-				}).catch(err => {
-					console.log(err, "err login")
-				})
-
-			} else {
-				uni.navigateTo({
-					url: "../login/login"
-				})
-			}
-
-		},
+		}
 
 
 	}

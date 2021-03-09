@@ -15,12 +15,8 @@ export function getOpenId() {
 }
 
 export function setToken(token) {
-    // if (rememberMe) {
         return Cookies.set(TokenKey, token)
-    // } else {
-    //     let token_temp = Cookies.set(TokenKey, token)
-    //     return token_temp
-    // }
+ 
 }
 
 export function setOpenId(OpenId) {

@@ -2,15 +2,15 @@
 	<view class="attention-cell">
 		<view class="flex-item">
 			<!-- 左侧头像盒子 -->
-			<a @click.stop="inToPageMine"
+			<a @click.stop="inToMine"
 			 class="left-img-box inner-box">
 				<image class="inner-img"
-				 :src="avatarPath"
+				 :src="getImgUrl(avatarPath)"
 				 mode="aspectFill"></image>
 			</a>
 			<!-- 中部文字 -->
 			<view class="middle-text-box inner-box"
-			 @click.stop="inToPageMine">
+			 @click.stop="inToMine">
 				<view class="inner-middle-box inner-box">
 					<!-- 昵称盒子 -->
 					<view class="inner-text-name">
@@ -37,7 +37,9 @@
 					 type="default-green"
 					 :disabled="isDisabled"
 					 iconType="circle"
-					 @click.stop="changeBtn"><span>关 注</span></button>
+					 @click.stop="changeBtn">
+						<span>关 注</span>
+					 </button>
 					<button v-show="isFollow === 1"
 					 class="right-button"
 					 type="default"
@@ -53,6 +55,7 @@
 </template>
 
 <script>
+	import settings from '../settings.js'
 	export default {
 		props: {
 			// 用于事件
@@ -78,7 +81,8 @@
 		},
 		data() {
 			return {
-				isDisabled: false // 是否禁用按钮点击
+				isDisabled: false ,// 是否禁用按钮点击
+				openid:null,
 			}
 		},
 		methods: {
@@ -92,8 +96,11 @@
 				}, 1000);
 			},
 			// 进入其他页面
-			inToPageMine() {
+			inToMine() {
 				this.$emit('inToPageMine')
+			},
+			getImgUrl(src) {
+				return settings.imgUrl + src;
 			}
 		}
 	}
@@ -135,6 +142,7 @@
 		height: 70rpx;
 		width: 70rpx;
 		border-radius: 50%;
+		box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
 	}
 
 	/* 中部文字盒子样式 */

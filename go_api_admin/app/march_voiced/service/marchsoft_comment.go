@@ -41,7 +41,7 @@ func (mc *MarchsoftComment) GetMarchsoftComment(p *dto.GetMarchsoftComment) (res
 		p.Current = 1
 	}
 	if p.ChildSize == 0 {
-		p.ChildSize = 3
+		p.ChildSize = 4
 	}
 	res = new(bo.GetMarchsoftComment)
 	var SignalComments []bo.SignalMarchsoftComment
@@ -108,7 +108,7 @@ func (mc *MarchsoftComment) GetMarchsoftChildComment(p *dto.GetMarchsoftChildCom
 	comment := new(models.MarchsoftComment)
 	res := new(bo.ChildrenMarchsoftComment)
 	if p.Size == 0 && p.Current == 0 {
-		p.Size = 3
+		p.Size = 4
 		p.Current = 2
 	}
 	commentList, err := comment.GetMarchsoftChildComment(p)

@@ -102,7 +102,8 @@ const (
    -----------go_api 业务相关（2xxx）------------
 */
 const (
-//Code ResCode = 2001 + iota
+	CodeArticleIsNotApply ResCode = 2001 + iota
+	CodeMarchIsNotApply
 )
 
 /*
@@ -167,6 +168,9 @@ var codeMsgMap = map[ResCode]string{
 	CodeParamIsBlank:       "参数为空",
 	CodeParamTypeBindError: "参数类型错误",
 	CodeParamNotComplete:   "参数缺失",
+
+	CodeArticleIsNotApply: "文章不是发布未审核状态",
+	CodeMarchIsNotApply: "该用户未申请三月圈",
 
 	CodeWxGzhAccessTokenFail: "微信公众号JSSDK获取access_token失败",
 	CodeWxGzhJsApiTicketFail: "微信公众号JSSDK获取jsapi_ticket失败",

@@ -3,17 +3,25 @@
     position:relative;
     margin:auto;
     display:flex;
+    // border:2px solid #000
 }
-// .el-textarea__inner{
-//    border-radius: 10px;
-// }
 tr td:nth-child(2){
     word-break:break-all;
+}
+.style-header{
+  display: inline-block;
 }
 /* ==============页面标题=============== */
 .style-a4 {
     padding: 40px 0px;
     display: flex;
+}
+.tittle{
+  margin-bottom: 26px;
+  width: 100%;
+  text-align: center;
+  font-weight:bold;
+  font-size: 34px;
 }
 .head-box {
     margin-bottom: 26px;
@@ -30,31 +38,32 @@ tr td:nth-child(2){
     vertical-align: middle;
 }
 
+/* 状态盒子共用的属性 */
 .status-box {
     color:white;
     position: relative;
-    transform: translateX(-60px) translateY(-40px);
+    float: left;
+    // transform: translateX(-60px) translateY(-40px);
     display: inline-block;
-    // border-radius: 10px;
     padding: 0px 10px;
     border-radius: 0px 0px 10px 0px;
     text-align: center;
     line-height:150%;
     cursor: default;
 }
-
-/* 状态盒子共用的属性 */
-.status-box {
-    color:white;
-    position: relative;
-    transform: translateX(-60px) translateY(-40px);
-    display: inline-block;
-    // border-radius: 10px;
-    padding: 0px 10px;
-    border-radius: 0px 0px 10px 0px;
-    text-align: center;
-    line-height:150%;
-    cursor: default;
+.body{
+  overflow:hidden;
+}
+.mmmm{
+  border:2px solid rgb(251, 178, 7);
+  width: 100%;
+}
+.reject{
+  // border:2px solid rgb(139, 10, 224);
+  float:left;
+  min-width: 72px;
+  display: flex;
+  justify-content: flex-end;
 }
 .status-box span{
     font-size: 14px;
@@ -96,13 +105,28 @@ tr td:nth-child(2){
     // border-radius: 10px;
     margin-right:10px;
     width: 70%;
+    // border:2px solid rgb(22, 216, 54);
     max-width: 1010px;
     min-width: 790px;
     box-shadow: 0px 0px 10px lightgray;
     min-height: 800px;
 }
+
+.ee{
+  position: relative;
+  top: -25px;
+  // border:2px solid rgb(253, 7, 171);
+}
+.header-but{
+  position: relative;
+  left: -62px;
+  top: -42px;
+  height: 40px;
+    // border:2px solid rgb(228, 9, 9);
+}
 /* 小标题的盒子 */
 .text-tittle {
+
     color: rgba(80, 80, 80, 1);
     font-size: 16px;
     font-weight: bold;

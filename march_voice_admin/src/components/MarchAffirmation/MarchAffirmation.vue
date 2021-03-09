@@ -1,7 +1,7 @@
 <template>
   <div ref="btnSet" class="wrap">
     <el-button
-      v-if="data.objectState == 3 || data.objectState == 1"
+      v-if="data.status == '2'"
       :disabled="disabled"
       size="mini"
       type="success"
@@ -10,7 +10,7 @@
       @click="doAdopt()"
     >通过</el-button>
     <el-button
-      v-if="data.objectState == 3 || data.objectState == 1"
+      v-if="data.status == '2'"
       :disabled="disabled"
       class="filter-item"
       type="danger"
@@ -28,7 +28,7 @@ import { articleAdopt } from '@/api/review/articleReview.js'
 // import Cookies from "js-cookie";
 
 export default {
-  name: 'ProjectAffirmation',
+  name: 'MarchAffirmation',
   mixins: [crud()],
   cruds() {
     return CRUD({ title: '组件', url: '' })
@@ -38,10 +38,6 @@ export default {
       type: Object,
       required: true
     }
-    // content: {
-    //   type: Object,
-    //   required: true,
-    // },
   },
   data() {
     return {
@@ -51,14 +47,15 @@ export default {
     }
   },
   updated() {
-    if (this.data.objectState === 3) {
+    if (this.data.status === '3') {
       this.disabled = true
     } else {
       this.disabled = false
     }
   },
   created() {
-    if (this.data.objectState === 3) {
+    // console.log(this.data.status)
+    if (this.data.status === '3') {
       this.disabled = true
     } else {
       this.disabled = false
@@ -68,22 +65,21 @@ export default {
     this.$emit('btnSetWidthEvent', this.$refs.btnSet.clientWidth)
   },
   methods: {
-    // 驳回方法
     judgeText() {
       this.$confirm('请再次确定是否驳回', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        const dataId = parseInt(this.data.id)
-        let objectState = parseInt(this.data.objectState)
-        const isShow = objectState === 1
+        console.log(this.data.userId)
+        const id = parseInt(this.data.userId)
+        const statuss = parseInt(this.data.status)
+        const isShow = statuss == '2'
         const status = 1
         const doAdoptData = {
           status,
-          dataId
+          id
         }
-        console.log(doAdoptData)
         if (isShow) {
           articleAdopt(doAdoptData)
             .then((rep) => { })
@@ -93,14 +89,14 @@ export default {
                 message: '成功驳回',
                 type: 'success'
               })
-              objectState = 3
+              this.data.status = '3'
             })
             .catch(() => {
               this.$message({
                 type: 'info',
-                message: '驳回失败'
+                message: '已取消驳回'
               })
-              objectState = 1
+              this.data.status = '2'
             })
         }
       })
@@ -113,16 +109,18 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        const dataId = parseInt(this.data.id)
-        let objectState = parseInt(this.data.objectState)
-        const isShow = objectState === 1
-        const status = 1
+        const id = parseInt(this.data.userId)
+        const statuss = parseInt(this.data.status)
+        const isShow = statuss == '2'
+        let status = 1
         const doAdoptData = {
           status,
-          dataId
+          id
         }
-        console.log(doAdoptData)
+        // console.log(doAdoptData)
+        // console.log(isShow)
         if (isShow) {
+          // console.log(isShow)
           articleAdopt(doAdoptData)
             .then((rep) => { })
             .then(() => {
@@ -130,8 +128,7 @@ export default {
                 type: 'success',
                 message: '通过成功！'
               })
-              objectState = 2
-              // this.disabled = false;
+              status = '1'
             })
             .catch(() => {
               this.$message({

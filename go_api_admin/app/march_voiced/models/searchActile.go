@@ -36,7 +36,7 @@ func (seach *Seach) SearchUser(searchInfo dto.SearchActileDto,userId interface{}
 	var data []bo.SearchUserBo
 	fmt.Println(searchInfo.SearchWord)
 	//word := "%"+searchInfo.SearchWord+ "%"
-	err := global.Eloquent.Where(fmt.Sprintf("username like '%%%s%%' ",searchInfo.SearchWord)).Limit(searchInfo.Size).Offset((searchInfo.Current-1)*searchInfo.Size).Find(&user).Error
+	err := global.Eloquent.Where(fmt.Sprintf("username like '%%%s%%' ",searchInfo.SearchWord)).Limit(int(searchInfo.Size)).Offset(int((searchInfo.Current - 1) * searchInfo.Size)).Find(&user).Error
 	//db.Model(&User{}).Where("price >= ?",0).Count(&total)
 	if err != nil {
 		return nil,err

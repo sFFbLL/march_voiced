@@ -61,25 +61,10 @@
         icon="el-icon-search"
         @click="toggleSearch()"
       />
-      <el-button
-        size="mini"
-        icon="el-icon-refresh"
-        @click="crud.refresh()"
-      />
-      <el-popover
-        placement="bottom-end"
-        width="150"
-        trigger="click"
-      >
-        <el-button
-          slot="reference"
-          size="mini"
-          icon="el-icon-s-grid"
-        >
-          <i
-            class="fa fa-caret-down"
-            aria-hidden="true"
-          />
+      <el-button size="mini" icon="el-icon-refresh" @click="crud.refresh()" />
+      <el-popover placement="bottom-end" width="150" trigger="click">
+        <el-button slot="reference" size="mini" icon="el-icon-s-grid">
+          <i class="fa fa-caret-down" aria-hidden="true" />
         </el-button>
         <el-checkbox
           v-model="allColumnsSelected"
@@ -253,13 +238,13 @@ export default {
 </script>
 
 <style>
-  .crud-opts {
-    padding: 4px 0;
-    display: -webkit-flex;
-    display: flex;
-    align-items: center;
-  }
-  .crud-opts .crud-opts-right {
-    margin-left: auto;
-  }
+.crud-opts {
+  padding: 4px 0;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+}
+.crud-opts .crud-opts-right {
+  margin-left: auto;
+}
 </style>

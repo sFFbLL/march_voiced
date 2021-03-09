@@ -100,8 +100,11 @@
 			// 调用查询用户信息的接口
 			let id = this.id;
 			let _this = this;
+			console.log(id)
 			information(id).then(res=>{
 				_this.info=res.data[0];
+			}).catch(err=>{
+				console.log("infoerr")
 			})
 		},
 

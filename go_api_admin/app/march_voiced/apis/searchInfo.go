@@ -20,6 +20,12 @@ func SearchActile(c *gin.Context)  {
 		app.ResponseError(c, app.CodeParamNotComplete)
 		return
 	}
+
+	if p.Size == 0 && p.Current == 0 {
+		p.Size = 10
+		p.Current = 1
+	}
+
 	search := new(service.Search)
 	searchActile, err := search.SearchActile(*p)
 	if err != nil {

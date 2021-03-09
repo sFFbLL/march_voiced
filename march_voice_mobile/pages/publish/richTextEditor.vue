@@ -18,14 +18,14 @@
 			return {
 				option:null,
 				title:null,
-				html:'<p>爱搜IDno为阿斯兰的框架内</p><hr><p><br></p><hr><h2>我是test</h2><p>我是<strong>加粗</strong></p><p><em>我是斜体</em><span class="ql-cursor">﻿</span></p>' // 编辑时候跳过来绑定的html内容
+				html:'' // 编辑时候跳过来绑定的html内容
 			}
 		},
 		components: {
 			jinEdit
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
-		console.log(option)
+			console.log(option)
 			this.option = option //打印出上个页面传递的参数。
 		},
 		methods: {
@@ -40,15 +40,15 @@
 				}
 				let params = {
 					title:this.title,
-					contnet:res.html,
+					content:res.html,
 					image:url,
 					kind:1,
-					tag:this.option.tag,
+					tag:parseInt(this.option.tag),
 					type:0,
 					status:res.isPublic,
-					wordCount:res.textLength
+					word_count:res.textLength
 				}
-				// console.log(params)
+				console.log(params)
 				publishArticle(params).then(res => {
 					if(res.code === 200){
 						console.log("发布成功")

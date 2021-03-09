@@ -120,47 +120,45 @@
 						isFollow: 0
 					}
 				},
-				articleList: [],
-				articleList1: [{
+				articleList: [{
 						id: 1,
 						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-						"image": require('static/img/2.jpg'),
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						image: require('static/img/2.jpg'),
 						upDateTime: "更新时间",
-						"favourTotal": 1,
-						"collectTotal": 1,
-						"commentTotal": 1
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1
 					},
 					{
 						id: 1,
 						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-						"image": require('static/img/2.jpg'),
-						"favourTotal": 1,
-						"collectTotal": 1,
-						"commentTotal": 1
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						image: require('static/img/2.jpg'),
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1
 					},
 					{
 						id: 1,
 						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-						"image": require('static/img/2.jpg'),
-						"favourTotal": 1,
-						"collectTotal": 1,
-						"commentTotal": 1
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						image: require('static/img/2.jpg'),
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1
 					},
 					{
 						id: 1,
 						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-						"image": require('static/img/2.jpg'),
-						"favourTotal": 1,
-						"collectTotal": 1,
-						"commentTotal": 1
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						image: require('static/img/2.jpg'),
+						favourTotal: 1,
+						collectTotal: 1,
+						commentTotal: 1
 					},
 				],
-				ideaList: [],
-				ideaList1: [{
+				ideaList: [{
 					id: 1,
 					imgList: [
 						'../../static/img/cat.jpg'
@@ -200,30 +198,29 @@
 					favourTotal: 0,
 					commentTotal: 0
 				}],
-				draftList: [],
-				draftList1: [{
+				draftList: [{
 						id: 1,
 						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-						"image": ""
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						image: require('static/img/2.jpg')
 					},
 					{
 						id: 1,
 						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-						"image": require('static/img/2.jpg')
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						image: require('static/img/2.jpg')
 					},
 					{
 						id: 1,
 						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-						"image": require('static/img/2.jpg')
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						image: require('static/img/2.jpg')
 					},
 					{
 						id: 1,
 						title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-						"content": "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-						"image": ""
+						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
+						image: require('static/img/2.jpg')
 					},
 				],
 				emojiList: {
@@ -260,11 +257,14 @@
 			articleContent
 		},
 		onLoad() {
+			uni.$on('getOthersId',this.test)
 			this.getArticleList();
 			this.getIdeaList();
 			this.getDraftList();
 		},
-
+		beforeDestroy() {
+			uni.$off("getOthersId",this.test)
+		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true;
@@ -281,6 +281,11 @@
 			}
 		},
 		methods: {
+			// 从其他页面获取他人id，进行主页展示
+			getOthersId(e) {
+				// 抽离出来的uni.$on回调方法,获取id用，自行处理id嗷
+				console.log(e);
+			},
 			/* 切换选项卡选项 */
 			tabActive(tabIndex) {
 				this.tabs.map((value, index) => {
@@ -323,11 +328,11 @@
 					_this.ideaLoadStatus = "nomore";
 				} else if (this.ideaCurrent === 1) {
 					_this.isLoadMore = false;
-					_this.ideaList = [..._this.ideaList, ..._this.ideaList1];
+					_this.ideaList = [..._this.ideaList, ..._this.ideaList];
 				} else {
 					setTimeout(function () {
 						_this.isLoadMore = false;
-						_this.ideaList = [..._this.ideaList, ..._this.ideaList1];
+						_this.ideaList = [..._this.ideaList, ..._this.ideaList];
 					}, 2000);
 				}
 			},
@@ -347,11 +352,11 @@
 					_this.draftLoadStatus = "nomore";
 				} else if (this.draftCurrent === 1) {
 					_this.isLoadMore = false;
-					_this.draftList = [..._this.draftList, ..._this.draftList1];
+					_this.draftList = [..._this.draftList, ..._this.draftList];
 				} else {
 					setTimeout(function () {
 						_this.isLoadMore = false;
-						_this.draftList = [..._this.draftList, ..._this.draftList1];
+						_this.draftList = [..._this.draftList, ..._this.draftList];
 					}, 2000);
 				}
 			},
@@ -371,11 +376,11 @@
 					_this.articleLoadStatus = "nomore";
 				} else if (this.articleCurrent === 1) {
 					_this.isLoadMore = false;
-					_this.articleList = [..._this.articleList, ..._this.articleList1];
+					_this.articleList = [..._this.articleList, ..._this.articleList];
 				} else {
 					setTimeout(function () {
 						_this.isLoadMore = false;
-						_this.articleList = [..._this.articleList, ..._this.articleList1];
+						_this.articleList = [..._this.articleList, ..._this.articleList];
 					}, 2000);
 				}
 			},

@@ -51,11 +51,13 @@
 	} from '../../utils/checkUnRead.js'
 	import {
 		getRecommend,
-		getFollow
+		getFollow,
+		getArticleList
 	} from '@/utils/api/home-api.js'
 	import {
 		returnWxcode,
-		getWxCode
+		getWxCode,
+		parseCode
 	} from "../../utils/wxcode.js"
 	import {
 		getToken,
@@ -76,8 +78,9 @@
 		data() {
 			return {
 				recommendCurrent: 1, //推荐当前页数，
+				articleCurrent: 1, //普通文章页数
 				followCurrent: 1, //关注当前页数
-				size: 10,
+				size: 4,
 				tabIndex: '',
 				tablist: [{
 						index: 0,
@@ -96,64 +99,38 @@
 				recommendLoadStatus: 'loading',
 				followLoadStatus: 'loading',
 				isLoadMore: false, //是否加载中
+				isRecommend: true //是否是推荐文章
 			}
 		},
 		created() {
-			// 判断是否有token
-			// console.log("beforeCreate");
-			// if (!getToken()) {
-			// 	console.log("没有token")
-			// 	//没有token，没登陆过，获取wxcode
-			// let code = returnWxcode();
-			// 	// let code = "091gYW0w3l4BSV2qdq1w3eQqgG3gYW0"
-			// 	let params = {
-			// 		code: code,
-			// 		status: 1
-			// 	}
-
-
-			console.log("555")
-
-			// 	// 判断该用户是否注册
-			// 	login(params).then(res => {
-			// 		console.log(res, "注册")
-			// 		if (res.data.status == 1) {
-			// 			// 跳转注册页面
-			// 			console.log("未登录")
-			// 			uni.navigateTo({
-			// 				url: "../login/login"
-			// 			})
-			// 		} else {
-			// 			// 登陆成功
-			// 			console.log(res.data.token)
-			// 			setToken(res.data.token);
-			// 			setOpenId(res.data.openid)
-			// 	}).catch(err =>{
-			// 		console.log(err,"err login")
-			// 	})
-
-			// } else {
-			// 	uni.navigateTo({
-			// 		url: "../login/login"
-			// 	})
+			// console.log("homecreate");
+			// console.log(parseCode())
+			// let code = parseCode()
+			// let params = {
+			// 	code: code,
+			// 	status: 1
 			// }
+			
 		},
 		onShow() {
-			console.log("onshow")
 			check()
 		},
 		onLoad() {
-			console.log("onload")
-
-			// this.recommend();
-			// this.follow();
+			this.recommend();
+			this.follow();
 		},
 
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true
-				this.recommendCurrent += 1
-				this.recommend();
+				if (this.isRecommend) {
+					this.recommendCurrent += 1;
+					this.recommend();
+				} else {
+					this.articleCurrent += 1;
+					this.getArticleList();
+				}
+
 			} else if (!this.isLoadMore && this.tabIndex) {
 				this.isLoadMore = true
 				this.followCurrent += 1
@@ -184,17 +161,40 @@
 				}
 				getRecommend(params).then(res => {
 					_this.recommendList = [..._this.recommendList, ...res.data];
-					if (res.data.length <= _this.size) {
+					if (res.data.length < _this.size) {
 						_this.loadStatus = "nomore";
-						_this.recommendLoadStatus = "nomore";
+						_this.isRecommend = false;
+						_this.getArticleList();
 					} else if (this.recommendCurrent === 1) {
 						_this.isLoadMore = false;
-						_this.recommendList = [..._this.recommendList, ...recommendList];
+						_this.recommendList = [..._this.recommendList, ...res.data];
 					} else {
 						setTimeout(function () {
 							_this.isLoadMore = false;
-							_this.recommendList = [..._this.recommendList, ...recommendList];
-						}, 2000);
+							_this.recommendList = [..._this.recommendList, ...res.data];
+						}, 3000);
+					}
+				})
+			},
+			getArticleList() {
+				let _this = this;
+				let params = {
+					current: this.articleCurrent,
+					size: this.size
+				}
+				getArticleList(params).then(res => {
+					_this.recommendList = [..._this.recommendList, ...res.data];
+					if (res.data.length < _this.size) {
+						_this.loadStatus = "nomore";
+						_this.recommendLoadStatus = "nomore";
+					} else if (this.articleCurrent === 1) {
+						_this.isLoadMore = false;
+						_this.recommendList = [..._this.recommendList, ...res.data];
+					} else {
+						setTimeout(function () {
+							_this.isLoadMore = false;
+							_this.recommendList = [..._this.recommendList, ...res.data];
+						}, 3000);
 					}
 				})
 			},
@@ -207,17 +207,17 @@
 				}
 				getFollow(params).then(res => {
 					_this.followList = [..._this.followList, ...res.data.records];
-					if (res.data.length <= _this.size) {
+					if (res.data.records.length < _this.size) {
 						_this.loadStatus = "nomore";
 						_this.follLoadStatus = "nomore";
 					} else if (this.followCurrent === 1) {
 						_this.isLoadMore = false;
-						_this.followList = [..._this.followList, ...followList];
+						_this.followList = [..._this.followList, ...res.data.records];
 					} else {
 						setTimeout(function () {
 							_this.isLoadMore = false;
-							_this.followList = [..._this.followList, ...followList];
-						}, 2000);
+							_this.followList = [..._this.followList, ...res.data.records];
+						}, 3000);
 					}
 				})
 			},

@@ -22,3 +22,21 @@ export function login(params) {
 		code: params.code,
 	})
 }
+
+// pc生成二维码
+export function pcLogin(){
+	return Axios.get(baseUrl + '/api/user/getTicket')
+}
+
+// pc扫码登录判断
+export function pcIsLogin(params){
+	return Axios.get(baseUrl + '/api/user/check',{
+		params
+	})
+}
+
+export function fixUserInfo(params){
+	return Axios.post(baseUrl + '/api/user/creatNewUser',{
+		params
+	})
+}

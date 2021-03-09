@@ -122,6 +122,7 @@ function CRUD(options) {
     toQuery() {
       crud.page.page = 1
       crud.refresh()
+      console.log(132)
     },
     // 刷新
     refresh() {
@@ -355,6 +356,8 @@ function CRUD(options) {
       Object.keys(crud.params).length !== 0 && Object.keys(crud.params).forEach(item => {
         if (crud.params[item] === null || crud.params[item] === '') crud.params[item] = undefined
       })
+      console.log(crud.url)
+      console.log(crud.query)
       return {
         current: crud.page.page,
         size: crud.page.size,

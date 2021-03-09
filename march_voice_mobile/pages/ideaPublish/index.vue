@@ -20,7 +20,8 @@
 
 <script>
 	
-	import unloadImage from "../../utils/api.js"
+	import {unloadImage} from "../../utils/api.js"
+	import {publishIdea} from "../../utils/api/marchCircle-api.js"
 	export default {
 		data() {
 			return {
@@ -81,6 +82,23 @@
 				        }
 				    });
 				},
+				// 插入图片
+				    insertImage() {
+				          for (let temp of this.imageList) {
+				            // 图片上传服务器
+				             uni.uploadFile({
+				              url: "http://www.kuntong.site/api/file/uploadImage",
+				              filePath: temp,
+				              name: this.fileKeyName,
+				              header: this.header,
+				              success: res => {
+				                // 上传完成后处理
+				              let newRes = JSON.parse(res.data)
+				              },
+				              
+				            });
+				          }
+				    },
 				// 发布想法，调接口
 			publish(){
 				this.btnLoading=true;
@@ -93,18 +111,30 @@
 					    duration: 2000
 					});
 				}else{
-						
 						// 调用接口转化imgurl
 						let file=this.srcList
 						let imageList = unloadImage(file);
+						console.log(file)
 						
 						let params={
 							content:this.ideaWords,
 							imageList:imageList,
 							image:imageList[0]
 							}
+							for (let img of this.imageList) {
+									let file = new FormData()
+									file.append("file",img)
+							}
+						// let file = new FormData()
+						file.append("file",this.srcList)
+						unloadImage(file).then(res=>{
+							res.data.full_path
+						})
+						
+						
+						
 						// 调用发布接口,
-					marchCircleList(params).then(res=>{
+					publishIdea(params).then(res=>{
 							 uni.showToast({
 								title: '发布成功',
 								icon:"none",
