@@ -26,6 +26,9 @@
 		returnWxcode,
 		getWxCode
 	} from "../../utils/wxcode.js"
+	import {
+		setToken
+	} from "../../utils/auth.js"
 	export default {
 		data() {
 			return {
@@ -57,44 +60,27 @@
 					});
 				} else {
 					this.btnloading = true;
-					let params = this.nameValue
 					let isExistOr = true;
 					let _this = this;
-					console.log(params);
-					isExist(params).then(res => {
-						if (res.code == 0) { //用户名申请成功
-							console.log(res.message)
-							isExistOr = false;
-						} else { //用户名已存在
-							console.log(res.message)
-							uni.showToast({
-								title: '用户名已存在',
-								icon: "none",
-								position: "top",
-								duration: 2000
-							});
-						}
-						// 如果用户名可以用，调用补全信息的接口以及微信接口获取信息
-						if (!isExistOr) {
-							let uparams = {
-								username: _this.nameValue,
-								password: _this.passwordValue
-							}
-							// 调用补全信息的接口获得用户的token
-							creatNewUser(uparams).then(res => {
-								console.log(res.data.token)
-							})
-							// 跳转到首页
-							uni.navigateTo({
-								url: "../home/index"
-							})
-						}
-
+					let params = {
+						username: _this.nameValue,
+						password: _this.passwordValue
+					}
+					// 调用补全信息的接口获得用户的token
+					creatNewUser(params).then(res => {
+						console.log(res.data.token)
+						setToken(res.data.token)
+						// 跳转到首页
+						uni.navigateTo({
+							url: "../home/index"
+						})
 					})
-				}
 
+				}
 			}
-		}
+
+		
+	}
 	}
 </script>
 
