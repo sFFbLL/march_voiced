@@ -6,7 +6,7 @@ export function getWxCode() {
 		"https://open.weixin.qq.com/connect/oauth2/authorize?" +
 		"appid=" + Config.appId + "&redirect_uri=" +
 		encodeURIComponent(location.href) +
-		"&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+		"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
 
 
 	// window.location.href =
