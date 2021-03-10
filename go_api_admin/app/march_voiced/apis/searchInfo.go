@@ -3,6 +3,7 @@ package apis
 import (
 	"project/app/march_voiced/models/dto"
 	"project/app/march_voiced/service"
+	"project/common/api"
 	"project/utils/app"
 
 	"github.com/gin-gonic/gin"
@@ -36,7 +37,7 @@ func SearchActile(c *gin.Context)  {
 }
 
 func SearchUser(c *gin.Context)  {
-	userId, _ := c.Get("UserId")
+	userId, _ := c.Get(api.CtxUserIDKey)
 	p := new(dto.SearchActileDto)
 	if err := c.ShouldBindQuery(p); err != nil {
 		_, ok := err.(validator.ValidationErrors)

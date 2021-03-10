@@ -30,11 +30,6 @@ func LoginHandler(c *gin.Context) {
 	}
 	p := new(Name)
 	c.ShouldBindJSON(p)
-	fmt.Println(p.Code,"============")
-	//code := c.Query("code")
-	//status := c.Query("status")
-	//code ="0414i60w3y7JRV2Qut0w3ZHOUa44i60H"
-	//fmt.Println(status,"dddd")
 	oauth := global.Wx.GetOauth()
 	token, err := oauth.GetUserAccessToken(p.Code)
 	if err != nil {
@@ -50,7 +45,7 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 	login := new(service.Login)
-	data, err := login.LoginService(info)
+	data, err := login.LoginService(c,info)
 	if err != nil {
 		zap.L().Error("CreatDaoWeixinUserInfo failed", zap.Error(err))
 		app.ResponseError(c, app.CodeInsertOperationFail)
@@ -74,10 +69,10 @@ func CreatSysUser(c *gin.Context){
 		return
 	}
 	login := new(service.Login)
-	data, err:= login.CreatSysUserService(*p)
-	if err != nil {
-		zap.L().Error("CreatDaoWeixinUserInfo failed", zap.Error(err))
-		app.ResponseError(c, app.CodeInsertOperationFail)
+	data, err:= login.CreatSysUserService(c,*p)
+	if err != nil{
+		zap.L().Error("SearchUserName failed", zap.Error(err))
+		app.ResponseErrorWithMsg(c, app.CodeOperationFail,err.Error())
 		return
 	}
 	app.ResponseSuccess(c,data)
