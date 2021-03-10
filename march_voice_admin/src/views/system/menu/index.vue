@@ -59,7 +59,7 @@
           <el-input v-model="form.title" placeholder="按钮名称" style="width: 178px;" />
         </el-form-item>
         <el-form-item v-show="form.type.toString() !== '0'" label="权限标识" prop="permission">
-          <el-input v-model="form.permission" :disabled="form.iframe" placeholder="权限标识" style="width: 178px;" />
+          <el-input v-model="form.permission" :disabled="form.iframe.toString() === 'true'" placeholder="权限标识" style="width: 178px;" />
         </el-form-item>
         <el-form-item v-if="form.type.toString() !== '2'" label="路由地址" prop="path">
           <el-input v-model="form.path" placeholder="路由地址" style="width: 178px;" />
@@ -67,10 +67,10 @@
         <el-form-item label="菜单排序" prop="menuSort">
           <el-input-number v-model.number="form.menuSort" :min="0" :max="999" controls-position="right" style="width: 178px;" />
         </el-form-item>
-        <el-form-item v-show="!form.iframe && form.type.toString() === '1'" label="组件名称" prop="name">
+        <el-form-item v-show="form.iframe.toString() !== 'true' && form.type.toString() === '1'" label="组件名称" prop="name">
           <el-input v-model="form.name" style="width: 178px;" placeholder="匹配组件内Name字段" />
         </el-form-item>
-        <el-form-item v-show="!form.iframe && form.type.toString() === '1'" label="组件路径" prop="component">
+        <el-form-item v-show="form.iframe.toString() !== 'true' && form.type.toString() === '1'" label="组件路径" prop="component">
           <el-input v-model="form.component" style="width: 178px;" placeholder="组件路径" />
         </el-form-item>
         <el-form-item label="上级类目" prop="pid">
@@ -81,6 +81,13 @@
             style="width: 450px;"
             placeholder="选择上级类目"
           />
+        </el-form-item>
+        <!-- Casbin 权限字段 -->
+        <el-form-item v-if="form.type.toString() !== '2'" label="请求方式" prop="action">
+          <el-input v-model="form.action" :style=" form.type.toString() === '0' ? 'width: 450px' : 'width: 178px'" placeholder="请求方式: GET、POST、PUT、DELETE ..." />
+        </el-form-item>
+        <el-form-item v-if="form.type.toString() !== '2'" label="请求路由" prop="address">
+          <el-input v-model="form.address" :style=" form.type.toString() === '0' ? 'width: 450px' : 'width: 178px'" placeholder="请求路由: /api/job、/api/roles、/api/menus/ ..." />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
