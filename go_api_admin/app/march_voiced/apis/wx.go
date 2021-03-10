@@ -83,8 +83,8 @@ func CheckIsSucess(c *gin.Context) {
 		Unionid:    info.UnionID,
 	}
 	login := new(service.Login)
-	login.LoginService(oauthInfo)
-	data, err := login.LoginService(oauthInfo)
+	login.LoginService(c,oauthInfo)
+	data, err := login.LoginService(c,oauthInfo)
 	if err != nil {
 		zap.L().Error("CreatDaoWeixinUserInfo failed", zap.Error(err))
 		app.ResponseError(c, app.CodeInsertOperationFail)

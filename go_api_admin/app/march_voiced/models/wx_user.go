@@ -4,10 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/silenceper/wechat/v2/officialaccount/oauth"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"project/app/admin/models"
 	"project/app/march_voiced/models/dto"
 	"project/common/global"
+	"project/utils"
 )
 
 //type WxUser struct {
@@ -143,6 +145,11 @@ func(a *Model) CreatSysUserService(p dto.InsertUserDto)(SysUser,error) {
 	if err != nil&& err != gorm.ErrRecordNotFound {
 		return sysUser, err
 	}
+	isUser.Password, err = utils.RsaPriDecode(isUser.Password)
+	if err != nil {
+		zap.L().Error("ras decode fail", zap.Error(err))
+		return SysUser{},err
+	}
 	if isUser.Username ==p.UserName {
 		//判断密码是否相同
 		if isUser.Password == p.Password {
@@ -156,20 +163,19 @@ func(a *Model) CreatSysUserService(p dto.InsertUserDto)(SysUser,error) {
 		}
 
 	}
-	var gender []byte
-	if p.Gender == "男"{
-		gender =[]byte{0}
-	}else if p.Gender=="女"{
-		gender =[]byte{1}
+	p.Password, err = utils.RsaPubEncode(p.Password)
+	if err != nil {
+		zap.L().Error("ras encode fail", zap.Error(err))
+		return SysUser{},err
 	}
 	sysUser = SysUser{
 		Username:     p.UserName,
 		Password:     p.Password,
 		DeptId:       0,
 		PostId:       0,
-		RoleId:       0,
-		NickName:     p.NickName,
-		Phone:        p.Phone,
+		RoleId:       2,
+		NickName:     p.UserName,
+		Phone:        "",
 		Email:        "",
 		AvatarPath:   wxuser.Avatar,
 		Avatar:       wxuser.Avatar,
@@ -177,7 +183,7 @@ func(a *Model) CreatSysUserService(p dto.InsertUserDto)(SysUser,error) {
 		Status:       "",
 		Remark:       "",
 		Salt:         "",
-		Gender:       gender,
+		Gender:       []byte{0},
 		IsAdmin:      []byte{0},
 		Enabled:      []byte{1},
 		PwdResetTime: 0,
