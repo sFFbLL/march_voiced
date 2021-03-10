@@ -53,7 +53,8 @@
 	} from "../../utils/wxcode.js"
 	import {
 		getToken,
-		setToken
+		setToken,
+		setOpenId
 	} from "../../utils/auth.js"
 	import {
 		login,
