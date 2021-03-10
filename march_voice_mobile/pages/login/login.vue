@@ -27,7 +27,8 @@
 		getWxCode
 	} from "../../utils/wxcode.js"
 	import {
-		setToken,getOpenId
+		setToken,
+		getOpenId
 	} from "../../utils/auth.js"
 	export default {
 		data() {
@@ -65,7 +66,7 @@
 					let params = {
 						username: _this.nameValue,
 						password: _this.passwordValue,
-						openId:getOpenId()
+						openid: getOpenId()
 					}
 					// 调用补全信息的接口获得用户的token
 					creatNewUser(params).then(res => {
@@ -80,8 +81,8 @@
 				}
 			}
 
-		
-	}
+
+		}
 	}
 </script>
 
