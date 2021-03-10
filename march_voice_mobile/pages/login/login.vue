@@ -22,7 +22,10 @@
 		creatNewUser,
 		login
 	} from "../../utils/login.js"
-	import {returnWxcode,getWxCode} from "../../utils/wxcode.js"
+	import {
+		returnWxcode,
+		getWxCode
+	} from "../../utils/wxcode.js"
 	export default {
 		data() {
 			return {
@@ -32,9 +35,8 @@
 			}
 		},
 		created() {
-			console.log("getWxCode()")
-			console.log(getWxCode())
-			
+
+
 		},
 		methods: {
 			// 获取用户名和密码
