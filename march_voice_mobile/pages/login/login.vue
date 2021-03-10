@@ -60,6 +60,7 @@
 					let params = this.nameValue
 					let isExist = true;
 					let _this = this;
+					console.log(params);
 					isExist(params).then(res => {
 						if (res.code == 0) { //用户名申请成功
 							console.log(res.message)
