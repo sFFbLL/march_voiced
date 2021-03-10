@@ -135,8 +135,7 @@
 
 			if (!getToken()) {
 				console.log("没有token");
-				let code ="021G6qHa1L7xGA0zR1Ja12npHT0G6qHC"
-				// let code = returnWxcode();
+				let code = returnWxcode();
 				if (!code) {
 					getWxCode();
 				} else {
