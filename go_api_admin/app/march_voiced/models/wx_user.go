@@ -173,7 +173,7 @@ func(a *Model) CreatSysUserService(p dto.InsertUserDto)(SysUser,error) {
 		Password:     p.Password,
 		DeptId:       0,
 		PostId:       0,
-		RoleId:       0,
+		RoleId:       2,
 		NickName:     p.UserName,
 		Phone:        "",
 		Email:        "",
