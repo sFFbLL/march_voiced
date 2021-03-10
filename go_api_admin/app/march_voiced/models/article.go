@@ -35,7 +35,7 @@ func (a *Article) ArticleSearchContent(data *bo.ArticleCollectByUserId, p *dto.A
 		Select("article.id, article.title, article.describe, article.image, article.word_count, article.type, article.create_by, article.create_time, sys_user.nick_name").
 		Joins("left join sys_user on article.create_by = sys_user.id").
 		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article.status=1 and article.content like ?", "%"+p.SearchWord+"%").Count(&data.Total).
-		Order("article.create_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
+		Order("article.create_time desc").Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).
 		Find(data.Records).Error
 }
 
@@ -45,7 +45,7 @@ func (a *Article) ArticleCollectByUserId(data *bo.ArticleCollectByUserId, p *dto
 		Joins("left join article on article_collect.article_id = article.id").
 		Joins("left join sys_user on article.create_by = sys_user.id").
 		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article_collect.is_deleted=0 and article.status=1").Count(&data.Total).
-		Order("article.create_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
+		Order("article.create_time desc").Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).
 		Find(data.Records).Error
 }
 
@@ -80,7 +80,7 @@ func (a *Article) GetApplyArticle(applyArticleList *bo.ApplyArticleList, p *dto.
 		Joins("left join article_tag on article_tag.id = article.tag").
 		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article.status!=0").
 		Where("sys_user.nick_name like ? and article.title like ?", nickname, title)
-	if p.Status !=0 && p.Status < 3 {
+	if p.Status != 0 && p.Status < 3 {
 		table = table.Where("article.status = ?", p.Status)
 	}
 	if p.Tag != 0 {
@@ -90,7 +90,7 @@ func (a *Article) GetApplyArticle(applyArticleList *bo.ApplyArticleList, p *dto.
 		table = table.Where("article.status_update_time > ? AND article.status_update_time < ?", p.StartTime, p.EndTime)
 	}
 	err = table.Count(&applyArticleList.Total).
-		Order("sys_user.march_update_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
+		Order("article.status_update_time desc").Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).
 		Find(applyArticleList.Records).Error
 	return
 }

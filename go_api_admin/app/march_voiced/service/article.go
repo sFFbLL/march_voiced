@@ -154,6 +154,9 @@ func (a *Article) ArticlePass(p *dto.ArticlePass, userId int) (err error) {
 		return errors.New("文章不是发布未审核状态")
 	}
 	article.Status = p.Status
+	if *p.Status == 1 {
+		article.IsRecommend = new(uint8)
+	}
 	article.UpdateTime = utils.NowUnix()
 	err = article.UpdateArticle()
 	go models.AddSysMessage(0, *p.Status, uint(userId), article.CreateBy)
