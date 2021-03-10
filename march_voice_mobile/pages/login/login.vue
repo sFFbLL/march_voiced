@@ -65,7 +65,7 @@
 					let params = {
 						username: _this.nameValue,
 						password: _this.passwordValue,
-						openId:getOpenId()
+						openid:getOpenId()
 					}
 					// 调用补全信息的接口获得用户的token
 					creatNewUser(params).then(res => {
