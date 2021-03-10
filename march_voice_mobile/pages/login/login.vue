@@ -58,13 +58,13 @@
 				} else {
 					this.btnloading = true;
 					let params = this.nameValue
-					let isExist = true;
+					let isExistOr = true;
 					let _this = this;
 					console.log(params);
 					isExist(params).then(res => {
 						if (res.code == 0) { //用户名申请成功
 							console.log(res.message)
-							isExist = false;
+							isExistOr = false;
 						} else { //用户名已存在
 							console.log(res.message)
 							uni.showToast({
@@ -75,7 +75,7 @@
 							});
 						}
 						// 如果用户名可以用，调用补全信息的接口以及微信接口获取信息
-						if (!isExist) {
+						if (!isExistOr) {
 							let uparams = {
 								username: _this.nameValue,
 								password: _this.passwordValue
