@@ -51,11 +51,11 @@ type GenderEnabled struct {
 
 type SysUser struct {
 	*BaseModel
-	DeptId          int    `json:"dept_id"`                                       //部门id
-	PostId          int    `json:"post_id"`                                       //
-	RoleId          int    `json:"role_id"`                                       //
-	CreateBy        int    `json:"create_by"`                                     //
-	UpdateBy        int    `json:"update_by"`                                     //
+	DeptId          int    `json:"dept_id"`   //部门id
+	PostId          int    `json:"post_id"`   //
+	RoleId          int    `json:"role_id"`   //
+	CreateBy        int    `json:"create_by"` //
+	UpdateBy        int    `json:"update_by"` //
 	Username        string `json:"username"`
 	Password        string `json:"password"`
 	NickName        string `json:"nick_name"`                                     //
@@ -709,7 +709,7 @@ func (u *SysUser) UserDownload(p *dto.DownloadUserInfoDto) (data *bo.UserInfoLis
 	var usersHalf []*bo.RecordUserHalf
 	//分页
 	var total int64
-	err = global.Eloquent.Table("sys_user").Limit(p.Size).Offset(p.Current - 1*p.Size).Count(&total).Order(orderRule).Find(&usersHalf).Error
+	err = global.Eloquent.Table("sys_user").Limit(p.Size).Offset((p.Current - 1) * p.Size).Count(&total).Order(orderRule).Find(&usersHalf).Error
 	pages := (int(total) + p.Size - 1) / p.Size
 	if err != nil {
 		return nil, err

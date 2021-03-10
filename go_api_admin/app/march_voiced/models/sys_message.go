@@ -42,6 +42,6 @@ func (e *SysMessage) GetSysMessage(p *dto.Paginator, userId int) (count int64, s
 	sysMessage = new([]SysMessage)
 	err = global.Eloquent.Table(e.TableName()).Where("follow_id", userId).Count(&count).
 		Order("create_time desc").
-		Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).Find(sysMessage).Error
+		Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).Find(sysMessage).Error
 	return
 }

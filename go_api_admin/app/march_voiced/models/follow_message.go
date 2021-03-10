@@ -23,7 +23,7 @@ func (e *FollowMessage) Add() {
 	var count int64
 	err := global.Eloquent.Table("follow").
 		Where("follow_id=? and create_by=? and is_deleted=1", e.FollowId, e.CreateBy).Count(&count).Error
-	if err != nil || count > 0{
+	if err != nil || count > 0 {
 		return
 	}
 	_ = global.Eloquent.Table(e.TableName()).Create(e).Error
@@ -49,7 +49,7 @@ func (e *FollowMessage) GetFollowMessage(getFollowMessage *bo.GetFollowMessage, 
 		Joins("left join sys_user on sys_user.id = follow_message.create_by").
 		Where("follow_message.follow_id=? and sys_user.is_deleted=0", userId, userId).Count(&getFollowMessage.Total).
 		Order("follow_message.create_time desc").
-		Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).Find(getFollowMessage.Records).Error
+		Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).Find(getFollowMessage.Records).Error
 	return
 }
 

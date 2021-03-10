@@ -28,11 +28,11 @@ func (e *MarchSoft) GetMarchApplyUser(applyMarchUser *bo.ApplyMarchUser, p *dto.
 		Where("sys_user.is_deleted=0 and sys_user.is_march=2 and sys_user.nick_name like ?", nickname)
 	if p.EndTime != 0 && p.StartTime != 0 {
 		err = table.Where("sys_user.march_update_time > ? AND sys_user.march_update_time < ?", p.StartTime, p.EndTime).Count(&applyMarchUser.Total).
-			Order("sys_user.march_update_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
+			Order("sys_user.march_update_time desc").Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).
 			Find(applyMarchUser.Records).Error
 	} else {
 		err = table.Count(&applyMarchUser.Total).
-			Order("sys_user.march_update_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
+			Order("sys_user.march_update_time desc").Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).
 			Find(applyMarchUser.Records).Error
 	}
 	return

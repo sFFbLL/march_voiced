@@ -31,7 +31,7 @@ func (e *Message) GetMessageMe(getMessage *bo.GetMessage, p *dto.Paginator, user
 		Select("sys_user.avatar_path, sys_user.nick_name, message.type , message.status, message.article_id, message.create_by, message.create_time, message.title, message.comment, message.content, message.image").
 		Joins("left join sys_user on sys_user.id = message.create_by").
 		Where("message.follow_id in (?) and sys_user.is_deleted=0", userId).Count(&getMessage.Total).
-		Order("message.create_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
+		Order("message.create_time desc").Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).
 		Find(getMessage.Records).Error
 	return
 }
@@ -48,7 +48,7 @@ func (e *Message) GetMessage(getMessage *bo.GetMessage, p *dto.Paginator, userId
 		Select("sys_user.avatar_path, sys_user.nick_name, message.type , message.status, message.article_id, message.create_by, message.create_time, message.title, message.comment, message.content, message.image").
 		Joins("left join sys_user on sys_user.id = message.create_by").
 		Where("message.type=0 and message.create_by in (?) and sys_user.is_deleted=0", followList).Count(&getMessage.Total).
-		Order("message.create_time desc").Limit(int(p.Size)).Offset(int(p.Current - 1*p.Size)).
+		Order("message.create_time desc").Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).
 		Find(getMessage.Records).Error
 	return
 }
