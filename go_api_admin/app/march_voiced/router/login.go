@@ -4,10 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"project/app/march_voiced/apis"
 )
+
 func init() {
 	routerNoCheckRole = append(routerNoCheckRole, usersRouter)
 	routerCheckRole = append(routerCheckRole, userAuthRouter)
 }
+
 //func init() {
 //
 //	routerNoCheckRole = append(routerNoCheckRole, userRouter)
@@ -19,11 +21,11 @@ func usersRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/user")
 	{
 		r.GET("getTicket", apis.GetTicket)
-
+		r.GET("wx/sign", apis.SignInfo)
 		r.POST("login", apis.LoginHandler)
-		r.POST("creatNewUser",apis.CreatSysUser)
-		r.GET("isExist",apis.SearchUsername)
-		r.GET("check",apis.CheckIsSucess)
+		r.POST("creatNewUser", apis.CreatSysUser)
+		r.GET("isExist", apis.SearchUsername)
+		r.GET("check", apis.CheckIsSucess)
 	}
 }
 

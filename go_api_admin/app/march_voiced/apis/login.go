@@ -6,11 +6,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"
+	"strconv"
+	"time"
+
 	"project/app/march_voiced/models"
 	"project/app/march_voiced/models/dto"
 	"project/app/march_voiced/service"
@@ -18,8 +19,9 @@ import (
 	"project/common/global"
 	"project/utils"
 	"project/utils/app"
-	"strconv"
-	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 //登录验证获取token
@@ -38,7 +40,6 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 	info, err := oauth.GetUserInfo(token.AccessToken, token.OpenID)
-	fmt.Println(info)
 	if err != nil {
 		zap.L().Error("GetWeixinUserInfo failed", zap.Error(err))
 		app.ResponseError(c, app.CodeInsertOperationFail)
@@ -186,28 +187,27 @@ func WxTicket(token string) (dto.WxTokenMessages, error) {
 		buffer := bytes.NewBuffer(jsonstr)
 		request, err := http.NewRequest("POST", "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token, buffer)
 		if err != nil {
-			fmt.Printf("http.NewRequest%v", err)
+			zap.L().Error("http.NewRequest", zap.Error(err))
 			return ticket, err
 		}
 		client := http.Client{}                                     //创建客户端
 		resp, err := client.Do(request.WithContext(context.TODO())) //发送请求
 		if err != nil {
-			fmt.Printf("client.Do%v", err)
+			zap.L().Error("client.Do", zap.Error(err))
 			return ticket, err
 		}
 
 		respBytes, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			fmt.Printf("ioutil.ReadAll%v", err)
+			zap.L().Error("ioutil.ReadAll", zap.Error(err))
 			return ticket, err
 		}
 		err = json.Unmarshal(respBytes, &ticket)
 		if err != nil {
-			fmt.Println(err)
+			zap.L().Error("json unmarshal error", zap.Error(err))
 			return ticket, err
 		}
 		ticket.Strdata = str
-		fmt.Println(ticket)
 		return ticket, nil
 	} else {
 		return dto.WxTokenMessages{}, errors.New("请重新请求")
