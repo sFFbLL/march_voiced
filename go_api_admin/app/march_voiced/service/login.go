@@ -278,14 +278,14 @@ func GetUserMenuData(cacheMenu string, menuErr error, userId int, menuPermission
 			go cache.SetUserCache(userId, menuPermission, cache.KeyUserMenu)
 		} else {
 			menus := new([]model.SysMenu)
-			//if err = model.SelectUserMenuPermission(menus, roles); err != nil {
-			//	return
-			//}
-			//for _, menu := range *menus {
-			//	if menu.Permission != "" {
-			//		*menuPermission = append(*menuPermission, menu.Permission)
-			//	}
-			//}
+			if err = model.SelectUserMenuPermission(menus, roles); err != nil {
+				return
+			}
+			for _, menu := range *menus {
+				if menu.Permission != "" {
+					*menuPermission = append(*menuPermission, menu.Permission)
+				}
+			}
 			go cache.SetUserCache(userId, menus, cache.KeyUserMenu)
 		}
 	} else {

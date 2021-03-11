@@ -3,13 +3,15 @@ package models
 import (
 	"errors"
 	"fmt"
-	"github.com/silenceper/wechat/v2/officialaccount/oauth"
-	"go.uber.org/zap"
-	"gorm.io/gorm"
+
 	"project/app/admin/models"
 	"project/app/march_voiced/models/dto"
 	"project/common/global"
 	"project/utils"
+
+	"github.com/silenceper/wechat/v2/officialaccount/oauth"
+	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 //type WxUser struct {
@@ -43,10 +45,6 @@ type WxUser struct {
 	Subscribe_time int    `json:"subscribe_time"`
 	models.BaseModel
 }
-
-//func (e *WxUser) TableName() string {
-//	return `wx_user`
-//}
 
 type Model struct {
 }

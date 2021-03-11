@@ -2,32 +2,34 @@ package apis
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/silenceper/wechat/v2/officialaccount/message"
-	"github.com/silenceper/wechat/v2/officialaccount/oauth"
-	"go.uber.org/zap"
+	"time"
+
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/service"
 	"project/common/global"
 	"project/utils/app"
-	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/silenceper/wechat/v2/officialaccount/message"
+	"github.com/silenceper/wechat/v2/officialaccount/oauth"
+	"go.uber.org/zap"
 )
 
 func WxGetTicket(c *gin.Context) {
-	server := global.Wx.GetServer(c.Request,c.Writer)
+	server := global.Wx.GetServer(c.Request, c.Writer)
 	server.SetMessageHandler(func(msg message.MixMessage) *message.Reply {
 		//TODO 对接收到的消息以及处理
 		text := message.NewText("111")
-		if msg.Event =="SCAN"{
+		if msg.Event == "SCAN" {
 			textOne := message.NewText("欢迎来到三月之声")
-			_, err := global.Rdb.Set(fmt.Sprintf("%v",msg.EventKey ),fmt.Sprintf("%v",msg.FromUserName) , 300*time.Second).Result()
+			_, err := global.Rdb.Set(fmt.Sprintf("%v", msg.EventKey), fmt.Sprintf("%v", msg.FromUserName), 300*time.Second).Result()
 			if err != nil {
 				return &message.Reply{MsgType: message.MsgTypeText}
 			}
 			return &message.Reply{MsgType: message.MsgTypeText, MsgData: textOne}
 		}
 		//text := message.NewText("msg.Content")
-		return &message.Reply{MsgType: message.MsgTypeText,MsgData: text}
+		return &message.Reply{MsgType: message.MsgTypeText, MsgData: text}
 	})
 	//server.SetMessageHandler(func(msg message.MixMessage) *message.Reply {
 	//	//TODO
@@ -49,7 +51,6 @@ func WxGetTicket(c *gin.Context) {
 func CheckIsSucess(c *gin.Context) {
 	str := c.Query("strData")
 	result, err := global.Rdb.Get(str).Result()
-	fmt.Println(result, err)
 	if err != nil {
 		zap.L().Error("GetAccessToken failed", zap.Error(err))
 		app.ResponseError(c, app.CodeWxTickerFail)
@@ -58,11 +59,11 @@ func CheckIsSucess(c *gin.Context) {
 	user := global.Wx.GetUser()
 	if result == "" {
 		resultData := bo.MarchLoginData{
-			OpenId:"",
+			OpenId: "",
 			Token:  "",
 			Status: 0,
 		}
-		app.ResponseSuccess(c,resultData)
+		app.ResponseSuccess(c, resultData)
 		return
 	}
 	info, err := user.GetUserInfo(result)
@@ -83,13 +84,26 @@ func CheckIsSucess(c *gin.Context) {
 		Unionid:    info.UnionID,
 	}
 	login := new(service.Login)
-	login.LoginService(c,oauthInfo)
-	data, err := login.LoginService(c,oauthInfo)
+	login.LoginService(c, oauthInfo)
+	data, err := login.LoginService(c, oauthInfo)
 	if err != nil {
 		zap.L().Error("CreatDaoWeixinUserInfo failed", zap.Error(err))
 		app.ResponseError(c, app.CodeInsertOperationFail)
 		return
 	}
 	// 如果是statu 是1则请求补全信息接口，if是2则获取到token登录成功
-	app.ResponseSuccess(c,data)
+	app.ResponseSuccess(c, data)
+}
+
+func SignInfo(c *gin.Context) {
+	url := c.Query("url")
+	// 获取js操作对象信息
+	j := global.Wx.GetJs()
+	//获取js签名
+	config, err := j.GetConfig(url)
+	if err != nil {
+		zap.L().Error("get wx sign failed", zap.Error(err))
+		app.ResponseError(c, app.CodeWxGzhSignFail)
+	}
+	app.ResponseSuccess(c, config)
 }
