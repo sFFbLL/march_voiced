@@ -33,7 +33,7 @@ import (
 // @BasePath
 func main() {
 	var configName string
-	flag.StringVar(&configName, "o", "settings.dev.yml", "环境配置")
+	flag.StringVar(&configName, "o", "settings.test.yml", "环境配置")
 	flag.Parse()
 	config.Setup("settings/" + configName)
 
