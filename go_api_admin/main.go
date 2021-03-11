@@ -33,7 +33,7 @@ import (
 // @BasePath
 func main() {
 	var configName string
-	flag.StringVar(&configName, "o", "settings.test.yml", "环境配置")
+	flag.StringVar(&configName, "o", "settings.dev.yml", "环境配置")
 	flag.Parse()
 	config.Setup("settings/" + configName)
 
@@ -66,12 +66,12 @@ func main() {
 		zap.L().Error("casbin failed set up", zap.Error(err))
 	}
 	//初始化elasticSeach连接
-	if err :=search.Init(); err != nil {
+	if err := search.Init(); err != nil {
 		zap.L().Error("init elasticSeach failed", zap.Error(err))
 	}
 	zap.L().Debug(utils.Green("elasticSeach init success..."))
 	//初始化elasticSeach连接
-	if err :=wx.Init(); err != nil {
+	if err := wx.Init(); err != nil {
 		zap.L().Error("init wx failed", zap.Error(err))
 	}
 	zap.L().Debug(utils.Green("wx init success..."))
