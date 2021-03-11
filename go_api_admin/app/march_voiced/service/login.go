@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
+	model "project/app/admin/models"
+	Bo "project/app/admin/models/bo"
 	"project/app/march_voiced/models"
-	model"project/app/admin/models"
-	Bo"project/app/admin/models/bo"
 	"project/app/march_voiced/models/bo"
 	"project/app/march_voiced/models/dto"
 	"project/common/cache"
@@ -21,16 +21,18 @@ import (
 	"github.com/silenceper/wechat/v2/officialaccount/oauth"
 	"go.uber.org/zap"
 )
+
 type Login struct {
 }
-func(login *Login) LoginService(c *gin.Context, info oauth.UserInfo) (data bo.MarchLoginData,err error) {
+
+func (login *Login) LoginService(c *gin.Context, info oauth.UserInfo) (data bo.MarchLoginData, err error) {
 	user := new(models.Model)
 	status, sysUser, err := user.LoginDao(info)
 	if err != nil {
 		return
 	}
 	var token string
-	if status == 2{
+	if status == 2 {
 		keys := new([]string)
 		*keys = append(*keys, cache.KeyUserJob, cache.KeyUserRole, cache.KeyUserMenu, cache.KeyUserDept, cache.KeyUserDataScope)
 		cacheMap := cache.GetUserCache(keys, sysUser.ID)
@@ -124,23 +126,16 @@ func(login *Login) LoginService(c *gin.Context, info oauth.UserInfo) (data bo.Ma
 		err = RedisUserMessage(c, data, token)
 	}
 	data = bo.MarchLoginData{
-		OpenId:info.OpenID,
+		OpenId: info.OpenID,
 		Token:  token,
 		Status: status,
 	}
 	return data, err
 }
 
-func(login *Login) CreatSysUserService(c *gin.Context , p dto.InsertUserDto) (datas bo.LoginInfoData, err error){
+func (login *Login) CreatSysUserService(c *gin.Context, p dto.InsertUserDto) (datas bo.LoginInfoData, err error) {
 	user := new(models.Model)
 	sysUser, err := user.CreatSysUserService(p)
-	//if sysUser.ID > 0{
-	//	data.Token, err =jwt.GenToken(sysUser.ID, sysUser.Username)
-	//	if err != nil {
-	//		return
-	//	}
-	//	data.Token = "Bearer "+ data.Token
-	//}
 	if sysUser.ID > 0 {
 		keys := new([]string)
 		*keys = append(*keys, cache.KeyUserJob, cache.KeyUserRole, cache.KeyUserMenu, cache.KeyUserDept, cache.KeyUserDataScope)
@@ -388,15 +383,15 @@ func (login *Login) SearchUsername(username string) error {
 	return err
 }
 
-func (login *Login) SearchUserInfo(id int)(bo.UserInfo, error){
+func (login *Login) SearchUserInfo(id int) (bo.UserInfo, error) {
 	user := new(models.Model)
 	var userinfo bo.UserInfo
 	var sex int
 	info, err := user.SearchUserInfo(id)
-	if info.Sex =="男"{
+	if info.Sex == "男" {
 		sex = 0
-	}else if info.Sex =="女"{
-		sex =1
+	} else if info.Sex == "女" {
+		sex = 1
 	}
 	userinfo = bo.UserInfo{
 		NickName:   info.NickName,
@@ -408,7 +403,7 @@ func (login *Login) SearchUserInfo(id int)(bo.UserInfo, error){
 	return userinfo, err
 }
 
-func (login *Login)ModInformation(userinfo dto.ModInformationDto,id string) error {
+func (login *Login) ModInformation(userinfo dto.ModInformationDto, id string) error {
 	user := new(models.Model)
 	err := user.ModInformation(userinfo, id)
 	return err

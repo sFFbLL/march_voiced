@@ -29,20 +29,21 @@ import (
 //	Unionid       string `json:"unionid" gorm:"not null"`                          //微信平台unionid
 //}
 type WxUser struct {
-	Wx_nick_name        string 	`json:"wxNickName"`
-	Openid     		    string 	`json:"openid"`
-	Sex       			int32 	`json:"sex" `
-	Sys_user_id			int   	`json:"sys_user_id"`
-	Province        	string  `json:"province"`
-	City        		string  `json:"city"`
-	Country      		string  `json:"country"`
-	Avatar        		string  `json:"avatar"`
-	Unionid     		string  `json:"unionid"`
-	Id					int     `json:"id"`
-	Is_subscribe		int     `json:"is_subscribe"`
-	Subscribe_time		int		`json:"subscribe_time"`
+	Wx_nick_name   string `json:"wxNickName"`
+	Openid         string `json:"openid"`
+	Sex            int32  `json:"sex" `
+	Sys_user_id    int    `json:"sys_user_id"`
+	Province       string `json:"province"`
+	City           string `json:"city"`
+	Country        string `json:"country"`
+	Avatar         string `json:"avatar"`
+	Unionid        string `json:"unionid"`
+	Id             int    `json:"id"`
+	Is_subscribe   int    `json:"is_subscribe"`
+	Subscribe_time int    `json:"subscribe_time"`
 	models.BaseModel
 }
+
 //func (e *WxUser) TableName() string {
 //	return `wx_user`
 //}
@@ -74,27 +75,12 @@ type SysUser struct {
 	UpdateBy     int    `json:"update_by"`      //
 	Signature    string `json:"signature"`      //个性签名
 }
-//type WxUser struct {
-//	Wx_nick_name        string 	`json:"wxNickName"`
-//	Openid     		    string 	`json:"openid"`
-//	Sex       			int32 	`json:"sex" `
-//	Sys_user_id			int   	`json:"sys_user_id"`
-//	Province        	string  `json:"province"`
-//	City        		string  `json:"city"`
-//	Country      		string  `json:"country"`
-//	Avatar        		string  `json:"avatar"`
-//	Unionid     		string  `json:"unionid"`
-//	Id					int     `json:"id"`
-//	Is_subscribe		int     `json:"is_subscribe"`
-//	Subscribe_time		int		`json:"subscribe_time"`
-//	models.BaseModel
-//}
 
-func(a *Model) TableName() string {
+func (a *Model) TableName() string {
 	return `wx_user`
 }
 
-func(a *Model)LoginDao(info oauth.UserInfo)(int,SysUser,error){
+func (a *Model) LoginDao(info oauth.UserInfo) (int, SysUser, error) {
 	var aa WxUser
 	var sysuser SysUser
 	err := global.Eloquent.First(&aa, "openid=?", info.OpenID).Error
@@ -114,26 +100,26 @@ func(a *Model)LoginDao(info oauth.UserInfo)(int,SysUser,error){
 		}
 		err = global.Eloquent.Create(&newUser).Error
 		if err != nil {
-			return 0,sysuser,err
+			return 0, sysuser, err
 		}
-		return 1,sysuser,err
-	}else if err!=nil {
-		return 0,sysuser,err
-	}else if aa.Sys_user_id == 0{
-		return 1,sysuser,nil
-	}else if aa.Sys_user_id !=0{
+		return 1, sysuser, err
+	} else if err != nil {
+		return 0, sysuser, err
+	} else if aa.Sys_user_id == 0 {
+		return 1, sysuser, nil
+	} else if aa.Sys_user_id != 0 {
 		err1 := global.Eloquent.First(&sysuser, "id=?", aa.Sys_user_id).Error
 		if err1 == gorm.ErrRecordNotFound {
-			return 1,sysuser,nil
-		}else if err1 !=nil{
-			return 0,sysuser,err
+			return 1, sysuser, nil
+		} else if err1 != nil {
+			return 0, sysuser, err
 		}
-		return 2,sysuser,nil
+		return 2, sysuser, nil
 	}
-	return 2,sysuser,nil
+	return 2, sysuser, nil
 }
 
-func(a *Model) CreatSysUserService(p dto.InsertUserDto)(SysUser,error) {
+func (a *Model) CreatSysUserService(p dto.InsertUserDto) (SysUser, error) {
 	var wxuser WxUser
 	var isUser SysUser
 	var sysUser SysUser
@@ -142,23 +128,23 @@ func(a *Model) CreatSysUserService(p dto.InsertUserDto)(SysUser,error) {
 		return sysUser, err
 	}
 	err = global.Eloquent.First(&isUser, "username=?", p.UserName).Error
-	if err != nil&& err != gorm.ErrRecordNotFound {
+	if err != nil && err != gorm.ErrRecordNotFound {
 		return sysUser, err
 	}
 	isUser.Password, err = utils.RsaPriDecode(isUser.Password)
 	if err != nil {
 		zap.L().Error("ras decode fail", zap.Error(err))
-		return SysUser{},err
+		return SysUser{}, err
 	}
-	if isUser.Username ==p.UserName {
+	if isUser.Username == p.UserName {
 		//判断密码是否相同
 		if isUser.Password == p.Password {
-			err = global.Eloquent.Model(&wxuser).Where("openid=?",p.OpenId).Update("sys_user_id",isUser.ID).Error
-			if err !=nil{
-				return SysUser{},err
+			err = global.Eloquent.Model(&wxuser).Where("openid=?", p.OpenId).Update("sys_user_id", isUser.ID).Error
+			if err != nil {
+				return SysUser{}, err
 			}
-			return isUser,nil
-		}else {
+			return isUser, nil
+		} else {
 			return SysUser{}, errors.New("该用户名已存在")
 		}
 
@@ -166,7 +152,7 @@ func(a *Model) CreatSysUserService(p dto.InsertUserDto)(SysUser,error) {
 	p.Password, err = utils.RsaPubEncode(p.Password)
 	if err != nil {
 		zap.L().Error("ras encode fail", zap.Error(err))
-		return SysUser{},err
+		return SysUser{}, err
 	}
 	sysUser = SysUser{
 		Username:     p.UserName,
@@ -194,9 +180,9 @@ func(a *Model) CreatSysUserService(p dto.InsertUserDto)(SysUser,error) {
 	if err != nil {
 		return sysUser, err
 	}
-	err = global.Eloquent.Model(&wxuser).Where("openid=?",p.OpenId).Update("sys_user_id",sysUser.ID).Error
-	if err !=nil{
-		return SysUser{},err
+	err = global.Eloquent.Model(&wxuser).Where("openid=?", p.OpenId).Update("sys_user_id", sysUser.ID).Error
+	if err != nil {
+		return SysUser{}, err
 	}
 	return sysUser, nil
 }
@@ -206,42 +192,40 @@ func (a *Model) SearchUsername(username string) error {
 	err := global.Eloquent.First(&user, "username=?", username).Error
 	if err == gorm.ErrRecordNotFound {
 		return nil
-	}else{
+	} else {
 		return errors.New("该用户已经存在")
 	}
 }
 
-func (a *Model) SearchUserInfo(id int)(SysUser,error) {
+func (a *Model) SearchUserInfo(id int) (SysUser, error) {
 	var userinfo SysUser
-	err := global.Eloquent.First(&userinfo, "id=?",id).Error
+	err := global.Eloquent.First(&userinfo, "id=?", id).Error
 	if err != nil {
 		return userinfo, err
 	}
 	return userinfo, nil
 }
 
-func (a *Model)ModInformation(userinfo dto.ModInformationDto,id string) error {
+func (a *Model) ModInformation(userinfo dto.ModInformationDto, id string) error {
 	var sex string
-	if userinfo.Sex ==1 {
+	if userinfo.Sex == 1 {
 		sex = "男"
-	}else {
+	} else {
 		sex = "女"
 	}
 	updateuser := SysUser{
-		NickName:     userinfo.NickName,
-		AvatarPath:   userinfo.AvatarPath,
-		Sex:          sex,
-		Signature:    userinfo.Signature,
+		Username:   userinfo.NickName,
+		NickName:   userinfo.NickName,
+		AvatarPath: userinfo.AvatarPath,
+		Sex:        sex,
+		Signature:  userinfo.Signature,
 	}
-	err := global.Eloquent.Model(SysUser{}).Where("id=?",id).Updates(&updateuser).Error
+	err := global.Eloquent.Model(SysUser{}).Where("id=?", id).Updates(&updateuser).Error
 	return err
 
 }
 
-
-
-
-func(a *Model)Login() WxUser {
+func (a *Model) Login() WxUser {
 	var aa WxUser
 	sysUser := SysUser{
 		Username:     "111",
@@ -267,7 +251,7 @@ func(a *Model)Login() WxUser {
 	}
 	err := global.Eloquent.Create(&sysUser).Error
 	if err != nil {
-		fmt.Println(err.Error(),"111111111")
+		fmt.Println(err.Error(), "111111111")
 		fmt.Println("创建系统用户失败")
 		return aa
 	}

@@ -2,9 +2,9 @@ package apis
 
 import (
 	"bytes"
-	"errors"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -45,18 +45,18 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 	login := new(service.Login)
-	data, err := login.LoginService(c,info)
+	data, err := login.LoginService(c, info)
 	if err != nil {
 		zap.L().Error("CreatDaoWeixinUserInfo failed", zap.Error(err))
 		app.ResponseError(c, app.CodeInsertOperationFail)
 		return
 	}
 	// 如果是statu 是1则请求补全信息接口，if是2则获取到token登录成功
-	app.ResponseSuccess(c,data)
+	app.ResponseSuccess(c, data)
 }
 
 // 根据oppid创建新的用户
-func CreatSysUser(c *gin.Context){
+func CreatSysUser(c *gin.Context) {
 	// 1.获取参数 校验参数
 	p := new(dto.InsertUserDto)
 	if err := c.ShouldBindJSON(p); err != nil {
@@ -69,19 +69,19 @@ func CreatSysUser(c *gin.Context){
 		return
 	}
 	login := new(service.Login)
-	data, err:= login.CreatSysUserService(c,*p)
-	if err != nil{
+	data, err := login.CreatSysUserService(c, *p)
+	if err != nil {
 		zap.L().Error("SearchUserName failed", zap.Error(err))
-		app.ResponseErrorWithMsg(c, app.CodeOperationFail,err.Error())
+		app.ResponseErrorWithMsg(c, app.CodeOperationFail, err.Error())
 		return
 	}
-	app.ResponseSuccess(c,data)
+	app.ResponseSuccess(c, data)
 }
 
 // 查询用户名是否唯一
-func SearchUsername(c *gin.Context){
+func SearchUsername(c *gin.Context) {
 	username := c.Query("username")
-	if username ==""{
+	if username == "" {
 		app.ResponseError(c, app.CodeParamNotComplete)
 		return
 	}
@@ -92,34 +92,34 @@ func SearchUsername(c *gin.Context){
 		app.ResponseError(c, app.CodeUserNameExist)
 		return
 	}
-	app.ResponseSuccess(c,app.CodeSuccess)
+	app.ResponseSuccess(c, app.CodeSuccess)
 }
 
 // 查询用户信息
-func SearchUserInfo(c *gin.Context){
+func SearchUserInfo(c *gin.Context) {
 	id := c.Query("id")
-	if id ==""{
+	if id == "" {
 		get, _ := c.Get("UserId")
-		id = fmt.Sprintf("%v",get)
+		id = fmt.Sprintf("%v", get)
 	}
 	atoi, err := strconv.Atoi(id)
-	if err != nil && atoi <=0{
+	if err != nil && atoi <= 0 {
 		app.ResponseError(c, app.CodeParamNotComplete)
 		return
 	}
 	searchUserinfo := new(service.Login)
-	data,err := searchUserinfo.SearchUserInfo(atoi)
+	data, err := searchUserinfo.SearchUserInfo(atoi)
 	if err != nil {
 		zap.L().Error("SearchUserInfo failed", zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
 		return
 	}
-	app.ResponseSuccess(c,data)
+	app.ResponseSuccess(c, data)
 }
 
-func ModInformation(c *gin.Context)  {
+func ModInformation(c *gin.Context) {
 	get, _ := c.Get("UserId")
-	id := fmt.Sprintf("%v",get)
+	id := fmt.Sprintf("%v", get)
 	p := new(dto.ModInformationDto)
 	if err := c.ShouldBindJSON(p); err != nil {
 		_, ok := err.(validator.ValidationErrors)
@@ -137,7 +137,7 @@ func ModInformation(c *gin.Context)  {
 		app.ResponseError(c, app.CodeUpdateOperationFail)
 		return
 	}
-	app.ResponseSuccess(c,app.CodeSuccess)
+	app.ResponseSuccess(c, app.CodeSuccess)
 }
 
 //生成带参数的二维码
@@ -151,20 +151,20 @@ func GetTicket(c *gin.Context) {
 			app.ResponseError(c, app.CodeWxTickerFail)
 			return
 		}
-		global.Rdb.Set("wxAccessToken",access,300*time.Second)
+		global.Rdb.Set("wxAccessToken", access, 300*time.Second)
 		accessToken = access
-	}else{
+	} else {
 		accessToken = token
 	}
 	//fmt.Println(accessToken,"-----------------")
 	wxTicket, err := WxTicket(accessToken)
 	if err != nil {
-		app.ResponseError(c, app.CodeWxTickerFail )
+		app.ResponseError(c, app.CodeWxTickerFail)
 	}
-	app.ResponseSuccess(c,wxTicket)
+	app.ResponseSuccess(c, wxTicket)
 }
 
-func WxTicket(token string)(dto.WxTokenMessages,error){
+func WxTicket(token string) (dto.WxTokenMessages, error) {
 	//token := "42_bxJkHtccnA6EnfqnQjzC8z3SfoxUsZd9gTEw6oKW_wCDPa3bqJ-6O_D-byqt1HXhLuiJIGZhPp1vVJO-tnCDmjR35Jv-ht8vFdPZo6eQtXgt_UurAhni7-EPhJkFvhwPpd0Juuhs2RAQvl0NPZLcAEAVFR"
 	//sceneStr:="test"
 	post := `{
@@ -180,42 +180,43 @@ func WxTicket(token string)(dto.WxTokenMessages,error){
 	_, err1 := global.Rdb.Get(str).Result()
 	if err1 != nil {
 		global.Rdb.Set(str, "", 300*time.Second)
-		aa :=fmt.Sprintf(post,str)
+		aa := fmt.Sprintf(post, str)
 		var ticket dto.WxTokenMessages
 		var jsonstr = []byte(aa) //转换二进制
-		buffer:= bytes.NewBuffer(jsonstr)
+		buffer := bytes.NewBuffer(jsonstr)
 		request, err := http.NewRequest("POST", "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token, buffer)
 		if err != nil {
 			fmt.Printf("http.NewRequest%v", err)
-			return ticket,err
+			return ticket, err
 		}
-		client := http.Client{} //创建客户端
+		client := http.Client{}                                     //创建客户端
 		resp, err := client.Do(request.WithContext(context.TODO())) //发送请求
 		if err != nil {
 			fmt.Printf("client.Do%v", err)
-			return ticket,err
+			return ticket, err
 		}
 
 		respBytes, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			fmt.Printf("ioutil.ReadAll%v", err)
-			return ticket,err
+			return ticket, err
 		}
 		err = json.Unmarshal(respBytes, &ticket)
 		if err != nil {
 			fmt.Println(err)
-			return ticket,err
+			return ticket, err
 		}
 		ticket.Strdata = str
 		fmt.Println(ticket)
-		return ticket ,nil
-	}else{
-		return dto.WxTokenMessages{},errors.New("请重新请求")
+		return ticket, nil
+	} else {
+		return dto.WxTokenMessages{}, errors.New("请重新请求")
 	}
 }
+
 //测试接口
 func Aaa(c *gin.Context) {
 	user := new(models.Model)
 	login := user.Login()
-	c.JSON(http.StatusOK,login)
+	c.JSON(http.StatusOK, login)
 }
