@@ -25,13 +25,12 @@ import (
 type Login struct {
 }
 
-func (login *Login) LoginService(c *gin.Context, info oauth.UserInfo) (data bo.MarchLoginData, err error) {
+func (login *Login) LoginService(c *gin.Context, info oauth.UserInfo) (datas bo.MarchLoginData, err error) {
 	user := new(models.Model)
 	status, sysUser, err := user.LoginDao(info)
 	if err != nil {
 		return
 	}
-	var token string
 	if status == 2 {
 		keys := new([]string)
 		*keys = append(*keys, cache.KeyUserJob, cache.KeyUserRole, cache.KeyUserMenu, cache.KeyUserDept, cache.KeyUserDataScope)
@@ -41,14 +40,17 @@ func (login *Login) LoginService(c *gin.Context, info oauth.UserInfo) (data bo.M
 		cacheMenu, menuErr := cacheMap[cache.KeyUserMenu].Result()
 		cacheDept, deptErr := cacheMap[cache.KeyUserDept].Result()
 		cacheDataScopes, dataScopesErr := cacheMap[cache.KeyUserDataScope].Result()
+
 		jobs := new([]model.SysJob)
 		if err = GetUserJobData(cacheJob, jobErr, jobs, sysUser.ID); err != nil {
 			return
 		}
+
 		roles := new([]model.SysRole)
 		if err = GetUserRoleData(cacheRole, rolesErr, roles, sysUser.ID); err != nil {
 			return
 		}
+
 		menuPermission := new([]string)
 		if err = GetUserMenuData(cacheMenu, menuErr, sysUser.ID, menuPermission, roles); err != nil {
 			return
@@ -64,7 +66,7 @@ func (login *Login) LoginService(c *gin.Context, info oauth.UserInfo) (data bo.M
 			return
 		}
 
-		token, err = jwt.GenToken(sysUser.ID, sysUser.Username)
+		datas.Token, err = jwt.GenToken(sysUser.ID, sysUser.Username)
 		if err != nil {
 			return
 		}
@@ -121,16 +123,21 @@ func (login *Login) LoginService(c *gin.Context, info oauth.UserInfo) (data bo.M
 		loginUser.Roles = *menuPermission
 
 		data.User = loginUser
-		data.Token = "Bearer " + token
-		token = "Bearer " + token
-		err = RedisUserMessage(c, data, token)
+		tokens := datas.Token
+		data.Token = "Bearer " + datas.Token
+		datas.Token = "Bearer " + datas.Token
+		err = RedisUserMessage(c, data, tokens)
+
+		//data.Token = "Bearer " + token
+		//token = "Bearer " + token
+		//err = RedisUserMessage(c, data, token)
 	}
-	data = bo.MarchLoginData{
+	datas = bo.MarchLoginData{
 		OpenId: info.OpenID,
-		Token:  token,
+		Token:  datas.Token,
 		Status: status,
 	}
-	return data, err
+	return datas, err
 }
 
 func (login *Login) CreatSysUserService(c *gin.Context, p dto.InsertUserDto) (datas bo.LoginInfoData, err error) {
