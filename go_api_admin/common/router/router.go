@@ -38,7 +38,7 @@ func Setup(cfg *config.Application) *gin.Engine {
 	admin.InitAdminRouter(r)
 	march.InitMarchRouter(r)
 
-	r.GET("/wx/ping", func(c *gin.Context) {
+	r.GET("/api/wx/ping", func(c *gin.Context) {
 		server := global.Wx.GetServer(c.Request, c.Writer)
 		err := server.Serve()
 		if err != nil {
