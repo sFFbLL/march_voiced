@@ -13,7 +13,7 @@ type ArticleComment struct {
 // AddArticleComment 新增文章详情页的评论
 func (co *ArticleComment) AddArticleComment(userId uint, p *dto.AddArticleComment) (err error) {
 	comment := new(models.ArticleComment)
-	comment.Pid = p.Pid
+	comment.Pid = p.FollowId
 	comment.Content = p.Content
 	comment.ArticleId = p.ID
 	comment.ReplyId = p.ReplyId

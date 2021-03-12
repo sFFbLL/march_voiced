@@ -13,7 +13,7 @@ type MarchsoftComment struct {
 // AddMarchsoftComment 新增文章详情页的评论
 func (mc *MarchsoftComment) AddMarchsoftComment(userId uint, p *dto.AddMarchsoftComment) (err error) {
 	comment := new(models.MarchsoftComment)
-	comment.Pid = p.Pid
+	comment.Pid = p.FollowId
 	comment.Content = p.Content
 	comment.MarchsoftId = p.ID
 	comment.ReplyId = p.ReplyId

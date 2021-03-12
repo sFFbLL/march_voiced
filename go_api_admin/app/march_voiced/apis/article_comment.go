@@ -1,7 +1,6 @@
 package apis
 
 import (
-	"fmt"
 	"project/app/march_voiced/models/dto"
 	"project/app/march_voiced/service"
 	"project/common/api"
@@ -34,7 +33,6 @@ func AddArticleComment(c *gin.Context) {
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
 		return
 	}
-	fmt.Printf("%#v", p.ID)
 	if err := c.ShouldBindJSON(p); err != nil {
 		// 请求参数有误，直接返回响应
 		zap.L().Error("comment bind params failed", zap.String("username", user.Username))

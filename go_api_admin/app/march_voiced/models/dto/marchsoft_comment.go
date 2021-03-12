@@ -1,10 +1,10 @@
 package dto
 
 type AddMarchsoftComment struct {
-	ID      uint   `json:"id"`       // 文章id
-	ReplyId uint   `json:"reply_id"` // 回复人id
-	Pid     uint   `json:"pid"`      // 父评论id
-	Content string `json:"content"`  // 评论内容
+	ID       uint   `json:"id"`       // 文章id
+	ReplyId  uint   `json:"replyId"`  // 回复人id
+	FollowId uint   `json:"followId"` // 父评论id
+	Content  string `json:"content"`  // 评论内容
 }
 
 type GetMarchsoftComment struct {
