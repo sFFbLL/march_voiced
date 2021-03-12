@@ -15,7 +15,6 @@ import (
 	"project/app/march_voiced/models"
 	"project/app/march_voiced/models/dto"
 	"project/app/march_voiced/service"
-	"project/common/database/wx"
 	"project/common/global"
 	"project/utils"
 	"project/utils/app"
@@ -26,7 +25,7 @@ import (
 
 //登录验证获取token
 func LoginHandler(c *gin.Context) {
-	wx.Init()
+	//wx.Init()
 	type Name struct {
 		Code string `json:"code"`
 	}

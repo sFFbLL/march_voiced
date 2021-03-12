@@ -1,6 +1,8 @@
 package router
 
 import (
+	"project/app/march_voiced/apis"
+	"project/common/global"
 	"project/common/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -27,7 +29,15 @@ func marchNoCheckRoleRouter(r *gin.Engine) {
 	v1 := r.Group("/api")
 	// 空接口防止v1定义无使用报错
 	v1.GET("/marchadag", nil)
-
+	r.GET("/", func(c *gin.Context) {
+		server := global.Wx.GetServer(c.Request, c.Writer)
+		err := server.Serve()
+		if err != nil {
+			return
+		}
+		server.Send()
+	})
+	r.POST("/", apis.WxGetTicket)
 	for _, f := range routerNoCheckRole {
 		f(v1)
 	}
