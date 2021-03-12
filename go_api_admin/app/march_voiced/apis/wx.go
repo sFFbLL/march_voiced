@@ -19,32 +19,23 @@ func WxGetTicket(c *gin.Context) {
 	server := global.Wx.GetServer(c.Request, c.Writer)
 	server.SetMessageHandler(func(msg message.MixMessage) *message.Reply {
 		//TODO 对接收到的消息以及处理
-		text := message.NewText("111")
+		text := message.NewText("欢迎来到三月之声")
 		if msg.Event == "SCAN" {
-			textOne := message.NewText("欢迎来到三月之声")
+			text = message.NewText("欢迎来到三月之声")
 			_, err := global.Rdb.Set(fmt.Sprintf("%v", msg.EventKey), fmt.Sprintf("%v", msg.FromUserName), 300*time.Second).Result()
 			if err != nil {
+				zap.L().Error("Wx scan message failed", zap.Error(err))
 				return &message.Reply{MsgType: message.MsgTypeText}
 			}
-			return &message.Reply{MsgType: message.MsgTypeText, MsgData: textOne}
 		}
-		//text := message.NewText("msg.Content")
 		return &message.Reply{MsgType: message.MsgTypeText, MsgData: text}
 	})
-	//server.SetMessageHandler(func(msg message.MixMessage) *message.Reply {
-	//	//TODO
-	//	//回复消息：演示回复用户发送的消息
-	//	text := message.NewText(msg.Content)
-	//	return &message.Reply{MsgType: message.MsgTypeText, MsgData: text}
-	//})
 	//处理消息接收以及回复
 	err := server.Serve()
 	if err != nil {
-		//fmt.Println(err,"-------------------------------------------")
+		zap.L().Error("Wx message server failed", zap.Error(err))
 		return
 	}
-	//println("1111")
-	//发送回复的消息
 	server.Send()
 }
 
@@ -67,7 +58,6 @@ func CheckIsSucess(c *gin.Context) {
 		return
 	}
 	info, err := user.GetUserInfo(result)
-	//info, err := oauth.GetUserInfo(accessToken, result)
 	if err != nil {
 		zap.L().Error("GetAccessToken failed", zap.Error(err))
 		app.ResponseError(c, app.CodeWxOuttime)
@@ -84,7 +74,6 @@ func CheckIsSucess(c *gin.Context) {
 		Unionid:    info.UnionID,
 	}
 	login := new(service.Login)
-	login.LoginService(c, oauthInfo)
 	data, err := login.LoginService(c, oauthInfo)
 	if err != nil {
 		zap.L().Error("CreatDaoWeixinUserInfo failed", zap.Error(err))
@@ -98,9 +87,9 @@ func CheckIsSucess(c *gin.Context) {
 func SignInfo(c *gin.Context) {
 	url := c.Query("url")
 	// 获取js操作对象信息
-	j := global.Wx.GetJs()
+	js := global.Wx.GetJs()
 	//获取js签名
-	config, err := j.GetConfig(url)
+	config, err := js.GetConfig(url)
 	if err != nil {
 		zap.L().Error("get wx sign failed", zap.Error(err))
 		app.ResponseError(c, app.CodeWxGzhSignFail)

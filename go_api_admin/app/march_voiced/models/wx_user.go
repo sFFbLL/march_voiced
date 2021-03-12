@@ -82,6 +82,8 @@ func (a *Model) LoginDao(info oauth.UserInfo) (int, SysUser, error) {
 	var aa WxUser
 	var sysuser SysUser
 	err := global.Eloquent.First(&aa, "openid=?", info.OpenID).Error
+
+	// 如果用户不存在，创建新用户
 	if err == gorm.ErrRecordNotFound {
 		newUser := WxUser{
 			Wx_nick_name:   info.Nickname,
@@ -101,27 +103,33 @@ func (a *Model) LoginDao(info oauth.UserInfo) (int, SysUser, error) {
 			return 0, sysuser, err
 		}
 		return 1, sysuser, err
-	} else if err != nil {
+	}
+
+	// 查询数据库出错直接返回错误
+	if err != nil {
 		return 0, sysuser, err
-	} else if aa.Sys_user_id == 0 {
+	}
+
+	// 判断用户是否注册
+	if aa.Sys_user_id <= 0 {
 		return 1, sysuser, nil
-	} else if aa.Sys_user_id != 0 {
+	} else {
 		err1 := global.Eloquent.First(&sysuser, "id=?", aa.Sys_user_id).Error
 		if err1 == gorm.ErrRecordNotFound {
 			return 1, sysuser, nil
-		} else if err1 != nil {
+		}
+		if err1 != nil {
 			return 0, sysuser, err
 		}
-		return 2, sysuser, nil
 	}
 	return 2, sysuser, nil
 }
 
 func (a *Model) CreatSysUserService(p dto.InsertUserDto) (SysUser, error) {
-	var wxuser WxUser
+	var wxUser WxUser
 	var isUser SysUser
 	var sysUser SysUser
-	err := global.Eloquent.First(&wxuser, "openid=?", p.OpenId).Error
+	err := global.Eloquent.First(&wxUser, "openid=?", p.OpenId).Error
 	if err != nil {
 		return sysUser, err
 	}
@@ -137,7 +145,7 @@ func (a *Model) CreatSysUserService(p dto.InsertUserDto) (SysUser, error) {
 	if isUser.Username == p.UserName {
 		//判断密码是否相同
 		if isUser.Password == p.Password {
-			err = global.Eloquent.Model(&wxuser).Where("openid=?", p.OpenId).Update("sys_user_id", isUser.ID).Error
+			err = global.Eloquent.Model(&wxUser).Where("openid=?", p.OpenId).Update("sys_user_id", isUser.ID).Error
 			if err != nil {
 				return SysUser{}, err
 			}
@@ -161,8 +169,8 @@ func (a *Model) CreatSysUserService(p dto.InsertUserDto) (SysUser, error) {
 		NickName:     p.UserName,
 		Phone:        "",
 		Email:        "",
-		AvatarPath:   wxuser.Avatar,
-		Avatar:       wxuser.Avatar,
+		AvatarPath:   wxUser.Avatar,
+		Avatar:       wxUser.Avatar,
 		Sex:          "",
 		Status:       "",
 		Remark:       "",
@@ -178,7 +186,7 @@ func (a *Model) CreatSysUserService(p dto.InsertUserDto) (SysUser, error) {
 	if err != nil {
 		return sysUser, err
 	}
-	err = global.Eloquent.Model(&wxuser).Where("openid=?", p.OpenId).Update("sys_user_id", sysUser.ID).Error
+	err = global.Eloquent.Model(&wxUser).Where("openid=?", p.OpenId).Update("sys_user_id", sysUser.ID).Error
 	if err != nil {
 		return SysUser{}, err
 	}
