@@ -132,14 +132,26 @@
 						})
 					}
 				} else {
-					// 判断该用户是否注册
-					login(params).then(res => {
-						// 重新登陆成功
-						console.log(res.data.token)
-						setToken(res.data.token);
-					}).catch(err => {
-						console.log(err, "err login")
-					})
+					console.log("没有token，有OpenId");
+					let code = returnWxcode();
+					if (!code) {
+						getWxCode();
+					} else {
+						console.log("成功拿到code")
+						let params = {
+							code: code,
+							status: 1
+						}
+						// 判断该用户是否注册
+						login(params).then(res => {
+							// 重新登陆成功
+							console.log(res.data.token)
+							setToken(res.data.token);
+						}).catch(err => {
+							console.log(err, "err login")
+						})
+					}
+				
 				}
 			}
 		},
