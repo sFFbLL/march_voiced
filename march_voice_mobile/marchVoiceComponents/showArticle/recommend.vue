@@ -11,7 +11,7 @@
 		 :avatarPath="articleInfo.avatarPath"
 		 :isFollow="articleInfo.isFollow"></attentionAndFansCell>
 		<!-- 文章内容 -->
-		<articleContent :articleContent="articleInfo.content"
+		<articleContent :articleContent="articleInfo.describe"
 		 :articleImg="articleInfo.image"
 		 :id="articleInfo.id" />
 		<!-- 文章互动数量-->

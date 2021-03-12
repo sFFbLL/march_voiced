@@ -59,3 +59,26 @@ export function publishComment(params) {
 		params: params,
 	})
 }
+
+// 三月圈详情页查询评论
+export function ideaCommentList(params){
+	return Axios.post('/api/comment/march',{
+		id:params.id,
+		current:params.current,
+		size:params.size,
+		childSize:params.childSize
+	})
+}
+
+
+/**
+ * 获取子评论的接口
+ * @param {Object} params {id:id,current:页码,size:一页大小,childSize:子评论条数}
+ */
+export function ideaChildCommentList(params) {
+	return Axios.get('/api/comment/children/article', {
+		id: params.id,
+		current:params.current,
+		size:params.size
+	})
+}

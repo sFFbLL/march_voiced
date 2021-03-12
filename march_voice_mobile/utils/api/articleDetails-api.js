@@ -15,7 +15,10 @@ export function getArtileDetails(params) {
  */
 export function getArticleCommentList(params) {
 	return Axios.get('/api/comment/article', {
-		params: params
+		id:params.id,
+		current:params.current,
+		size:params.size,
+		childSize:params.childSize
 	})
 }
 
@@ -25,7 +28,10 @@ export function getArticleCommentList(params) {
  */
 export function addArticleComment(params) {
 	return Axios.post('/api/comment/article', {
-		params: params
+		id: params.id,
+		content:params.content,
+		replyId:params.replyId,
+		follewId:params.follewId
 	})
 }
 

@@ -4,7 +4,7 @@ import Axios from '../request.js';
 // 查询用户信息
 export function information(params) {
 	return Axios.get('/api/user/information', {
-		id: params.id,
+		id: params,
 	})
 }
 
