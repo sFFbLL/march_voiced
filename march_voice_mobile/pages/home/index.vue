@@ -153,14 +153,22 @@
 					}
 				
 				}
+			}else{
+				this.recommend();
+				this.follow();
 			}
 			
 			
-			this.recommend();
-			this.follow();
+			
 		},
 		onShow() {
 			check()
+		},
+		created() {
+		console.log("created")	
+		},
+		onLoad() {
+			console.log("onload")
 		},
 		
 		onReachBottom() { //上拉触底函数
