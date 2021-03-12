@@ -164,9 +164,7 @@
 		onShow() {
 			check()
 		},
-		created() {
-		console.log("created")	
-		},
+		
 		onLoad() {
 			console.log("onload")
 		},
