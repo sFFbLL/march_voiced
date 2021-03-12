@@ -96,7 +96,7 @@
 				isRecommend: true //是否是推荐文章
 			}
 		},
-		beforeCreate() {
+		created() {
 			console.log("homebeforeCreate");
 
 			if (!getToken()) {
