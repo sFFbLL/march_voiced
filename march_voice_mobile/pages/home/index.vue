@@ -54,7 +54,8 @@
 	import {
 		getToken,
 		setToken,
-		setOpenId
+		setOpenId,
+		getOpenId
 	} from "../../utils/auth.js"
 	import {
 		login,
@@ -97,83 +98,57 @@
 		},
 		beforeCreate() {
 			console.log("homebeforeCreate");
-			// if (!getToken()) {
-			// 	console.log("没有token");
-			// 	let code;
-			// 	if (!parseCode()) {
-			// 		console.log("当前没有wxCode，去获取");
-			// 		//没有token，没登陆过，获取wxcode
-			// 		code = returnWxcode();
-
-			// 	} else {
-			// 		code = parseCode();
-			// 	}
-			// 	console.log("成功拿到code")
-			// 	let params = {
-			// 		code: code,
-			// 		status: 1
-			// 	}
-			// 	// 判断该用户是否注册
-			// 	login(params).then(res => {
-			// 		console.log(res, "注册")
-			// 		if (res.data.status == 1) {
-			// 			// 跳转注册页面
-			// 			console.log("未登录")
-			// 			uni.navigateTo({
-			// 				url: "../login/login"
-			// 			})
-			// 		} else {
-			// 			// 登陆成功
-			// 			console.log(res.data.token)
-			// 			setToken(res.data.token);
-			// 			setOpenId(res.data.openid)
-			// 		}
-			// 	}).catch(err => {
-			// 		console.log(err, "err login")
-			// 	})
-
-			// }
 
 			if (!getToken()) {
-				console.log("没有token");
-				let code = returnWxcode();
-				if (!code) {
-					getWxCode();
-				} else {
-					console.log("成功拿到code")
-					let params = {
-						code: code,
-						status: 1
+				if (!getOpenId()) {
+					console.log("没有token，没有OpenId");
+					let code = returnWxcode();
+					if (!code) {
+						getWxCode();
+					} else {
+						console.log("成功拿到code")
+						let params = {
+							code: code,
+							status: 1
+						}
+						// 判断该用户是否注册
+						login(params).then(res => {
+							console.log(res, "注册")
+							setOpenId(res.data.openid)
+
+							if (res.data.status == 1) { //没有token
+								// 跳转注册页面
+								console.log("未登录")
+								uni.navigateTo({
+									url: "../login/login"
+								})
+							} else {
+								// 拿到token，登陆成功
+								console.log(res.data.token)
+								setToken(res.data.token);
+							}
+						}).catch(err => {
+							console.log(err, "err login")
+						})
 					}
+				} else {
 					// 判断该用户是否注册
 					login(params).then(res => {
-						console.log(res, "注册")
-						setOpenId(res.data.openid)
-						if (res.data.status == 1) {
-							// 跳转注册页面
-							console.log("未登录")
-							uni.navigateTo({
-								url: "../login/login"
-							})
-						} else {
-							// 登陆成功
-							console.log(res.data.token)
-							setToken(res.data.token);
-						}
+						// 重新登陆成功
+						console.log(res.data.token)
+						setToken(res.data.token);
 					}).catch(err => {
 						console.log(err, "err login")
 					})
 				}
-
-
 			}
 		},
 		onShow() {
 			check()
 		},
 		created() {
-			// this.recommend();
-			// this.follow();
+			this.recommend();
+			this.follow();
 		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
