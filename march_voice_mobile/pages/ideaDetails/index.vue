@@ -22,19 +22,34 @@
 			 :commentTotals="ideaInfoList.commentTotal"
 			 :id="ideaInfoList.id"></emojiControl>
 		</view>
-		<commentInput v-on:sendComment='sendComment' />
+		<!-- 评论列表 -->
+		<view class="comment-view">
+			<view class="top-title">
+				<text>评论</text>
+				<text>({{commentCount}})</text>
+			</view>
+			<view class="comment-list">
+				<comment :commentList="commentList"></comment>
+			</view>
+		</view>
+		<commentInput v-on:sendComment='sendComment' :type="type" />
+		
+		
 	</view>
 </template>
 
 <script>
 	import {
 		ideaDetail,
-		publishComment
+		publishComment,
+		ideaCommentList,
+		ideaChildCommentList
 	} from '../../utils/api/marchCircle-api.js'
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
 	import emojiControl from '../../marchVoiceComponents/marchCircle/emojiControl.vue'
 	import imageAdaptation from '../../marchVoiceComponents/marchCircle/imageAdaptation.vue'
 	import articleContent from '../../marchVoiceComponents/showArticle/childComponents/artilceContent.vue'
+	import comment from '../../marchVoiceComponents/comment/index.vue'
 	import commentInput from '../../marchVoiceComponents/comment/commentInput.vue'
 	export default {
 		components: {
@@ -42,31 +57,24 @@
 			attentionAndFansCell,
 			imageAdaptation,
 			articleContent,
-			commentInput
+			commentInput,
+			comment
 		},
 		data() {
 			return {
-				ideaInfoList: {
-					// content: "<span>今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六...</span>",
-					// updateTime: '2020/12/12',
-					// faceTotal: 2,
-					// likeTotal: 3,
-					// favourTotal: 0,
-					// commentTotal: 0,
-					// ideaId: 0,
-					// imgList: [
-					// 	'../../static/img/cat.jpg', '../../static/img/cat.jpg'
-					// ],
-					// create_by: 0,
-					// nickname: "xianer",
-					// avatarPath: '../../static/img/cat.jpg',
-					// isFollow: 0
-
-				}
+				ideaInfoList: {},
+				commentList:[],
+				commentCount:3,
+				current: 1,
+				size: 5,
+				childSize: 3,
+				type:1
 			}
 		},
 		onLoad(option) {
 			this.ideaId = option.id;
+			
+		
 		},
 		created() {
 			let id = this.ideaId
@@ -76,6 +84,21 @@
 				this.ideaInfoList = res.data;
 			})
 
+	
+			// 获取评论列表
+			let params = {
+				id: id,
+				current: this.current,
+				size: this.size,
+				childSize: this.childSize,
+			}
+			ideaCommentList(params).then(res => {
+				if (res.code === 0) {
+					this.commentList = res.data;
+					this.commentCount = res.data.length
+				}
+			
+			})
 
 		},
 
