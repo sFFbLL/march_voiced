@@ -25,6 +25,9 @@ var cfgLogger *viper.Viper
 // Redis配置项
 var cfgRedis *viper.Viper
 
+// Mysql配置项
+var cfgWx *viper.Viper
+
 //载入配置文件
 func Setup(path string) {
 	// 加载配置文件
@@ -69,4 +72,10 @@ func Setup(path string) {
 		panic("No found settings.redis in the configuration")
 	}
 	RedisConfig = InitRedis(cfgRedis)
+
+	cfgWx = viper.Sub("settings.wx")
+	if cfgWx == nil {
+		panic("No found settings.wx in the configuration")
+	}
+	WxConfig = InitWx(cfgWx)
 }

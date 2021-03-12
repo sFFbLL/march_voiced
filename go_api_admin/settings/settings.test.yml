@@ -67,3 +67,10 @@ settings:
     idletimeoutsec: 240
     # 密码
     password:
+  wx:
+    #微信id
+    appid: wx58f1a0720acc69f4
+    #微信密钥
+    appsecret: 24fed072517ffb84a7df0343aaeb6ada
+    #微信token
+    token:     wodeshijie

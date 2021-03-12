@@ -2,8 +2,6 @@ package router
 
 import (
 	"net/http"
-	"project/app/march_voiced/apis"
-	"project/common/global"
 	"project/utils/config"
 
 	admin "project/app/admin/router"
@@ -37,16 +35,6 @@ func Setup(cfg *config.Application) *gin.Engine {
 	// 注册业务路由
 	admin.InitAdminRouter(r)
 	march.InitMarchRouter(r)
-
-	r.GET("/api", func(c *gin.Context) {
-		server := global.Wx.GetServer(c.Request, c.Writer)
-		err := server.Serve()
-		if err != nil {
-			return
-		}
-		server.Send()
-	})
-	r.POST("/", apis.WxGetTicket)
 
 	pprof.Register(r) // 注册pprof相关路由
 	return r

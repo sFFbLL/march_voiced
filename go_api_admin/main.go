@@ -70,8 +70,8 @@ func main() {
 		zap.L().Error("init elasticSeach failed", zap.Error(err))
 	}
 	zap.L().Debug(utils.Green("elasticSeach init success..."))
-	//初始化elasticSeach连接
-	if err := wx.Init(); err != nil {
+	//初始化wx连接
+	if err := wx.Init(config.WxConfig); err != nil {
 		zap.L().Error("init wx failed", zap.Error(err))
 	}
 	zap.L().Debug(utils.Green("wx init success..."))
