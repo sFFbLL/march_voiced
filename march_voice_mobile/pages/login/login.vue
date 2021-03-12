@@ -62,11 +62,12 @@
 				} else {
 					this.btnloading = true;
 					let isExistOr = true;
+					let openid = getOpenId()
 					let _this = this;
 					let params = {
 						username: _this.nameValue,
 						password: _this.passwordValue,
-						openid: getOpenId()
+						openid: openid,
 					}
 					// 调用补全信息的接口获得用户的token
 					creatNewUser(params).then(res => {
