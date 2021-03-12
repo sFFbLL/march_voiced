@@ -9,6 +9,7 @@ import (
 	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"
+	"project/common/api"
 	"strconv"
 	"time"
 
@@ -23,7 +24,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-//登录验证获取token
+// 登录验证获取token
 func LoginHandler(c *gin.Context) {
 	//wx.Init()
 	type Name struct {
@@ -117,11 +118,21 @@ func SearchUserInfo(c *gin.Context) {
 	app.ResponseSuccess(c, data)
 }
 
+// ModInformation 修改用户信息
 func ModInformation(c *gin.Context) {
-	get, _ := c.Get("UserId")
-	id := fmt.Sprintf("%v", get)
+	// 获取上下文消息
+	userInfo, err := api.GetUserMessage(c)
+	if err != nil {
+		c.Error(err)
+		zap.L().Error("Getuserinfo failed", zap.Error(err))
+		app.ResponseError(c, app.CodeNoUser)
+		return
+	}
+	//get, _ := c.Get("UserId")
+	id := fmt.Sprintf("%v", userInfo.UserId)
 	p := new(dto.ModInformationDto)
 	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("Noduserinfo bind params failed", zap.String("Username", userInfo.Username), zap.Error(err))
 		_, ok := err.(validator.ValidationErrors)
 		if !ok {
 			app.ResponseError(c, app.CodeParamIsInvalid)
@@ -131,16 +142,16 @@ func ModInformation(c *gin.Context) {
 		return
 	}
 	user := new(service.Login)
-	err := user.ModInformation(*p, id)
+	err = user.ModInformation(*p, id)
 	if err != nil {
-		zap.L().Error("ModUserName failed", zap.Error(err))
+		zap.L().Error("ModuserName failed", zap.Error(err))
 		app.ResponseError(c, app.CodeUpdateOperationFail)
 		return
 	}
 	app.ResponseSuccess(c, app.CodeSuccess)
 }
 
-//生成带参数的二维码
+// GetTicket 生成带参数的二维码
 func GetTicket(c *gin.Context) {
 	var accessToken string
 	//wxAccessToken
@@ -164,9 +175,8 @@ func GetTicket(c *gin.Context) {
 	app.ResponseSuccess(c, wxTicket)
 }
 
+// WxTicket 获取微信票据
 func WxTicket(token string) (dto.WxTokenMessages, error) {
-	//token := "42_bxJkHtccnA6EnfqnQjzC8z3SfoxUsZd9gTEw6oKW_wCDPa3bqJ-6O_D-byqt1HXhLuiJIGZhPp1vVJO-tnCDmjR35Jv-ht8vFdPZo6eQtXgt_UurAhni7-EPhJkFvhwPpd0Juuhs2RAQvl0NPZLcAEAVFR"
-	//sceneStr:="test"
 	post := `{
 	"expire_seconds":300,
 	"action_name": "QR_LIMIT_STR_SCENE",
