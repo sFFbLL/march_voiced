@@ -1,6 +1,6 @@
 <template>
 	<uni-list class="list-item">
-		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" @change="change(index)" @inToPageMine="inToPageMine(item.id)"
+		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" @change="change(id)" @inToPageMine="inToPageMine(item.id)"
 		 :id="item.id" :nickname="item.nickname" :isFollow="item.isFollow" :avatarPath="item.avatarPath">
 			<span slot="middleText">
 				<span class="inner-text">关注 {{item.followTotal}}</span>

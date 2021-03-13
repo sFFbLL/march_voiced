@@ -40,7 +40,7 @@
 					strData:strdata
 				}
 				pcIsLogin(params).then(res => {
-						switch(res.code){
+						switch(res.data.status){
 							case 0://用户未扫码
 								break;
 							case 1://用户扫码未注册
@@ -51,8 +51,7 @@
 								})
 								break;
 							case 2://用户获取token成功
-								setToken(res.token)
-								console.log("ASDADADA")
+								setToken(res.data.token)
 								uni.redirectTo({
 									url:'../pcPublish/pcPublish'
 								})

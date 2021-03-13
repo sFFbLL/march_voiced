@@ -87,12 +87,28 @@
 		},
 		methods: {
 			// 按钮切换显示
-			changeBtn() {
+			changeBtn(id) {
 				this.isDisabled = true
 				let that = this;
 				setTimeout(function () {
 					that.isDisabled = false
-					that.$emit('change');
+					// 
+					let params = {
+						id: id
+					}
+					
+					changeStatus(params).then(res =>{
+						// 手动更改状态，刷新后查询新数据
+						// switch (this.list[index].isFollow) {
+						// 	case 0:
+						// 		this.list[index].isFollow = 1
+						// 		break;
+						// 	case 1:
+						// 		this.list[index].isFollow = 0
+						// 		break;
+						// }
+						this.isFollow = !this.isFollow
+					})
 				}, 1000);
 			},
 			// 进入其他页面
