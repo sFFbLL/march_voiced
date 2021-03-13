@@ -1,7 +1,7 @@
 <template>
-	<view class="background">
-		<image :src="src" mode=""></image>
-	</view>
+	<!-- <view class="background"> -->
+		<image class="code-img" :src="src" mode=""></image>
+<!-- 	</view> -->
 </template>
 
 <script>
@@ -66,8 +66,20 @@
 </script>
 
 <style scoped>
-/deep/uni-page-wrapper{
-	background-color: #000000 !important;
+.uni-page-head[uni-page-head-type=default]~uni-page-wrapper {
+	background: black !important;
 }
-
+.background{
+	background-color: #262626;
+	box-sizing: content-box;
+}
+.code-img{
+	position: absolute;
+	left: calc(50% - 250rpx);
+	top: calc(50% - 250rpx);
+}
+uni-image{
+	width: 500rpx;
+	height: 500rpx;
+}
 </style>

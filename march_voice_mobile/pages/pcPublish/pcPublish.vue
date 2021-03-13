@@ -130,7 +130,7 @@
 					color: "rgba(0, 145, 255, 1)"
 				},
 				
-				list:[]
+				list:[],
 				
 				isUpdate:false, // 是否是编辑文章，用来调不同的接口
 				num: 1,
@@ -275,24 +275,26 @@
 			// 点击发布
 			editOk(res) {
 				let url = null;
+				let describe = res.text.substr(0,20)
 				for (let i = 0; i < res.delta.ops.length; i++) {
 					if (res.delta.ops[i].insert.image) {
 						url = res.delta.ops[i].insert.image
 						return;
 					}
 				}
+				var params = {
+					title: this.title,
+					content: res.html,
+					image: url,
+					kind: 1,
+					tag: this.tagsId[this.index],
+					type: 0,
+					status: res.isPublic,
+					word_count: res.textLength,
+					describe:describe
+				}
 				switch(this.isUpdate){
 					case false: 
-						var params = {
-							title: this.title,
-							content: res.html,
-							image: url,
-							kind: 1,
-							tag: this.tagsId[this.index],
-							type: 0,
-							status: res.isPublic,
-							word_count: res.textLength
-						}
 						publishArticle(params).then( _res => {
 							if (_res.code === 200) {
 								console.log("发布成功")
@@ -300,16 +302,6 @@
 						})
 						break;
 					case true:
-						var params = {
-							title: this.title,
-							contnet: res.html,
-							image: url,
-							kind: 1,
-							tag: this.tagsId[this.index],
-							type: 0,
-							status: res.isPublic,
-							word_count: res.textLength
-						}
 						upDateArticle(params).then( _res => {
 							if(_res.code === 200){
 								console.log("发布成功")

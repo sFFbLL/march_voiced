@@ -14,7 +14,7 @@
 </template>
 
 <script>
-	import { getOpenId } from "../../utils/auth.js"
+	// import { getOpenId } from "../../utils/auth.js"
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue';
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	import {
@@ -36,8 +36,8 @@
 		// 进入时加载
 		onLoad: function(options) {
 			uni.startPullDownRefresh();
-			this.openid = getOpenId()
-			console.log(this.openid,"ASDASDASDDASDADSDASASDSDSD")
+			// this.openid = getOpenId()
+			// console.log(this.openid,"ASDASDASDDASDADSDASASDSDSD")
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
