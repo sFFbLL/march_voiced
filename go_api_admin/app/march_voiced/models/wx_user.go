@@ -257,7 +257,6 @@ func (a *Model) Login() WxUser {
 	}
 	err := global.Eloquent.Create(&sysUser).Error
 	if err != nil {
-		fmt.Println(err.Error(), "111111111")
 		fmt.Println("创建系统用户失败")
 		return aa
 	}
