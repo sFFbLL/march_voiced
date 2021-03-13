@@ -39,3 +39,9 @@ export function sensitive(url, id) {
     params: { id: id }
   })
 }
+export function getInfoBy() {
+  return request({
+    url: '/api/article/tag',
+    method: 'get'
+  })
+}

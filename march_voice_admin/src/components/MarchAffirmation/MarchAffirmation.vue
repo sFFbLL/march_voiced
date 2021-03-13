@@ -24,7 +24,7 @@
 <script>
 // import crudMenu from "@/api/system/menu";
 import CRUD, { crud } from '@crud/crud'
-import { articleAdopt } from '@/api/review/articleReview.js'
+import { marchAdopt } from '@/api/review/articleReview.js'
 // import Cookies from "js-cookie";
 
 export default {
@@ -81,7 +81,7 @@ export default {
           id
         }
         if (isShow) {
-          articleAdopt(doAdoptData)
+          marchAdopt(doAdoptData)
             .then((rep) => { })
             .then(() => {
               this.$message({
@@ -112,23 +112,21 @@ export default {
         const id = parseInt(this.data.userId)
         const statuss = parseInt(this.data.status)
         const isShow = statuss == '2'
-        let status = 1
+        const status = 0
         const doAdoptData = {
           status,
           id
         }
-        // console.log(doAdoptData)
-        // console.log(isShow)
         if (isShow) {
           // console.log(isShow)
-          articleAdopt(doAdoptData)
+          marchAdopt(doAdoptData)
             .then((rep) => { })
             .then(() => {
               this.$message({
                 type: 'success',
                 message: '通过成功！'
               })
-              status = '1'
+              this.data.status = '1'
             })
             .catch(() => {
               this.$message({

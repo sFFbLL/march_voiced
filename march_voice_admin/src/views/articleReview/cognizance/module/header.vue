@@ -20,6 +20,7 @@
       @keyup.enter.native="crud.toQuery"
     />
     <el-select
+      v-if="once"
       v-model="query.tag"
       clearable
       size="small"
@@ -28,10 +29,10 @@
       placeholder="文章类型"
     >
       <el-option
-        v-for="item in arr"
+        v-for="item in tag"
         :key="item.id"
         :label="item.tag"
-        :value="item.tag"
+        :value="item.id"
       />
     </el-select>
     <el-select
@@ -60,11 +61,16 @@
 <script>
 import { header, crud } from '@crud/crud'
 import DateRangePicker from '@/components/DateRangePicker'
+import { getInfoBy } from '@/api/review/articleReview.js'
 export default {
   components: { DateRangePicker },
   mixins: [header(), crud()],
   dicts: ['dept_status'],
   props: {
+    data: {
+      type: Object,
+      required: true
+    },
     permission: {
       type: Object,
       required: true
@@ -72,13 +78,15 @@ export default {
   },
   data() {
     return {
+      aa: 1,
+      once: true,
       invitationNameArray: [
         {
           id: '1', // 这里的id一定要加引号
           light: '审核通过'
         },
         {
-          id: '0',
+          id: '2',
           light: '待审核'
         }
       ],
@@ -94,53 +102,17 @@ export default {
     }
   },
   created() {
-    this.arrnew = this.crud.data.map((obj, index) => {
-      return obj.tag
-    }).join(',').split(',')
-    for (var i = 0; i < this.arrnew.length; i++) { // 循环遍历当前数组
-      if (this.arr.indexOf(this.arrnew[i]) == -1) {
-        this.arr.push(this.arrnew[i])
+    getInfoBy('/api/article/tag').then(
+      data => {
+        console.log(data.data)
+        this.tag = data.data
+        // console.log(this.tag)
+        // this.contents = data.data.content
       }
-    }
-    console.log(222222222)
-    console.log(this.arr)
-    // let arrr = [];
-    // for (let index = 0; index < this.arr.length; index++) {
-    //   arrr.push({ tag: "" });
-    //   console.log(arrr)
-    //   arrr[index].tag = this.arr[index];
-    //   console.log(arrr)
-    // }
-
-    // this.arr.forEach(item => {
-    //   arrr.push({ tag: item });
-    // })
-    // console.log(arrr)
-    // this.arr = arrr;
-    // console.log(2222222222)
-    // console.log(this.arr)
+    )
   },
   methods: {
-    // [CRUD.HOOK.beforeRefresh] (crud) {//将参数转为对象
-    //   this.arrnew = this.crud.data.map((obj, index) => {
-    //     return obj.tag;
-    //   }).join(",").split(',')
-    //   for (var i = 0; i < this.arrnew.length; i++) {    //循环遍历当前数组
-    //     if (this.arr.indexOf(this.arrnew[i]) == -1) {
-    //       this.arr.push(this.arrnew[i]);
-    //     }
-    //   }
-    //   console.log(222222222)
-    //   console.log(this.arr)
-    //   this.arr.forEach(item => {
-    //     arrr.push({ tag: item });
-    //   })
-    //   console.log(arrr)
-    //   this.arr = arrr;
-    //   console.log(2222222222)
-    //   console.log(this.arr)
-    // },
-
+    // getInfoBy,
   }
 }
 </script>

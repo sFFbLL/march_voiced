@@ -18,6 +18,9 @@
             <div v-if="this.$route.query.status == 2" class="status-box wait">
               <span>待审核</span>
             </div>
+            <div v-if="this.$route.query.status == 3" class="status-box wait">
+              <span>已驳回</span>
+            </div>
             <div class="status-box reject">
               <Reject v-if="this.showReject" :content="content" :data="data" />
             </div>
@@ -86,15 +89,17 @@ export default {
           if (this.arrnew && this.arrnew != null) {
             this.nois = true
           }
-          // this.Sensitive1 = data.data.Sensitive;
-          // console.log(data.data.Sensitive)
         }
       }
     )
-    // console.log(this.nois)
   },
 
   methods: {
+    showStatus: function(data) {
+      console.log(data)
+      this.$route.query.status = data
+      console.log(this.$route.query.status)
+    },
     showKeyWord(val) {
       if (val) {
         val = val + '' // 转化为字符串类型
