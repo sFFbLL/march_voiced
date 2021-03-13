@@ -37,7 +37,7 @@ func marchNoCheckRoleRouter(r *gin.Engine) {
 		}
 		server.Send()
 	})
-	v1.POST("/", apis.WxGetTicket)
+	v1.POST("", apis.WxGetTicket)
 	for _, f := range routerNoCheckRole {
 		f(v1)
 	}
