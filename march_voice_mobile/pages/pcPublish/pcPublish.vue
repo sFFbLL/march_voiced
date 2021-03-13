@@ -42,7 +42,7 @@
 								<span>新建文章</span>
 							</view>
 
-							<view class="article-card" v-for="item,index in list" :key="index" @click="showArticleInEditor(item.title,item.tag,item.content,item.word_count)">
+							<view class="article-card" v-for="item,index in list" :key="index" @click="showArticleInEditor(item.title,item.tag,item.content,item.word_count,item)">
 								<u-image src="../../static/img/aiticleLogo.png" mode="widthFix" width="50rpx"></u-image>
 								<view class="article-card-text-box">
 									<span class="article-card-title">{{item.title}}</span>
@@ -109,8 +109,8 @@
 				`,
 				word_count:null,
 				
-				tags: ['生活', '情感', '学习', '其他'],
-				tagsId:[0,1,9,3],
+				tags: [],
+				tagsId:[],
 				index: 0, // tags默认选中的下标
 				
 				showBold: false,
@@ -131,7 +131,7 @@
 				},
 				
 				list:[],
-				
+				resList:[],
 				isUpdate:false, // 是否是编辑文章，用来调不同的接口
 				num: 1,
 				size: 15,
@@ -144,9 +144,9 @@
 		},
 		beforeMount(){
 			getTags().then(res =>{
-				for(item in res.data){
-					this.tags = item.tag
-					this.tagsId = item.id
+				for(var i =0; i < res.data.length; i++){
+					this.tags.push(res.data[i].tag)
+					this.tagsId.push(res.data[i].id)
 				}
 			})
 		},
@@ -173,12 +173,13 @@
 			      },
 			upCallback() {
 				let params = {
-					id: 0,
 					current: this.current,
-					size: 15
+					size: 10,
+					kind:2
 				}
 				getArticleList(params).then(res => {
-					resList = res.data
+					
+					this.resList = res.data
 					this.current++;
 					//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
 					this.mescroll.endSuccess(this.resList.length);
@@ -261,7 +262,8 @@
 			// 	// 调用其他方法...
 			// },
 			
-			showArticleInEditor(title,tag,content,word_count){
+			showArticleInEditor(title,tag,content,word_count,item){
+				console.log(item)
 				this.isUpdate = true // 表示编辑文章
 				this.index = tag
 				this.title = title
