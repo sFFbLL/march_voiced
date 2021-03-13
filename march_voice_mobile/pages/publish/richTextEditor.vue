@@ -4,7 +4,7 @@
 			<input class="title-text" type="text" v-model="title" placeholder="标题" placeholder-class="placeholder"/>
 		</view>
 		<!-- http://www.kuntong.site/api/file/uploadImage -->
-		<jinEdit placeholder="请输入内容" :html="html" :readOnly="false" @editOk="editOk" uploadFileUrl="http://www.linbolun.cn/h5/api/file/uploadImage"></jinEdit>
+		<jinEdit placeholder="请输入内容" :html="html" :readOnly="false" @editOk="editOk" uploadFileUrl="http://www.linbolun.cn/api/file/uploadImage"></jinEdit>
 	</view>
 </template>
 
