@@ -99,6 +99,22 @@
 		created() {
 			console.log("homebeforeCreate");
 
+			
+				
+				this.recommend();
+				this.follow();
+			
+			
+			
+			
+		},
+		onShow() {
+			check()
+		},
+		
+		onLoad() {
+			console.log("onload")
+			
 			if (!getToken()) {
 				if (!getOpenId()) {
 					console.log("没有token，没有OpenId");
@@ -115,7 +131,7 @@
 						login(params).then(res => {
 							console.log(res, "注册")
 							setOpenId(res.data.openid)
-
+			
 							if (res.data.status == 1) { //没有token
 								// 跳转注册页面
 								console.log("未登录")
@@ -153,20 +169,7 @@
 					}
 				
 				}
-			}else{
-				this.recommend();
-				this.follow();
 			}
-			
-			
-			
-		},
-		onShow() {
-			check()
-		},
-		
-		onLoad() {
-			console.log("onload")
 		},
 		
 		onReachBottom() { //上拉触底函数

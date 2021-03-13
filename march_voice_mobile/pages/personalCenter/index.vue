@@ -205,25 +205,25 @@
 				this.tabIndex = tabIndex;
 			},
 			getUserInfo() {
-				/* let _this = this;
+				let _this = this;
 				let params = {
 					id: 1
 				}
 				getUserInfo(params).then(res => {
 					_this.userInfo = res.data;
-				}) */
+				})
 				this.userInfo = this.userInfo1;
 			},
 			getIdeaList() {
 				let _this = this;
-				/* let params = {
+				let params = {
 					id: 1,
 					current: _this.ideaCurrent,
 					size: _this.size
 				}
 				getUserIdeaList(params).then(res => {
 					_this.ideaList = [..._this.ideaList, ...res.data];
-				}) */
+				})
 				if (this.ideaList.length > 7) {
 					_this.loadStatus = "nomore";
 					_this.ideaLoadStatus = "nomore";
@@ -239,7 +239,7 @@
 			},
 			getDraftList() {
 				let _this = this;
-				/* let params = {
+				let params = {
 					id: 1,
 					current: _this.ideaCurrent,
 					size: _this.size,
@@ -247,7 +247,7 @@
 				}
 				getUserArticleList(params).then(res => {
 					_this.draftList = [..._this.draftList, ...res.data];
-				}) */
+				})
 				if (this.draftList.length > 10) {
 					_this.loadStatus = "nomore";
 					_this.draftLoadStatus = "nomore";
@@ -263,7 +263,7 @@
 			},
 			getArticleList() {
 				let _this = this;
-				/* let params = {
+				let params = {
 					id: 1,
 					current: _this.ideaCurrent,
 					size: _this.size,
@@ -271,7 +271,7 @@
 				}
 				getUserArticleList(params).then(res => {
 					_this.articleList = [..._this.articleList, ...res.data];
-				}) */
+				})
 				if (this.articleList.length > 10) {
 					_this.loadStatus = "nomore";
 					_this.articleLoadStatus = "nomore";

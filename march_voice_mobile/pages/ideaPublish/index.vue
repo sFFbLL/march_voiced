@@ -14,12 +14,12 @@
 		<view class="publish">
 			<button  :loading="btnLoading" class="publishbtn" @click="publish()">发布想法</button>
 		</view>
-		
+
 	</view>
 </template>
 
 <script>
-	
+
 	import {unloadImage} from "../../utils/api.js"
 	import {publishIdea} from "../../utils/api/marchCircle-api.js"
 	export default {
@@ -28,9 +28,11 @@
 				ideaWords: "",
 				srcList:[],
 				btnLoading:false,
+				uploadTaskProgress:0,
+				imgList:[],
 			}
 		},
-		
+
 		methods: {
 			// 删除图片
 			todelete(index){
@@ -44,7 +46,7 @@
 				    fail: function (res) {
 				    }
 				});
-				
+
 			},
 		// 实时获取输入文字
 			getWords(event) {
@@ -57,18 +59,41 @@
 					    count: 6, //默认9
 					    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					    sourceType: ['album'], //从相册选择
-						success(res) {
+						// 成功选择图片
+					success(res) {
+							// 获取图片路径显示到页面
 						for(let value of res.tempFilePaths){
 								_this.srcList.push(value);
 						}
+						// 把图片上传到服务器
+						const tempFiles = res.tempFiles;
+						 const uploadTask =uni.uploadFile({
+							url:"http://linbolun.cn/api/file/uploadImage",
+							file:tempFiles,
+							header: {
+								'Content-Type': 'multipart/form-data'
+							},
+							success: (res) => {
+								console.log(res.data.full_path)
+								this.imgList=res.data.full_path
+								return res.data.full_path
+							},
+							fail: (res) => {
+								return res
+							}
+						});
 						
-					}
-				})
-				
+						// 监听上传的进度
+						  uploadTask.onProgressUpdate((res) => {
+							_this.uploadTaskProgress=res.progress;
+						console.log('上传进度' + _this.uploadTaskProgress);
+							});
+						}
+
+				});
 			},
 			// 预览图片
 			preview(item){
-				
 				let _this = this ;
 				uni.previewImage({
 				        current: item,
@@ -82,23 +107,7 @@
 				        }
 				    });
 				},
-				// 插入图片
-				    insertImage() {
-				          for (let temp of this.imageList) {
-				            // 图片上传服务器
-				             uni.uploadFile({
-				              url: "http://www.kuntong.site/api/file/uploadImage",
-				              filePath: temp,
-				              name: this.fileKeyName,
-				              header: this.header,
-				              success: res => {
-				                // 上传完成后处理
-				              let newRes = JSON.parse(res.data)
-				              },
-				              
-				            });
-				          }
-				    },
+
 				// 发布想法，调接口
 			publish(){
 				this.btnLoading=true;
@@ -111,29 +120,13 @@
 					    duration: 2000
 					});
 				}else{
-						// 调用接口转化imgurl
-						let file=this.srcList
-						let imageList = unloadImage(file);
-						console.log(file)
-						
+
 						let params={
 							content:this.ideaWords,
-							imageList:imageList,
-							image:imageList[0]
+							imageList:this.imgList,
+							image:this.imgList[0]
 							}
-							for (let img of this.imageList) {
-									let file = new FormData()
-									file.append("file",img)
-							}
-						// let file = new FormData()
-						file.append("file",this.srcList)
-						unloadImage(file).then(res=>{
-							res.data.full_path
-						})
-						
-						
-						
-						// 调用发布接口,
+				// 调用发布接口,
 					publishIdea(params).then(res=>{
 							 uni.showToast({
 								title: '发布成功',
@@ -142,16 +135,16 @@
 								 duration: 2000
 								});
 					})
-					
+
 					}
-				
+
 				setTimeout(function() {
 					_this.btnLoading=false;
 				}, 2000);
-				
+
 			}
 		}
-	
+
 	}
 </script>
 
@@ -181,13 +174,13 @@
 	.imgs{
 		display: flex;
 		flex-flow: row wrap;
-	
+
 	}
 	.chooseimg{
 		width:220rpx;
 		height: 220rpx;
 		margin-right: 10rpx;
-		
+
 	}
 	/* 文字部分 */
 	.input {

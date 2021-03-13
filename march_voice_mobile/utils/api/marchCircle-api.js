@@ -48,9 +48,7 @@ export function changeFavour(params) {
 
 // 三月圈详情页调用
 export function ideaDetail(params) {
-	return Axios.get('/api/march/detail/id', {
-		id: params.id,
-	})
+	return Axios.get('/api/march/detail/'+params.id)
 }
 
 // 三月圈详情页发布评论
