@@ -131,7 +131,7 @@ func (a *Article) ArticleDetail() (articleMsg *bo.ArticleDetail, err error) {
 func (a *Article) ArticleList(paging dto.Paging, IsRecommend int) (articleArray *[]bo.Article, err error) {
 	articleArray = new([]bo.Article)
 	err = global.Eloquent.Table(a.TableName()).
-		Select("article.id, article.title, article.describe, article.image, article.status, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.nick_name, sys_user.avatar_path").
+		Select("article.id, article.title, article.describe, article.image, article.status, article.tag, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.nick_name, sys_user.avatar_path").
 		Joins("JOIN sys_user ON article.create_by = sys_user.id").
 		Where("article.is_recommend = ? AND article.is_deleted = 0 AND article.status = 1", IsRecommend).
 		Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(articleArray).Error

@@ -653,8 +653,14 @@ func SelectArticleListByUserId(c *gin.Context) {
 	if paging.Current == 0 {
 		paging.Current = 1
 	}
+
 	if paging.ID == 0 {
 		paging.ID = uint(userMsg.UserId)
+	}
+
+	// 判断是否能查看草稿箱
+	if paging.ID != uint(userMsg.UserId) {
+		paging.Kind = 1
 	}
 
 	// 进入service层对数据操作
@@ -740,7 +746,7 @@ func GetArticleTagList(c *gin.Context) {
 	}
 
 	// 进入service层对数据操作
-	articleTagList, err = a.GetArticleTagList()
+	articleTagList, err = a.GetArticleTagList(userMsg.UserId)
 	if err != nil {
 		zap.L().Error("GetArticleTagList service failed", zap.String("Username", userMsg.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
