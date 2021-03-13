@@ -29,7 +29,7 @@ func marchNoCheckRoleRouter(r *gin.Engine) {
 	v1 := r.Group("/api")
 	// 空接口防止v1定义无使用报错
 	v1.GET("/marchadag", nil)
-	v1.GET("/", func(c *gin.Context) {
+	v1.GET("/wx", func(c *gin.Context) {
 		server := global.Wx.GetServer(c.Request, c.Writer)
 		err := server.Serve()
 		if err != nil {
@@ -37,7 +37,7 @@ func marchNoCheckRoleRouter(r *gin.Engine) {
 		}
 		server.Send()
 	})
-	v1.POST("", apis.WxGetTicket)
+	v1.POST("/wx", apis.WxGetTicket)
 	for _, f := range routerNoCheckRole {
 		f(v1)
 	}
