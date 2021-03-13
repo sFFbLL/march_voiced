@@ -1,26 +1,19 @@
 <template>
 	<view>
 		<!-- 间隔槽 -->
-		<u-gap height="20"
-		 bg-color="#f5f5f5"></u-gap>
+		<u-gap height="20" bg-color="#f5f5f5"></u-gap>
 		<view class="ideacontent">
 
 			<!-- 用户头像公共组件 -->
-			<attentionAndFansCell :nickname="ideaInfoList.nickname"
-			 :avatarPath="ideaInfoList.avatarPath"
-			 :isFollow="ideaInfoList.isFollow"></attentionAndFansCell>
+			<attentionAndFansCell :nickname="ideaInfoList.nickname" :avatarPath="ideaInfoList.avatarPath" :isFollow="ideaInfoList.isFollow"></attentionAndFansCell>
 			<!-- 想法的文字部分 -->
 			<articleContent :articleContent="ideaInfoList.content"></articleContent>
 			<!-- 想法的图片部分组件 -->
 			<imageAdaptation :imgList="ideaInfoList.imgList"></imageAdaptation>
 
 			<!-- 点赞表情组件 -->
-			<emojiControl :isShow="false"
-			 :faceTotals="ideaInfoList.faceTotal"
-			 :likeTotals="ideaInfoList.likeTotal"
-			 :favourTotals="ideaInfoList.favourTotal"
-			 :commentTotals="ideaInfoList.commentTotal"
-			 :id="ideaInfoList.id"></emojiControl>
+			<emojiControl :isShow="false" :faceTotals="ideaInfoList.faceTotal" :likeTotals="ideaInfoList.likeTotal"
+			 :favourTotals="ideaInfoList.favourTotal" :commentTotals="ideaInfoList.commentTotal" :id="ideaInfoList.id"></emojiControl>
 		</view>
 		<!-- 评论列表 -->
 		<view class="comment-view">
@@ -29,12 +22,14 @@
 				<text>({{commentCount}})</text>
 			</view>
 			<view class="comment-list">
-				<comment :commentList="commentList"></comment>
+				<comment :commentList="commentList" @childFn="comment"></comment>
 			</view>
 		</view>
-		<commentInput v-on:sendComment='sendComment' :type="type" />
-		
-		
+
+		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment" @childFn="parentFn" :type="type"
+		 :addCommentArg="addCommentArg" />
+
+
 	</view>
 </template>
 
@@ -63,28 +58,79 @@
 		data() {
 			return {
 				ideaInfoList: {},
-				commentList:[],
-				commentCount:3,
+				commentList: [{
+						"createBy": 1,
+						"replyId": 1,
+						"createByName": "ddd",
+						"id": 1,
+						"idAvatar": "dd",
+						"replyAvatar": "sssssss",
+						"replyName": "eeeeeeeeeee",
+						"content": "tttttt",
+						"createTime": 1,
+						"commentKids": [{
+							"id": 1,
+							"replyId": 1,
+							"replyName": "fffff",
+							"replyAvatar": "bbb",
+							"createBy": 1,
+							"createByName": "wwwww",
+							"idAvatar": "ggggggg",
+							"content": "dddddddddddddd",
+							"createTime": 1,
+							"commentKids": []
+						}, ]
+					},
+					{
+						"createBy": 1,
+						"replyId": 1,
+						"createByName": "ddd",
+						"id": 1,
+						"idAvatar": "dd",
+						"replyAvatar": "sssssss",
+						"replyName": "eeeeeeeeeee",
+						"content": "tttttt",
+						"createTime": 1,
+						"commentKids": [{
+							"id": 1,
+							"replyId": 1,
+							"replyName": "",
+							"replyAvatar": "bbb",
+							"createBy": 1,
+							"createByName": "wwwww",
+							"idAvatar": "ggggggg",
+							"content": "dddddddddddddd",
+							"createTime": 1,
+							"commentKids": []
+						}],
+				
+					},
+				
+				],
+				commentCount: 3,
 				current: 1,
 				size: 5,
 				childSize: 3,
-				type:1
+				type: 1,
+				addCommentArg: {},
+				showAddComment:false,
+				isComment:true
 			}
 		},
 		onLoad(option) {
 			this.ideaId = option.id;
-			
-		
+
+
 		},
 		created() {
 			let id = this.ideaId
-			
+
 			// 获取想法详细信息接口
 			ideaDetail(id).then(res => {
 				this.ideaInfoList = res.data;
 			})
 
-	
+
 			// 获取评论列表
 			let params = {
 				id: id,
@@ -97,14 +143,46 @@
 					this.commentList = res.data;
 					this.commentCount = res.data.length
 				}
-			
-			})
 
+			})
+			this.addCommentArg = {
+				id: this.id,
+				replyId: 0,
+				follewId: 0,
+				childComment: false,
+			}
 		},
 
 		methods: {
-			sendComment() {
-				console.log("发布评论");
+			// 控制评论弹出框的显示开
+			comment(payload) {
+				let id = this.id;
+				this.showAddComment = true;
+				// 如果是子组件点击进入评论，传入这条评论的参数
+				if (payload) {
+					this.addCommentArg = {
+						childComment: payload.childComment,
+						id: this.id,
+						index: payload.index,
+						replyId: payload.replyId,
+						follewId: payload.follewId,
+						replyName: payload.replyName,
+					}
+				}
+			},
+			// 控制评论弹出框的显示关
+			parentFn(payload) {
+				this.showAddComment = false;
+			},
+			// 添加一条评论
+			addComment(payload) {
+				this.commentList.unshift(payload);
+				this.showAddComment = false;
+			},
+			// 添加一条子评论
+			addChildComment(payload) {
+				this.commentList[payload.index].commentKids.push(payload);
+				this.showAddComment = false;
 			}
 		}
 	}

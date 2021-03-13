@@ -38,7 +38,7 @@
 			<!-- 评论+评论数量 -->
 
 			<view class="comment"
-			 v-if="isShow">
+			 v-if="isShow" >
 				<u-icon name="chat"
 				 color="#999999"
 				 size="40"

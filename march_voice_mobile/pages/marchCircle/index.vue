@@ -21,7 +21,6 @@
 		<!-- 三月圈内容 -->
 		<view class="wrap">
 			<!-- 间隔槽 -->
-
 			<view v-for="item in reverseIdeaList">
 				<u-gap height="30" bg-color="#f5f5f5"></u-gap>
 				<view class="ideacontent">
@@ -30,13 +29,12 @@
 					<!-- 想法的文字部分 -->
 					<articleContent :articleContent="item.content" :isIdea="true" :id="item.id"></articleContent>
 					<!-- 想法的图片部分组件 -->
-					<imageAdaptation :imgList="item.imgList"></imageAdaptation>
+					<imageAdaptation :imgList="item.imgList" ></imageAdaptation>
 					<!-- 点赞表情组件+评论 -->
 					<emojiControl :faceTotals="item.faceTotal" :likeTotals="item.likeTotal" :favourTotals="item.favourTotal"
 					 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
 				</view>
 			</view>
-
 		</view>
 		<view v-show="isLoadMore">
 			<uni-load-more :status="loadStatus"></uni-load-more>
@@ -49,10 +47,6 @@
 		<view v-if="sanyueMumber" @click="publish()" class="publishbtn">
 			<uni-icons class="addicon" type="plusempty" size="43" color="white"></uni-icons>
 		</view>
-		
-		
-		
-
 	</view>
 </template>
 
@@ -89,15 +83,9 @@
 					width: '50rpx',
 					height: '50rpx'
 				},
-				marchCircleInfo: {
-					articleTotal: 1222,
-					personTotal: 2048,
-					ismarch: 1,
-					brief: "啊士大夫艰苦的萨拉就",
-				},
-				ideasList: []
-
-
+				marchCircleInfo: {},
+				ideasList: [],
+				
 			}
 		},
 		computed: {
@@ -121,9 +109,9 @@
 		},
 		created() {
 			// 获取三月基本信息接口
-			getMarchCircleInfo().then(res => {
-				this.marchCircleInfo = res.data;
-			})
+			// getMarchCircleInfo().then(res => {
+			// 	this.marchCircleInfo = res.data;
+			// })
 			if (this.marchCircleInfo.ismarch == 0) {
 				this.sanyueMumber = false;
 			}
@@ -132,7 +120,7 @@
 				size: this.size
 			}
 
-			this.getCircleList(params);
+			// this.getCircleList(params);
 		},
 		onShow() {
 			check()
