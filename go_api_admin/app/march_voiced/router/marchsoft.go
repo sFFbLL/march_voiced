@@ -14,9 +14,13 @@ func init() {
 func marchRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/apply")
 	{
+		// （后台）查询申请三月圈的用户 by 李甲坤
 		r.GET("march", apis.GetMarchApplyUser)
+		//申请加入三月圈 by 李甲坤
 		r.POST("march", apis.ApplyMarch)
+		//（后台）三月圈审核通过或驳回 by 李甲坤
 		r.PUT("march", apis.MarchPass)
+		// （后台）发布文章审核通过或驳回 by 李甲坤
 		r.PUT("article", apis.ArticlePass)
 	}
 

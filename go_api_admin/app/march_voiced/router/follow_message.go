@@ -14,6 +14,7 @@ func init() {
 func followMessageAuthRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/message")
 	{
+		//关注消息 by 李甲坤
 		r.GET("follow-notice", apis.GetFollowMessage)
 	}
 }

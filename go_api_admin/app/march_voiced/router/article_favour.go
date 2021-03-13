@@ -14,6 +14,7 @@ func init() {
 func articleFavourAuthRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/favour")
 	{
+		//文章点赞 by 李甲坤
 		r.POST("article", apis.ArticleFavour)
 	}
 }

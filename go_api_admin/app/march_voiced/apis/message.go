@@ -168,7 +168,7 @@ func MessageUnreadCount(c *gin.Context) {
 // @Param object body dto.MessageUnreadDto false "查询参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseSuccess
-// @Router /api/message/user [post]
+// @Router /api/message/user [put]
 func UnReadMessageRead(c *gin.Context)  {
 	p := new(dto.UnReadMessageRead)
 
