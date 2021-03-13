@@ -134,6 +134,7 @@ func (a *Article) ArticleList(paging dto.Paging, IsRecommend int) (articleArray 
 		Select("article.id, article.title, article.describe, article.image, article.status, article.tag, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.nick_name, sys_user.avatar_path").
 		Joins("JOIN sys_user ON article.create_by = sys_user.id").
 		Where("article.is_recommend = ? AND article.is_deleted = 0 AND article.status = 1", IsRecommend).
+		Order("article.id desc").
 		Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(articleArray).Error
 	return
 }
@@ -143,11 +144,13 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser) (art
 	if paging.Kind == 1 {
 		err = global.Eloquent.Table(a.TableName()).
 			Where("create_by = ? AND status = ? AND is_deleted = 0", paging.ID, paging.Kind).
+			Order("article.id desc").
 			Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(articleArray).Error
 		return
 	}
 	err = global.Eloquent.Table(a.TableName()).
 		Where("create_by = ? AND is_deleted = 0", paging.ID).
+		Order("article.id desc").
 		Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(articleArray).Error
 	return
 }
