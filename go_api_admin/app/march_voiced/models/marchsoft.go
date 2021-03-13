@@ -87,6 +87,7 @@ func (e *MarchSoft) SelectMarchSoftList(paging dto.Paging) (marchList *[]bo.Marc
 		Select("marchsoft.id, marchsoft.content, marchsoft.image, marchsoft.create_time, marchsoft.create_by, marchsoft.update_by, marchsoft.update_time, sys_user.nick_name, sys_user.avatar_path").
 		Joins("JOIN sys_user ON marchsoft.create_by = sys_user.id").
 		Where("marchsoft.is_deleted = 0").
+		Order("marchsoft.id desc").
 		Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(marchList).Error
 	return
 }
@@ -95,6 +96,7 @@ func (e *MarchSoft) SelectMarchSoftListByUserId(paging dto.SelectMarchListById) 
 	marchList = new([]MarchSoft)
 	err = global.Eloquent.Table(e.TableName()).
 		Where("create_by = ? AND is_deleted = 0", paging.ID).
+		Order("marchsoft.id desc").
 		Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(marchList).Error
 	return
 }
