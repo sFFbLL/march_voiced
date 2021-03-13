@@ -71,7 +71,7 @@
 						</view>
 					</view>
 					<!-- http://www.kuntong.site/api/file/uploadImage -->
-					<jinEdit ref="child" placeholder="请输入内容" :readOnly="false" @editOk="editOk" uploadFileUrl="http://www.kuntong.site/api/file/uploadImage" @eidtorChange="eidtorChange"></jinEdit>
+					<jinEdit ref="child" placeholder="请输入内容" :readOnly="false" @editOk="editOk" uploadFileUrl="http://linbolun.cn/api/file/uploadImage" @eidtorChange="eidtorChange"></jinEdit>
 					<view class="body-right-foot-box">
 						<view class="text-box">
 							<span>正文字数 {{word_count}}</span>
