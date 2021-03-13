@@ -181,6 +181,7 @@ func (a *Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (e
 	}
 
 	// 调用dao方法
+	zap.L().Info("Call InsertArticle InsertArticle", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	err = article.InsertArticle()
 	return
 }
@@ -189,31 +190,42 @@ func (a *Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (e
 func (a *Article) UpdateArticle(articleDto *dto.UpdateArticleDto, userId int) (err error) {
 	// 实例化要修改的文章
 	article := new(models.Article)
+	var isRecommend uint8 = 0
 	// 获取该文章原内容
 	article.ID = int(articleDto.ID)
+	zap.L().Info("Call UpdateArticle GetArticle", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	err = article.GetArticle()
 	if err != nil {
-		zap.L().Error("UpdateArticle GetArticle failed", zap.Error(err))
+		zap.L().Error("UpdateArticle GetArticle failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
+		return
+	}
+
+	//判断是否有权利修改该文章
+	if uint(userId) != article.CreateBy {
+		err = errors.New("不能够修改他人文章！")
+		zap.L().Error("UpdateArticle check CreateBy and userId failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 		return
 	}
 
 	// 更新文章内容
 	article = &models.Article{
-		UpdateBy: uint(userId),
-		Title:    articleDto.Title,
-		Content:  articleDto.Content,
-		Describe: articleDto.Describe,
-		Image:    articleDto.Image,
-		Kind:     articleDto.Kind,
-		Tag:      articleDto.Tag,
-		Status:   articleDto.Status,
-		Type:     articleDto.Type,
+		UpdateBy:    uint(userId),
+		Title:       articleDto.Title,
+		Content:     articleDto.Content,
+		Describe:    articleDto.Describe,
+		Image:       articleDto.Image,
+		IsRecommend: &isRecommend,
+		Kind:        articleDto.Kind,
+		Tag:         articleDto.Tag,
+		Status:      articleDto.Status,
+		Type:        articleDto.Type,
 		BaseModel: models.BaseModel{
 			ID: int(articleDto.ID),
 		},
 	}
 
 	// 调用dao方法
+	zap.L().Info("Call UpdateArticle UpdateArticle", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	err = article.UpdateArticle()
 
 	return
@@ -223,11 +235,26 @@ func (a *Article) UpdateArticle(articleDto *dto.UpdateArticleDto, userId int) (e
 func (a *Article) DeleteArticle(articleId int, userId int) (err error) {
 	// 实例化要修改的文章
 	article := new(models.Article)
-
-	// 调用dao方法
+	// 获取该文章原内容
 	article.ID = articleId
+	zap.L().Info("Call DeleteArticle GetArticle", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
+	err = article.GetArticle()
+	if err != nil {
+		zap.L().Error("DeleteArticle GetArticle failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
+		return
+	}
+
+	// 判断是否有权利删除该文章
+	if uint(userId) != article.CreateBy {
+		err = errors.New("不能够修改他人文章！")
+		zap.L().Error("DeleteArticle check CreateBy and userId failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
+		return
+	}
+
+	// 删除文章
 	article.UpdateBy = uint(userId)
 	article.IsDeleted = 1
+	zap.L().Info("Call DeleteArticle DeleteArticle", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	err = article.DeleteArticle()
 
 	return
@@ -245,39 +272,45 @@ func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.ArticleDetai
 
 	// 获取数据
 	article.ID = id
+	zap.L().Info("Call ArticleDetail ArticleDetail", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	articleMsg, err = article.ArticleDetail()
 	if err != nil {
+		zap.L().Error("ArticleCollectCount ArticleDetail failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 		return
 	}
+
 	// 文章收藏数
+	zap.L().Info("Call ArticleDetail ArticleCollectCount", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	articleCollect.ArticleId = uint(id)
 	articleMsg.CollectTotal, err = articleCollect.ArticleCollectCount()
 	if err != nil {
-		zap.L().Error("ArticleCollectCount Get count failed", zap.Error(err))
-		err = nil
+		zap.L().Error("ArticleCollectCount Get count failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	}
+
 	// 文章评论数
+	zap.L().Info("Call ArticleDetail ArticleCommentCount", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	articleComment.ArticleId = uint(id)
 	articleMsg.CommentTotal, err = articleComment.ArticleCommentCount()
 	if err != nil {
-		zap.L().Error("ArticleCommentCount Get count failed", zap.Error(err))
-		err = nil
+		zap.L().Error("ArticleCommentCount Get count failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	}
+
 	// 文章喜欢数
+	zap.L().Info("Call ArticleDetail ArticleFavourCount", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	articleFavour.ArticleId = uint(id)
 	articleMsg.FavourTotal, err = articleFavour.ArticleFavourCount()
 	if err != nil {
-		zap.L().Error("ArticleFavourCount Get count failed", zap.Error(err))
-		err = nil
+		zap.L().Error("ArticleFavourCount Get count failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	}
+
 	// 是否关注
 	if userId == int(articleMsg.CreateBy) {
 		articleMsg.IsFollow = 0
 	} else {
+		zap.L().Info("Call ArticleDetail IsFollow", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 		articleMsg.IsFollow, err = follow.IsFollow(userId, int(articleMsg.CreateBy))
 		if err != nil {
-			zap.L().Error("IsFollow failed", zap.Error(err))
-			err = nil
+			zap.L().Error("ArticleDetail IsFollow failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 		}
 	}
 
@@ -294,21 +327,26 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleDeta
 	var tag string
 
 	// 获取该文章原内容
+	zap.L().Info("Call ReprintArticle GetArticle", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	article.ID = id
 	err = article.GetArticle()
 	if err != nil {
+		zap.L().Error("ReprintArticle GetArticle Failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 		return
 	}
+
+	// 判断文章是否
 	if *article.Status != 1 {
 		signal = 1
 		return
 	}
 
 	// 获取文章tag
+	zap.L().Info("Call ReprintArticle GetTagById", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	articleTag.ID = int(article.Tag)
 	tag, err = articleTag.GetTagById()
 	if err != nil {
-		zap.L().Error("ReprintArticle GetTagById Failed ", zap.Error(err))
+		zap.L().Error("ReprintArticle GetTagById Failed ", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 		return
 	}
 
@@ -323,9 +361,10 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleDeta
 	article.ID = 0
 
 	// 调用dao方法
+	zap.L().Info("Call ReprintArticle InsertArticle", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	err = article.InsertArticle()
 	if err != nil {
-		zap.L().Error("ReprintArticle InsertArticle failed", zap.Error(err))
+		zap.L().Error("ReprintArticle InsertArticle failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 		return
 	}
 	// 返回数据
@@ -344,6 +383,7 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleDeta
 		UpdateTime: article.UpdateTime,
 	}
 
+	zap.L().Info("Call ReprintArticle AddMessage", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	go models.AddMessage(0, 1, uint(id), uint(userId), "")
 	return
 }
@@ -356,9 +396,10 @@ func (a *Article) TopArticleList(paging dto.Paging, userId uint) (articleList *[
 	var goArticle bo.GoArticleMsg
 
 	// 取出要返回文章信息
+	zap.L().Info("Call TopArticleList ArticleList", zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
 	articleArray, err := article.ArticleList(paging, 1)
 	if err != nil {
-		zap.L().Error("TopArticleList Select ArticleList filed", zap.Error(err))
+		zap.L().Error("TopArticleList Select ArticleList filed", zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
 		return
 	}
 
@@ -378,6 +419,7 @@ func (a *Article) TopArticleList(paging dto.Paging, userId uint) (articleList *[
 		goArticle.ArticleId = uint(v.ID)
 		goArticle.ArticleUserId = v.CreateBy
 		goArticle.UserId = userId
+		zap.L().Info("Call TopArticleList goArticleMsg", zap.String("ArticleId", utils.IntToString(v.ID)), zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
 		go goArticleMsg(&articleCh, &wg, goArticle)
 	}
 	wg.Wait()
@@ -404,9 +446,10 @@ func (a *Article) SelectArticleListIndex(paging dto.Paging, userId uint) (articl
 	var goArticle bo.GoArticleMsg
 
 	// 取出要返回文章信息
+	zap.L().Info("Call SelectArticleListIndex ArticleList", zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
 	articleArray, err := article.ArticleList(paging, 0)
 	if err != nil {
-		zap.L().Error("SelectArticleListIndex Select ArticleList filed", zap.Error(err))
+		zap.L().Error("SelectArticleListIndex Select ArticleList filed", zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
 		return
 	}
 
@@ -426,6 +469,7 @@ func (a *Article) SelectArticleListIndex(paging dto.Paging, userId uint) (articl
 		goArticle.ArticleId = uint(v.ID)
 		goArticle.ArticleUserId = v.CreateBy
 		goArticle.UserId = userId
+		zap.L().Info("Call TopArticleList goArticleMsg", zap.String("ArticleId", utils.IntToString(v.ID)), zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
 		go goArticleMsg(&articleCh, &wg, goArticle)
 	}
 	wg.Wait()
@@ -452,9 +496,10 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser, user
 	var goArticle bo.GoArticleMsg
 
 	// 取出要返回文章信息
+	zap.L().Info("Call SelectArticleListByUserId SelectArticleListByUserId", zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
 	articleArray, err := article.SelectArticleListByUserId(paging)
 	if err != nil {
-		zap.L().Error("SelectArticleListByUserId Select ArticleList filed", zap.Error(err))
+		zap.L().Error("SelectArticleListByUserId Select ArticleList filed", zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
 		return
 	}
 
@@ -476,6 +521,7 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser, user
 		goArticle.ArticleId = uint(v.ID)
 		goArticle.ArticleUserId = v.CreateBy
 		goArticle.UserId = userId
+		zap.L().Info("Call TopArticleList goArticleMsg", zap.String("ArticleId", utils.IntToString(v.ID)), zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
 		go goArticleMsg(&articleCh, &wg, goArticle)
 	}
 	wg.Wait()
@@ -487,7 +533,7 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser, user
 		articleMapList[int(goArticle.ArticleId)].ArticleTotal = goArticle.ArticleTotal
 	}
 
-	// 遍历
+	// 遍历 排序
 	for _, v := range *articleArray {
 		*articleList = append(*articleList, *articleMapList[v.ID])
 	}
@@ -502,34 +548,43 @@ func goArticleMsg(articleCh *chan *bo.GoArticleMsg, wg *sync.WaitGroup, articleM
 	var err error
 
 	// 获取数据
+	zap.L().Info("Call goArticleMsg ArticleCollectCount", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	articleCollect.ArticleId = articleMsg.ArticleId
 	articleMsg.CollectTotal, err = articleCollect.ArticleCollectCount()
 	if err != nil {
-		zap.L().Error("goArticleMsg ArticleCollectCount failed", zap.Error(err))
+		zap.L().Error("goArticleMsg ArticleCollectCount failed", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	}
+
+	zap.L().Info("Call goArticleMsg ArticleCommentCount", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	articleComment.ArticleId = articleMsg.ArticleId
 	articleMsg.CommentTotal, err = articleComment.ArticleCommentCount()
 	if err != nil {
-		zap.L().Error("goArticleMsg ArticleCommentCount failed", zap.Error(err))
+		zap.L().Error("goArticleMsg ArticleCommentCount failed", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	}
+
+	zap.L().Info("Call goArticleMsg ArticleFavourCount", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	articleFavour.ArticleId = articleMsg.ArticleId
 	articleMsg.FavourTotal, err = articleFavour.ArticleFavourCount()
 	if err != nil {
-		zap.L().Error("goArticleMsg ArticleFavourCount failed", zap.Error(err))
+		zap.L().Error("goArticleMsg ArticleFavourCount failed", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	}
+
 	// 是否关注
 	if articleMsg.UserId == articleMsg.ArticleUserId {
 		articleMsg.IsFollow = 0
 	} else {
+		zap.L().Info("Call goArticleMsg IsFollow", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 		articleMsg.IsFollow, err = follow.IsFollow(int(articleMsg.UserId), int(articleMsg.ArticleUserId))
 		if err != nil {
-			zap.L().Error("goArticleMsg IsFollow failed", zap.Error(err))
+			zap.L().Error("goArticleMsg IsFollow failed", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 			err = nil
 		}
 	}
+
 	// 管道放数据
 	*articleCh <- &articleMsg
 	wg.Done()
+	zap.L().Info("Call goArticleMsg Done", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	return
 }
 
@@ -577,16 +632,14 @@ func (a *Article) IsFavourCollectByArticleId(id int, userId int) (articleMsg *bo
 }
 
 // 文章标签
-func (a *Article) GetArticleTagList() (articleTagList *[]bo.ArticleTagList, err error) {
+func (a *Article) GetArticleTagList(userId int) (articleTagList *[]bo.ArticleTagList, err error) {
 	//初始化
 	articleTag := new(models.ArticleTag)
 	articleTagList = new([]bo.ArticleTagList)
 
 	// 文章TagList
+	zap.L().Info("Call GetArticleTagList GetTagList", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	articleTagList, err = articleTag.GetTagList()
-	if err != nil {
-		return
-	}
 
 	return
 }

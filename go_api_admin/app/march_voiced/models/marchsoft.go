@@ -107,3 +107,8 @@ func (e *MarchSoft) MarchDetail() (march *bo.March, err error) {
 		Where("marchsoft.id = ? AND marchsoft.is_deleted = 0", e.ID).First(march).Error
 	return
 }
+
+func (e *MarchSoft) GetMarchById() (err error) {
+	err = global.Eloquent.Table(e.TableName()).Where("id = ? AND is_deleted = 0", e.ID).First(e).Error
+	return
+}

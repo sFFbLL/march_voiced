@@ -21,7 +21,7 @@ import (
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseGetMessage
 // @Router /api/message/user [get]
-func GetMessageMe(c *gin.Context)  {
+func GetMessageMe(c *gin.Context) {
 	p := new(dto.Paginator)
 
 	// 获取缓存信息
@@ -169,7 +169,7 @@ func MessageUnreadCount(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Success 200 {object} models._ResponseSuccess
 // @Router /api/message/user [put]
-func UnReadMessageRead(c *gin.Context)  {
+func UnReadMessageRead(c *gin.Context) {
 	p := new(dto.UnReadMessageRead)
 
 	// 获取缓存信息

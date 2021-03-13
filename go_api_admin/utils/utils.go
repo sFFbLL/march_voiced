@@ -102,6 +102,7 @@ func StringToTime(t string) time.Time {
 	return tm
 }
 
+// TODO size zero filter
 func PagesCount(count int, size int) int {
 	return (count-1)/size + 1
 }

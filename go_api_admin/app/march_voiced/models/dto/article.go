@@ -38,7 +38,7 @@ type UpdateArticleDto struct {
 
 type Paging struct {
 	Current uint `form:"current"`
-	Size    uint `form:"size" binding:"lte=10"`
+	Size    uint `form:"size" binding:"lte=50"`
 }
 
 type SelectArticleByUser struct {
@@ -54,6 +54,6 @@ type ArticlePass struct {
 
 type ArticleSearchPaginator struct {
 	Current    uint   `form:"current"`
-	Size       uint   `form:"size" binding:"lte=10"`
+	Size       uint   `form:"size" binding:"lte=50"`
 	SearchWord string `form:"searchWord" binding:"required"`
 }
