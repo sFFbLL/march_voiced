@@ -4,7 +4,7 @@
 			<input class="title-text" type="text" v-model="title" placeholder="标题" placeholder-class="placeholder"/>
 		</view>
 		<!-- http://www.kuntong.site/api/file/uploadImage -->
-		<jinEdit placeholder="请输入内容" :html="html" :readOnly="false" @editOk="editOk" uploadFileUrl="http://www.kuntong.site/api/file/uploadImage"></jinEdit>
+		<jinEdit placeholder="请输入内容" :html="html" :readOnly="false" @editOk="editOk" uploadFileUrl="http://www.linbolun.cn/h5/api/file/uploadImage"></jinEdit>
 	</view>
 </template>
 
@@ -32,6 +32,7 @@
 			// 点击发布
 			editOk(res) {
 				let url = null;
+				let describe = res.text.substr(0,20)
 				for(let i = 0; i < res.delta.ops.length; i++){
 					if(res.delta.ops[i].insert.image){
 						url = res.delta.ops[i].insert.image
@@ -46,7 +47,8 @@
 					tag:parseInt(this.option.tag),
 					type:0,
 					status:res.isPublic,
-					word_count:res.textLength
+					word_count:res.textLength,
+					describe:describe
 				}
 				console.log(params)
 				publishArticle(params).then(res => {

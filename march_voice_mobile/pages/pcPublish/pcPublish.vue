@@ -104,7 +104,9 @@
 		data() {
 			return {
 				title: null,
-				html: '',
+				html: `
+				<div class="image-package  ">\n<div class="image-container" style="max-width: 700px; max-height: 807px;">\n<div class="image-container-fill" style="padding-bottom: 115.21%;"></div>\n<div class="image-view" data-width="743" data-height="856"><img data-original-src="//upload-images.jianshu.io/upload_images/14261054-7b08f2243c713c38.png" data-original-width="743" data-original-height="856" data-original-format="image/png" data-original-filesize="670480"></div>\n</div>\n<div class="image-caption"></div>\n</div><p>最近可谓是在瓜田上蹿下跳的一周，感觉这个社会戏子的事天下皆知，穷困的人却还难以维持正常的生活</p><p>一直以来感觉这些事情距离我们还是比较遥远的，但是实际上居然就每天在发生着。</p><p>一方面明星各种黑料爆出甚至违反社会底线，另一方面却有和我们相仿的年纪的人却从来没有听说过冬至要吃饺子。明明在努力生活却难以继续活下去...</p><div class="image-package  ">\n<div class="image-container" style="max-width: 700px; max-height: 143px;">\n<div class="image-container-fill" style="padding-bottom: 15.329999999999998%;"></div>\n<div class="image-view" data-width="933" data-height="143"><img data-original-src="//upload-images.jianshu.io/upload_images/14261054-a60d4c10a81dc1d5.png" data-original-width="933" data-original-height="143" data-original-format="image/png" data-original-filesize="21945"></div>\n</div>\n<div class="image-caption"></div>\n</div><div class="image-package  ">\n<div class="image-container" style="max-width: 700px; max-height: 456px;">\n<div class="image-container-fill" style="padding-bottom: 40.71%;"></div>\n<div class="image-view" data-width="1120" data-height="456"><img data-original-src="//upload-images.jianshu.io/upload_images/14261054-c5bd0780256289b6.png" data-original-width="1120" data-original-height="456" data-original-format="image/png" data-original-filesize="155833"></div>\n</div>\n<div class="image-caption"></div>\n</div><div class="image-package  ">\n<div class="image-container" style="max-width: 592px; max-height: 198px;">\n<div class="image-container-fill" style="padding-bottom: 33.45%;"></div>\n<div class="image-view" data-width="592" data-height="198"><img data-original-src="//upload-images.jianshu.io/upload_images/14261054-0d03a5e91df77209.png" data-original-width="592" data-original-height="198" data-original-format="image/png" data-original-filesize="18879"></div>\n</div>\n<div class="image-caption"></div>\n</div><p>看到新闻的时候就眼泪唰唰往下流\xa0 明明只是一个努力向上想活下去的人 最后却是被房东发现离世的..</p><p>然后突然就觉得，我们每天还有很多剩饭剩菜，以后吃饭一定尽最大努力做到光盘行动。多考虑一下还有很多人想吃这些,,,同时想要做一些什么，但是仔细想了想又觉得很无力，一个人的力量太渺小了，况且我还只是个学生</p><p>可能我是个共情能力很强的人，所以总是会被很多事情困扰，总是想要每个人都好，可是现实却往往做不到这样，小许说他没什么感觉，他会觉得授人以鱼不如授人以渔，而且这种事情很多，帮不过来。我觉得能帮助一点是一点，至少现在的我们还可以拿出自己的一部分去帮助别人。所以选择了春蕾计划，每周少吃两顿好吃的，就可以帮助一点~！</p><p>立一个flag，到工作的时候资助一个贫穷孩子的高中学习，貌似1800一年，加油吧！</p>
+				`,
 				word_count:null,
 				
 				tags: ['生活', '情感', '学习', '其他'],
@@ -127,354 +129,8 @@
 					borderRadius: "6rpx",
 					color: "rgba(0, 145, 255, 1)"
 				},
-
-				list: [{
-						id: 1,
-						title: "标题",
-						content: "CDSDGSDSDFSDF",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 0,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 1
-					}
-				],
-				list1: [{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					},
-					{
-						id: 1,
-						title: "文章标题",
-						content: "阿萨德",
-						image: "",
-						kind: 1,
-						tag: 1,
-						type: 1,
-						updateTime: 1,
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						wordCount: 1,
-						status: 0
-					}
-				],
+				
+				list:[],
 				
 				isUpdate:false, // 是否是编辑文章，用来调不同的接口
 				num: 1,
@@ -530,46 +186,6 @@
 					if (this.num == 1) this.list = []; //如果是第一页需手动制空列表
 					this.list = this.list.concat(this.resList); //追加新数据
 				}).catch(() => {
-					// this.current++
-					//联网失败, 结束加载
-					// if(this.current === 3){
-					// 	this.list1 = 
-					// 		[{
-					// 				id: 1,
-					// 				title: "asd",
-					// 				content: "阿萨德",
-					// 				image: "",
-					// 				kind: 1,
-					// 				tag: 1,
-					// 				type: 1,
-					// 				updateTime: 1,
-					// 				favourTotal: 1,
-					// 				collectTotal: 1,
-					// 				commentTotal: 1,
-					// 				wordCount: 1,
-					// 				status: 0
-					// 			},
-					// 			{
-					// 				id: 1,
-					// 				title: "文章标题",
-					// 				content: "阿萨德",
-					// 				image: "",
-					// 				kind: 1,
-					// 				tag: 1,
-					// 				type: 1,
-					// 				updateTime: 1,
-					// 				favourTotal: 1,
-					// 				collectTotal: 1,
-					// 				commentTotal: 1,
-					// 				wordCount: 1,
-					// 				status: 0
-					// 			}
-					// 		]
-					// 	}
-					// this.mescroll.endSuccess(this.list1.length);
-					//设置列表数据
-					// if (params.current == 1) this.list = []; //如果是第一页需手动制空列表
-					// this.list = this.list.concat(this.list1); //追加新数据
 					this.mescroll.endErr();
 				})
 			},
@@ -659,24 +275,26 @@
 			// 点击发布
 			editOk(res) {
 				let url = null;
+				let describe = res.text.substr(0,20)
 				for (let i = 0; i < res.delta.ops.length; i++) {
 					if (res.delta.ops[i].insert.image) {
 						url = res.delta.ops[i].insert.image
 						return;
 					}
 				}
+				var params = {
+					title: this.title,
+					content: res.html,
+					image: url,
+					kind: 1,
+					tag: this.tagsId[this.index],
+					type: 0,
+					status: res.isPublic,
+					word_count: res.textLength,
+					describe:describe
+				}
 				switch(this.isUpdate){
 					case false: 
-						var params = {
-							title: this.title,
-							content: res.html,
-							image: url,
-							kind: 1,
-							tag: this.tagsId[this.index],
-							type: 0,
-							status: res.isPublic,
-							word_count: res.textLength
-						}
 						publishArticle(params).then( _res => {
 							if (_res.code === 200) {
 								console.log("发布成功")
@@ -684,16 +302,6 @@
 						})
 						break;
 					case true:
-						var params = {
-							title: this.title,
-							contnet: res.html,
-							image: url,
-							kind: 1,
-							tag: this.tagsId[this.index],
-							type: 0,
-							status: res.isPublic,
-							word_count: res.textLength
-						}
 						upDateArticle(params).then( _res => {
 							if(_res.code === 200){
 								console.log("发布成功")

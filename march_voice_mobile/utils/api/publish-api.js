@@ -19,7 +19,8 @@ export function publishArticle(params) {
 		kind: params.kind,
 		type: params.type,
 		status: params.status,
-		word_count: params.word_count
+		word_count: params.word_count,
+		describe:params.describe
 	})
 }
 
