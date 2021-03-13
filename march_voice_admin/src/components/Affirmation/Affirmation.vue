@@ -184,7 +184,7 @@ export default {
         const id = parseInt(this.data.id)
         const statuss = parseInt(this.data.status)
         const isShow = statuss == '2'
-        let status = 1
+        const status = 0
         const doAdoptData = {
           status,
           id
@@ -199,14 +199,14 @@ export default {
                 message: '成功驳回',
                 type: 'success'
               })
-              status = '3'
+              this.data.status = '3'
             })
             .catch(() => {
               this.$message({
                 type: 'info',
                 message: '已取消驳回'
               })
-              status = '2'
+              // status = '2'
             })
         }
       })
@@ -222,13 +222,11 @@ export default {
         const id = parseInt(this.data.id)
         const statuss = parseInt(this.data.status)
         const isShow = statuss == '2'
-        let status = 1
+        const status = 1
         const doAdoptData = {
           status,
           id
         }
-        console.log(doAdoptData)
-        console.log(isShow)
         if (isShow) {
           console.log(isShow)
           articleAdopt(doAdoptData)
@@ -238,7 +236,8 @@ export default {
                 type: 'success',
                 message: '通过成功！'
               })
-              status = '1'
+              this.data.status = '1'
+              // this.data.recommend = 1
             })
             .catch(() => {
               this.$message({

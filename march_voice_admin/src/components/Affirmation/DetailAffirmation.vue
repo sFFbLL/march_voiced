@@ -202,7 +202,6 @@ export default {
           status,
           id
         }
-        // console.log(doAdoptData)
         if (isShow) {
           articleAdopt(doAdoptData)
             .then((rep) => { })
@@ -212,6 +211,7 @@ export default {
                 message: '通过成功！'
               })
               this.content.status = '1'
+              this.$emit('childEvent', this.content.status)
             })
             .catch(() => {
               this.$message({

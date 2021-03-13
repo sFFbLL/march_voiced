@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="head-container">
-      <eHeader :permission="permission" />
+      <eHeader :data="data" :permission="permission" />
       <crudOperation :permission="permission" :is-my-export="true" />
     </div>
     <!--表格渲染-->
@@ -82,6 +82,9 @@ export default {
   data() {
     return {
       recommend: null,
+      data: {
+        tag: this.crud.data
+      },
       content: {
         recommend: '',
         toDetialPath: 'Detail',
@@ -102,7 +105,10 @@ export default {
       return this.crud.data.filter((item) => item.status === 1 || item.status === 2)
     }
   },
-
+  // created () {
+  //   console.log(88888888)
+  //   console.log(this.data.tag)
+  // },
   methods: {
     getBtnSetWidth(width) {
       width += 15
