@@ -29,7 +29,7 @@
 		<articleTitle :articleTitle="articleInfo.title"
 		 :articleId="articleInfo.articleId" />
 		<!-- 文章内容 -->
-		<articleContent :articleContent="articleInfo.content"
+		<articleContent :articleContent="articleInfo.describe"
 		 :articleImg="articleInfo.image"
 		 :id="articleInfo.articleId" />
 		<!-- 文章互动数量-->

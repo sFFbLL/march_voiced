@@ -4,7 +4,7 @@ import Axios from '@/utils/request.js'
  * @param {Object} params {文章id}
  */
 export function getArtileDetails(params) {
-	return Axios.get('/api/article/detail')
+	return Axios.get('/api/article/detail/'+params)
 }
 
 /**
@@ -49,7 +49,7 @@ export function getChildCommentList(params) {
  */
 export function favour(params) {
 	return Axios.post('/api/favour/article', {
-		params: params
+		id: params.id
 	})
 }
 
@@ -59,16 +59,16 @@ export function favour(params) {
  */
 export function collect(params) {
 	return Axios.post('/api/collect/article', {
-		params: params
+		id: params.id
 	})
 }
 
 /**s
- * 文章收藏的接口
+ * 文章转载的接口
  * @param {Object} params {id:文章id,current:页码,size:一页大小,childSize:子评论条数}
  */
 export function reprint(params) {
 	return Axios.post('/api/article/reprint', {
-		params: params
+		id: params.id
 	})
 }

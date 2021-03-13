@@ -29,7 +29,16 @@ export function publishArticle(params) {
  */
 export function upDateArticle(params) {
 	return Axios.put('/api/article', {
-		params
+		id:params.id,
+		title:params.title,
+		content:params.content,
+		status:params.status,
+		kind:params.kind,
+		type:params.type,
+		tag:params.tag,
+		image:params.image,
+		wordCount:params.wordCount,
+		describe:params.describe
 	})
 }
 
