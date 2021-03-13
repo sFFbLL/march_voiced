@@ -4,7 +4,7 @@ import Axios from '@/utils/request.js'
  * @param {Object} params {文章id}
  */
 export function getArtileDetails(params) {
-	return Axios.get('/api/article/detail/'+params)
+	return Axios.get(`/api/article/detail/${params}`)
 }
 
 /**

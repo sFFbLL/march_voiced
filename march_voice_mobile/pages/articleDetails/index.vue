@@ -25,12 +25,12 @@
 				<text>({{commentCount}})</text>
 			</view>
 			<view class="comment-list">
-				<comment :commentList="commentList"></comment>
+				<comment :commentList="commentList" @childFn="comment"></comment>
 			</view>
 		</view>
 
 		<!-- 底部导航 -->
-		<view class="bottom-nav" v-if="!isComment">
+		<view class="bottom-nav">
 			<view class="bottom-nav-centre">
 				<!-- 评论图标 -->
 				<view class="attention-icon comment">
@@ -59,7 +59,8 @@
 				</view>
 			</view>
 		</view>
-		<commentInput v-on:sendComment='sendComment' v-if="isComment" :type="type" />
+		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment" @childFn="parentFn" :type="type"
+		 :addCommentArg="addCommentArg" />
 	</view>
 </template>
 
@@ -81,15 +82,67 @@
 	export default {
 		data() {
 			return {
+				showAddComment:true,
 				id: "",
 				current: 1,
 				size: 5,
 				childSize: 3,
 				articleInfo: {},
+				addCommentArg:{},
 				commentCount: 0,
-				commentList: [],
+				commentList: [{
+						"createBy": 1,
+						"replyId": 1,
+						"createByName": "ddd",
+						"id": 1,
+						"idAvatar": "dd",
+						"replyAvatar": "sssssss",
+						"replyName": "eeeeeeeeeee",
+						"content": "tttttt",
+						"createTime": 1,
+						"commentKids": [{
+							"id": 1,
+							"replyId": 1,
+							"replyName": "fffff",
+							"replyAvatar": "bbb",
+							"createBy": 1,
+							"createByName": "wwwww",
+							"idAvatar": "ggggggg",
+							"content": "dddddddddddddd",
+							"createTime": 1,
+							"commentKids": []
+						}, ]
+					},
+					{
+						"createBy": 1,
+						"replyId": 1,
+						"createByName": "ddd",
+						"id": 1,
+						"idAvatar": "dd",
+						"replyAvatar": "sssssss",
+						"replyName": "eeeeeeeeeee",
+						"content": "tttttt",
+						"createTime": 1,
+						"commentKids": [{
+							"id": 1,
+							"replyId": 1,
+							"replyName": "",
+							"replyAvatar": "bbb",
+							"createBy": 1,
+							"createByName": "wwwww",
+							"idAvatar": "ggggggg",
+							"content": "dddddddddddddd",
+							"createTime": 1,
+							"commentKids": []
+						}],
+
+					},
+
+				],
 				isComment: false,
-				type:0
+				type: 0,
+				addCommentArg: {},
+				clickChild: false,
 			}
 		},
 		components: {
@@ -126,16 +179,43 @@
 			})
 		},
 		created() {
-
+			let id = this.id
+			this.addCommentArg = {
+				id: this.id,
+				replyId: 0,
+				follewId: 0,
+				childComment: false,
+			}
 		},
 		methods: {
-			// 评论
-			comment() {
+			// 控制评论弹出框的显示开
+			comment(payload) {
+				let id = this.id;
 				this.isComment = true;
+				// 如果是子组件点击进入评论，传入这条评论的参数
+				if (payload) {
+					this.addCommentArg = {
+						childComment: payload.childComment,
+						id: this.id,
+						index: payload.index,
+						replyId: payload.replyId,
+						follewId: payload.follewId,
+						replyName: payload.replyName,
+					}
+				}
 			},
-			// 发布评论
-			sendComment() {
-				console.log("发布评论");
+			// 控制评论弹出框的显示关
+			parentFn(payload) {
+				this.isComment = false;
+			},
+			// 添加一条评论
+			addComment(payload) {
+				this.commentList.unshift(payload);
+				this.isComment = false;
+			},
+			// 添加一条子评论
+			addChildComment(payload) {
+				this.commentList[payload.index].commentKids.push(payload);
 				this.isComment = false;
 			}
 		},

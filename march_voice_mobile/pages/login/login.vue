@@ -28,7 +28,8 @@
 	} from "../../utils/wxcode.js"
 	import {
 		setToken,
-		getOpenId
+		getOpenId,
+		getToken
 	} from "../../utils/auth.js"
 	export default {
 		data() {
@@ -73,12 +74,16 @@
 					creatNewUser(params).then(res => {
 						console.log(res.data.token)
 						setToken(res.data.token)
+
+					})
+					
+					if(getToken()){
 						// 跳转到首页
 						uni.navigateTo({
 							url: "../home/index"
 						})
-					})
-
+					}
+					
 				}
 			}
 

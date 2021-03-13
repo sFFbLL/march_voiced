@@ -3,7 +3,6 @@
 
 		<view>
 			<textarea class="input" placeholder="这一刻的想法" maxlength="-1" @input="getWords" />
-
 			</view>
 		<view class="imgs" >
 			<view v-for="(item,index) in srcList">
