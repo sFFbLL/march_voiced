@@ -14,6 +14,7 @@ func init() {
 func sysMessageAuthRouter(v1 *gin.RouterGroup) {
 	r := v1.Group("/message")
 	{
+		// 查看系统消息 by 李甲坤
 		r.GET("system", apis.GetSysMessage)
 	}
 }

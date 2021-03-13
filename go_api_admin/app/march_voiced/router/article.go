@@ -25,7 +25,9 @@ func articleAuthRouter(v1 *gin.RouterGroup) {
 		r.GET("/favour-collect/:id", apis.IsFavourCollectByArticleId)
 		r.GET("/tag", apis.GetArticleTagList)
 		r.POST("/reprint", apis.ReprintArticleHandler)
+		//文章审核列表页 by 李甲坤
 		r.GET("/admin", apis.ApplyArticleList)
+		//文章设置推荐 by 李甲坤
 		r.PUT("recommend/:id", apis.ArticleRecommend)
 	}
 	v1.GET("/base/searchArticle", apis.ArticleSearch)
