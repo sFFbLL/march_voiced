@@ -213,7 +213,6 @@
 				getUserInfo(params).then(res => {
 					_this.userInfo = res.data;
 				})
-				this.userInfo = this.userInfo1;
 			},
 			getIdeaList() {
 				let _this = this;
