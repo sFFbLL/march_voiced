@@ -143,7 +143,6 @@
 					id: this.id,
 					type: 0
 				}
-				console.log(this.clickFace)
 				switch (emoji) {
 
 					case 'face':
@@ -240,8 +239,7 @@
 			// 添加表情事件处理
 			addAEmoji(emoji) {
 				this.clickAni(emoji);
-
-				this.visible = !this.visible;
+				this.visible = true;
 			}
 		}
 	}
