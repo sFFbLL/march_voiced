@@ -162,10 +162,7 @@
 					}
 
 				}
-			} else {
-				this.recommend();
-				this.follow();
-			}
+			} 
 
 		},
 
