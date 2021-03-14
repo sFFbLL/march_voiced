@@ -5,7 +5,7 @@ import Axios from '@/utils/request.js'
  */
 export function getUserInfo(params) {
 	return Axios.get('/api/user/ingo', {
-		params: params,
+		id: params.id,
 	})
 }
 
@@ -15,7 +15,10 @@ export function getUserInfo(params) {
  */
 export function getUserArticleList(params) {
 	return Axios.get('/api/article/user', {
-		params: params,
+		id: params.id,
+		current: params.current,
+		size: params.size,
+		kind: params.kind
 	})
 }
 

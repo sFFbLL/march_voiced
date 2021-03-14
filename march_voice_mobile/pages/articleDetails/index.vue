@@ -40,27 +40,27 @@
 					</view>
 				</view>
 				<!-- 喜欢图标 -->
-				<view class="attention-icon like">
+				<view class="attention-icon like" @click="like()">
 					<view class="attention-item">
-						<u-icon name="heart"></u-icon>
+						<u-icon :name="likeIcon" :color="likeColor"></u-icon>
 						<text class="attention-num">{{articleInfo.favourTotal}}</text>
 					</view>
 				</view>
 				<!-- 收藏图标 -->
-				<view class="attention-icon collect">
+				<view class="attention-icon collect" @click="collent()">
 					<view class="attention-item">
-						<u-icon name="shoucang1" custom-prefix="custom-icon"></u-icon>
+						<u-icon :name="collentIcon" custom-prefix="custom-icon"></u-icon>
 						<text class="attention-num">{{articleInfo.collectTotal}}</text>
 					</view>
 				</view>
 				<!-- 转发 -->
-				<view class="attention-icon">
+				<view class="attention-icon" @click="transpond()">
 					<u-icon name="zhuanfa"></u-icon>
 				</view>
 			</view>
 		</view>
-		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment" @childFn="parentFn" :type="type"
-		 :addCommentArg="addCommentArg" />
+		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment"
+		 @childFn="parentFn" :type="type" :addCommentArg="addCommentArg" />
 	</view>
 </template>
 
@@ -82,67 +82,22 @@
 	export default {
 		data() {
 			return {
-				showAddComment:true,
+				showAddComment: true,
 				id: "",
 				current: 1,
 				size: 5,
 				childSize: 3,
 				articleInfo: {},
-				addCommentArg:{},
+				addCommentArg: {},
 				commentCount: 0,
-				commentList: [{
-						"createBy": 1,
-						"replyId": 1,
-						"createByName": "ddd",
-						"id": 1,
-						"idAvatar": "dd",
-						"replyAvatar": "sssssss",
-						"replyName": "eeeeeeeeeee",
-						"content": "tttttt",
-						"createTime": 1,
-						"commentKids": [{
-							"id": 1,
-							"replyId": 1,
-							"replyName": "fffff",
-							"replyAvatar": "bbb",
-							"createBy": 1,
-							"createByName": "wwwww",
-							"idAvatar": "ggggggg",
-							"content": "dddddddddddddd",
-							"createTime": 1,
-							"commentKids": []
-						}, ]
-					},
-					{
-						"createBy": 1,
-						"replyId": 1,
-						"createByName": "ddd",
-						"id": 1,
-						"idAvatar": "dd",
-						"replyAvatar": "sssssss",
-						"replyName": "eeeeeeeeeee",
-						"content": "tttttt",
-						"createTime": 1,
-						"commentKids": [{
-							"id": 1,
-							"replyId": 1,
-							"replyName": "",
-							"replyAvatar": "bbb",
-							"createBy": 1,
-							"createByName": "wwwww",
-							"idAvatar": "ggggggg",
-							"content": "dddddddddddddd",
-							"createTime": 1,
-							"commentKids": []
-						}],
-
-					},
-
-				],
+				commentList: [],
 				isComment: false,
 				type: 0,
 				addCommentArg: {},
 				clickChild: false,
+				likeIcon: "heart",
+				collentIcon: "shoucang1",
+				likeColor: "black"
 			}
 		},
 		components: {
@@ -188,6 +143,44 @@
 			}
 		},
 		methods: {
+			// 点击喜欢按钮
+			like() {
+				let id = this.id;
+				this.likeIcon = "heart-fill";
+				this.likeColor = "#d81e06";
+				// 调用喜欢接口
+				favour(id).then(res => {
+
+				})
+			},
+			// 点击收藏按钮
+			collent() {
+				let id = this.id;
+				this.collentIcon = "shoucang2";
+				// 调用收藏接口
+				collect(id).then(res => {
+
+				})
+			},
+			transpond() {
+				let id = this.id;
+				reprint(id).then(res => {
+				})
+				// 提示转发成功
+				uni.showLoading({
+				    title: '加载中'
+				});
+				setTimeout(function () {
+				    uni.hideLoading();
+				}, 2000);
+				setTimeout(function () {
+				    uni.showToast({
+				        title: '转发成功',
+				        duration: 2000
+				    });
+				}, 2000);
+				
+			},
 			// 控制评论弹出框的显示开
 			comment(payload) {
 				let id = this.id;

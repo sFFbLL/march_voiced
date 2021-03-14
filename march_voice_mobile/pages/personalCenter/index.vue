@@ -2,79 +2,61 @@
 	<view class="personal-center">
 		<!-- 头部用户信息 -->
 		<view class="header">
-			<attentionAndFansCell :id="userInfo.user.id"
-			 :nickname="userInfo.user.nickname"
-			 :avatarPath="userInfo.user.avatarPath"
-			 :isFollow="userInfo.user.isFollow"
-			 class="top-user-info">
-				<view slot="underText"
-				 class="user-signature">{{userInfo.signature}}</view>
+			<attentionAndFansCell :id="userInfo.user.id" :nickname="userInfo.user.nickname" :avatarPath="userInfo.user.avatarPath"
+			 :isFollow="userInfo.user.isFollow" class="top-user-info">
+				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
 			<view class="total">
-				<view class="fans-total">
+				<view class="fans-total" @click="toFans">
 					<text class="number">{{userInfo.fansTotal}}</text>
 					<text class="text">粉丝</text>
 				</view>
-				<view class="follow-total">
+				<view class="follow-total" @click="toAttention">
 					<text class="number">{{userInfo.followTotal}}</text>
 					<text class="text">关注</text>
 				</view>
-				<view class="collect-total">
+				<view class="collect-total" @click="toCollect">
 					<text class="number">{{userInfo.collectTotal}}</text>
 					<text class="text">收藏</text>
 				</view>
 			</view>
 			<view class="edit-user">
-				<button :plain="true"
-				 @click="goToEdit()">编辑个人信息</button>
+				<button :plain="true" @click="goToEdit()">编辑个人信息</button>
 			</view>
 		</view>
 
 		<!-- 用户文章想法列表 -->
 		<view class="content">
 			<view class="tab-nav">
-				<tabCarb :tabs="tabs"
-				 v-on:tabActive='tabActive'></tabCarb>
+				<tabCarb :tabs="tabs" v-on:tabActive='tabActive'></tabCarb>
 			</view>
 			<view class="kind-article-list">
 				<!-- 文章列表 -->
-				<view v-for="(item,index) in articleList"
-				 v-if="!tabIndex">
-					<recommend :articleInfo="item"
-					 class="arcitle-item item"></recommend>
+				<view v-for="(item,index) in articleList" v-if="!tabIndex">
+					<recommend :articleInfo="item" class="arcitle-item item"></recommend>
 				</view>
 				<!-- 想法列表 -->
-				<view v-for="(item,index) in ideaList"
-				 v-if="tabIndex === 1">
+				<view v-for="(item,index) in ideaList" v-if="tabIndex === 1">
 					<view class="ideacontent item">
 						<!-- 用户头像公共组件 -->
-						<attentionAndFansCell :nickname="userInfo.user.nickname"
-						 :avatarPath="userInfo.user.avatarPath"
-						 :isFollow="userInfo.user.isFollow">
+						<attentionAndFansCell :nickname="userInfo.user.nickname" :avatarPath="userInfo.user.avatarPath" :isFollow="userInfo.user.isFollow">
 							<view slot="underText">{{item.updateTime}}</view>
 						</attentionAndFansCell>
 						<!-- 想法的文字部分 -->
-						<articleContent :articleContent="item.content"
-						 :isIdea="true"
-						 :id="item.id"></articleContent>
+						<articleContent :articleContent="item.content" :isIdea="true" :id="item.id"></articleContent>
 						<!-- 想法的图片部分组件 -->
 						<imageAdaptation :imgList="item.imgList"></imageAdaptation>
-						<!-- 点赞表情组件 -->
-						<emojiControl :emojiList="emojiList"
-						 class="emoji-control"></emojiControl>
+						<!-- 点赞表情组件+评论 -->
+						<emojiControl class="emoji-control" :faceTotals="item.faceTotal" :likeTotals="item.likeTotal" :favourTotals="item.favourTotal"
+						 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
 					</view>
 				</view>
-				<view v-for="(item,index) in draftList"
-				 v-if="tabIndex === 2">
-					<recommend :articleInfo="item"
-					 :isArticleInteract="false"
-					 class="arcitle-item item"></recommend>
+				<view v-for="(item,index) in draftList" v-if="tabIndex === 2">
+					<recommend :articleInfo="item" :isArticleInteract="false" class="arcitle-item item"></recommend>
 				</view>
 				<!-- 下拉加载更多 -->
 				<view v-show="isLoadMore">
-					<uni-load-more class="loading"
-					 :status="loadStatus"
-					 iconType="circle"></uni-load-more>
+					<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
 				</view>
 			</view>
 		</view>
@@ -122,8 +104,7 @@
 				},
 				articleList: [],
 				ideaList: [],
-				draftList: [
-				],
+				draftList: [],
 				emojiList: {
 					faceTotal: 0,
 					likeTotal: 6,
@@ -158,13 +139,13 @@
 			articleContent
 		},
 		onLoad() {
-			uni.$on('getOthersId',this.getOthersId)
+			uni.$on('getOthersId', this.getOthersId)
 			this.getArticleList();
 			this.getIdeaList();
 			this.getDraftList();
 		},
 		beforeDestroy() {
-			uni.$off("getOthersId",this.getOthersId)
+			uni.$off("getOthersId", this.getOthersId)
 		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
@@ -182,6 +163,26 @@
 			}
 		},
 		methods: {
+			// 点击粉丝数事件
+			toFans() {
+				uni.navigateTo({
+					url: '../fans/index'
+				})
+			},
+			// 点击关注数事件
+			toAttention() {
+				uni.navigateTo({
+					url: '../collect/index'
+				})
+			},
+			// 点击收藏数事件
+			toCollect() {
+				uni.navigateTo({
+					url: '../attention/index'
+				})
+			},
+
+
 			// 从其他页面获取他人id，进行主页展示
 			getOthersId(e) {
 				// 抽离出来的uni.$on回调方法,获取id用，自行处理id嗷
@@ -231,7 +232,7 @@
 					_this.isLoadMore = false;
 					_this.ideaList = [..._this.ideaList, ..._this.ideaList];
 				} else {
-					setTimeout(function () {
+					setTimeout(function() {
 						_this.isLoadMore = false;
 						_this.ideaList = [..._this.ideaList, ..._this.ideaList];
 					}, 2000);
@@ -255,7 +256,7 @@
 					_this.isLoadMore = false;
 					_this.draftList = [..._this.draftList, ..._this.draftList];
 				} else {
-					setTimeout(function () {
+					setTimeout(function() {
 						_this.isLoadMore = false;
 						_this.draftList = [..._this.draftList, ..._this.draftList];
 					}, 2000);
@@ -279,7 +280,7 @@
 					_this.isLoadMore = false;
 					_this.articleList = [..._this.articleList, ..._this.articleList];
 				} else {
-					setTimeout(function () {
+					setTimeout(function() {
 						_this.isLoadMore = false;
 						_this.articleList = [..._this.articleList, ..._this.articleList];
 					}, 2000);

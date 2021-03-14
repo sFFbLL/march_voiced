@@ -4,7 +4,9 @@ import Axios from '@/utils/request.js'
  * @param {Object} params {文章id}
  */
 export function getArtileDetails(params) {
-	return Axios.get(`/api/article/detail/${params}`)
+	return Axios.get("/api/article/detail/",{
+		id:params.id
+	})
 }
 
 /**
@@ -49,7 +51,7 @@ export function getChildCommentList(params) {
  */
 export function favour(params) {
 	return Axios.post('/api/favour/article', {
-		id: params.id
+		id: params
 	})
 }
 
@@ -59,7 +61,7 @@ export function favour(params) {
  */
 export function collect(params) {
 	return Axios.post('/api/collect/article', {
-		id: params.id
+		id: params
 	})
 }
 
@@ -69,6 +71,6 @@ export function collect(params) {
  */
 export function reprint(params) {
 	return Axios.post('/api/article/reprint', {
-		id: params.id
+		id: params
 	})
 }

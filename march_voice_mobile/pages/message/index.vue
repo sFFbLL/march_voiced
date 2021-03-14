@@ -11,7 +11,7 @@
 			</view>
 			<!-- 关注消息 -->
 			<view v-if="tabIndex==1" v-for="item in attentionList.records">
-				<attentionAndFansCell class="attention" :nickname="item.nickname" :avatarPath="item.avatarPath" :isFollow="item.isFollow">
+				<attentionAndFansCell class="attention" :aid="item.userId" :nickname="item.nickname" :avatarPath="item.avatarPath" :isFollow="item.isFollow">
 					<template v-slot:afterNicknameText>
 						<text class="slot">关注了你
 						</text>
