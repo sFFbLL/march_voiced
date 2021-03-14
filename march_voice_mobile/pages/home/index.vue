@@ -104,8 +104,11 @@
 			if (!getToken()) {
 				forLogin()
 			} else {
+				setTimeout(function() {
 				this.recommend();
 				this.follow();
+				}, 1000);
+				
 			}
 
 
