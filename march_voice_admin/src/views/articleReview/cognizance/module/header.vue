@@ -104,10 +104,8 @@ export default {
   created() {
     getInfoBy('/api/article/tag').then(
       data => {
-        console.log(data.data)
+        // console.log(data.data)
         this.tag = data.data
-        // console.log(this.tag)
-        // this.contents = data.data.content
       }
     )
   },

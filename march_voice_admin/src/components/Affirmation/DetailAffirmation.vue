@@ -159,7 +159,7 @@ export default {
         const id = parseInt(this.content.id)
         const statuss = parseInt(this.content.status)
         const isShow = statuss == '2'
-        const status = 1
+        const status = 0
         const doAdoptData = {
           status,
           id
@@ -175,6 +175,7 @@ export default {
                 type: 'success'
               })
               this.content.status = '3'
+              this.$emit('childEvent', this.content.status)
             })
             .catch(() => {
               this.$message({
