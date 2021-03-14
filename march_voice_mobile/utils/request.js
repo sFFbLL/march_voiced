@@ -11,6 +11,7 @@ import {
 	login,
 	creatNewUser
 } from "./login.js"
+import {forLogin} from "./silentLogin.js"
 import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据，某些请求会用得到
 
 Axios.defaults.baseURL = "http://linbolun.cn";
@@ -53,6 +54,7 @@ Axios.interceptors.response.use(
 			switch (err.response.status) {
 				case 400:
 					err.message = '参数错误（400）';
+					forLogin()
 					break;
 				case 401:
 					err.message = '未授权访问（401）';

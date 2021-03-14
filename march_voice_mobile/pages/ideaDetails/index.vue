@@ -79,8 +79,7 @@
 			ideaDetail(id).then(res => {
 				this.ideaInfoList = res.data;
 			})
-
-
+			
 			// 获取评论列表
 			let params = {
 				id: id,
@@ -88,6 +87,7 @@
 				size: this.size,
 				childSize: this.childSize,
 			}
+			console.log(params+33333333333333)
 			ideaCommentList(params).then(res => {
 				if (res.code === 0) {
 					this.commentList = res.data;
