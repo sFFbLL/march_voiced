@@ -101,9 +101,7 @@ export default {
 
   methods: {
     showStatus: function(data) {
-      // console.log(data)
       this.$route.query.status = data
-      // console.log(this.$route.query.status)
     },
     showKeyWord(val) {
       if (val) {
