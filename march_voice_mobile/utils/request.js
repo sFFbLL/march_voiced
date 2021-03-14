@@ -21,6 +21,7 @@ Axios.interceptors.request.use(
 	// 在发送请求前要做的事儿
 	(config) => {
 		console.log("来到了全局request中");
+		// setToken("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNjE1OTk0NjA5LCJpc3MiOiJteS1wcm9qZWN0In0.R-IviSlw1nw2U6ijLnHyJfrLi7kSBNyaIf6sZKueIL0")
 		if (getToken()) {
 			config.headers['Authorization'] = getToken() //让每个请求携带自定义token
 		}

@@ -94,6 +94,7 @@
 	import {
 		publishArticle,
 		getArticleList,
+		getArticleDetial,
 		upDateArticle,
 		getTags
 	} from '@/utils/api/publish-api.js'
@@ -153,6 +154,7 @@
 		methods: {
 			newArticle(){
 				this.isUpdate = false // 表示是否编辑文章
+				this.title = null,
 				this.index = 0
 				let params = {
 					html:'',
@@ -174,18 +176,18 @@
 			upCallback() {
 				let params = {
 					current: this.current,
-					size: 10,
+					size: 15,
 					kind:2
 				}
 				getArticleList(params).then(res => {
-					
 					this.resList = res.data
 					this.current++;
 					//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
 					this.mescroll.endSuccess(this.resList.length);
 					//设置列表数据
-					if (this.num == 1) this.list = []; //如果是第一页需手动制空列表
+					// if (this.num == 1) this.list = []; //如果是第一页需手动制空列表  (打开有bug)
 					this.list = this.list.concat(this.resList); //追加新数据
+					console.log(this.list)
 				}).catch(() => {
 					this.mescroll.endErr();
 				})
@@ -263,16 +265,23 @@
 			// },
 			
 			showArticleInEditor(title,tag,content,word_count,item){
-				console.log(item)
-				this.isUpdate = true // 表示编辑文章
-				this.index = tag
-				this.title = title
 				let params = {
-					html:content,
-					word_count:word_count
+					id:item.id
 				}
-				// this.$refs.child.html = content;
-				this.$refs.child.reLoadEditor(params);
+				getArticleDetial(params).then(res => {
+					let params = {
+						html:res.data.content,
+						word_count:res.data.word_count
+					}
+					console.log(params)
+					// this.$refs.child.html = content;
+					this.$refs.child.reLoadEditor(params);
+				})
+				this.isUpdate = true // 表示编辑文章
+				// arr.map(item => item).indexOf(23)
+				this.index = this.tagsId.map(item => item).indexOf(tag)
+				this.title = title
+				
 			},
 			// 点击发布
 			editOk(res) {
@@ -281,9 +290,10 @@
 				for (let i = 0; i < res.delta.ops.length; i++) {
 					if (res.delta.ops[i].insert.image) {
 						url = res.delta.ops[i].insert.image
-						return;
+						break;
 					}
 				}
+				console.log(this.isUpdate)
 				var params = {
 					title: this.title,
 					content: res.html,
@@ -298,16 +308,16 @@
 				switch(this.isUpdate){
 					case false: 
 						publishArticle(params).then( _res => {
-							if (_res.code === 200) {
+							// if (_res.code === 200) {
 								console.log("发布成功")
-							}
+							// }
 						})
 						break;
 					case true:
 						upDateArticle(params).then( _res => {
-							if(_res.code === 200){
-								console.log("发布成功")
-							}
+							// if(_res.code === 200){
+								console.log("保存成功")
+							// }
 						})
 				}
 				
