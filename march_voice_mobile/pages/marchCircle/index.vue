@@ -122,9 +122,7 @@
 
 			this.getCircleList(params);
 		},
-		onShow() {
-			check()
-		},
+		
 		methods: {
 
 			// 获取三月圈列表

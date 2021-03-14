@@ -1,17 +1,21 @@
 <script>
-	import check from './utils/checkUnRead.js'
+	import {
+		check
+	} from './utils/checkUnRead.js'
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
 		},
 		onShow: function() {
-			let timerId = setInterval(() => check(), 5000);
+			let timerId = setInterval(() => {
+				check()
+			}, 5000);
 			console.log('App Show')
 		},
 		onHide: function() {
 			console.log('App Hide')
 		},
-		
+
 
 
 
