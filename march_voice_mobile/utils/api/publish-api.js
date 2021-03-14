@@ -52,3 +52,11 @@ export function getArticleList(params) {
 		params: params,
 	})
 }
+
+/**
+ * 文章详情接口
+ */
+export function getArticleDetial(params) {
+	return Axios.get('/api/article/detail/'+params.id, {
+	})
+}

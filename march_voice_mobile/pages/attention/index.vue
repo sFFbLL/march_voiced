@@ -1,6 +1,6 @@
 <template>
 	<uni-list class="list-item">
-		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" @change="change(id)" @inToPageMine="inToPageMine(item.id)"
+		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" :aid="item.id"
 		 :id="item.id" :nickname="item.nickname" :isFollow="item.isFollow" :avatarPath="item.avatarPath">
 			<span slot="middleText">
 				<span class="inner-text">关注 {{item.followTotal}}</span>
@@ -62,43 +62,43 @@
 				}
 				getAttentionList(params).then(res => {
 					console.log(res)
-					if (res.data.Follow.length > 0) {
-						this.list.push.apply(this.list, res.data.Follow)
+					if (res.data.follow.length > 0) {
+						this.list.push.apply(this.list, res.data.follow)
 						this.current++;
 					}
 				})
 			},
 			// 跳转页面
-			inToPageMine(id) {
-				 setTimeout(()=>{
-					uni.$emit('getOthersId', {
-						id: id
-					})
-				},1000)
+			// inToPageMine(id) {
+			// 	 setTimeout(()=>{
+			// 		uni.$emit('getOthersId', {
+			// 			id: id
+			// 		})
+			// 	},1000)
 				
-				uni.switchTab({
-					url: '/pages/personalCenter/index'
-				});
-			},
+			// 	uni.switchTab({
+			// 		url: '/pages/personalCenter/index'
+			// 	});
+			// },
 			// 按钮样式切换
-			change(index) {
+			// change(index) {
 				
-				let params = {
-					id: this.list[index].id
-				}
+			// 	let params = {
+			// 		id: this.list[index].id
+			// 	}
 
-				changeStatus(params).then(res =>{
-					// 手动更改状态，刷新后查询新数据
-					switch (this.list[index].isFollow) {
-						case 0:
-							this.list[index].isFollow = 1
-							break;
-						case 1:
-							this.list[index].isFollow = 0
-							break;
-					}
-				})
-			}
+			// 	changeStatus(params).then(res =>{
+			// 		// 手动更改状态，刷新后查询新数据
+			// 		switch (this.list[index].isFollow) {
+			// 			case 0:
+			// 				this.list[index].isFollow = 1
+			// 				break;
+			// 			case 1:
+			// 				this.list[index].isFollow = 0
+			// 				break;
+			// 		}
+			// 	})
+			// }
 		}
 	}
 </script>

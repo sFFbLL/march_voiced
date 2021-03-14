@@ -1,13 +1,7 @@
 <template>
 	<uni-list class="list-item">
-		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" @change="change(index)" @inToPageMine="inToPageMine(item.user.id)"
-		 :id="item.id" :nickname="item.nickname" :isFollow="item.isFollow" :avatarPath="item.avatarPath">
-			<!-- <span slot="middleText">
-				<span class="inner-text">关注 {{item.followTotal}}</span>
-				<span class="inner-text">粉丝 {{item.fansTotal}}</span>
-				<span class="inner-text">文章 {{item.articleTotal}}</span>
-			</span>
-			<span slot="underText">{{item.signature}}</span> -->
+		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" :aid="item.id"
+		 :nickname="item.nickname" :isFollow="item.isFollow" :avatarPath="item.avatarPath">
 		</attentionAndFansCell>
 		<uniLoadMore></uniLoadMore>
 	</uni-list>
@@ -24,117 +18,6 @@ import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCel
 		data() {
 			return {
 				list: [],
-				// list1: [{
-				// 	"fansTotal": "10",
-				// 	"followTotal": "10",
-				// 	"signature": "asdasdasdasdasd",
-				// 	"articleTotal": "10",
-				// 	"user": {
-				// 		"id": 1,
-				// 		"avatarPath": "../../static/img/1.jpg",
-				// 		"nickname": "hhh"
-				// 	}
-				// }, {
-				// 	"fansTotal": "10",
-				// 	"followTotal": "10",
-				// 	"signature": "asdasdasdasdasd",
-				// 	"articleTotal": "10",
-				// 	"user": {
-				// 		"id": 1,
-				// 		"avatarPath": "../../static/img/1.jpg",
-				// 		"nickname": "hhh"
-				// 	}
-				// }, {
-				// 	"fansTotal": "10",
-				// 	"followTotal": "10",
-				// 	"signature": "asdasdasdasdasd",
-				// 	"articleTotal": "10",
-				// 	"user": {
-				// 		"id": 1,
-				// 		"avatarPath": "../../static/img/1.jpg",
-				// 		"nickname": "hhh"
-				// 	}
-				// }, {
-				// 	"fansTotal": "10",
-				// 	"followTotal": "10",
-				// 	"signature": "asdasdasdasdasd",
-				// 	"articleTotal": "10",
-				// 	"user": {
-				// 		"id": 1,
-				// 		"avatarPath": "../../static/img/1.jpg",
-				// 		"nickname": "hhh"
-				// 	}
-				// }, {
-				// 	"fansTotal": "10",
-				// 	"followTotal": "10",
-				// 	"signature": "asdasdasdasdasd",
-				// 	"articleTotal": "10",
-				// 	"user": {
-				// 		"id": 1,
-				// 		"avatarPath": "../../static/img/1.jpg",
-				// 		"nickname": "hhh"
-				// 	}
-				// }, {
-				// 	"fansTotal": "10",
-				// 	"followTotal": "10",
-				// 	"signature": "asdasdasdasdasd",
-				// 	"articleTotal": "10",
-				// 	"user": {
-				// 		"id": 1,
-				// 		"avatarPath": "../../static/img/1.jpg",
-				// 		"nickname": "hhh"
-				// 	}
-				// }, {
-				// 	"fansTotal": "10",
-				// 	"followTotal": "10",
-				// 	"signature": "asdasdasdasdasd",
-				// 	"articleTotal": "10",
-				// 	"user": {
-				// 		"id": 1,
-				// 		"avatarPath": "../../static/img/1.jpg",
-				// 		"nickname": "hhh"
-				// 	}
-				// }, {
-				// 	"fansTotal": "10",
-				// 	"followTotal": "10",
-				// 	"signature": "asdasdasdasdasd",
-				// 	"articleTotal": "10",
-				// 	"user": {
-				// 		"id": 1,
-				// 		"avatarPath": "../../static/img/1.jpg",
-				// 		"nickname": "hhh"
-				// 	}
-				// }, {
-				// 	"fansTotal": "10",
-				// 	"followTotal": "10",
-				// 	"signature": "asdasdasdasdasd",
-				// 	"articleTotal": "10",
-				// 	"user": {
-				// 		"id": 1,
-				// 		"avatarPath": "../../static/img/1.jpg",
-				// 		"nickname": "hhh"
-				// 	}
-				// }, {
-				// 	"fansTotal": "10",
-				// 	"followTotal": "10",
-				// 	"signature": "asdasdasdasdasd",
-				// 	"articleTotal": "10",
-				// 	"user": {
-				// 		"id": 1,
-				// 		"avatarPath": "../../static/img/1.jpg",
-				// 		"nickname": "hhh"
-				// 	}
-				// }, {
-				// 	"fansTotal": "10",
-				// 	"followTotal": "10",
-				// 	"signature": "asdasdasdasdasd",
-				// 	"articleTotal": "10",
-				// 	"user": {
-				// 		"id": 1,
-				// 		"avatarPath": "../../static/img/1.jpg",
-				// 		"nickname": "hhh"
-				// 	}
-				// }],
 				current: 1,
 				size: 10
 			}
@@ -145,8 +28,8 @@ import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCel
 		},
 		// 进入时加载
 		onLoad: function(options) {
-			let that = this;
-			this.list = [];
+			// let that = this;
+			// this.list = [];
 			// setTimeout(function() {
 			// 	that.list.push.apply(that.list, that.list1)
 			// }, 1000);
@@ -154,6 +37,7 @@ import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCel
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
+			this.current = 1;
 			let that = this;
 			that.list = [];
 			setTimeout(function() {
@@ -174,38 +58,38 @@ import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCel
 				}
 				getFansnList(params).then(res => {
 					console.log(res)
-					if (res.data.Follow.length > 0) {
-						this.list.push.apply(this.list, res.data.Follow)
+					if (res.data.follow.length > 0) {
+						this.list.push.apply(this.list, res.data.follow)
 						this.current++;
 					}
 				})
 			},
 			// 跳转页面
-			inToPageMine(id) {
-				uni.switchTab({
-					url: '/pages/personalCenter/index'
-				});
-			},
+			// inToPageMine(id) {
+			// 	uni.switchTab({
+			// 		url: '/pages/personalCenter/index'
+			// 	});
+			// },
 			// 按钮样式切换
-			change(index) {
+			// change(index) {
 				
-				let params = {
-					id: this.list[index].id
-				}
+			// 	let params = {
+			// 		id: this.list[index].id
+			// 	}
 				
-				changeStatus(params).then(res =>{
-					// 手动更改状态，刷新后查询新数据
-					switch (this.list[index].isFollow) {
-						case 0:
-							this.list[index].isFollow = 1
-							break;
-						case 1:
-							this.list[index].isFollow = 0
-							break;
-					}
-				})
+			// 	changeStatus(params).then(res =>{
+			// 		// 手动更改状态，刷新后查询新数据
+			// 		switch (this.list[index].isFollow) {
+			// 			case 0:
+			// 				this.list[index].isFollow = 1
+			// 				break;
+			// 			case 1:
+			// 				this.list[index].isFollow = 0
+			// 				break;
+			// 		}
+			// 	})
 
-			}
+			// }
 		}
 	}
 </script>

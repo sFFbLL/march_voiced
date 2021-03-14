@@ -158,13 +158,13 @@
 			articleContent
 		},
 		onLoad() {
-			uni.$on('getOthersId',this.test)
+			uni.$on('getOthersId',this.getOthersId)
 			this.getArticleList();
 			this.getIdeaList();
 			this.getDraftList();
 		},
 		beforeDestroy() {
-			uni.$off("getOthersId",this.test)
+			uni.$off("getOthersId",this.getOthersId)
 		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求

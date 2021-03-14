@@ -56,10 +56,14 @@
 
 <script>
 	import settings from '../settings.js'
+	import {
+		getAttentionList,
+		changeStatus
+	} from '../utils/api/attention-and-fans-api.js'
 	export default {
 		props: {
 			// 用于事件
-			id: {
+			aid: {
 				type: Number,
 				default: null
 			},
@@ -87,33 +91,43 @@
 		},
 		methods: {
 			// 按钮切换显示
-			changeBtn(id) {
+			changeBtn() {
 				this.isDisabled = true
 				let that = this;
 				setTimeout(function () {
 					that.isDisabled = false
-					// 
-					let params = {
-						id: id
-					}
-					
-					changeStatus(params).then(res =>{
-						// 手动更改状态，刷新后查询新数据
-						// switch (this.list[index].isFollow) {
-						// 	case 0:
-						// 		this.list[index].isFollow = 1
-						// 		break;
-						// 	case 1:
-						// 		this.list[index].isFollow = 0
-						// 		break;
-						// }
-						this.isFollow = !this.isFollow
-					})
 				}, 1000);
+				
+				let params = {
+					id: this.aid
+				}
+				
+				changeStatus(params).then(res =>{
+					// 手动更改状态，刷新后查询新数据
+					switch (this.isFollow) {
+						case 0:
+							this.isFollow = 1
+							break;
+						case 1:
+							this.isFollow = 0
+							break;
+					}
+				})
 			},
 			// 进入其他页面
 			inToMine() {
-				this.$emit('inToPageMine')
+				// 跳转页面
+				let that = this
+				 setTimeout(()=>{
+					uni.$emit('getOthersId', {
+						id: that.aid
+					})
+				},1000)
+				
+				uni.switchTab({
+					url: '/pages/personalCenter/index'
+				});
+				// this.$emit('inToPageMine')
 			},
 			getImgUrl(src) {
 				return settings.imgUrl + src;
