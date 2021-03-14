@@ -3,7 +3,7 @@
 
 	
 		<!-- 用户头像公共组件 -->
-		<attentionAndFansCell :nickname="messageInfo.nickname" :avatarPath="messageInfo.avatarPath">
+		<attentionAndFansCell :aid="messageInfo.userId" :nickname="messageInfo.nickname" :avatarPath="messageInfo.avatarPath">
 			<template v-slot:afterNicknameText>
 				<text class="slot">{{tip}}
 				</text>

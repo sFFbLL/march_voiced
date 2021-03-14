@@ -81,78 +81,17 @@
 		},
 		methods: {
 			recommend() {
-				let recommendList = [{
-					id: 1,
-					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					articleImg: require('static/img/2.jpg'),
-					upDateTime: "更新时间",
-					favourTotal: 1,
-					collectTotal: 1,
-					commentTotal: 1,
-					user: {
-						userId: 1,
-						userName: "张三",
-						userImage: "",
-						isFollow: 0
-					}
-				}, {
-					id: 2,
-					title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-					articleImg: "",
-					upDateTime: "更新时间",
-					favourTotal: 1,
-					collectTotal: 1,
-					commentTotal: 1,
-					user: {
-						userId: 2,
-						userName: "李四",
-						userImage: "",
-						isFollow: 1
-					}
-				}, {
-					id: 1,
-					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					articleImg: require('static/img/2.jpg'),
-					upDateTime: "更新时间",
-					favourTotal: 1,
-					collectTotal: 1,
-					commentTotal: 1,
-					user: {
-						userId: 1,
-						userName: "张三",
-						userImage: "",
-						isFollow: 0
-					}
-				}, {
-					id: 1,
-					title: "我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程？",
-					content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹...",
-					articleImg: require('static/img/2.jpg'),
-					upDateTime: "更新时间",
-					favourTotal: 1,
-					collectTotal: 1,
-					commentTotal: 1,
-					user: {
-						userId: 1,
-						userName: "张三",
-						userImage: "",
-						isFollow: 0
-					}
-				}];
-				let _this = this;
-				/* let params = {
+				let _this=this;
+				let params = {
 					current: this.current,
 					size:this.size
 				}
 				getRecommend(params).then(res => {
-					_this.recommendList = [..._this.recommend,...res.data];
+					_this.recommendList = [..._this.recommendList,...res.data];
 					if(res.data.length<=_this.size){
 						_this.loadStatus=nomore;
 					}
-				}) */
+				})
 				if (this.recommendList.length > 16) {
 					_this.loadStatus = "nomore";
 				} else {
@@ -163,69 +102,18 @@
 				}
 			},
 			attention() {
-				// console.log(2);
-				let attentionList = [{
-						articleId: 2,
-						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						articleImg: "",
-						upDateTime: "更新时间",
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						userId: 2,
-						userName: "李四",
-						userImage: ""
-					}, {
-						articleId: 2,
-						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						articleImg: require('static/img/2.jpg'),
-						upDateTime: "更新时间",
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						userId: 2,
-						userName: "李四",
-						userImage: ""
-					},
-					{
-						articleId: 2,
-						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						articleImg: "",
-						upDateTime: "更新时间",
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						userId: 2,
-						userName: "李四",
-						userImage: ""
-					}, {
-						articleId: 2,
-						title: "所以监听用户的截图操作，提示用户进行分，我还是个大学生啊，我该怎么学编程？我还是个大学生啊，我该怎么学编程",
-						content: "今年春天在写作圈发生了几件不大不小的抄袭洗稿事件。一件是言情大神匪我思存指责《甄嬛传》的作者流潋紫抄袭，另一件就是闹得沸沸扬扬的周冲洗稿六神磊磊今年春天在写作圈...",
-						articleImg: require('static/img/2.jpg'),
-						upDateTime: "更新时间",
-						favourTotal: 1,
-						collectTotal: 1,
-						commentTotal: 1,
-						userId: 2,
-						userName: "李四",
-						userImage: ""
-					}
-				];
+			
 				let _this = this;
-				/* let params = {
+				let params = {
 					current: this.current,
 					size:this.size
 				}
 				getRecommend(params).then(res => {
-					_this.recommendList = [..._this.recommend,...res.data];
+					_this.recommendList = [..._this.recommendList,...res.data];
 					if(res.data.length<=_this.size){
 						_this.loadStatus=nomore;
 					}
-				}) */
+				})
 				if (this.attentionList.length > 16) {
 					_this.loadStatus = "nomore";
 				} else {

@@ -2,7 +2,7 @@
 	<!-- 推荐页面文章展示组件 -->
 	<view class="recommend-component">
 		<!-- 作者信息 -->
-		<attentionAndFansCell :id="articleInfo.userId"
+		<attentionAndFansCell :aid="articleInfo.create_by"
 		 :nickname="articleInfo.nickname"
 		 :avatarPath="articleInfo.avatarPath">
 			<view slot="underText"

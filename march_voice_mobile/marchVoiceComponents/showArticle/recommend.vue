@@ -6,7 +6,7 @@
 		 :articleId="articleInfo.id" />
 		<!-- 作者信息 -->
 		<attentionAndFansCell v-if="articleInfo.create_by"
-		 :id="articleInfo.create_by"
+		 :aid="articleInfo.create_by"
 		 :nickname="articleInfo.nickname"
 		 :avatarPath="articleInfo.avatarPath"
 		 :isFollow="articleInfo.isFollow"></attentionAndFansCell>

@@ -64,32 +64,6 @@ import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCel
 					}
 				})
 			},
-			// 跳转页面
-			// inToPageMine(id) {
-			// 	uni.switchTab({
-			// 		url: '/pages/personalCenter/index'
-			// 	});
-			// },
-			// 按钮样式切换
-			// change(index) {
-				
-			// 	let params = {
-			// 		id: this.list[index].id
-			// 	}
-				
-			// 	changeStatus(params).then(res =>{
-			// 		// 手动更改状态，刷新后查询新数据
-			// 		switch (this.list[index].isFollow) {
-			// 			case 0:
-			// 				this.list[index].isFollow = 1
-			// 				break;
-			// 			case 1:
-			// 				this.list[index].isFollow = 0
-			// 				break;
-			// 		}
-			// 	})
-
-			// }
 		}
 	}
 </script>

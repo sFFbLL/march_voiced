@@ -25,7 +25,7 @@
 				<u-gap height="30" bg-color="#f5f5f5"></u-gap>
 				<view class="ideacontent">
 					<!-- 用户头像公共组件 -->
-					<attentionAndFansCell :nickname="item.nickname" :avatarPath="item.avatarPath" :isFollow="item.isFollow"></attentionAndFansCell>
+					<attentionAndFansCell :aid="item.create_by" :nickname="item.nickname" :avatarPath="item.avatarPath" :isFollow="item.isFollow"></attentionAndFansCell>
 					<!-- 想法的文字部分 -->
 					<articleContent :articleContent="item.content" :isIdea="true" :id="item.id"></articleContent>
 					<!-- 想法的图片部分组件 -->
@@ -44,7 +44,7 @@
 			<image src="https://oscimg.oschina.net/oscnet/fd2170a448e37826ae9f4d7088f287b8f24.jpg" />
 		</view>
 		<!-- 发布三月圈悬浮按钮 -->
-		<view v-if="sanyueMumber" @click="publish()" class="publishbtn">
+		<view  @click="publish()" class="publishbtn">
 			<uni-icons class="addicon" type="plusempty" size="43" color="white"></uni-icons>
 		</view>
 	</view>
@@ -109,9 +109,9 @@
 		},
 		created() {
 			// 获取三月基本信息接口
-			// getMarchCircleInfo().then(res => {
-			// 	this.marchCircleInfo = res.data;
-			// })
+			getMarchCircleInfo().then(res => {
+				this.marchCircleInfo = res.data;
+			})
 			if (this.marchCircleInfo.ismarch == 0) {
 				this.sanyueMumber = false;
 			}
@@ -120,7 +120,7 @@
 				size: this.size
 			}
 
-			// this.getCircleList(params);
+			this.getCircleList(params);
 		},
 		onShow() {
 			check()
