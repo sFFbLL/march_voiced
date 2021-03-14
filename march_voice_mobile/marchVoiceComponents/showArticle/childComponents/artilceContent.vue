@@ -5,7 +5,7 @@
 		<view>
 			<text class="article-text"
 			 v-html="textContent"
-			 ref="articleContent">{{textContent}}123</text>
+			 ref="articleContent">{{textContent}}</text>
 		</view>
 		<view v-if="articleImg != ''"
 		 class="article-img">

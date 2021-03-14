@@ -108,7 +108,7 @@
 			commentInput
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
-			this.id = option //打印出上个页面传递的参数。
+			this.id = option.id //打印出上个页面传递的参数。
 			let id = this.id
 			// 获取文章详情内容
 			getArtileDetails(id).then(res => {
