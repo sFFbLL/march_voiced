@@ -541,6 +541,15 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser, user
 }
 
 func goArticleMsg(articleCh *chan *bo.GoArticleMsg, wg *sync.WaitGroup, articleMsg bo.GoArticleMsg) {
+	// 异常捕获
+	defer func() {
+		if err := recover(); err != nil {
+			*articleCh <- &articleMsg
+			wg.Done()
+			zap.L().Error("Call goArticleMsg defer recover", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.String("error", string(utils.Stack())))
+		}
+	}()
+
 	articleCollect := new(models.ArticleCollect)
 	articleComment := new(models.ArticleComment)
 	articleFavour := new(models.ArticleFavour)

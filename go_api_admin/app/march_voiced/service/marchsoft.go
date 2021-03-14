@@ -330,6 +330,15 @@ func (e *Marchsoft) MarchDetail(id int, userId int) (march *bo.March, err error)
 }
 
 func goMarchMsg(marchCh *chan *bo.GoMarchMsg, wg *sync.WaitGroup, marchMsg bo.GoMarchMsg) {
+	// 异常捕获
+	defer func() {
+		if err := recover(); err != nil {
+			*marchCh <- &marchMsg
+			wg.Done()
+			zap.L().Error("Call goMarchMsg defer recover", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.String("error", string(utils.Stack())))
+		}
+	}()
+
 	marchComment := new(models.MarchsoftComment)
 	marchFavour := new(models.MarchSoftFavour)
 	marchImage := new(models.MarchSoftImage)
@@ -339,14 +348,14 @@ func goMarchMsg(marchCh *chan *bo.GoMarchMsg, wg *sync.WaitGroup, marchMsg bo.Go
 
 	// 获取数据
 	marchComment.MarchsoftId = marchMsg.MarchId
-	zap.L().Info("Call goArticleMsg GetMarchSoftCommentCount", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
+	zap.L().Info("Call goMarchMsg GetMarchSoftCommentCount", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 	marchMsg.CommentTotal, err = marchComment.GetMarchSoftCommentCount()
 	if err != nil {
 		zap.L().Error("goMarchMsg GetMarchSoftCommentCount failed", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 	}
 
 	marchFavour.MarchsoftId = marchMsg.MarchId
-	zap.L().Info("Call goArticleMsg MarchFavourCountByType", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
+	zap.L().Info("Call goMarchMsg MarchFavourCountByType", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 	marchFavourTotal, err = marchFavour.MarchFavourCountByType()
 	if err != nil {
 		zap.L().Error("goMarchMsg MarchFavourCountByType failed", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
@@ -362,14 +371,14 @@ func goMarchMsg(marchCh *chan *bo.GoMarchMsg, wg *sync.WaitGroup, marchMsg bo.Go
 			marchMsg.FavourTotal = v.Total
 		}
 	}
-	zap.L().Info("Call goArticleMsg GetMarchFavourType", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
+	zap.L().Info("Call goMarchMsg GetMarchFavourType", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 	marchMsg.Type, err = marchFavour.GetMarchFavourType()
 	if err != nil {
 		zap.L().Error("goMarchMsg GetMarchFavourType failed", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 	}
 
 	marchImage.MarchsoftId = marchMsg.MarchId
-	zap.L().Info("Call goArticleMsg GetImageListById", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
+	zap.L().Info("Call goMarchMsg GetImageListById", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 	marchMsg.ImageList, err = marchImage.GetImageListById()
 	if err != nil {
 		zap.L().Error("goMarchMsg GetImageListById failed", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
@@ -379,16 +388,16 @@ func goMarchMsg(marchCh *chan *bo.GoMarchMsg, wg *sync.WaitGroup, marchMsg bo.Go
 	if marchMsg.UserId == marchMsg.MarchUserId {
 		marchMsg.IsFollow = 0
 	} else {
-		zap.L().Info("Call goArticleMsg IsFollow", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
+		zap.L().Info("Call goMarchMsg IsFollow", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 		marchMsg.IsFollow, err = follow.IsFollow(int(marchMsg.UserId), int(marchMsg.MarchUserId))
 		if err != nil {
-			zap.L().Error("goArticleMsg IsFollow failed", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
+			zap.L().Error("goMarchMsg IsFollow failed", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 		}
 	}
 
 	// 管道放数据
 	*marchCh <- &marchMsg
 	wg.Done()
-	zap.L().Info("Call goArticleMsg Done", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
+	zap.L().Info("Call goMarchMsg Done", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 	return
 }
