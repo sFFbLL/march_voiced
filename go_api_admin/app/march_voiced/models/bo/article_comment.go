@@ -17,6 +17,7 @@ type ArticleComment struct {
 	Id         int    `json:"id"`
 	Content    string `json:"content"`
 	CreateTime int64  `json:"createTime"`
+	ChildSum   int64  `json:"childSum"`
 	ArticleCreate
 	ArticleReply
 }
@@ -24,7 +25,7 @@ type ArticleComment struct {
 type ArticleCreate struct {
 	CreateBy     uint   `json:"createBy"`
 	CreateByName string `json:"createByName"`
-	IdAvatar     string `json:"id_avatar"`
+	IdAvatar     string `json:"idAvatar"`
 }
 
 type ArticleReply struct {

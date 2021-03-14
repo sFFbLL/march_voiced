@@ -62,6 +62,13 @@ func (co *ArticleComment) GetCommentList(p *dto.GetArticleComment) (commentList 
 	return
 }
 
+// GetChildSum 查询一级评论下有多少个二级评论
+func (co *ArticleComment) GetChildSum(id int) (sum int64, err error) {
+	table := global.Eloquent.Table(co.TableName())
+	err = table.Where("pid = ? AND is_deleted = ?", id, []byte{0}).Count(&sum).Error
+	return
+}
+
 // GetChildCommentList 查询父评论下属的childSize个子评论
 func (co *ArticleComment) GetChildCommentList(articleId int, size int, pid int) (commentList []*ArticleComment, err error) {
 

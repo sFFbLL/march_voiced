@@ -49,7 +49,7 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 	var ChildComments []bo.ArticleComment
 
 	commentList, _ := comment.GetCommentList(p)
-	// 这里面获取的是二级评论的信息和一级评论的用户的信息
+	// 这里面获取的是二级评论的信息和ArticleComment一级评论的用户的信息
 	for i := 0; i < len(commentList); i++ {
 		userInfo, err := comment.GetUserInfo(commentList[i].CreateBy)
 		userReplyInfo, err := comment.GetUserInfo(commentList[i].ReplyId)
@@ -60,6 +60,7 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 		if err != nil {
 			return nil, errors.New("查询子评论失败")
 		}
+
 		// 这里面获取的是二级评论的用户的信息
 		for _, commentChild := range commentChild {
 			userChildInfo, err := comment.GetUserInfo(commentChild.CreateBy)
@@ -71,6 +72,7 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 				Id:         commentChild.ID,
 				Content:    commentChild.Content,
 				CreateTime: commentChild.CreateTime,
+
 				ArticleCreate: bo.ArticleCreate{
 					CreateByName: userChildInfo.NickName,
 					IdAvatar:     userChildInfo.AvatarPath,
@@ -82,11 +84,18 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 				},
 			})
 		}
+
+		commentChildSum, err := comment.GetChildSum(commentList[i].ID)
+		if err != nil {
+			return nil, errors.New("获取子评论总数量失败")
+		}
+
 		SignalComments = append(SignalComments, bo.SignalArticleComment{
 			ArticleComment: bo.ArticleComment{
 				Id:         commentList[i].ID,
 				Content:    commentList[i].Content,
 				CreateTime: commentList[i].CreateTime,
+				ChildSum:   commentChildSum,
 				ArticleCreate: bo.ArticleCreate{
 					CreateBy:     commentList[i].CreateBy,
 					CreateByName: userInfo.NickName,
@@ -101,6 +110,7 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 		})
 	}
 	res.CommentSum = SignalComments
+
 	return res, nil
 }
 

@@ -81,11 +81,18 @@ func (mc *MarchsoftComment) GetMarchsoftComment(p *dto.GetMarchsoftComment) (res
 				},
 			})
 		}
+
+		commentChildSum, err := comment.GetChildSum(commentList[i].ID)
+		if err != nil {
+			return nil, errors.New("获取子评论总数量失败")
+		}
+
 		SignalComments = append(SignalComments, bo.SignalMarchsoftComment{
 			MarchsoftComment: bo.MarchsoftComment{
 				Id:         commentList[i].ID,
 				Content:    commentList[i].Content,
 				CreateTime: commentList[i].CreateTime,
+				ChildSum:   commentChildSum,
 				MarchsoftCreate: bo.MarchsoftCreate{
 					CreateBy:     commentList[i].CreateBy,
 					CreateByName: userInfo.NickName,
