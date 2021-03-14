@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"regexp"
+	"runtime"
 	"strconv"
 	"time"
 
@@ -110,4 +111,16 @@ func PagesCount(count int, size int) int {
 func BlurryCache(blurry string, sourceStr string) bool {
 	matched, _ := regexp.MatchString(blurry, sourceStr)
 	return matched
+}
+
+// 获取当前堆栈信息
+func Stack() []byte {
+	buf := make([]byte, 1024)
+	for {
+		n := runtime.Stack(buf, false)
+		if n < len(buf) {
+			return buf[:n]
+		}
+		buf = make([]byte, 2*len(buf))
+	}
 }

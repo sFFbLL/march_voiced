@@ -634,6 +634,8 @@ func SelectArticleListByUserId(c *gin.Context) {
 		app.ResponseError(c, app.CodeNoUser)
 		return
 	}
+
+	// 参数绑定
 	err = c.ShouldBindQuery(&paging)
 	if err != nil {
 		zap.L().Error("SelectArticleListByUserId ShouldBindQuery Params Failed", zap.String("Username", userMsg.Username), zap.Error(err))
