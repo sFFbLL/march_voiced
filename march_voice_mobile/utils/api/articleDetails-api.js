@@ -6,7 +6,6 @@ import Axios from '@/utils/request.js'
 export function getArtileDetails(params) {
 	return Axios.get(`/api/article/detail/${params}`)
 }
-
 /**
  * 获取文章评论的接口
  * @param {Object} params {id:文章id,current:页码,size:一页大小,childSize:子评论条数}

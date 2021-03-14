@@ -109,8 +109,9 @@
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			this.id = option //打印出上个页面传递的参数。
+			let id = this.id
 			// 获取文章详情内容
-			getArtileDetails(option).then(res => {
+			getArtileDetails(id).then(res => {
 				if (res.code === 0) {
 					this.articleInfo = res.data;
 				}
@@ -120,12 +121,12 @@
 
 			// 获取评论列表
 			let params = {
-				id: option,
+				id: id,
 				current: this.current,
 				size: this.size,
 				childSize: this.childSize,
 			}
-			console.log(params+33333333333333)
+			console.log(params)
 			getArticleCommentList(params).then(res => {
 				if (res.code === 0) {
 					this.commentList = res.data;
