@@ -99,17 +99,21 @@ func SearchUsername(c *gin.Context) {
 // 查询用户信息
 func SearchUserInfo(c *gin.Context) {
 	id := c.Query("id")
+	var userId int
+	fmt.Println(id)
 	if id == "" {
-		get, _ := c.Get("UserId")
-		id = fmt.Sprintf("%v", get)
+		userInfo, _ := api.GetUserMessage(c)
+		userId = userInfo.UserId
+	} else {
+		userId, err := strconv.Atoi(id)
+		if err != nil && userId <= 0 {
+			app.ResponseError(c, app.CodeParamNotComplete)
+			return
+		}
 	}
-	atoi, err := strconv.Atoi(id)
-	if err != nil && atoi <= 0 {
-		app.ResponseError(c, app.CodeParamNotComplete)
-		return
-	}
+
 	searchUserinfo := new(service.Login)
-	data, err := searchUserinfo.SearchUserInfo(atoi)
+	data, err := searchUserinfo.SearchUserInfo(userId)
 	if err != nil {
 		zap.L().Error("SearchUserInfo failed", zap.Error(err))
 		app.ResponseError(c, app.CodeSelectOperationFail)
@@ -128,7 +132,6 @@ func ModInformation(c *gin.Context) {
 		app.ResponseError(c, app.CodeNoUser)
 		return
 	}
-	//get, _ := c.Get("UserId")
 	id := fmt.Sprintf("%v", userInfo.UserId)
 	p := new(dto.ModInformationDto)
 	if err := c.ShouldBindJSON(p); err != nil {
