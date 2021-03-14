@@ -65,12 +65,16 @@
 		},
 		computed: {
 			createDate: function() {
-				let date = new Date();
-
-				date.setTime(this.messageInfo.createTime * 1000);
-
-				console.log(date.toLocaleDateString());
-				return date.toLocaleDateString()
+				let oDate = new Date(this.messageInfo.createTime);
+				let oYear = oDate.getFullYear();
+				let oMonth = oDate.getMonth() + 1;
+				let oDay = oDate.getDate();
+				let oHour = oDate.getHours();
+				let oMin = oDate.getMinutes();
+				let oSec = oDate.getSeconds();
+				let oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(
+					oSec); //最后拼接时间
+				return oTime
 			}
 		},
 		created() {

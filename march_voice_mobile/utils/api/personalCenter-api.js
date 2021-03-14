@@ -4,9 +4,7 @@ import Axios from '@/utils/request.js'
  * @param {Object} params {id}
  */
 export function getUserInfo(params) {
-	return Axios.get('/api/user/ingo', {
-		id: params.id,
-	})
+	return Axios.get(`/api/user/ingo/${params.id}`)
 }
 
 /**
