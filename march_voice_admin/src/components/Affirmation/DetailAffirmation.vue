@@ -175,6 +175,7 @@ export default {
                 type: 'success'
               })
               this.content.status = '3'
+              this.$emit('childEvent', this.content.status)
             })
             .catch(() => {
               this.$message({

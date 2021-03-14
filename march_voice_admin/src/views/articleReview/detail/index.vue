@@ -22,7 +22,12 @@
               <span>已驳回</span>
             </div>
             <div class="status-box reject">
-              <Reject v-if="this.showReject" :content="content" :data="data" />
+              <Reject
+                v-if="this.showReject"
+                :content="content"
+                :data="data"
+                @childEvent="showStatus"
+              />
             </div>
           </div>
           <div v-if="nois" class="ee">
@@ -96,9 +101,9 @@ export default {
 
   methods: {
     showStatus: function(data) {
-      console.log(data)
+      // console.log(data)
       this.$route.query.status = data
-      console.log(this.$route.query.status)
+      // console.log(this.$route.query.status)
     },
     showKeyWord(val) {
       if (val) {
