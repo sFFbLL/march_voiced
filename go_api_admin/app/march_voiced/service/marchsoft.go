@@ -101,8 +101,17 @@ func (e *Marchsoft) GetMarchMsg(userName string, id int) (marchMsg *bo.MarchSoft
 	return
 }
 
-func (e *Marchsoft) InsertMarchSoft(marchMsg *dto.InsertMarchSoft, userId uint) (err error) {
+func (e *Marchsoft) InsertMarchSoft(marchMsg *dto.InsertMarchSoft, userId uint) (isMarch uint8, err error) {
 	m := new(models.MarchSoft)
+	u := new(models.User)
+
+	// 查是否为三月圈
+	u.ID = int(userId)
+	isMarch, err = u.IsMarchByUserId()
+	if err != nil || isMarch == 0 {
+		zap.L().Error("InsertMarchSoft IsMarchByUserId Failed", zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
+		return
+	}
 
 	m.Content = marchMsg.Content
 	m.Image = marchMsg.Image
