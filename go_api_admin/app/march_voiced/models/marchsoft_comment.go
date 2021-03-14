@@ -46,6 +46,13 @@ func (co *MarchsoftComment) GetCommentList(p *dto.GetMarchsoftComment) (commentL
 	return
 }
 
+// GetChildSum 查询一级评论下有多少个二级评论
+func (co *MarchsoftComment) GetChildSum(id int) (sum int64, err error) {
+	table := global.Eloquent.Table(co.TableName())
+	err = table.Where("pid = ? AND is_deleted = ?", id, []byte{0}).Count(&sum).Error
+	return
+}
+
 // GetChildCommentList 查询父评论下属的childSize个子评论
 func (co *MarchsoftComment) GetChildCommentList(marchsoftId uint, size uint, pid int) (commentList []*MarchsoftComment, err error) {
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=? AND marchsoft_id=?", []byte{0}, marchsoftId)
