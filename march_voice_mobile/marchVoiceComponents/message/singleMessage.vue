@@ -1,7 +1,7 @@
 <template>
 	<view class="wrap">
 
-	
+
 		<!-- 用户头像公共组件 -->
 		<attentionAndFansCell :aid="messageInfo.userId" :nickname="messageInfo.nickname" :avatarPath="messageInfo.avatarPath">
 			<template v-slot:afterNicknameText>
@@ -13,7 +13,7 @@
 
 			</template>
 			<template v-slot:underText>
-				<text>{{messageInfo.createTime}}</text>
+				<text>{{createDate}}</text>
 			</template>
 		</attentionAndFansCell>
 		<!-- 评论内容 -->
@@ -24,8 +24,8 @@
 			<articleTitle class="thewords" v-if="messageInfo.type==1" :articleTitle="messageInfo.content" :articleId="messageInfo.articleId" />
 			<image v-if="messageInfo.image" :src=messageInfo.image mode="scaleToFill" class="theimg"></image>
 		</view>
-	<!-- 间隔槽 -->
-	<u-gap height="10" bg-color="#f5f5f5"></u-gap>
+		<!-- 间隔槽 -->
+		<u-gap height="10" bg-color="#f5f5f5"></u-gap>
 	</view>
 </template>
 
@@ -61,6 +61,16 @@
 		data() {
 			return {
 				tip: "赞了你的文章",
+			}
+		},
+		computed: {
+			createDate: function() {
+				let date = new Date();
+
+				date.setTime(this.messageInfo.createTime * 1000);
+
+				console.log(date.toLocaleDateString());
+				return date.toLocaleDateString()
 			}
 		},
 		created() {

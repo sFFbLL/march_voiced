@@ -58,55 +58,7 @@
 		data() {
 			return {
 				ideaInfoList: {},
-				commentList: [{
-						"createBy": 1,
-						"replyId": 1,
-						"createByName": "ddd",
-						"id": 1,
-						"idAvatar": "dd",
-						"replyAvatar": "sssssss",
-						"replyName": "eeeeeeeeeee",
-						"content": "tttttt",
-						"createTime": 1,
-						"commentKids": [{
-							"id": 1,
-							"replyId": 1,
-							"replyName": "fffff",
-							"replyAvatar": "bbb",
-							"createBy": 1,
-							"createByName": "wwwww",
-							"idAvatar": "ggggggg",
-							"content": "dddddddddddddd",
-							"createTime": 1,
-							"commentKids": []
-						}, ]
-					},
-					{
-						"createBy": 1,
-						"replyId": 1,
-						"createByName": "ddd",
-						"id": 1,
-						"idAvatar": "dd",
-						"replyAvatar": "sssssss",
-						"replyName": "eeeeeeeeeee",
-						"content": "tttttt",
-						"createTime": 1,
-						"commentKids": [{
-							"id": 1,
-							"replyId": 1,
-							"replyName": "",
-							"replyAvatar": "bbb",
-							"createBy": 1,
-							"createByName": "wwwww",
-							"idAvatar": "ggggggg",
-							"content": "dddddddddddddd",
-							"createTime": 1,
-							"commentKids": []
-						}],
-				
-					},
-				
-				],
+				commentList: [],
 				commentCount: 3,
 				current: 1,
 				size: 5,
@@ -119,8 +71,6 @@
 		},
 		onLoad(option) {
 			this.ideaId = option.id;
-
-
 		},
 		created() {
 			let id = this.ideaId
@@ -146,7 +96,7 @@
 
 			})
 			this.addCommentArg = {
-				id: this.id,
+				id: id,
 				replyId: 0,
 				follewId: 0,
 				childComment: false,
@@ -156,13 +106,13 @@
 		methods: {
 			// 控制评论弹出框的显示开
 			comment(payload) {
-				let id = this.id;
+				let id = this.ideaId;
 				this.showAddComment = true;
 				// 如果是子组件点击进入评论，传入这条评论的参数
 				if (payload) {
 					this.addCommentArg = {
 						childComment: payload.childComment,
-						id: this.id,
+						id: id,
 						index: payload.index,
 						replyId: payload.replyId,
 						follewId: payload.follewId,
