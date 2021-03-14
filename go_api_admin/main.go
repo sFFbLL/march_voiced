@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"project/common/database/search"
 	"project/common/database/wx"
 	mycasbin "project/pkg/casbin"
 	"project/utils"
@@ -65,11 +64,7 @@ func main() {
 	if err := mycasbin.Setup(); err != nil {
 		zap.L().Error("casbin failed set up", zap.Error(err))
 	}
-	//初始化elasticSeach连接
-	if err := search.Init(); err != nil {
-		zap.L().Error("init elasticSeach failed", zap.Error(err))
-	}
-	zap.L().Debug(utils.Green("elasticSeach init success..."))
+
 	//初始化wx连接
 	if err := wx.Init(config.WxConfig); err != nil {
 		zap.L().Error("init wx failed", zap.Error(err))
