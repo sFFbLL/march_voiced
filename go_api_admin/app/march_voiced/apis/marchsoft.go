@@ -193,6 +193,7 @@ func InsertMarchSoft(c *gin.Context) {
 	march := new(dto.InsertMarchSoft)
 	s := new(service.Marchsoft)
 	var err error
+	var isMarch uint8
 
 	// 获取缓存信息
 	user, err := api.GetUserMessage(c)
@@ -216,10 +217,16 @@ func InsertMarchSoft(c *gin.Context) {
 	}
 
 	//业务逻辑处理
-	err = s.InsertMarchSoft(march, uint(user.UserId))
+	isMarch, err = s.InsertMarchSoft(march, uint(user.UserId))
 	if err != nil {
 		zap.L().Error("InsertMarchSoft service failed", zap.String("Username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeInsertOperationFail)
+		return
+	}
+	if isMarch == 0 {
+		res := "您未在三月圈，不能发布！"
+		zap.L().Warn("InsertMarchSoft service failed", zap.String("Username", user.Username), zap.String("Warn", res))
+		app.ResponseErrorWithMsg(c, app.CodeIdentityNotRow, res)
 		return
 	}
 
