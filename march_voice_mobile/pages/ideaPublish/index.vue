@@ -65,7 +65,9 @@
 								_this.srcList.push(value);
 						}
 						// 把图片上传到服务器
+					
 						const tempFiles = res.tempFiles;
+							console.log(tempFiles)
 						 const uploadTask =uni.uploadFile({
 							url:"http://linbolun.cn/api/file/uploadImage",
 							file:tempFiles,
@@ -119,27 +121,45 @@
 					    duration: 2000
 					});
 				}else{
-
+					let agree;
+					// 判断图片上传进度，>100才可以上传
+					let timeLimit=setInterval(() =>{
+						agree=_this.uploadTaskProgress>=100?true:false;
+						}, 1000);
+					if(agree){
+						clearInterval(timerId); 
 						let params={
-							content:this.ideaWords,
-							imageList:this.imgList,
-							image:this.imgList[0]
-							}
-				// 调用发布接口,
-					publishIdea(params).then(res=>{
-							 uni.showToast({
-								title: '发布成功',
-								icon:"none",
-								position:"top",
-								 duration: 2000
-								});
-					})
-
+									content:this.ideaWords,
+									imageList:this.imgList,
+									image:this.imgList[0]
+									}
+						// 调用发布接口,
+							publishIdea(params).then(res=>{
+							}).then(function(){
+								setTimeout(function() {
+									_this.btnLoading=false;
+								}, 2000);
+							}).then(function(){
+								setTimeout(function() {
+								uni.showToast({
+											title: '发布成功',
+											icon:"none",
+											position:"top",
+											 duration: 2000
+											});
+								}, 2000);
+								
+							}).then(function(){
+								uni.navigateTo({
+									url:'../marchCircle/index'
+								})
+							})
 					}
-
-				setTimeout(function() {
-					_this.btnLoading=false;
-				}, 2000);
+						
+					
+						
+				}
+				
 
 			}
 		}

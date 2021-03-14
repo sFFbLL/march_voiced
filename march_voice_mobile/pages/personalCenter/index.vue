@@ -172,13 +172,13 @@
 			// 点击关注数事件
 			toAttention() {
 				uni.navigateTo({
-					url: '../collect/index'
+					url: '../attention/index'
 				})
 			},
 			// 点击收藏数事件
 			toCollect() {
 				uni.navigateTo({
-					url: '../attention/index'
+					url: '../collect/index'
 				})
 			},
 

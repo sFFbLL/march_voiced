@@ -31,7 +31,7 @@ export function unreadMessage(params) {
 
 // 未读消息已读
 export function readMessage(params) {
-	return Axios.post('/api/message/user', {
+	return Axios.put('/api/message/user', {
 		type: params,
 	})
 }

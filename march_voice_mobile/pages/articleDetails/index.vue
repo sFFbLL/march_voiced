@@ -83,7 +83,7 @@
 		data() {
 			return {
 				showAddComment: true,
-				id: "",
+				id: 0,
 				current: 1,
 				size: 5,
 				childSize: 3,

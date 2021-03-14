@@ -1,29 +1,17 @@
 <script>
-	import {
-		returnWxcode,
-		getWxCode,
-		parseCode 
-	} from "./utils/wxcode.js"
-	import {
-		getToken,
-		setToken
-	} from "./utils/auth.js"
-	import {
-		login,
-		creatNewUser
-	} from "./utils/login.js"
+	import check from './utils/checkUnRead.js'
 	export default {
-		onLaunch: function () {
-
+		onLaunch: function() {
 			console.log('App Launch')
-
 		},
-		onShow: function () {
+		onShow: function() {
+			let timerId = setInterval(() => check(), 5000);
 			console.log('App Show')
 		},
-		onHide: function () {
+		onHide: function() {
 			console.log('App Hide')
 		},
+		
 
 
 

@@ -5,7 +5,7 @@ import Axios from '@/utils/request.js'
  */
 export function getArtileDetails(params) {
 	return Axios.get("/api/article/detail/",{
-		id:params.id
+		id:params
 	})
 }
 

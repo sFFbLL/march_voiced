@@ -9,7 +9,7 @@
 		<text class="tipWords">{{tipWords}}</text>
 
 
-		<view class="time"> <text>{{otherList.createTime}}</text></view>
+		<view class="time"> <text>{{createDate}}</text></view>
 
 	</view>
 </template>
@@ -27,12 +27,22 @@
 				url: "../../pages/articleDetails/index?id="
 			}
 		},
+		computed: {
+			createDate: function() {
+				let date = new Date();
+
+				date.setTime(this.otherList.createTime * 1000);
+
+				console.log(date.toLocaleDateString());
+				return date.toLocaleDateString()
+			}
+		},
 		created() {
 			if (this.otherList.type == 0) {
-				this.url="../../pages/articleDetails/index?id="+this.otherList.articleId;
+				this.url = "../../pages/articleDetails/index?id=" + this.otherList.articleId;
 				if (this.otherList.status == 0) {
 					this.tipWords = "通过审核，已为您自动发布。";
-					
+
 				} else if (this.otherList.status == 1) {
 					this.tipWords = "含有敏感信息，请进行修正后重新发布。"
 				}
