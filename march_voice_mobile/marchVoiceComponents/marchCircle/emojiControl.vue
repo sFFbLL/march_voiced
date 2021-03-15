@@ -239,7 +239,7 @@
 			// 添加表情事件处理
 			addAEmoji(emoji) {
 				this.clickAni(emoji);
-				this.visible = true;
+				this.addEmoji();
 			}
 		}
 	}

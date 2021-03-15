@@ -66,11 +66,12 @@
 				type: 1,
 				addCommentArg: {},
 				showAddComment:false,
-				isComment:true
+				isComment:true,
+				ideaId:0
 			}
 		},
 		onLoad(option) {
-			this.ideaId = option.id;
+			this.ideaId =  Number(option.id) ;
 		},
 		created() {
 			let id = this.ideaId

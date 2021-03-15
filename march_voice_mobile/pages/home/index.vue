@@ -102,13 +102,13 @@
 
 		created() {
 			if (!getToken()) {
-				forLogin()
+				forLogin();
+				this.recommend();
+				this.follow();
 			} else {
 				this.recommend();
 				this.follow();
 			}
-
-
 		},
 
 		onReachBottom() { //上拉触底函数

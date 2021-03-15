@@ -7,9 +7,7 @@
 		<text v-if="otherList.type==0">您的文章</text>
 		<navigator :url="url" v-if="otherList.type==0" style="color: #007AFF;display: inline-block;">《{{otherList.title}}》</navigator>
 		<text class="tipWords">{{tipWords}}</text>
-
-
-		<view class="time"> <text>{{createDate}}</text></view>
+		<view class="time"> <text>{{format(otherList.createTime)}}</text></view>
 
 	</view>
 </template>
@@ -27,19 +25,7 @@
 				url: "../../pages/articleDetails/index?id="
 			}
 		},
-		computed: {
-			createDate: function() {
-				// let oDate = new Date(this.otherList.createTime);
-				// let	oYear = oDate.getFullYear();
-				// let	oMonth = oDate.getMonth() + 1;
-				// let	oDay = oDate.getDate();
-				// let	oHour = oDate.getHours();
-				// let	oMin = oDate.getMinutes();
-				// let	oSec = oDate.getSeconds();
-				// let oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(oSec); //最后拼接时间
-				return  new Date(parseInt(this.otherList.createTime).toLocaleString().replace(/:\d{1,2}$/,' '));
-			}
-		},
+		
 		created() {
 			if (this.otherList.type == 0) {
 				this.url = "../../pages/articleDetails/index?id=" + this.otherList.articleId;
@@ -55,6 +41,14 @@
 				} else if (this.otherList.status == 1) {
 					this.tipWords = "由于权限不足，未能成功加入三月圈。"
 				}
+			}
+		},
+		methods:{
+			// 把时间戳转换为正确格式
+			format(dateTime) {
+				let stamp = new Date(dateTime);
+				let time = moment(stamp).format('YYYY-MM-DD HH:mm:ss');
+				return time;
 			}
 		}
 

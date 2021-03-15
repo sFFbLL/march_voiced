@@ -10,7 +10,7 @@
 					<text class="word-num-num">{{articleInfo.word_count}}</text>
 				</text>
 				<text class="time">
-					<text>{{createDate}}</text>
+					<text>{{format(articleInfo.update_time)}}</text>
 				</text>
 			</view>
 			<view class="article-content">
@@ -36,7 +36,7 @@
 				<view class="attention-icon comment">
 					<view class="attention-item" @click="comment()">
 						<u-icon name="pinglun" custom-prefix="custom-icon"></u-icon>
-						<text class="attention-num">{{articleInfo.commentTotal}}</text>
+						<!-- <text class="attention-num">{{articleInfo.commentTotal}}</text> -->
 					</view>
 				</view>
 				<!-- 喜欢图标 -->
@@ -97,7 +97,9 @@
 				clickChild: false,
 				likeIcon: "heart",
 				collentIcon: "shoucang1",
-				likeColor: "black"
+				likeColor: "black",
+				clickLike: false,
+				clickCollect: false,
 			}
 		},
 		components: {
@@ -107,21 +109,9 @@
 			comment,
 			commentInput
 		},
-		createDate: function() {
-			// let oDate = new Date(this.messageInfo.createTime);
-			// let oYear = oDate.getFullYear();
-			// let oMonth = oDate.getMonth() + 1;
-			// let oDay = oDate.getDate();
-			// let oHour = oDate.getHours();
-			// let oMin = oDate.getMinutes();
-			// let oSec = oDate.getSeconds();
-			// let oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(
-			// 	oSec); //最后拼接时间
-			let date = new Date(this.articleInfo.update_time + 8 * 3600 * 1000); // 增加8小时
-			return date.toJSON().substr(0, 19).replace('T', ' ');
-		},
+		
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
-			this.id = option.id //打印出上个页面传递的参数。
+			this.id = Number(option.id)   //打印出上个页面传递的参数。进行数据类型转换
 			let id = this.id
 			// 获取文章详情内容
 			getArtileDetails(id).then(res => {
@@ -160,22 +150,39 @@
 		methods: {
 			// 点击喜欢按钮
 			like() {
-				let id = this.id;
-				this.likeIcon = "heart-fill";
-				this.likeColor = "#d81e06";
-				// 调用喜欢接口
-				favour(id).then(res => {
+				// 如果是第一次点击喜欢，增加数据
+				if (!this.clickLike) {
 
-				})
+					let id = this.id;
+					this.likeIcon = "heart-fill";
+					this.likeColor = "#d81e06";
+					this.articleInfo.favourTotal++;
+					// 调用喜欢接口
+					favour(id).then(res => {
+
+					})
+				} else {
+					this.articleInfo.favourTotal--;
+					this.likeIcon = "heart";
+					this.likeColor = "#080100";
+				}
+				this.clickLike = !this.clickLike;
 			},
 			// 点击收藏按钮
 			collent() {
-				let id = this.id;
-				this.collentIcon = "shoucang2";
-				// 调用收藏接口
-				collect(id).then(res => {
+				if (!this.clickCollect) {
+					let id = this.id;
+					this.collentIcon = "shoucang2";
+					this.articleInfo.collectTotal++;
+					// 调用收藏接口
+					collect(id).then(res => {
 
-				})
+					})
+				} else {
+					this.collentIcon = "shoucang1";
+					this.articleInfo.collectTotal--;
+				}
+				this.clickCollect = !this.clickCollect
 			},
 			transpond() {
 				let id = this.id;
@@ -224,6 +231,12 @@
 			addChildComment(payload) {
 				this.commentList[payload.index].commentKids.push(payload);
 				this.isComment = false;
+			},
+			// 把时间戳转换为正确格式
+			format(dateTime) {
+				let stamp = new Date(dateTime);
+				let time = moment(stamp).format('YYYY-MM-DD HH:mm:ss');
+				return time;
 			}
 		},
 		mounted() {
@@ -283,7 +296,8 @@
 	}
 
 	.article-content {
-		padding: 0 10rpx;
+		padding: 20rpx 10rpx;
+
 	}
 
 	>>>.article-content .ql-container {

@@ -2,15 +2,11 @@
 	<view class="attention-cell">
 		<view class="flex-item">
 			<!-- 左侧头像盒子 -->
-			<a @click.stop="inToMine"
-			 class="left-img-box inner-box">
-				<image class="inner-img"
-				 :src="getImgUrl(avatarPath)"
-				 mode="aspectFill"></image>
+			<a @click.stop="inToMine" class="left-img-box inner-box">
+				<image class="inner-img" :src="getImgUrl(avatarPath)" mode="aspectFill"></image>
 			</a>
 			<!-- 中部文字 -->
-			<view class="middle-text-box inner-box"
-			 @click.stop="inToMine">
+			<view class="middle-text-box inner-box" @click.stop="inToMine">
 				<view class="inner-middle-box inner-box">
 					<!-- 昵称盒子 -->
 					<view class="inner-text-name">
@@ -32,19 +28,11 @@
 			<view class="right-button-box">
 				<!-- 无<view v-if="user.follow != null"> ================================================================== -->
 				<view v-if="isFollow != null">
-					<button v-show="isFollow === 0"
-					 class="right-button"
-					 type="default-green"
-					 :disabled="isDisabled"
-					 iconType="circle"
+					<button v-show="isFollow === 0" class="right-button" type="default-green" :disabled="isDisabled" iconType="circle"
 					 @click.stop="changeBtn">
 						<span>关 注</span>
-					 </button>
-					<button v-show="isFollow === 1"
-					 class="right-button"
-					 type="default"
-					 :disabled="isDisabled"
-					 @click.stop="changeBtn"
+					</button>
+					<button v-show="isFollow === 1" class="right-button" type="default" :disabled="isDisabled" @click.stop="changeBtn"
 					 iconType="circle">
 						<span>已关注</span>
 					</button>
@@ -85,8 +73,8 @@
 		},
 		data() {
 			return {
-				isDisabled: false ,// 是否禁用按钮点击
-				openid:null,
+				isDisabled: false, // 是否禁用按钮点击
+				openid: null,
 			}
 		},
 		methods: {
@@ -94,15 +82,15 @@
 			changeBtn() {
 				this.isDisabled = true
 				let that = this;
-				setTimeout(function () {
+				setTimeout(function() {
 					that.isDisabled = false
 				}, 1000);
-				
+
 				let params = {
 					id: this.aid
 				}
-				
-				changeStatus(params).then(res =>{
+
+				changeStatus(params).then(res => {
 					// 手动更改状态，刷新后查询新数据
 					switch (this.isFollow) {
 						case 0:
@@ -117,17 +105,12 @@
 			// 进入其他页面
 			inToMine() {
 				// 跳转页面
-				let that = this
-				 setTimeout(()=>{
-					uni.$emit('getOthersId', {
-						id: that.aid
-					})
-				},1000)
-				
-				uni.switchTab({
-					url: '/pages/personalCenter/index'
-				});
-				// this.$emit('inToPageMine')
+				let that = this;
+
+				uni.navigateTo({
+					url: '../pages/universalPersonalCenter/index?id=' + that.aid
+				})
+
 			},
 			getImgUrl(src) {
 				return settings.imgUrl + src;
