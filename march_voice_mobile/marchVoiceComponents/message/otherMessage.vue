@@ -29,19 +29,16 @@
 		},
 		computed: {
 			createDate: function() {
-				let oDate = new Date(this.otherList.createTime);
-				let	oYear = oDate.getFullYear();
-				let	oMonth = oDate.getMonth() + 1;
-				let	oDay = oDate.getDate();
-				let	oHour = oDate.getHours();
-				let	oMin = oDate.getMinutes();
-				let	oSec = oDate.getSeconds();
-					let oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(oSec); //最后拼接时间
-				return oTime
-			},
-
-
-
+				// let oDate = new Date(this.otherList.createTime);
+				// let	oYear = oDate.getFullYear();
+				// let	oMonth = oDate.getMonth() + 1;
+				// let	oDay = oDate.getDate();
+				// let	oHour = oDate.getHours();
+				// let	oMin = oDate.getMinutes();
+				// let	oSec = oDate.getSeconds();
+				// let oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(oSec); //最后拼接时间
+				return  new Date(parseInt(this.otherList.createTime).toLocaleString().replace(/:\d{1,2}$/,' '));
+			}
 		},
 		created() {
 			if (this.otherList.type == 0) {

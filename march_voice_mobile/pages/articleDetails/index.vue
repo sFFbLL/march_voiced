@@ -10,11 +10,11 @@
 					<text class="word-num-num">{{articleInfo.word_count}}</text>
 				</text>
 				<text class="time">
-					<text>{{articleInfo.update_time}}</text>
+					<text>{{createDate}}</text>
 				</text>
 			</view>
 			<view class="article-content">
-				<jinEdit :html="articleInfo.content" :readOnly="true"></jinEdit>
+				<text v-html="articleInfo.content"></text>
 			</view>
 		</view>
 
@@ -107,6 +107,19 @@
 			comment,
 			commentInput
 		},
+		createDate: function() {
+			// let oDate = new Date(this.messageInfo.createTime);
+			// let oYear = oDate.getFullYear();
+			// let oMonth = oDate.getMonth() + 1;
+			// let oDay = oDate.getDate();
+			// let oHour = oDate.getHours();
+			// let oMin = oDate.getMinutes();
+			// let oSec = oDate.getSeconds();
+			// let oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(
+			// 	oSec); //最后拼接时间
+			let date = new Date(this.articleInfo.update_time + 8 * 3600 * 1000); // 增加8小时
+			return date.toJSON().substr(0, 19).replace('T', ' ');
+		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			this.id = option.id //打印出上个页面传递的参数。
 			let id = this.id
@@ -166,22 +179,21 @@
 			},
 			transpond() {
 				let id = this.id;
-				reprint(id).then(res => {
-				})
+				reprint(id).then(res => {})
 				// 提示转发成功
 				uni.showLoading({
-				    title: '加载中'
+					title: '加载中'
 				});
-				setTimeout(function () {
-				    uni.hideLoading();
+				setTimeout(function() {
+					uni.hideLoading();
 				}, 2000);
-				setTimeout(function () {
-				    uni.showToast({
-				        title: '转发成功',
-				        duration: 2000
-				    });
+				setTimeout(function() {
+					uni.showToast({
+						title: '转发成功',
+						duration: 2000
+					});
 				}, 2000);
-				
+
 			},
 			// 控制评论弹出框的显示开
 			comment(payload) {
