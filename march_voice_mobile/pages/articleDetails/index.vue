@@ -69,6 +69,7 @@
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
 	import jinEdit from '../../components/jin-edit/jin-edit.vue';
 	import comment from '../../marchVoiceComponents/comment/index.vue'
+	import moment from 'moment';
 	import commentInput from '../../marchVoiceComponents/comment/commentInput.vue'
 	import {
 		getArtileDetails,
@@ -109,9 +110,9 @@
 			comment,
 			commentInput
 		},
-		
+
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
-			this.id = Number(option.id)   //打印出上个页面传递的参数。进行数据类型转换
+			this.id = Number(option.id) //打印出上个页面传递的参数。进行数据类型转换
 			let id = this.id
 			// 获取文章详情内容
 			getArtileDetails(id).then(res => {
@@ -121,7 +122,7 @@
 			}).catch(err => {
 				console.log(err, "err login")
 			})
-
+			console.log(this.articleInfo)
 			// 获取评论列表
 			let params = {
 				id: id,
