@@ -72,14 +72,14 @@
 				}
 				let successComment;
 				console.log(params)
-				if (this.type === 1) {
+				if (this.type === 1){
 					// 想法发送评论接口
 					publishIdea(params).then(res => {
 						this.close();
 						successComment = res.code
 					})
 					// 后端添加数据成功
-					if (successComment === 200) {
+					// if (successComment === 200) {
 						// 调用查询用户接口
 						let user;
 						information().then(res => {
@@ -113,9 +113,8 @@
 
 
 
-					}
+					// }
 				} else if (this.type === 0) {
-
 					// 文章评论发布接口
 					addArticleComment(params).then(res => {
 						this.close();

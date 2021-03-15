@@ -15,12 +15,12 @@
 					<text class="number">{{userInfo.followTotal}}</text>
 					<text class="text">关注</text>
 				</view>
-				<view class="collect-total" @click="toCollect">
+				<view class="collect-total" @click="toCollect" v-if="userInfo.isMe===1">
 					<text class="number">{{userInfo.collectTotal}}</text>
 					<text class="text">收藏</text>
 				</view>
 			</view>
-			<view class="edit-user">
+			<view class="edit-user" v-if="userInfo.isMe===1">
 				<button :plain="true" @click="goToEdit()">编辑个人信息</button>
 			</view>
 		</view>
@@ -51,7 +51,7 @@
 						 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
 					</view>
 				</view>
-				<view v-for="(item,index) in draftList" v-if="tabIndex === 2">
+				<view v-for="(item,index) in draftList" v-if="tabIndex === 2&&userInfo.isMe===1">
 					<recommend :articleInfo="item" :isArticleInteract="false" class="arcitle-item item"></recommend>
 				</view>
 				<!-- 下拉加载更多 -->
@@ -90,18 +90,7 @@
 				isLoadMore: false, //是否加载中
 				tabIndex: '',
 				userInfo: {},
-				userInfo1: {
-					signature: "向往的生活：面朝大海，春暖花开。",
-					followTotal: 12,
-					fansTotal: 345,
-					collectTotal: 54,
-					user: {
-						id: 1,
-						avatarPath: require('../../static/img/图片 8.jpg'),
-						nickname: "吴胜科",
-						isFollow: 0
-					}
-				},
+				userId: 0
 				articleList: [],
 				ideaList: [],
 				draftList: [],
@@ -139,12 +128,12 @@
 			imageAdaptation,
 			articleContent
 		},
-		onLoad() {
+		onLoad(option) {
+			this.userId = JSON.stringify(option).id
 			this.getArticleList();
 			this.getIdeaList();
 			this.getDraftList();
 		},
-
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true;
@@ -179,6 +168,7 @@
 					url: '../collect/index'
 				})
 			},
+
 			/* 切换选项卡选项 */
 			tabActive(tabIndex) {
 				this.tabs.map((value, index) => {
@@ -199,7 +189,7 @@
 			getUserInfo() {
 				let _this = this;
 				let params = {
-					id: 1
+					id: _this.userId
 				}
 				getUserInfo(params).then(res => {
 					_this.userInfo = res.data;
@@ -208,7 +198,7 @@
 			getIdeaList() {
 				let _this = this;
 				let params = {
-					id: 1,
+					id: _this.userId,
 					current: _this.ideaCurrent,
 					size: _this.size
 				}
@@ -231,7 +221,7 @@
 			getDraftList() {
 				let _this = this;
 				let params = {
-					id: 1,
+					id: _this.userId,
 					current: _this.ideaCurrent,
 					size: _this.size,
 					kind: 1
@@ -255,7 +245,7 @@
 			getArticleList() {
 				let _this = this;
 				let params = {
-					id: 1,
+					id: _this.userId,
 					current: _this.ideaCurrent,
 					size: _this.size,
 					kind: 2

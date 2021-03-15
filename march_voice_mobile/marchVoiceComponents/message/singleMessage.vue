@@ -13,7 +13,7 @@
 
 			</template>
 			<template v-slot:underText>
-				<text>{{createDate}}</text>
+				<text>{{format(messageInfo.createTime)}}</text>
 			</template>
 		</attentionAndFansCell>
 		<!-- 评论内容 -->
@@ -63,18 +63,12 @@
 				tip: "赞了你的文章",
 			}
 		},
-		computed: {
-			createDate: function() {
-				let oDate = new Date(this.messageInfo.createTime);
-				let oYear = oDate.getFullYear();
-				let oMonth = oDate.getMonth() + 1;
-				let oDay = oDate.getDate();
-				let oHour = oDate.getHours();
-				let oMin = oDate.getMinutes();
-				let oSec = oDate.getSeconds();
-				let oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(
-					oSec); //最后拼接时间
-				return oTime
+		methods: {
+			// 把时间戳转换为正确格式
+			format(dateTime) {
+				let stamp = new Date(dateTime);
+				let time = moment(stamp).format('YYYY-MM-DD HH:mm:ss');
+				return time;
 			}
 		},
 		created() {
