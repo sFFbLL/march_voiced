@@ -12,10 +12,11 @@ export function getArtileDetails(params) {
  */
 export function getArticleCommentList(params) {
 	return Axios.get('/api/comment/article', {
-		id:params.id,
-		current:params.current,
-		size:params.size,
-		childSize:params.childSize
+		// id:params.id,
+		// current:params.current,
+		// size:params.size,
+		// childSize:params.childSize
+		params: params
 	})
 }
 

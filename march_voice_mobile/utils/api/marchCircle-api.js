@@ -61,10 +61,11 @@ export function publishComment(params) {
 // 三月圈详情页查询评论
 export function ideaCommentList(params){
 	return Axios.get('/api/comment/march',{
-		id:params.id,
-		current:params.current,
-		size:params.size,
-		childSize:params.childSize
+		// id:params.id,
+		// current:params.current,
+		// size:params.size,
+		// childSize:params.childSize
+		params: params,
 	})
 }
 

@@ -139,7 +139,7 @@
 			articleContent
 		},
 		onLoad() {
-			uni.$on('getOthersId', this.getOthersId)
+			uni.$on('getOthersId', this.getOthersId.id)
 			this.getArticleList();
 			this.getIdeaList();
 			this.getDraftList();

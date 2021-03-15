@@ -15,7 +15,7 @@
 			<!-- 推荐 -->
 			<view v-if="!tabIndex">
 				<view v-for="(item,index) in recommendList">
-					<recommend v-if="recommendList.length>=1" :articleInfo="item" />
+					<recommend v-if="recommendList.length" :articleInfo="item" />
 				</view>
 			</view>
 			<!-- 关注 -->
