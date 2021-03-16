@@ -100,12 +100,13 @@ func SearchUsername(c *gin.Context) {
 func SearchUserInfo(c *gin.Context) {
 	id := c.Query("id")
 	var userId int
+	var err error
 	fmt.Println(id)
 	if id == "" {
 		userInfo, _ := api.GetUserMessage(c)
 		userId = userInfo.UserId
 	} else {
-		userId, err := strconv.Atoi(id)
+		userId, err = strconv.Atoi(id)
 		if err != nil && userId <= 0 {
 			app.ResponseError(c, app.CodeParamNotComplete)
 			return
