@@ -55,7 +55,6 @@
 
 			// 自适应判断
 			judgeImg() {
-				console.log(this.imgLayout2)
 				if (this.imgList == null) {
 					this.imgDisplay = 'none';
 				} else if (this.imgList.length == 1) {
@@ -68,7 +67,6 @@
 					}
 
 				} else if (this.imgList.length == 2 || this.imgList.length == 4) {
-					// console.log(this.imgLayout2)
 					if (this.imgLayout2 != null) {
 						this.imgWidth = this.imgLayout2[0];
 						this.imgHeight = this.imgLayout2[1];

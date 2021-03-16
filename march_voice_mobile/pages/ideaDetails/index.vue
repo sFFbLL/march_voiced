@@ -26,8 +26,8 @@
 			</view>
 		</view>
 
-		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment" @childFn="parentFn" :type="type"
-		 :addCommentArg="addCommentArg" />
+		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment"
+		 @childFn="parentFn" :type="type" :addCommentArg="addCommentArg" />
 
 
 	</view>
@@ -65,22 +65,28 @@
 				childSize: 3,
 				type: 1,
 				addCommentArg: {},
-				showAddComment:false,
-				isComment:true,
-				ideaId:0
+				showAddComment: false,
+				isComment: true,
+				ideaId: 0
 			}
 		},
 		onLoad(option) {
-			this.ideaId =  Number(option.id) ;
+			this.ideaId = Number(option.id);
 		},
 		created() {
 			let id = this.ideaId
 
 			// 获取想法详细信息接口
 			ideaDetail(id).then(res => {
-				this.ideaInfoList = res.data;
+				if (res.code === 0) {
+					this.ideaInfoList = res.data;
+				}
+
+			}).catch(err => {
+				console.log(err, "err login")
 			})
-			
+			console.log(this.ideaInfoList)
+
 			// 获取评论列表
 			let params = {
 				id: id,
@@ -128,11 +134,13 @@
 			addComment(payload) {
 				this.commentList.unshift(payload);
 				this.showAddComment = false;
+				this.commentCount++;
 			},
 			// 添加一条子评论
 			addChildComment(payload) {
 				this.commentList[payload.index].commentKids.push(payload);
 				this.showAddComment = false;
+				this.commentCount++;
 			}
 		}
 	}
