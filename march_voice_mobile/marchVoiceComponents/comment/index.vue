@@ -12,10 +12,10 @@
 				<view class="bottom">
 					{{ res.createTime }}
 				</view>
-				<view class="reply-box" >
+				<view class="reply-box">
 					<!-- 子评论 -->
-					<view v-for="(item, index) in res.commentKids">
-						<view class="item" >
+					<view v-for="(item, index) in res.ChildComments">
+						<view class="item">
 							<view class="left">
 								<image :src="item.idAvatar" mode="aspectFill"></image>
 							</view>
@@ -26,10 +26,13 @@
 							</view>
 						</view>
 					</view>
-				
-					<view class="all-reply" @tap="toAllReply" v-if="res.commentKids.length > 3">
-						展开更多回复
+					<!-- 获取初次传过来的子评论数量，固定只显示3条子评论，如果长度大于等于3展示更多回复，如果小于3不展示 -->
+					<view v-for="(item, index) in kidsCommentCount">
+						<view class="all-reply" @tap="toAllReply" v-if="item >= 3">
+							展开更多回复
+						</view>
 					</view>
+
 				</view>
 			</view>
 		</view>
@@ -47,7 +50,14 @@
 			commentList: {
 				type: Array,
 				default: []
+			},
+			kidsCommentCount: {
+				type: Array,
+				default: []
 			}
+		},
+		created() {
+			const len = this.commentList.ChildComments.length;
 		},
 		methods: {
 			// 跳转到全部回复
@@ -55,13 +65,13 @@
 				console.log("查看更多");
 			},
 			// 添加评论（回复人id，父评论id，数据的index，被回复人姓名
-			addComment(replyId, follewId,index,replyName) {
+			addComment(replyId, follewId, index, replyName) {
 				let data = {
 					childComment: true,
-					index:index,
+					index: index,
 					replyId: replyId,
 					follewId: follewId,
-					replyName:replyName,
+					replyName: replyName,
 				}
 				this.$emit('childFn', data);
 			}

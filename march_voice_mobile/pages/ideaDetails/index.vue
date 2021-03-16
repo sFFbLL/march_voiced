@@ -98,8 +98,8 @@
 			}
 			ideaCommentList(params).then(res => {
 				if (res.code === 0) {
-					this.commentList = res.data;
-					this.commentCount = res.data.length
+					this.commentList.CommentSum = res.data;
+					this.commentCount = res.data.CommentSum.length
 				}
 
 			})
