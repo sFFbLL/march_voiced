@@ -123,7 +123,6 @@
 			tabCarb,
 			recommend,
 			uniLoadMore,
-
 			emojiControl,
 			imageAdaptation,
 			articleContent
@@ -131,8 +130,8 @@
 		onLoad(option) {
 			this.userId = JSON.stringify(option).id
 			this.getArticleList();
-			this.getIdeaList();
-			this.getDraftList();
+			// this.getIdeaList();
+			// this.getDraftList();
 		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求

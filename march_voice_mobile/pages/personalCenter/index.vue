@@ -2,8 +2,8 @@
 	<view class="personal-center">
 		<!-- 头部用户信息 -->
 		<view class="header">
-			<attentionAndFansCell :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
-			 :isFollow="userInfo.isFollow" class="top-user-info">
+			<attentionAndFansCell :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath" :isFollow="userInfo.isFollow"
+			 class="top-user-info">
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
 			<view class="total">
@@ -39,7 +39,8 @@
 				<view v-for="(item,index) in ideaList" v-if="tabIndex === 1">
 					<view class="ideacontent item">
 						<!-- 用户头像公共组件 -->
-						<attentionAndFansCell :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath" :isFollow="userInfo.isFollow">
+						<attentionAndFansCell :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
+						 :isFollow="userInfo.isFollow">
 							<view slot="underText">{{item.updateTime}}</view>
 						</attentionAndFansCell>
 						<!-- 想法的文字部分 -->
@@ -127,7 +128,7 @@
 			imageAdaptation,
 			articleContent
 		},
-	
+
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true;
@@ -179,6 +180,7 @@
 				}
 				this.tabIndex = tabIndex;
 			},
+			// 获取个人信息
 			getUserInfo() {
 				let _this = this;
 				let params = {
@@ -187,8 +189,8 @@
 				getUserInfo(params).then(res => {
 					_this.userInfo = res.data;
 				})
-				console.log(this.userInfo)
 			},
+			// 获取想法列表
 			getIdeaList() {
 				let _this = this;
 				let params = {
@@ -212,6 +214,7 @@
 					}, 2000);
 				}
 			},
+			// 获取草稿箱列表
 			getDraftList() {
 				let _this = this;
 				let params = {
@@ -236,6 +239,7 @@
 					}, 2000);
 				}
 			},
+			// 获取文章列表
 			getArticleList() {
 				let _this = this;
 				let params = {
@@ -244,9 +248,12 @@
 					size: this.size,
 					kind: 2
 				}
+
 				getUserArticleList(params).then(res => {
 					_this.articleList = [..._this.articleList, ...res.data];
 				})
+
+				console.log(_this.articleList)
 				if (this.articleList.length > 10) {
 					_this.loadStatus = "nomore";
 					_this.articleLoadStatus = "nomore";
@@ -260,18 +267,19 @@
 					}, 2000);
 				}
 			},
+			// 跳转编辑页面
 			goToEdit() {
 				uni.navigateTo({
 					url: '../personalInfo/index?id=' + this.userInfo.id
-					
+
 				})
 			}
 		},
 		created() {
 			this.getUserInfo();
 			this.getArticleList();
-			this.getIdeaList();
-			this.getDraftList();
+			// this.getIdeaList();
+			// this.getDraftList();
 		}
 	}
 </script>

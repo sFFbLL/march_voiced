@@ -88,15 +88,15 @@
 		},
 		// 获取我的id
 		onLoad(option) {
-			this.id = option.id;
+			// this.id = option.id;
+			this.id = JSON.stringify(option).id
 		},
 		created() {
 			// 调用查询用户信息的接口
 			let id = this.id;
 			let _this = this;
-			console.log(id)
 			information(id).then(res => {
-				_this.info = res.data[0];
+				_this.info = res.data;
 			}).catch(err => {
 				console.log("infoerr")
 			})
