@@ -2,7 +2,7 @@
 	<view>
 		<view class="comment" v-for="(res, pindex) in commentList">
 			<view class="left">
-				<image :src="res.idAvatar" mode="aspectFill"></image>
+				<image :src="res.idAvatar?res.idAvatar:null" mode="aspectFill"></image>
 			</view>
 			<view class="right">
 				<view class="top">
@@ -63,7 +63,6 @@
 					follewId: follewId,
 					replyName:replyName,
 				}
-				console.log(11111111)
 				this.$emit('childFn', data);
 			}
 		}

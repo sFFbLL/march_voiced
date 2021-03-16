@@ -32,6 +32,7 @@
 <script>
 	import articleTitle from "../../marchVoiceComponents/showArticle/childComponents/articleTitle.vue"
 
+	import moment from 'moment';
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
 	export default {
 		props: {

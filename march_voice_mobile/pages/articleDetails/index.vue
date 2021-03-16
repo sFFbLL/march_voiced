@@ -2,8 +2,8 @@
 	<view class="article-details">
 		<view class="view-content">
 			<view class="article-title">{{articleInfo.title}}</view>
-			<attentionAndFansCell :nickname="articleInfo.nickname" :avatarPath="articleInfo.avatarPath" :isFollow="articleInfo.isFollow"
-			 class="user-info"></attentionAndFansCell>
+			<attentionAndFansCell :aid="articleInfo.create_by" :nickname="articleInfo.nickname" :avatarPath="articleInfo.avatarPath"
+			 :isFollow="articleInfo.isFollow" class="user-info"></attentionAndFansCell>
 			<view class="article-message">
 				<text class="word-num">
 					<text>字数</text>
@@ -130,7 +130,6 @@
 				size: this.size,
 				childSize: this.childSize,
 			}
-			console.log(params)
 			getArticleCommentList(params).then(res => {
 				if (res.code === 0) {
 					this.commentList = res.data;
@@ -227,11 +226,13 @@
 			addComment(payload) {
 				this.commentList.unshift(payload);
 				this.isComment = false;
+				this.commentCount++;
 			},
 			// 添加一条子评论
 			addChildComment(payload) {
 				this.commentList[payload.index].commentKids.push(payload);
 				this.isComment = false;
+				this.commentCount++;
 			},
 			// 把时间戳转换为正确格式
 			format(dateTime) {

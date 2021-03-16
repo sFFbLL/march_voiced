@@ -79,7 +79,7 @@
 						successComment = res.code
 					})
 					// 后端添加数据成功
-					// if (successComment === 200) {
+					if (successComment === 0) {
 						// 调用查询用户接口
 						let user;
 						information().then(res => {
@@ -113,7 +113,7 @@
 
 
 
-					// }
+					}
 				} else if (this.type === 0) {
 					// 文章评论发布接口
 					addArticleComment(params).then(res => {
@@ -121,7 +121,7 @@
 						successComment = res.code
 					})
 					// 后端添加数据成功
-					if (successComment === 200) {
+					if (successComment === 0) {
 						// 调用查询用户接口
 						let user;
 						information().then(res => {
