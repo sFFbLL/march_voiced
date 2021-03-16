@@ -133,11 +133,13 @@
 			}
 			getArticleCommentList(params).then(res => {
 				if (res.code === 0) {
+					console.log(res.data)
 					this.commentList.CommentSum = res.data;
 					this.commentCount = res.data.CommentSum.length
 					let comments = this.commentList.CommentSum
 					// 获取子评论传来的的数量
 					for (let kid of comments) {
+						console.log(comments)
 						if (kid.ChildComments) {
 							this.kidsCommentCount.push(kid.ChildComments.length)
 						} else {
