@@ -248,12 +248,11 @@
 					size: this.size,
 					kind: 2
 				}
-
+				console.log(params)
 				getUserArticleList(params).then(res => {
 					_this.articleList = [..._this.articleList, ...res.data];
+					console.log(_this.articleList)
 				})
-
-				console.log(_this.articleList)
 				if (this.articleList.length > 10) {
 					_this.loadStatus = "nomore";
 					_this.articleLoadStatus = "nomore";

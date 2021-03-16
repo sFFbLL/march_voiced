@@ -88,8 +88,8 @@
 		},
 		// 获取我的id
 		onLoad(option) {
-			// this.id = option.id;
-			this.id = JSON.stringify(option).id
+			this.id = Number(option.id);
+			// this.id = JSON.stringify(option).id
 		},
 		created() {
 			// 调用查询用户信息的接口
@@ -123,21 +123,45 @@
 			// 更换头像
 			changeHeadImg: function(e) {
 				let _this = this;
+				let avatarPath;
 				uni.chooseImage({
 					count: 1, //默认9
-					sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
-					sourceType: ['album', 'camera'], //从相册选择
+					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album'], //从相册选择
+					// 成功选择图片
 					success: function(res) {
+						// 获取图片路径显示到页面
 						_this.info.avatarPath = res.tempFilePaths[0];
-						// 调用接口转化imgurl
-						let file = res.tempFilePaths
-						let avatarPath = unloadImage(file);
+						// 把图片上传到服务器
+
+						const tempFiles = res.tempFiles;
+						const uploadTask = uni.uploadFile({
+							url: "http://linbolun.cn/api/file/uploadImage",
+							file: tempFiles,
+							header: {
+								'Content-Type': 'multipart/form-data'
+							},
+							success: (res) => {
+								console.log(res.data.full_path)
+								avatarPath = res.data.full_path
+								return res.data.full_path
+							},
+							fail: (res) => {
+								return res
+							}
+						});
+
+						// 监听上传的进度
+						uploadTask.onProgressUpdate((res) => {
+							_this.uploadTaskProgress = res.progress;
+							console.log('上传进度' + _this.uploadTaskProgress);
+						});
 						// 调用修改信息接口
-						let that = _this
 						modInformation(avatarPath).then(res => {
-							that.toptip()
+							_this.toptip()
 						})
 					}
+
 				});
 			},
 			// 控制修改昵称弹出层打开

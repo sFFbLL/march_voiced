@@ -128,7 +128,8 @@
 			articleContent
 		},
 		onLoad(option) {
-			this.userId = JSON.stringify(option).id
+			this.userId = Number(option.id);
+			// this.userId = JSON.stringify(option).id
 			this.getArticleList();
 			// this.getIdeaList();
 			// this.getDraftList();
