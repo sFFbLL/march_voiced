@@ -137,9 +137,9 @@
 					this.commentCount = res.data.CommentSum.length
 					let comments = this.commentList.CommentSum
 					// 获取子评论传来的的数量
-					for (let kid of comments.ChildComments) {
-						if (kid) {
-							this.kidsCommentCount.push(kid.length)
+					for (let kid of comments) {
+						if (kid.ChildComments) {
+							this.kidsCommentCount.push(kid.ChildComments.length)
 						} else {
 							this.kidsCommentCount.push(0)
 						}

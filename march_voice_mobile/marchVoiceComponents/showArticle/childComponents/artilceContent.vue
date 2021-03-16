@@ -1,16 +1,11 @@
 <template>
 	<!-- 文章内容显示 -->
-	<view class="article-content"
-	 @click="toDetails">
+	<view class="article-content" @click="toDetails">
 		<view>
-			<text class="article-text"
-			 v-html="textContent"
-			 ref="articleContent">{{textContent}}</text>
+			<text class="article-text" v-html="textContent" ref="articleContent">{{textContent}}</text>
 		</view>
-		<view v-if="articleImg != ''"
-		 class="article-img">
-			<image :src="articleImg"
-			 mode="aspectFill"></image>
+		<view v-if="articleImg != ''" class="article-img">
+			<image :src="articleImg" mode="aspectFill"></image>
 		</view>
 	</view>
 </template>
@@ -60,6 +55,7 @@
 		},
 		created() {
 			this.textContent = this.articleContent;
+			console.log(this.textContent)
 		},
 		mounted() {
 			this.textContent = this.$refs.articleContent.$el.innerText.replace(/\ +/g, "").replace(/[\r\n]/g, "");

@@ -72,90 +72,95 @@
 				}
 				let successComment;
 				console.log(params)
-				if (this.type === 1){
+				if (this.type === 1) {
 					// 想法发送评论接口
 					publishIdea(params).then(res => {
 						this.close();
-						successComment = res.code
-					})
-					// 后端添加数据成功
-					if (successComment === 0) {
-						// 调用查询用户接口
-						let user;
-						information().then(res => {
-							user = res.data;
-						})
-						// 插入一条新的评论
-						// 判断是对文章评论
-						if (!this.addCommentArg.childComment) {
-							// 把数据传给父组件显示到页面
-							let newcomment = {
-								createByName: user.nickname,
-								idAvatar: user.avatarPath,
-								content: this.comment,
-								createTime: new Date(),
-								commentKids: []
+						return res.code
+					}).then(res => {
+						// 后端添加数据成功
+						if (successComment === 0) {
+							// 调用查询用户接口
+							let user;
+							information().then(res => {
+								user = res.data;
+							})
+							// 插入一条新的评论
+							// 判断是对文章评论
+							if (!this.addCommentArg.childComment) {
+								// 把数据传给父组件显示到页面
+								let newcomment = {
+									createByName: user.nickname,
+									idAvatar: user.avatarPath,
+									content: this.comment,
+									createTime: new Date(),
+									commentKids: []
+								}
+								this.$emit('addComment', newcomment);
+							} else {
+								// 判断是对评论评论
+								let newcomment = {
+									createByName: user.nickname,
+									idAvatar: user.avatarPath,
+									content: this.comment,
+									createTime: new Date(),
+									replyName: this.addCommentArg.replyName,
+									index: this.addCommentArg.index,
+									commentKids: []
+								}
+								this.$emit('addChildComment', newcomment);
 							}
-							this.$emit('addComment', newcomment);
-						} else {
-							// 判断是对评论评论
-							let newcomment = {
-								createByName: user.nickname,
-								idAvatar: user.avatarPath,
-								content: this.comment,
-								createTime: new Date(),
-								replyName: this.addCommentArg.replyName,
-								index: this.addCommentArg.index,
-								commentKids: []
-							}
-							this.$emit('addChildComment', newcomment);
+
+
+
 						}
+					})
 
-
-
-					}
 				} else if (this.type === 0) {
+					let _this = this;
 					// 文章评论发布接口
 					addArticleComment(params).then(res => {
 						this.close();
-						successComment = res.code
-					})
-					// 后端添加数据成功
-					if (successComment === 0) {
-						// 调用查询用户接口
-						let user;
-						information().then(res => {
-							user = res.data;
-						})
-						// 插入一条新的评论
-						// 判断是对文章评论
-						if (!this.addCommentArg.childComment) {
-							// 把数据传给父组件显示到页面
-							let newcomment = {
-								createByName: user.nickname,
-								idAvatar: user.avatarPath,
-								content: this.comment,
-								createTime: new Date(),
-								commentKids: []
+						return res.code
+					}).then(res => {
+						// 后端添加数据成功
+						if (successComment === 0) {
+							// 调用查询用户接口
+							let user;
+							information().then(res => {
+								user = res.data;
+							})
+							// 插入一条新的评论
+							// 判断是对文章评论
+							if (!_this.addCommentArg.childComment) {
+								// 把数据传给父组件显示到页面
+								let newcomment = {
+									createByName: user.nickname,
+									idAvatar: user.avatarPath,
+									content: _this.comment,
+									createTime: new Date(),
+									commentKids: []
+								}
+								this.$emit('addComment', newcomment);
+							} else {
+								// 判断是对评论评论
+								let newcomment = {
+									createByName: user.nickname,
+									idAvatar: user.avatarPath,
+									content: this.comment,
+									createTime: new Date(),
+									replyName: _this.addCommentArg.replyName,
+									index: _this.addCommentArg.index,
+									commentKids: []
+								}
+								this.$emit('addChildComment', newcomment);
 							}
-							this.$emit('addComment', newcomment);
-						} else {
-							// 判断是对评论评论
-							let newcomment = {
-								createByName: user.nickname,
-								idAvatar: user.avatarPath,
-								content: this.comment,
-								createTime: new Date(),
-								replyName: this.addCommentArg.replyName,
-								index: this.addCommentArg.index,
-								commentKids: []
-							}
-							this.$emit('addChildComment', newcomment);
+
+
+
 						}
+					})
 
-
-
-					}
 				}
 
 

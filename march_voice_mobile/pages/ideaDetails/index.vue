@@ -59,7 +59,7 @@
 			return {
 				ideaInfoList: {},
 				commentList: [],
-				commentCount: 3,
+				commentCount: 0,
 				current: 1,
 				size: 5,
 				childSize: 3,
@@ -87,7 +87,7 @@
 			}).catch(err => {
 				console.log(err, "err login")
 			})
-			console.log(this.ideaInfoList)
+			console.log(this.ideaInfoList.content)
 
 			// 获取评论列表
 			let params = {

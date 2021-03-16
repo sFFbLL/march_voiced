@@ -106,7 +106,7 @@
 			inToMine() {
 				console.log(this.aid)
 				uni.navigateTo({
-					url: '../pages/universalPersonalCenter/index?id=' + this.aid
+					url: '/pages/universalPersonalCenter/index?id=' + this.aid,
 				})
 
 			},

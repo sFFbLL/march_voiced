@@ -138,7 +138,7 @@
 		}, {
 			"path": "pages/universalPersonalCenter/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "个人信息",
 				"navigationStyle": "custom"
 			}
 		}
