@@ -102,13 +102,11 @@
 					}
 				})
 			},
-			// 进入其他页面
+			// 进入个人信息页面
 			inToMine() {
-				// 跳转页面
-				let that = this;
-
+				console.log(this.aid)
 				uni.navigateTo({
-					url: '../pages/universalPersonalCenter/index?id=' + that.aid
+					url: '../pages/universalPersonalCenter/index?id=' + this.aid
 				})
 
 			},

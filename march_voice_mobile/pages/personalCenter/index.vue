@@ -2,8 +2,8 @@
 	<view class="personal-center">
 		<!-- 头部用户信息 -->
 		<view class="header">
-			<attentionAndFansCell :id="userInfo.user.id" :nickname="userInfo.user.nickname" :avatarPath="userInfo.user.avatarPath"
-			 :isFollow="userInfo.user.isFollow" class="top-user-info">
+			<attentionAndFansCell :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
+			 :isFollow="userInfo.isFollow" class="top-user-info">
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
 			<view class="total">
@@ -39,7 +39,7 @@
 				<view v-for="(item,index) in ideaList" v-if="tabIndex === 1">
 					<view class="ideacontent item">
 						<!-- 用户头像公共组件 -->
-						<attentionAndFansCell :nickname="userInfo.user.nickname" :avatarPath="userInfo.user.avatarPath" :isFollow="userInfo.user.isFollow">
+						<attentionAndFansCell :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath" :isFollow="userInfo.isFollow">
 							<view slot="underText">{{item.updateTime}}</view>
 						</attentionAndFansCell>
 						<!-- 想法的文字部分 -->
@@ -90,18 +90,6 @@
 				isLoadMore: false, //是否加载中
 				tabIndex: '',
 				userInfo: {},
-				userInfo1: {
-					signature: "向往的生活：面朝大海，春暖花开。",
-					followTotal: 12,
-					fansTotal: 345,
-					collectTotal: 54,
-					user: {
-						id: 1,
-						avatarPath: require('../../static/img/图片 8.jpg'),
-						nickname: "吴胜科",
-						isFollow: 0
-					}
-				},
 				articleList: [],
 				ideaList: [],
 				draftList: [],
@@ -139,12 +127,7 @@
 			imageAdaptation,
 			articleContent
 		},
-		onLoad() {
-			this.getArticleList();
-			this.getIdeaList();
-			this.getDraftList();
-		},
-
+	
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true;
@@ -204,6 +187,7 @@
 				getUserInfo(params).then(res => {
 					_this.userInfo = res.data;
 				})
+				console.log(this.userInfo)
 			},
 			getIdeaList() {
 				let _this = this;
@@ -278,12 +262,16 @@
 			},
 			goToEdit() {
 				uni.navigateTo({
-					url: '../personalInfo/index?id=' + this.userInfo.user.id
+					url: '../personalInfo/index?id=' + this.userInfo.id
+					
 				})
 			}
 		},
 		created() {
 			this.getUserInfo();
+			this.getArticleList();
+			this.getIdeaList();
+			this.getDraftList();
 		}
 	}
 </script>

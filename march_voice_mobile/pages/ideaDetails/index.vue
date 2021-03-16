@@ -5,7 +5,7 @@
 		<view class="ideacontent">
 
 			<!-- 用户头像公共组件 -->
-			<attentionAndFansCell :nickname="ideaInfoList.nickname" :avatarPath="ideaInfoList.avatarPath" :isFollow="ideaInfoList.isFollow"></attentionAndFansCell>
+			<attentionAndFansCell :aid="ideaInfoList.id"  :nickname="ideaInfoList.nickname" :avatarPath="ideaInfoList.avatarPath" :isFollow="ideaInfoList.isFollow"></attentionAndFansCell>
 			<!-- 想法的文字部分 -->
 			<articleContent :articleContent="ideaInfoList.content"></articleContent>
 			<!-- 想法的图片部分组件 -->
@@ -75,12 +75,14 @@
 		},
 		created() {
 			let id = this.ideaId
-
+			let _this = this
 			// 获取想法详细信息接口
 			ideaDetail(id).then(res => {
+				
 				if (res.code === 0) {
-					this.ideaInfoList = res.data;
+					_this.ideaInfoList = res.data;
 				}
+				console.log(res.data)
 
 			}).catch(err => {
 				console.log(err, "err login")
