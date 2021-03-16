@@ -85,17 +85,11 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 			})
 		}
 
-		commentChildSum, err := comment.GetChildSum(commentList[i].ID)
-		if err != nil {
-			return nil, errors.New("获取子评论总数量失败")
-		}
-
 		SignalComments = append(SignalComments, bo.SignalArticleComment{
 			ArticleComment: bo.ArticleComment{
 				Id:         commentList[i].ID,
 				Content:    commentList[i].Content,
 				CreateTime: commentList[i].CreateTime,
-				ChildSum:   commentChildSum,
 				ArticleCreate: bo.ArticleCreate{
 					CreateBy:     commentList[i].CreateBy,
 					CreateByName: userInfo.NickName,
