@@ -17,7 +17,6 @@ type ArticleComment struct {
 	Id         int    `json:"id"`
 	Content    string `json:"content"`
 	CreateTime int64  `json:"createTime"`
-	ChildSum   int64  `json:"childSum"`
 	ArticleCreate
 	ArticleReply
 }

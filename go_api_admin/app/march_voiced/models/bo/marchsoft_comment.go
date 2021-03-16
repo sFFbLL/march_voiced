@@ -17,7 +17,6 @@ type MarchsoftComment struct {
 	Id         int    `json:"id"`
 	Content    string `json:"content"`
 	CreateTime int64  `json:"create_time"`
-	ChildSum   int64  `json:"childSum"`
 	MarchsoftCreate
 	MarchsoftReply
 }
