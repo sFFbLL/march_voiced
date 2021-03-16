@@ -90,7 +90,7 @@
 				isLoadMore: false, //是否加载中
 				tabIndex: '',
 				userInfo: {},
-				userId: 0
+				userId: 0,
 				articleList: [],
 				ideaList: [],
 				draftList: [],
