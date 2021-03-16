@@ -193,8 +193,8 @@
 				let _this = this;
 				let params = {
 					id: 1,
-					current: _this.ideaCurrent,
-					size: _this.size
+					current: this.ideaCurrent,
+					size: this.size
 				}
 				getUserIdeaList(params).then(res => {
 					_this.ideaList = [..._this.ideaList, ...res.data];
@@ -216,8 +216,8 @@
 				let _this = this;
 				let params = {
 					id: 1,
-					current: _this.ideaCurrent,
-					size: _this.size,
+					current: this.ideaCurrent,
+					size: this.size,
 					kind: 1
 				}
 				getUserArticleList(params).then(res => {
@@ -240,8 +240,8 @@
 				let _this = this;
 				let params = {
 					id: 1,
-					current: _this.ideaCurrent,
-					size: _this.size,
+					current: this.ideaCurrent,
+					size: this.size,
 					kind: 2
 				}
 				getUserArticleList(params).then(res => {

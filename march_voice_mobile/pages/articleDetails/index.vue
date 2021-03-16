@@ -25,7 +25,7 @@
 				<text>({{commentCount}})</text>
 			</view>
 			<view class="comment-list">
-				<comment :commentList="commentList" @childFn="comment"></comment>
+				<comment :kidsCommentCount="kidsCommentCount" :commentList="commentList" @childFn="comment"></comment>
 			</view>
 		</view>
 
@@ -101,6 +101,7 @@
 				likeColor: "black",
 				clickLike: false,
 				clickCollect: false,
+				kidsCommentCount: [],
 			}
 		},
 		components: {
@@ -132,8 +133,19 @@
 			}
 			getArticleCommentList(params).then(res => {
 				if (res.code === 0) {
-					this.commentList = res.data;
-					this.commentCount = res.data.length
+					this.commentList.CommentSum = res.data;
+					this.commentCount = res.data.CommentSum.length
+					let comments = this.commentList.CommentSum
+					// 获取子评论传来的的数量
+					for (let kid of comments.ChildComments) {
+						if (kid) {
+							this.kidsCommentCount.push(kid.length)
+						} else {
+							this.kidsCommentCount.push(0)
+						}
+					}
+
+
 				}
 
 			})

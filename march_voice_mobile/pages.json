@@ -129,11 +129,16 @@
 				"navigationBarTitleText": "注册三月之声",
 				"navigationStyle": "custom"
 			}
-		}
-		, {
+		}, {
 			"path": "pages/pastArticle/index",
 			"style": {
 				"navigationBarTitleText": "三月之声登录",
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/universalPersonalCenter/index",
+			"style": {
+				"navigationBarTitleText": "",
 				"navigationStyle": "custom"
 			}
 		}
