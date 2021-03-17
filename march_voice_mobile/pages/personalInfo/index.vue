@@ -193,7 +193,7 @@
 					modInformation(params).then(res => {
 						this.toptip()
 					})
-
+					console.log(params)
 				} else {
 					this.$refs.wnpopup.open();
 					return;

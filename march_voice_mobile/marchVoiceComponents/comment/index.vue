@@ -10,7 +10,7 @@
 				</view>
 				<view class="content" @click="addComment(0,res.id,pindex)">{{ res.content }}</view>
 				<view class="bottom">
-					{{ res.createTime }}
+					{{ format(res.createTime)}}
 				</view>
 				<view class="reply-box">
 					<!-- 子评论 -->
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+	import moment from 'moment';
 	export default {
 		data() {
 			return {
@@ -60,6 +61,12 @@
 			const len = this.commentList.ChildComments.length;
 		},
 		methods: {
+			// 把时间戳转换为正确格式
+			format(dateTime) {
+				let stamp = new Date(dateTime);
+				let time = moment(stamp).format('YYYY-MM-DD HH:mm:ss');
+				return time;
+			},
 			// 跳转到全部回复
 			toAllReply() {
 				console.log("查看更多");
