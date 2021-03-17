@@ -119,16 +119,8 @@
 
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			this.id = Number(option.id) //打印出上个页面传递的参数。进行数据类型转换
-			let id = this.id;
-			// 获取文章详情内容
-			getArtileDetails(id).then(res => {
-				if (res.code === 0) {
-					this.articleInfo = res.data;
-				}
-			}).catch(err => {
-				console.log(err, "err login")
-			})
-			this.getComments()
+			this.getArtile();
+			this.getComments();
 
 		},
 		created() {
@@ -262,15 +254,27 @@
 						// 	_this.recommendLoadStatus = "nomore";
 						// } else 
 						if (this.current === 1) {
-							_this.isLoadMore = false;
+							this.isLoadMore = false;
 							this.commentList = [...this.commentList, ...res.data.CommentSum];
 						} else {
 							setTimeout(function() {
-								_this.isLoadMore = false;
+								this.isLoadMore = false;
 								this.commentList = [...this.commentList, ...res.data.CommentSum];
 							}, 3000);
 						}
 					}
+				})
+			},
+			// 获取文章详情信息
+			getArtile() {
+				let id = this.id;
+				// 获取文章详情内容
+				getArtileDetails(id).then(res => {
+					if (res.code === 0) {
+						this.articleInfo = res.data;
+					}
+				}).catch(err => {
+					console.log(err, "err login")
 				})
 			}
 		},
@@ -291,6 +295,16 @@
 				this.getComments()
 
 			}
+		},
+		// 下拉刷新
+		onPullDownRefresh() {
+			this.current = 1;
+			let that = this;
+			setTimeout(function() {
+				this.getArtile();
+				this.getComments();
+				uni.stopPullDownRefresh();
+			}, 1000);
 		},
 	}
 </script>
