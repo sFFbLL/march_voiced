@@ -246,8 +246,7 @@
 				}
 				getArticleCommentList(params).then(res => {
 					if (res.code === 0) {
-						this.commentList = res.data.CommentSum;
-						this.commentCount = res.data.CommentSum.length
+						this.commentList = [...this.commentList, ...res.data.CommentSum];
 						let comments = this.commentList
 						// 获取子评论传来的的数量
 						for (let kid of comments) {
@@ -258,9 +257,20 @@
 							}
 						}
 
-
+						// if (res.data.length < _this.size) {
+						// 	_this.loadStatus = "nomore";
+						// 	_this.recommendLoadStatus = "nomore";
+						// } else 
+						if (this.current === 1) {
+							_this.isLoadMore = false;
+							this.commentList = [...this.commentList, ...res.data.CommentSum];
+						} else {
+							setTimeout(function() {
+								_this.isLoadMore = false;
+								this.commentList = [...this.commentList, ...res.data.CommentSum];
+							}, 3000);
+						}
 					}
-
 				})
 			}
 		},
@@ -275,7 +285,7 @@
 			this.commentCount = commentCount;
 		},
 		onReachBottom() { //上拉触底函数
-			if (!this.isLoadMore ) { //此处判断，上锁，防止重复请求
+			if (!this.isLoadMore) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true
 				this.current += 1;
 				this.getComments()

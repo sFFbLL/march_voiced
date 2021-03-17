@@ -121,35 +121,37 @@
 						let user;
 						information().then(res => {
 							user = res.data;
+						}).then(function(){
+							console.log(this.addCommentArg)
+							// 插入一条新的评论
+							// 判断是对文章评论
+							if (!this.addCommentArg.childComment) {
+								// 把数据传给父组件显示到页面
+								let newcomment = {
+									createByName: user.nickname,
+									idAvatar: user.avatarPath,
+									content: _this.comment,
+									createTime: new Date(),
+									commentKids: []
+								}
+								console.log(136136136)
+								console.log(newcomment)
+								_this.$emit('addComment', newcomment);
+							} else {
+								// 判断是对评论评论
+								let newcomment = {
+									createByName: user.nickname,
+									idAvatar: user.avatarPath,
+									content: this.comment,
+									createTime: new Date(),
+									replyName: _this.addCommentArg.replyName,
+									index: _this.addCommentArg.index,
+									commentKids: []
+								}
+								this.$emit('addChildComment', newcomment);
+							}
 						})
-						console.log(this.addCommentArg)
-						// 插入一条新的评论
-						// 判断是对文章评论
-						if (!this.addCommentArg.childComment) {
-							// 把数据传给父组件显示到页面
-							let newcomment = {
-								createByName: user.nickname,
-								idAvatar: user.avatarPath,
-								content: _this.comment,
-								createTime: new Date(),
-								commentKids: []
-							}
-							console.log(136136136)
-							console.log(newcomment)
-							_this.$emit('addComment', newcomment);
-						} else {
-							// 判断是对评论评论
-							let newcomment = {
-								createByName: user.nickname,
-								idAvatar: user.avatarPath,
-								content: this.comment,
-								createTime: new Date(),
-								replyName: _this.addCommentArg.replyName,
-								index: _this.addCommentArg.index,
-								commentKids: []
-							}
-							this.$emit('addChildComment', newcomment);
-						}
+						
 					})
 
 				}
