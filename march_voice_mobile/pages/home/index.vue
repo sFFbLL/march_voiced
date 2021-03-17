@@ -110,7 +110,20 @@
 				this.follow();
 			}
 		},
-
+		// 下拉刷新
+		onPullDownRefresh() {
+			this.recommendCurrent = 1; //推荐当前页数，
+			this.articleCurrent = 1; //普通文章页数
+			this.followCurrent = 1; //关注当前页数
+			let that = this;
+			that.recommendList = [];
+			this.recommend();
+			this.follow();
+			setTimeout(function() {
+				
+				uni.stopPullDownRefresh();
+			}, 2000);
+		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true

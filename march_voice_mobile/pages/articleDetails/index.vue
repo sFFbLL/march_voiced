@@ -299,10 +299,10 @@
 		// 下拉刷新
 		onPullDownRefresh() {
 			this.current = 1;
-			let that = this;
+			this.getArtile();
+			this.getComments();
 			setTimeout(function() {
-				this.getArtile();
-				this.getComments();
+				
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},

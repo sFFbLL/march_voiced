@@ -123,21 +123,21 @@
 							user = res.data;
 						})
 
-						console.log(this.addCommentArg)
+						console.log(_this.addCommentArg)
 						// 插入一条新的评论
 						// 判断是对文章评论
-						if (!this.addCommentArg.childComment) {
+						if (!_this.addCommentArg.childComment) {
 							console.log(131)
 							// 把数据传给父组件显示到页面
 							let newcomment = {
 								createByName: user.nickname,
 								idAvatar: user.avatarPath,
-								content: this.comment,
+								content: _this.comment,
 								createTime: new Date(),
 								commentKids: []
 							}
 							console.log(newcomment)
-							this.$emit('addComment', newcomment);
+							_this.$emit('addComment', newcomment);
 						} else {
 							console.log(143)
 
@@ -145,14 +145,14 @@
 							let newcomment = {
 								createByName: user.nickname,
 								idAvatar: user.avatarPath,
-								content: this.comment,
+								content: _this.comment,
 								createTime: new Date(),
-								replyName: this.addCommentArg.replyName,
-								index: this.addCommentArg.index,
+								replyName: _this.addCommentArg.replyName,
+								index: _this.addCommentArg.index,
 								commentKids: []
 							}
 							console.log(newcomment)
-							this.$emit('addChildComment', newcomment);
+							_this.$emit('addChildComment', newcomment);
 						}
 					})
 				}

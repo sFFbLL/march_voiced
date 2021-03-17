@@ -29,7 +29,7 @@
 					<!-- 想法的文字部分 -->
 					<articleContent :articleContent="item.content" :isIdea="true" :id="item.id"></articleContent>
 					<!-- 想法的图片部分组件 -->
-					<imageAdaptation :imgList="item.imgList" ></imageAdaptation>
+					<imageAdaptation :imgList="item.imgList"></imageAdaptation>
 					<!-- 点赞表情组件+评论 -->
 					<emojiControl :faceTotals="item.faceTotal" :likeTotals="item.likeTotal" :favourTotals="item.favourTotal"
 					 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
@@ -44,7 +44,7 @@
 			<image src="https://oscimg.oschina.net/oscnet/fd2170a448e37826ae9f4d7088f287b8f24.jpg" />
 		</view>
 		<!-- 发布三月圈悬浮按钮 -->
-		<view  @click="publish()" class="publishbtn">
+		<view @click="publish()" class="publishbtn">
 			<uni-icons class="addicon" type="plusempty" size="43" color="white"></uni-icons>
 		</view>
 	</view>
@@ -85,7 +85,7 @@
 				},
 				marchCircleInfo: {},
 				ideasList: [],
-				
+
 			}
 		},
 		computed: {
@@ -107,6 +107,19 @@
 				this.getCircleList();
 			}
 		},
+		// 下拉刷新
+		onPullDownRefresh() {
+			this.current = 1; //推荐当前页数，
+
+			let that = this;
+			that.ideasList = [];
+			
+			this.getCircleList();
+			setTimeout(function() {
+
+				uni.stopPullDownRefresh();
+			}, 2000);
+		},
 		created() {
 			// 获取三月基本信息接口
 			getMarchCircleInfo().then(res => {
@@ -115,20 +128,21 @@
 			if (this.marchCircleInfo.ismarch == 0) {
 				this.sanyueMumber = false;
 			}
-			let params = {
-				current: this.current,
-				size: this.size
-			}
 
-			this.getCircleList(params);
+
+			this.getCircleList();
 		},
-		
+
 		methods: {
 
 			// 获取三月圈列表
 			// 获取想法列表接口
-			getCircleList(params) {
+			getCircleList() {
 				let _this = this;
+				let params = {
+					current: this.current,
+					size: this.size
+				}
 				marchCircleList(params).then(res => {
 					_this.ideasList = [...this.ideasList, ...res.data];
 					if (res.data.length <= _this.size) {
