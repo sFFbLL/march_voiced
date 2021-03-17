@@ -5,8 +5,7 @@
 		<view class="ideacontent">
 
 			<!-- 用户头像公共组件 -->
-			<attentionAndFansCell :aid="ideaInfoList.id" :nickname="ideaInfoList.nickname" :avatarPath="ideaInfoList.avatarPath"
-			 :isFollow="ideaInfoList.isFollow"></attentionAndFansCell>
+			<attentionAndFansCell :aid="ideaInfoList.id" :avatarPath="ideaInfoList.avatarPath" :isFollow="ideaInfoList.isFollow"></attentionAndFansCell>
 			<!-- 想法的文字部分 -->
 			<articleContent :articleContent="ideaInfoList.content"></articleContent>
 			<!-- 想法的图片部分组件 -->
@@ -117,7 +116,7 @@
 				ideaCommentList(params).then(res => {
 					if (res.code === 0) {
 						this.commentList.CommentSum = res.data;
-						this.commentCount = res.data.CommentSum.length
+						// this.commentCount = res.data.CommentSum.length
 					}
 
 				})
