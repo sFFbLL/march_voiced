@@ -136,7 +136,7 @@
 									commentKids: []
 								}
 								console.log(newcomment)
-								this.$emit('addComment', newcomment);
+								that.$emit('addComment', newcomment);
 							} else {
 								console.log(143)
 								// 判断是对评论评论
