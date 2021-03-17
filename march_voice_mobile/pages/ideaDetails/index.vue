@@ -77,23 +77,24 @@
 		},
 		onLoad(option) {
 			this.ideaId = Number(option.id);
-			let id = this.ideaId;
-			// 获取想法详细信息接口
-			ideaDetail(id).then(res => {
-				if (res.code === 0) {
-					this.ideaInfoList = res.data;
-				}
-			}).catch(err => {
-				console.log(err, "err login")
-			})
-			console.log(this.ideaInfoList.content)
-			this.getComments()
+			this.getIdea();
+			this.getComments();
 			this.addCommentArg = {
 				id: id,
 				replyId: 0,
 				follewId: 0,
 				childComment: false,
 			}
+		},
+		// 下拉刷新
+		onPullDownRefresh() {
+			this.current = 1;
+			this.getIdea();
+			this.getComments();
+			setTimeout(function() {
+				
+				uni.stopPullDownRefresh();
+			}, 2000);
 		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore) { //此处判断，上锁，防止重复请求
@@ -104,6 +105,19 @@
 			}
 		},
 		methods: {
+			// 获取想法详情
+			getIdea() {
+				let id = this.ideaId;
+				// 获取想法详细信息接口
+				ideaDetail(id).then(res => {
+					if (res.code === 0) {
+						this.ideaInfoList = res.data;
+					}
+				}).catch(err => {
+					console.log(err, "err login")
+				})
+				console.log(this.ideaInfoList.content)
+			},
 			// 获取评论列表
 			getComments() {
 				// 获取评论列表

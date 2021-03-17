@@ -144,6 +144,24 @@
 				this.getDraftList();
 			}
 		},
+		// 下拉刷新
+		onPullDownRefresh() {
+			this.articleCurrent = 1; //文章当前页数，
+			this.ideaCurrent = 1; //想法当前页数
+			this.draftCurrent = 1; //草稿当前页数
+
+			let that = this;
+			that.articleList = [];
+			that.ideaList = [];
+			that.draftList = [];
+			this.getArticleList();
+			this.getIdeaList();
+			this.getDraftList();
+			setTimeout(function() {
+
+				uni.stopPullDownRefresh();
+			}, 2000);
+		},
 		methods: {
 			// 点击粉丝数事件
 			toFans() {
