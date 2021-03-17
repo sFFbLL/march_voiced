@@ -29,7 +29,10 @@
 
 		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment"
 		 @childFn="parentFn" :type="type" :addCommentArg="addCommentArg" />
-
+		<!-- 下拉加载更多 -->
+		<view v-show="isLoadMore">
+			<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
+		</view>
 
 	</view>
 </template>
@@ -58,6 +61,8 @@
 		},
 		data() {
 			return {
+				isLoadMore: false, //是否加载中
+				loadStatus: 'loading',
 				ideaInfoList: {},
 				commentList: [],
 				commentCount: 0,
@@ -73,8 +78,6 @@
 		},
 		onLoad(option) {
 			this.ideaId = Number(option.id);
-		},
-		created() {
 			let id = this.ideaId;
 			// 获取想法详细信息接口
 			ideaDetail(id).then(res => {
@@ -85,21 +88,7 @@
 				console.log(err, "err login")
 			})
 			console.log(this.ideaInfoList.content)
-
-			// 获取评论列表
-			let params = {
-				id: id,
-				current: this.current,
-				size: this.size,
-				childSize: this.childSize,
-			}
-			ideaCommentList(params).then(res => {
-				if (res.code === 0) {
-					this.commentList.CommentSum = res.data;
-					this.commentCount = res.data.CommentSum.length
-				}
-
-			})
+			this.getComments()
 			this.addCommentArg = {
 				id: id,
 				replyId: 0,
@@ -107,8 +96,32 @@
 				childComment: false,
 			}
 		},
+		onReachBottom() { //上拉触底函数
+			if (!this.isLoadMore) { //此处判断，上锁，防止重复请求
+				this.isLoadMore = true
+				this.current += 1;
+				this.getComments()
 
+			}
+		},
 		methods: {
+			// 获取评论列表
+			getComments() {
+				// 获取评论列表
+				let params = {
+					id: this.ideaId,
+					current: this.current,
+					size: this.size,
+					childSize: this.childSize,
+				}
+				ideaCommentList(params).then(res => {
+					if (res.code === 0) {
+						this.commentList.CommentSum = res.data;
+						this.commentCount = res.data.CommentSum.length
+					}
+
+				})
+			},
 			// 控制评论弹出框的显示开
 			comment(payload) {
 				let id = this.ideaId;

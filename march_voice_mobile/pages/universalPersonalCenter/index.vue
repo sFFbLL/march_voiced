@@ -272,7 +272,6 @@
 		created() {
 			this.getUserInfo();
 			this.getArticleList();
-			
 			this.getIdeaList();
 			this.getDraftList();
 		}

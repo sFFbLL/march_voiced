@@ -61,6 +61,10 @@
 		</view>
 		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment"
 		 @childFn="parentFn" :type="type" :addCommentArg="addCommentArg" />
+		<!-- 下拉加载更多 -->
+		<view v-show="isLoadMore">
+			<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
+		</view>
 	</view>
 </template>
 
@@ -83,13 +87,14 @@
 	export default {
 		data() {
 			return {
+				isLoadMore: false, //是否加载中
+				loadStatus: 'loading',
 				showAddComment: true,
 				id: 0,
 				current: 1,
 				size: 5,
 				childSize: 3,
 				articleInfo: {},
-				addCommentArg: {},
 				commentCount: 0,
 				commentList: [],
 				isComment: false,
@@ -114,7 +119,7 @@
 
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			this.id = Number(option.id) //打印出上个页面传递的参数。进行数据类型转换
-			let id = this.id
+			let id = this.id;
 			// 获取文章详情内容
 			getArtileDetails(id).then(res => {
 				if (res.code === 0) {
@@ -123,32 +128,8 @@
 			}).catch(err => {
 				console.log(err, "err login")
 			})
-			// 获取评论列表
-			let params = {
-				id: id,
-				current: this.current,
-				size: this.size,
-				childSize: this.childSize,
-			}
-			getArticleCommentList(params).then(res => {
-				if (res.code === 0) {
-					this.commentList = res.data.CommentSum;
-					this.commentCount = res.data.CommentSum.length
-					let comments = this.commentList
-					// 获取子评论传来的的数量
-					for (let kid of comments) {
-						console.log(kid)
-						if (kid.ChildComments) {
-							this.kidsCommentCount.push(kid.ChildComments.length)
-						} else {
-							this.kidsCommentCount.push(0)
-						}
-					}
+			this.getComments()
 
-
-				}
-
-			})
 		},
 		created() {
 			let id = this.id
@@ -236,6 +217,8 @@
 			},
 			// 添加一条评论
 			addComment(payload) {
+				console.log(payload)
+				console.log(239239239)
 				this.commentList.unshift(payload);
 				this.isComment = false;
 				this.commentCount++;
@@ -251,10 +234,38 @@
 				let stamp = new Date(dateTime);
 				let time = moment(stamp).format('YYYY-MM-DD HH:mm:ss');
 				return time;
+			},
+			// 获取评论列表
+			getComments() {
+				// 获取评论列表
+				let params = {
+					id: this.id,
+					current: this.current,
+					size: this.size,
+					childSize: this.childSize,
+				}
+				getArticleCommentList(params).then(res => {
+					if (res.code === 0) {
+						this.commentList = res.data.CommentSum;
+						this.commentCount = res.data.CommentSum.length
+						let comments = this.commentList
+						// 获取子评论传来的的数量
+						for (let kid of comments) {
+							if (kid.ChildComments) {
+								this.kidsCommentCount.push(kid.ChildComments.length)
+							} else {
+								this.kidsCommentCount.push(0)
+							}
+						}
+
+
+					}
+
+				})
 			}
 		},
 		mounted() {
-			let commentCount = 0;
+			let commentCount = this.articleInfo.commentTotal;
 			this.commentList.forEach((comment) => {
 				commentCount++;
 				comment.commentKids.forEach(count => {
@@ -262,7 +273,15 @@
 				})
 			})
 			this.commentCount = commentCount;
-		}
+		},
+		onReachBottom() { //上拉触底函数
+			if (!this.isLoadMore ) { //此处判断，上锁，防止重复请求
+				this.isLoadMore = true
+				this.current += 1;
+				this.getComments()
+
+			}
+		},
 	}
 </script>
 

@@ -70,7 +70,6 @@
 					replyId: this.addCommentArg.replyId,
 					followId: this.addCommentArg.follewId,
 				}
-				console.log(params)
 				if (this.type === 1) {
 					// 想法发送评论接口
 					publishIdea(params).then(res => {
@@ -123,9 +122,10 @@
 						information().then(res => {
 							user = res.data;
 						})
+						console.log(this.addCommentArg)
 						// 插入一条新的评论
 						// 判断是对文章评论
-						if (!_this.addCommentArg.childComment) {
+						if (!this.addCommentArg.childComment) {
 							// 把数据传给父组件显示到页面
 							let newcomment = {
 								createByName: user.nickname,
@@ -134,7 +134,9 @@
 								createTime: new Date(),
 								commentKids: []
 							}
-							this.$emit('addComment', newcomment);
+							console.log(136136136)
+							console.log(newcomment)
+							_this.$emit('addComment', newcomment);
 						} else {
 							// 判断是对评论评论
 							let newcomment = {
@@ -148,10 +150,6 @@
 							}
 							this.$emit('addChildComment', newcomment);
 						}
-
-
-
-
 					})
 
 				}
