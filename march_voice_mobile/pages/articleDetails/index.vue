@@ -123,7 +123,6 @@
 			}).catch(err => {
 				console.log(err, "err login")
 			})
-			console.log(this.articleInfo)
 			// 获取评论列表
 			let params = {
 				id: id,
@@ -133,13 +132,12 @@
 			}
 			getArticleCommentList(params).then(res => {
 				if (res.code === 0) {
-					console.log(res.data)
-					this.commentList.CommentSum = res.data;
+					this.commentList = res.data.CommentSum;
 					this.commentCount = res.data.CommentSum.length
-					let comments = this.commentList.CommentSum
+					let comments = this.commentList
 					// 获取子评论传来的的数量
 					for (let kid of comments) {
-						console.log(comments)
+						console.log(kid)
 						if (kid.ChildComments) {
 							this.kidsCommentCount.push(kid.ChildComments.length)
 						} else {

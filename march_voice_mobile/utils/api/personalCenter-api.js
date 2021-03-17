@@ -13,10 +13,7 @@ export function getUserInfo(params) {
  */
 export function getUserArticleList(params) {
 	return Axios.get('/api/article/user', {
-		id: params.id,
-		current: params.current,
-		size: params.size,
-		kind: params.kind
+		params:params
 	})
 }
 

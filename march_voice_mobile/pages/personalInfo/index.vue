@@ -114,9 +114,8 @@
 				// console.log('picker发送选择改变，携带值为', e.target.value)
 				this.info.sex = e.target.value;
 				let sex = this.info.sex;
-				let _this = this;
 				modInformation(sex).then(res => {
-					_this.toptip();
+					this.toptip();
 				})
 
 			},
@@ -189,10 +188,10 @@
 				if (/^.{2,15}$/.test(value)) {
 					//true
 					this.info.nickname = value;
-					let nickname = this.info.nickname
-					let _this = this;
-					modInformation(nickname).then(res => {
-						_this.toptip()
+					let params = this.info.nickname
+					console.log(params)
+					modInformation(params).then(res => {
+						this.toptip()
 					})
 
 				} else {
@@ -215,9 +214,8 @@
 					//true
 					this.info.signature = value;
 					let signature = this.info.signature
-					let _this = this;
 					modInformation(signature).then(res => {
-						_this.toptip()
+						this.toptip()
 					})
 				} else {
 					this.$refs.popup1Up.open();

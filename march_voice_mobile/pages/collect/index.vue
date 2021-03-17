@@ -109,7 +109,7 @@
 					size:this.size
 				}
 				getRecommend(params).then(res => {
-					_this.recommendList = [..._this.recommendList,...res.data];
+					_this.attentionList = [..._this.attentionList,...res.data];
 					if(res.data.length<=_this.size){
 						_this.loadStatus=nomore;
 					}
