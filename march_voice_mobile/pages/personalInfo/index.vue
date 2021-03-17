@@ -82,7 +82,9 @@
 			return {
 				array: ['男', '女'],
 				id: 0,
-				info: {},
+				info: {
+					nickname: "",
+				},
 
 			}
 		},
@@ -189,9 +191,10 @@
 					//true
 					this.info.nickname = value;
 					let params = this.info.nickname
-					console.log(params)
 					modInformation(params).then(res => {
 						this.toptip()
+					}).catch(err => {
+						console.log(err, "err login")
 					})
 					console.log(params)
 				} else {
