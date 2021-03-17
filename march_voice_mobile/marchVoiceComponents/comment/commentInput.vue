@@ -63,7 +63,7 @@
 			},
 
 			sendComment() {
-
+				let that = this;
 				let params = {
 					id: this.addCommentArg.id,
 					content: this.comment,
@@ -105,7 +105,7 @@
 								index: this.addCommentArg.index,
 								commentKids: []
 							}
-							this.$emit('addChildComment', newcomment);
+							that.$emit('addChildComment', newcomment);
 						}
 					})
 
