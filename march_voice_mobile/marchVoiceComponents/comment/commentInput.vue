@@ -123,7 +123,7 @@
 							user = res.data;
 						})
 
-						console.log(_this.addCommentArg)
+						console.log(user)
 						// 插入一条新的评论
 						// 判断是对文章评论
 						if (!_this.addCommentArg.childComment) {
