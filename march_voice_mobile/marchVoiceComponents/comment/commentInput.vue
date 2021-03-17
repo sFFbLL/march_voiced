@@ -118,10 +118,8 @@
 					}).then(res => {
 						// 后端添加数据成功
 						// 调用查询用户接口
-						let user;
 						information().then(res => {
-							user = res.data;
-							return user
+							return res.data
 						}).then(res => {
 
 							console.log(res)
@@ -138,7 +136,7 @@
 									commentKids: []
 								}
 								console.log(newcomment)
-								_this.$emit('addComment', newcomment);
+								this.$emit('addComment', newcomment);
 							} else {
 								console.log(143)
 								// 判断是对评论评论

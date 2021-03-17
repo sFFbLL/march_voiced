@@ -209,8 +209,9 @@
 			},
 			// 添加一条评论
 			addComment(payload) {
+				console.log(212)
 				console.log(payload)
-				console.log(239239239)
+
 				this.commentList.unshift(payload);
 				this.isComment = false;
 				this.commentCount++;
@@ -302,7 +303,7 @@
 			this.getArtile();
 			this.getComments();
 			setTimeout(function() {
-				
+
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},
