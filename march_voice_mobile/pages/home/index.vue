@@ -102,14 +102,14 @@
 
 		created() {
 
-			if (!getToken()) {
-				forLogin();
+			// if (!getToken()) {
+			// 	forLogin();
+			// 	this.recommend();
+			// 	this.follow();
+			// } else {
 				this.recommend();
 				this.follow();
-			} else {
-				this.recommend();
-				this.follow();
-			}
+			// }
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
