@@ -112,7 +112,6 @@
 					})
 
 				} else if (this.type === 0) {
-					let _this = this;
 					// 文章评论发布接口
 					addArticleComment(params).then(res => {
 						this.close();
@@ -123,8 +122,36 @@
 						information().then(res => {
 							return res.data
 						}).then(res => {
-							_this.addComment(res);
+							// 插入一条新的评论
+							// 判断是对文章评论
+							if (!this.addCommentArg.childComment) {
+								// 把数据传给父组件显示到页面
+								let newcomment = {
+									createByName: res.nickname,
+									idAvatar: res.avatarPath,
+									content: this.comment,
+									createTime: new Date(),
+									commentKids: []
+								}
+								console.log(137)
+								that.$emit('addComment', newcomment);
+								console.log(139)
+							} else {
+								// 判断是对评论评论
+								let newcomment = {
+									createByName: user.nickname,
+									idAvatar: user.avatarPath,
+									content: this.comment,
+									createTime: new Date(),
+									replyName: this.addCommentArg.replyName,
+									index: this.addCommentArg.index,
+									commentKids: []
+								}
+								console.log(newcomment)
+								this.$emit('addChildComment', newcomment);
+							}
 							console.log(127127)
+							
 						})
 
 					})
@@ -134,36 +161,7 @@
 			},
 			// 插入新的评论在页面
 			addComment(res) {
-				let that =this;
-				// 插入一条新的评论
-				// 判断是对文章评论
-				if (!this.addCommentArg.childComment) {
-					console.log(131)
-					// 把数据传给父组件显示到页面
-					let newcomment = {
-						createByName: res.nickname,
-						idAvatar: res.avatarPath,
-						content: this.comment,
-						createTime: new Date(),
-						commentKids: []
-					}
-					console.log(newcomment)
-					that.$emit('add-comment', newcomment);
-					console.log(152)
-				} else {
-					// 判断是对评论评论
-					let newcomment = {
-						createByName: user.nickname,
-						idAvatar: user.avatarPath,
-						content: this.comment,
-						createTime: new Date(),
-						replyName: this.addCommentArg.replyName,
-						index: this.addCommentArg.index,
-						commentKids: []
-					}
-					console.log(newcomment)
-					this.$emit('addChildComment', newcomment);
-				}
+				
 			}
 		}
 	}
