@@ -59,7 +59,7 @@
 				</view>
 			</view>
 		</view>
-		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment"
+		<commentInput :show="showAddComment" v-if="isComment" @add-comment="addComment" @addChildComment="addChildComment"
 		 @childFn="parentFn" :type="type" :addCommentArg="addCommentArg" />
 		<!-- 下拉加载更多 -->
 		<view v-show="isLoadMore">
