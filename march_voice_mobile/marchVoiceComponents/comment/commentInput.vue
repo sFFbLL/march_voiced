@@ -54,14 +54,16 @@
 
 		},
 		methods: {
+			// 获取输入内容
 			onkeyinput(event) {
 				this.comment = event.target.value;
 				this.sendDisabled = false;
 			},
+			// 关闭评论
 			close() {
 				this.$emit('childFn');
 			},
-
+			// 新增评论
 			sendComment() {
 				let that = this;
 				let params = {
@@ -121,43 +123,47 @@
 						information().then(res => {
 							return res.data
 						}).then(res => {
-
-							console.log(res)
-							// 插入一条新的评论
-							// 判断是对文章评论
-							if (!_this.addCommentArg.childComment) {
-								console.log(131)
-								// 把数据传给父组件显示到页面
-								let newcomment = {
-									createByName: res.nickname,
-									idAvatar: res.avatarPath,
-									content: _this.comment,
-									createTime: new Date(),
-									commentKids: []
-								}
-								console.log(newcomment)
-								that.$emit('addComment', newcomment);
-							} else {
-								console.log(143)
-								// 判断是对评论评论
-								let newcomment = {
-									createByName: user.nickname,
-									idAvatar: user.avatarPath,
-									content: _this.comment,
-									createTime: new Date(),
-									replyName: _this.addCommentArg.replyName,
-									index: _this.addCommentArg.index,
-									commentKids: []
-								}
-								console.log(newcomment)
-								_this.$emit('addChildComment', newcomment);
-							}
+							_this.addComment(res);
+							console.log(127127)
+							console.log(that)
 						})
 
 					})
 				}
 
 
+			},
+			// 插入新的评论在页面
+			addComment(res) {
+				// 插入一条新的评论
+				// 判断是对文章评论
+				if (!this.addCommentArg.childComment) {
+					console.log(131)
+					// 把数据传给父组件显示到页面
+					let newcomment = {
+						createByName: res.nickname,
+						idAvatar: res.avatarPath,
+						content: this.comment,
+						createTime: new Date(),
+						commentKids: []
+					}
+					console.log(newcomment)
+					this.$emit('addComment', newcomment);
+				} else {
+					console.log(143)
+					// 判断是对评论评论
+					let newcomment = {
+						createByName: user.nickname,
+						idAvatar: user.avatarPath,
+						content: this.comment,
+						createTime: new Date(),
+						replyName: this.addCommentArg.replyName,
+						index: this.addCommentArg.index,
+						commentKids: []
+					}
+					console.log(newcomment)
+					this.$emit('addChildComment', newcomment);
+				}
 			}
 		}
 	}
