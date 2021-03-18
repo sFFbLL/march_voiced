@@ -211,7 +211,6 @@
 			addComment(payload) {
 				console.log(212)
 				console.log(payload)
-
 				this.commentList.unshift(payload);
 				this.isComment = false;
 				this.commentCount++;
