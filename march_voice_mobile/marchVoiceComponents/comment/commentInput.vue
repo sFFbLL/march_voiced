@@ -85,7 +85,7 @@
 							user = res.data;
 						})
 						// 插入一条新的评论
-						// 判断是对文章评论
+						// 判断是对fu评论
 						if (!this.addCommentArg.childComment) {
 							// 把数据传给父组件显示到页面
 							let newcomment = {
@@ -150,7 +150,6 @@
 								console.log(newcomment)
 								this.$emit('addChildComment', newcomment);
 							}
-							console.log(127127)
 							
 						})
 
