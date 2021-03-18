@@ -101,6 +101,7 @@
 		},
 
 		created() {
+
 			if (!getToken()) {
 				forLogin();
 				this.recommend();
@@ -120,7 +121,7 @@
 			this.recommend();
 			this.follow();
 			setTimeout(function() {
-				
+
 				uni.stopPullDownRefresh();
 			}, 2000);
 		},
