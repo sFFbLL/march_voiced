@@ -16,13 +16,15 @@ module.exports = {
 	 */
 	TokenKey: 'tokenKey',
 	OpenKey: 'openId',
+	UserName: 'userName',
+	AvatarPath: 'avatarPath',
 	// 15003891797
 	/**
 	 * @description 请求超时时间，毫秒（默认5秒）
 	 */
 	timeout: 10000,
 	// 本地
-	
+
 	appId: 'wx58f1a0720acc69f4',
 	// appId:'wxeafec80fffe34544',
 	// serveName:"http://120.26.141.144:8080",
@@ -30,7 +32,7 @@ module.exports = {
 	// 服务器
 	// appId:'wxa346375168174534',
 	// serveName:"http://paky.hist.edu.cn",
-	imgUrl:'http://linbolun.cn/api/file/download/'
+	imgUrl: 'http://linbolun.cn/api/file/download/'
 
 
 };

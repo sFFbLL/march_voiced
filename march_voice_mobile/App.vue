@@ -7,9 +7,9 @@
 			console.log('App Launch')
 		},
 		onShow: function() {
-			let timerId = setInterval(() => {
-				check()
-			}, 5000);
+			// let timerId = setInterval(() => {
+			// 	check()
+			// }, 5000);
 			console.log('App Show')
 		},
 		onHide: function() {

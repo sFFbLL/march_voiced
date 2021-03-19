@@ -55,7 +55,6 @@
 		},
 		created() {
 			this.textContent = this.articleContent;
-			console.log(this.textContent)
 		},
 		mounted() {
 			this.textContent = this.$refs.articleContent.$el.innerText.replace(/\ +/g, "").replace(/[\r\n]/g, "");
