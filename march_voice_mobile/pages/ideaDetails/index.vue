@@ -2,10 +2,10 @@
 	<view>
 		<!-- 间隔槽 -->
 		<u-gap height="20" bg-color="#f5f5f5"></u-gap>
-		<view class="ideacontent">
-
+		<view class="ideacontent" v-if="ideaInfoList.id">
 			<!-- 用户头像公共组件 -->
-			<attentionAndFansCell :aid="ideaInfoList.id" :avatarPath="ideaInfoList.avatarPath" :isFollow="ideaInfoList.isFollow"></attentionAndFansCell>
+			<attentionAndFansCell :aid="ideaInfoList.id" :nickname="ideaInfoList.nickname" :avatarPath="ideaInfoList.avatarPath"
+			 :isFollow="ideaInfoList.isFollow"></attentionAndFansCell>
 			<!-- 想法的文字部分 -->
 			<articleContent :articleContent="ideaInfoList.content"></articleContent>
 			<!-- 想法的图片部分组件 -->
@@ -22,7 +22,7 @@
 				<text>({{commentCount}})</text>
 			</view>
 			<view class="comment-list">
-				<comment :commentList="commentList" @childFn="comment"></comment>
+				<comment :type="type" @getMore="getMore" :kidsCommentCount="kidsCommentCount" :commentList="commentList" @childFn="comment"></comment>
 			</view>
 		</view>
 
@@ -72,19 +72,24 @@
 				addCommentArg: {},
 				showAddComment: false,
 				isComment: true,
-				ideaId: 0
+				ideaId: 0,
+				kidsCommentCount: []
 			}
 		},
 		onLoad(option) {
 			this.ideaId = Number(option.id);
-			this.getIdea();
-			this.getComments();
+
+		},
+		created() {
+			let id = this.ideaId;
 			this.addCommentArg = {
 				id: id,
 				replyId: 0,
 				follewId: 0,
 				childComment: false,
 			}
+			this.getIdea();
+			this.getComments();
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -92,7 +97,7 @@
 			this.getIdea();
 			this.getComments();
 			setTimeout(function() {
-				
+
 				uni.stopPullDownRefresh();
 			}, 2000);
 		},
@@ -108,15 +113,15 @@
 			// 获取想法详情
 			getIdea() {
 				let id = this.ideaId;
+				let _this = this;
 				// 获取想法详细信息接口
 				ideaDetail(id).then(res => {
 					if (res.code === 0) {
-						this.ideaInfoList = res.data;
+						_this.ideaInfoList = res.data;
 					}
 				}).catch(err => {
 					console.log(err, "err login")
 				})
-				console.log(this.ideaInfoList.content)
 			},
 			// 获取评论列表
 			getComments() {
@@ -129,8 +134,30 @@
 				}
 				ideaCommentList(params).then(res => {
 					if (res.code === 0) {
-						this.commentList.CommentSum = res.data;
-						// this.commentCount = res.data.CommentSum.length
+						this.commentList = [...this.commentList, ...res.data.CommentSum];
+						let comments = this.commentList
+						// 获取子评论传来的的数量
+						for (let kid of comments) {
+							if (kid.ChildComments) {
+								this.kidsCommentCount.push(kid.ChildComments.length)
+							} else {
+								this.kidsCommentCount.push(0)
+							}
+						}
+					
+						// if (res.data.length < _this.size) {
+						// 	_this.loadStatus = "nomore";
+						// 	_this.recommendLoadStatus = "nomore";
+						// } else 
+						if (this.current === 1) {
+							this.isLoadMore = false;
+							this.commentList = [...this.commentList, ...res.data.CommentSum];
+						} else {
+							setTimeout(function() {
+								this.isLoadMore = false;
+								this.commentList = [...this.commentList, ...res.data.CommentSum];
+							}, 3000);
+						}
 					}
 
 				})
@@ -155,18 +182,51 @@
 			parentFn(payload) {
 				this.showAddComment = false;
 			},
+			// 获取更多子评论接口
+			getMore(payload) {
+				let params = {
+					id: payload.id
+				}
+				ideaChildCommentList(params).then()
+			},
+			// 调用新增评论接口
+			newComment(params) {
+				// 想法评论发布接口
+				publishComment(params).then(res => {});
+			},
 			// 添加一条评论
 			addComment(payload) {
 				this.commentList.unshift(payload);
 				this.showAddComment = false;
 				this.commentCount++;
+				let params = {
+					id: this.addCommentArg.id,
+					content: payload.content,
+					replyId: this.addCommentArg.replyId,
+					followId: this.addCommentArg.follewId,
+				}
+				this.newComment(params);
 			},
 			// 添加一条子评论
 			addChildComment(payload) {
-				this.commentList[payload.index].commentKids.push(payload);
-				this.showAddComment = false;
+				let childs = this.commentList[payload.index].ChildComments;
+				// 判断子评论是否为空
+				if (!childs) {
+					this.commentList[payload.index].ChildComments= [];
+				}
+				// 把数据加到子评论
+				this.commentList[payload.index].ChildComments.push(payload);
 				this.commentCount++;
-			}
+				// 调用增加评论接口
+				let params = {
+					id: this.addCommentArg.id,
+					content: payload.content,
+					replyId: this.addCommentArg.replyId,
+					followId: this.addCommentArg.follewId,
+				}
+				this.newComment(params);
+			},
+		
 		}
 	}
 </script>

@@ -1,6 +1,7 @@
 <template>
 	<view>
 		<view class="comment" v-for="(res, pindex) in commentList">
+
 			<view class="left">
 				<image :src="res.idAvatar?res.idAvatar:null" mode="aspectFill"></image>
 			</view>
@@ -8,7 +9,7 @@
 				<view class="top">
 					<view class="name">{{ res.createByName }}</view>
 				</view>
-				<view class="content" @click="addComment(0,res.id,pindex)">{{ res.content }}</view>
+				<view class="content" @click="addComment(res.id?res.id:0,res.id?res.id:0,pindex,res.createByName)">{{ res.content }}</view>
 				<view class="bottom">
 					{{ format(res.createTime)}}
 				</view>
@@ -27,14 +28,17 @@
 						</view>
 					</view>
 					<!-- 获取初次传过来的子评论数量，固定只显示3条子评论，如果长度大于等于3展示更多回复，如果小于3不展示 -->
-					<view v-for="(item, index) in kidsCommentCount">
-						<view class="all-reply" @tap="toAllReply" v-if="item >= 3">
-							展开更多回复
+
+					<view v-if="kidsCommentCount[pindex]>=3">
+						<view class="all-reply" @tap="toAllReply(res.id)">
+							{{text}}
 						</view>
 					</view>
 
 				</view>
+
 			</view>
+
 		</view>
 	</view>
 </template>
@@ -44,7 +48,7 @@
 	export default {
 		data() {
 			return {
-
+				text: "展开更多回复"
 			};
 		},
 		props: {
@@ -55,11 +59,16 @@
 			kidsCommentCount: {
 				type: Array,
 				default: []
+			},
+			type: {
+				type: Number,
+				default: null
 			}
 		},
-		created() {
-			const len = this.commentList.ChildComments.length;
+		mounted() {
+			console.log(this.commentList)
 		},
+		
 		methods: {
 			// 把时间戳转换为正确格式
 			format(dateTime) {
@@ -68,11 +77,13 @@
 				return time;
 			},
 			// 跳转到全部回复
-			toAllReply() {
-				console.log("查看更多");
+			toAllReply(id) {
+				this.$emit('getMore', id);
+				this.text = "";
 			},
 			// 添加评论（回复人id，父评论id，数据的index，被回复人姓名
 			addComment(replyId, follewId, index, replyName) {
+				
 				let data = {
 					childComment: true,
 					index: index,
@@ -80,6 +91,7 @@
 					follewId: follewId,
 					replyName: replyName,
 				}
+				console.log(data)
 				this.$emit('childFn', data);
 			}
 		}

@@ -25,7 +25,7 @@
 				<text>({{commentCount}})</text>
 			</view>
 			<view class="comment-list">
-				<comment :kidsCommentCount="kidsCommentCount" :commentList="commentList" @childFn="comment"></comment>
+				<comment :type="type" @getMore="getMore" :kidsCommentCount="kidsCommentCount" :commentList="commentList" @childFn="comment"></comment>
 			</view>
 		</view>
 
@@ -192,6 +192,7 @@
 				let id = this.id;
 				this.isComment = true;
 				// 如果是子组件点击进入评论，传入这条评论的参数
+				// console.log(payload)
 				if (payload) {
 					this.addCommentArg = {
 						childComment: payload.childComment,
@@ -201,25 +202,64 @@
 						follewId: payload.follewId,
 						replyName: payload.replyName,
 					}
+				}else{
+					this.addCommentArg = {
+						id: this.id,
+						replyId: 0,
+						follewId: 0,
+						childComment: false,
+					}
 				}
 			},
 			// 控制评论弹出框的显示关
 			parentFn(payload) {
 				this.isComment = false;
 			},
+			// 获取更多子评论接口
+			getMore(payload) {
+				let params = {
+					id: payload.id
+				}
+				getChildCommentList(params).then()
+			},
+			// 调用新增评论接口
+			newComment(params) {
+				// 文章评论发布接口
+				addArticleComment(params).then(res => {});
+			},
 			// 添加一条评论
 			addComment(payload) {
-				console.log(212)
-				console.log(payload)
 				this.commentList.unshift(payload);
 				this.isComment = false;
 				this.commentCount++;
+
+				let params = {
+					id: this.addCommentArg.id,
+					content: payload.content,
+					replyId: this.addCommentArg.replyId,
+					followId: this.addCommentArg.follewId,
+				}
+				console.log(params)
+				this.newComment(params);
 			},
 			// 添加一条子评论
 			addChildComment(payload) {
-				this.commentList[payload.index].commentKids.push(payload);
+				let childs = this.commentList[payload.index].ChildComments;
+				if (!childs) {
+					this.commentList[payload.index].ChildComments = [];
+				}
+				this.commentList[payload.index].ChildComments.push(payload);
+				
 				this.isComment = false;
 				this.commentCount++;
+				let params = {
+					id: this.addCommentArg.id,
+					content: payload.content,
+					replyId: this.addCommentArg.replyId,
+					followId: this.addCommentArg.follewId,
+				}
+				console.log(params)
+				this.newComment(params);
 			},
 			// 把时间戳转换为正确格式
 			format(dateTime) {
@@ -239,7 +279,7 @@
 				getArticleCommentList(params).then(res => {
 					if (res.code === 0) {
 						this.commentList = [...this.commentList, ...res.data.CommentSum];
-						let comments = this.commentList
+						let comments = this.commentList;
 						// 获取子评论传来的的数量
 						for (let kid of comments) {
 							if (kid.ChildComments) {
@@ -276,18 +316,19 @@
 				}).catch(err => {
 					console.log(err, "err login")
 				})
+				console.log(this.articleInfo)
 			}
 		},
-		mounted() {
-			let commentCount = this.articleInfo.commentTotal;
-			this.commentList.forEach((comment) => {
-				commentCount++;
-				comment.commentKids.forEach(count => {
-					commentCount++;
-				})
-			})
-			this.commentCount = commentCount;
-		},
+		// mounted() {
+		// 	let commentCount = this.articleInfo.commentTotal;
+		// 	this.commentList.forEach((comment) => {
+		// 		commentCount++;
+		// 		comment.commentKids.forEach(count => {
+		// 			commentCount++;
+		// 		})
+		// 	})
+		// 	this.commentCount = commentCount;
+		// },
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true

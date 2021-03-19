@@ -32,6 +32,10 @@
 	import {
 		information
 	} from '../../utils/api/personInfo-api.js'
+	import {
+		getUserName,
+		getAvatarPath
+	} from "../../utils/auth.js"
 	export default {
 		data() {
 			return {
@@ -65,103 +69,36 @@
 			},
 			// 新增评论
 			sendComment() {
-				let that = this;
-				let params = {
-					id: this.addCommentArg.id,
-					content: this.comment,
-					replyId: this.addCommentArg.replyId,
-					followId: this.addCommentArg.follewId,
+				// 插入一条新的评论
+				// 判断是对文章评论
+				if (!this.addCommentArg.childComment) {
+					// 把数据传给父组件显示到页面
+					let newcomment = {
+						createByName: getUserName(),
+						idAvatar: getAvatarPath(),
+						content: this.comment,
+						createTime: new Date(),
+						commentKids: []
+					}
+					this.$emit("addComment", newcomment);
+				} else {
+					// 判断是对评论评论
+					let newcomment = {
+						createByName: getUserName(),
+						idAvatar: getAvatarPath(),
+						content: this.comment,
+						createTime: new Date(),
+						replyName: this.addCommentArg.replyName,
+						index: this.addCommentArg.index,
+						commentKids: []
+					}
+					this.$emit('addChildComment', newcomment);
 				}
-				if (this.type === 1) {
-					// 想法发送评论接口
-					publishIdea(params).then(res => {
-						this.close();
-						return res.code
-					}).then(res => {
-						// 后端添加数据成功
-						// 调用查询用户接口
-						let user;
-						information().then(res => {
-							user = res.data;
-						})
-						// 插入一条新的评论
-						// 判断是对fu评论
-						if (!this.addCommentArg.childComment) {
-							// 把数据传给父组件显示到页面
-							let newcomment = {
-								createByName: user.nickname,
-								idAvatar: user.avatarPath,
-								content: this.comment,
-								createTime: new Date(),
-								commentKids: []
-							}
-							this.$emit('addComment', newcomment);
-						} else {
-							// 判断是对评论评论
-							let newcomment = {
-								createByName: user.nickname,
-								idAvatar: user.avatarPath,
-								content: this.comment,
-								createTime: new Date(),
-								replyName: this.addCommentArg.replyName,
-								index: this.addCommentArg.index,
-								commentKids: []
-							}
-							that.$emit('addChildComment', newcomment);
-						}
-					})
-
-				} else if (this.type === 0) {
-					// 文章评论发布接口
-					addArticleComment(params).then(res => {
-						this.close();
-						return res.code
-					}).then(res => {
-						// 后端添加数据成功
-						// 调用查询用户接口
-						information().then(res => {
-							return res.data
-						}).then(res => {
-							// 插入一条新的评论
-							// 判断是对文章评论
-							if (!this.addCommentArg.childComment) {
-								// 把数据传给父组件显示到页面
-								let newcomment = {
-									createByName: res.nickname,
-									idAvatar: res.avatarPath,
-									content: this.comment,
-									createTime: new Date(),
-									commentKids: []
-								}
-								console.log(137)
-								that.$emit('addComment', newcomment);
-								console.log(139)
-							} else {
-								// 判断是对评论评论
-								let newcomment = {
-									createByName: user.nickname,
-									idAvatar: user.avatarPath,
-									content: this.comment,
-									createTime: new Date(),
-									replyName: this.addCommentArg.replyName,
-									index: this.addCommentArg.index,
-									commentKids: []
-								}
-								console.log(newcomment)
-								this.$emit('addChildComment', newcomment);
-							}
-							
-						})
-
-					})
-				}
+				this.close();
 
 
 			},
-			// 插入新的评论在页面
-			addComment(res) {
-				
-			}
+
 		}
 	}
 </script>

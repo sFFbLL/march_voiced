@@ -115,8 +115,10 @@
 			bindPickerChange(e) {
 				// console.log('picker发送选择改变，携带值为', e.target.value)
 				this.info.sex = e.target.value;
-				let sex = this.info.sex;
-				modInformation(sex).then(res => {
+				let params = {
+					sex:this.info.sex
+				}
+				modInformation(params).then(res => {
 					this.toptip();
 				})
 
@@ -157,6 +159,9 @@
 							_this.uploadTaskProgress = res.progress;
 							console.log('上传进度' + _this.uploadTaskProgress);
 						});
+						let params = {
+							avatarPath:avatarPath
+						}
 						// 调用修改信息接口
 						modInformation(avatarPath).then(res => {
 							_this.toptip()
@@ -190,7 +195,9 @@
 				if (/^.{2,15}$/.test(value)) {
 					//true
 					this.info.nickname = value;
-					let params = this.info.nickname
+					let params = {
+						nickname:this.info.nickname,
+					}
 					modInformation(params).then(res => {
 						this.toptip()
 					}).catch(err => {
@@ -216,8 +223,10 @@
 				if (/^.{2,50}$/.test(value)) {
 					//true
 					this.info.signature = value;
-					let signature = this.info.signature
-					modInformation(signature).then(res => {
+					let params = {
+						signature:this.info.signature,
+					}
+					modInformation(params).then(res => {
 						this.toptip()
 					})
 				} else {

@@ -53,7 +53,7 @@ export function ideaDetail(params) {
 
 // 三月圈详情页发布评论
 export function publishComment(params) {
-	return Axios.post('/api/march/comment', {
+	return Axios.post('/api/comment/marchsoft', {
 		params: params,
 	})
 }

@@ -71,6 +71,7 @@
 				default: null
 			},
 		},
+		
 		data() {
 			return {
 				isDisabled: false, // 是否禁用按钮点击
@@ -104,7 +105,6 @@
 			},
 			// 进入个人信息页面
 			inToMine() {
-				console.log(this.aid)
 				uni.navigateTo({
 					url: '/pages/universalPersonalCenter/index?id=' + this.aid,
 				})

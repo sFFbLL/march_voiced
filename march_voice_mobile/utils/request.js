@@ -21,14 +21,12 @@ Axios.defaults.timeout = 8000;
 Axios.interceptors.request.use(
 	// 在发送请求前要做的事儿
 	(config) => {
-		console.log("来到了全局request中");
-		// setToken("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNjE1OTk0NjA5LCJpc3MiOiJteS1wcm9qZWN0In0.R-IviSlw1nw2U6ijLnHyJfrLi7kSBNyaIf6sZKueIL0")
+		// setToken("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLmg7Pms5UiLCJleHAiOjE2MTYxNDkxNjIsImlzcyI6Im15LXByb2plY3QifQ.CxGCxdbt47qho7i5AsGaPgTK5onyCJUum9yZzkoH_4s")
 		if (getToken()) {
 			config.headers['Authorization'] = getToken() //让每个请求携带自定义token
 		}
 		config.headers['Content-type'] = "application/json;charset=utf-8";
 		config.data = JSON.stringify(config.data);
-		console.log(config);
 		return config;
 
 
@@ -40,7 +38,6 @@ Axios.interceptors.request.use(
 // 响应拦截器
 Axios.interceptors.response.use(
 	(response) => {
-		console.log(response.data, "success");
 		// uni.showToast({
 		// 	title: response.data.message,
 		// 	duration: 2000,
