@@ -15,7 +15,7 @@
 			<!-- 推荐 -->
 			<view v-if="!tabIndex">
 				<view v-for="(item,index) in recommendList">
-					<recommend v-if="recommendList.length" :articleInfo="item" />
+					<recommend v-if="recommendList.length" :notshow="notshow" :articleInfo="item" />
 				</view>
 			</view>
 			<!-- 关注 -->
@@ -74,6 +74,7 @@
 		},
 		data() {
 			return {
+				notshow:true,
 				recommendCurrent: 1, //推荐当前页数，
 				articleCurrent: 1, //普通文章页数
 				followCurrent: 1, //关注当前页数
@@ -99,7 +100,10 @@
 				isRecommend: true, //是否是推荐文章
 			}
 		},
-
+		onLoad() {
+			this.recommend();
+			this.follow();
+		},
 		created() {
 			if (!getToken()) {
 				forLogin();

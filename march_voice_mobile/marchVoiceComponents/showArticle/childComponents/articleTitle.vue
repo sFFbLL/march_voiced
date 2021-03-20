@@ -38,7 +38,7 @@
 				// console.log(1)
 				// 跳转到编辑页面
 				uni.navigateTo({
-						url: '../ideaDetails/index?id=' + this.id + '&commentTotal=' + this.commentTotal
+						url: '../ideaDetails/index?id=' + this.articleId + '&commentTotal=' + this.commentTotal
 				})
 			}
 		},

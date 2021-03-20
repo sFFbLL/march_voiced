@@ -65,9 +65,7 @@ export function ideaCommentList(params) {
  * @param {Object} params {id:id,current:页码,size:一页大小,childSize:子评论条数}
  */
 export function ideaChildCommentList(params) {
-	return Axios.get('/api/comment/children/article', {
-		id: params.id,
-		current: params.current,
-		size: params.size
+	return Axios.get('/api/comment/children/marchsoft', {
+		params: params
 	})
 }

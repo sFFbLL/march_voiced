@@ -36,8 +36,10 @@ export function addArticleComment(params) {
  */
 export function getChildCommentList(params) {
 	return Axios.get('/api/comment/children/article', {
-		id: params.id
-	})
+			params: params
+		}
+
+	)
 }
 
 /**

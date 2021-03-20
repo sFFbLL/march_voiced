@@ -83,9 +83,11 @@
 						content: this.value,
 						createTime: new Date(),
 						replyName: this.addCommentArg.replyName,
-						index: this.addCommentArg.index,
+						index: this.addCommentArg.index?this.addCommentArg.index:null,
 						ChildComments: []
 					}
+					
+					console.log(44444444444)
 					this.$emit('addChildComment', newcomment);
 				}
 				this.close();

@@ -72,6 +72,7 @@
 	.article-content {
 		margin-top: 18rpx;
 		display: flex;
+		justify-content: space-between;
 		font-size: 28rpx;
 		font-family: PingFangSC;
 		color: #404040;
@@ -88,12 +89,13 @@
 
 	.article-img {
 		display: inline-block;
-		margin-left: 30rpx;
+		/* margin-right: 30rpx; */
+		
 	}
 
 	.article-img image {
-		width: 170rpx;
-		height: 100%;
+		width: 200rpx;
+		height: 160rpx;
 		background-color: rgba(238, 238, 238, 1);
 		border-radius: 4px;
 	}
