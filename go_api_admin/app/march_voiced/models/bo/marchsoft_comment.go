@@ -16,7 +16,7 @@ type ChildrenMarchsoftComment struct {
 type MarchsoftComment struct {
 	Id         int    `json:"id"`
 	Content    string `json:"content"`
-	CreateTime int64  `json:"create_time"`
+	CreateTime int64  `json:"createTime"`
 	MarchsoftCreate
 	MarchsoftReply
 }
@@ -24,7 +24,7 @@ type MarchsoftComment struct {
 type MarchsoftCreate struct {
 	CreateBy     uint   `json:"createBy"`
 	CreateByName string `json:"createByName"`
-	IdAvatar     string `json:"id_avatar"`
+	IdAvatar     string `json:"idAvatar"`
 }
 
 type MarchsoftReply struct {
