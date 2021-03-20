@@ -48,7 +48,7 @@ func (e *SysJob) GetJobList(p *dto.GetJobList, orderRule string) (jobList []*Sys
 	table := orm.Eloquent.Table(e.TableName()).Where("is_deleted=? AND name like ?", []byte{0}, name)
 	if p.EndTime != 0 && p.StartTime != 0 {
 		err = table.Where("create_time > ? AND create_time < ?", p.StartTime, p.EndTime).Count(&count).
-			Offset((p.Current - 1) * p.Size).Limit(p.Size).Order(orderRule).Find(&jobList).Error
+			Offset(p.Current - 1*p.Size).Limit(p.Size).Order(orderRule).Find(&jobList).Error
 	} else {
 		err = table.Count(&count).Offset((p.Current - 1) * p.Size).Limit(p.Size).Order(orderRule).Find(&jobList).Error
 	}
