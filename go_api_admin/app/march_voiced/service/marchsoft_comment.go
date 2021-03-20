@@ -45,11 +45,11 @@ func (mc *MarchsoftComment) GetMarchsoftComment(p *dto.GetMarchsoftComment) (res
 	}
 	res = new(bo.GetMarchsoftComment)
 	var SignalComments []bo.SignalMarchsoftComment
-	var ChildComments []bo.MarchsoftComment
 
 	commentList, _ := comment.GetCommentList(p)
 	// 这里面获取的是二级评论的信息和一级评论的用户的信息
 	for i := 0; i < len(commentList); i++ {
+		var ChildComments []bo.MarchsoftComment
 		userInfo, err := comment.GetUserInfo(commentList[i].CreateBy)
 		userReplyInfo, err := comment.GetUserInfo(commentList[i].ReplyId)
 		if err != nil {

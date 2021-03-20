@@ -46,17 +46,18 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 	}
 	res = new(bo.GetArticleComment)
 	var SignalComments []bo.SignalArticleComment
-	var ChildComments []bo.ArticleComment
 
 	commentList, _ := comment.GetCommentList(p)
 	// 这里面获取的是二级评论的信息和ArticleComment一级评论的用户的信息
 	for i := 0; i < len(commentList); i++ {
+		var ChildComments []bo.ArticleComment
 		userInfo, err := comment.GetUserInfo(commentList[i].CreateBy)
 		userReplyInfo, err := comment.GetUserInfo(commentList[i].ReplyId)
 		if err != nil {
 			return nil, errors.New("获取用户信息失败")
 		}
 		commentChild, err := comment.GetChildCommentList(int(p.ID), int(p.ChildSize), commentList[i].ID)
+
 		if err != nil {
 			return nil, errors.New("查询子评论失败")
 		}
@@ -68,6 +69,7 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 			if err != nil {
 				return nil, errors.New("获取参数失败")
 			}
+
 			ChildComments = append(ChildComments, bo.ArticleComment{
 				Id:         commentChild.ID,
 				Content:    commentChild.Content,
@@ -102,6 +104,7 @@ func (co *ArticleComment) GetArticleComment(p *dto.GetArticleComment) (res *bo.G
 			},
 			ChildComments: ChildComments,
 		})
+		//ChildComments = ChildComments[0:0]
 	}
 	res.CommentSum = SignalComments
 

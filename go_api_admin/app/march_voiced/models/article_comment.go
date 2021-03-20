@@ -75,6 +75,7 @@ func (co *ArticleComment) GetChildCommentList(articleId int, size int, pid int) 
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=? AND article_id=?", []byte{0}, articleId)
 	err = table.Where("pid=?", pid).Limit(size).Order("create_time desc").Find(&commentList).Error
 	return
+
 }
 
 // GetUserInfo 获取与评论有关的用户的信息
