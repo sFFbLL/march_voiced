@@ -85,6 +85,10 @@ func (a *Model) LoginDao(info oauth.UserInfo) (int, SysUser, error) {
 
 	// 如果用户不存在，创建新用户
 	if err == gorm.ErrRecordNotFound {
+		image, err := utils.SaveWxHead(info.HeadImgURL)
+		if err != nil {
+			return 0, SysUser{}, err
+		}
 		newUser := WxUser{
 			Wx_nick_name:   info.Nickname,
 			Openid:         info.OpenID,
@@ -93,7 +97,7 @@ func (a *Model) LoginDao(info oauth.UserInfo) (int, SysUser, error) {
 			Province:       info.Province,
 			City:           info.City,
 			Country:        info.Country,
-			Avatar:         info.HeadImgURL,
+			Avatar:         image,
 			Unionid:        info.Unionid,
 			Is_subscribe:   0,
 			Subscribe_time: 0,
