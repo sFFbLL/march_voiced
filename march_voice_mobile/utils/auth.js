@@ -32,11 +32,11 @@ export function setOpenId(OpenId) {
 	return Cookies.set(OpenKey, OpenId)
 }
 export function setUserName(userName) {
-	return Cookies.set(TokenKey, userName)
+	return Cookies.set(UserName, userName)
 
 }
 export function setAvatarPath(avatarPath) {
-	return Cookies.set(TokenKey, avatarPath)
+	return Cookies.set(AvatarPath, avatarPath)
 
 }
 
