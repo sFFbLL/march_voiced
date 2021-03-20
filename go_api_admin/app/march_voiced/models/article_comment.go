@@ -73,7 +73,7 @@ func (co *ArticleComment) GetChildSum(id int) (sum int64, err error) {
 func (co *ArticleComment) GetChildCommentList(articleId int, size int, pid int) (commentList []*ArticleComment, err error) {
 
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=? AND article_id=?", []byte{0}, articleId)
-	err = table.Where("pid=?", pid).Limit(size).Order("create_time desc").Find(&commentList).Error
+	err = table.Where("pid=?", pid).Limit(size).Order("create_time asc").Find(&commentList).Error
 	return
 
 }
@@ -97,6 +97,6 @@ func (co *ArticleComment) GetUserInfo(id uint) (userInfo *UserInfo, err error) {
 func (co *ArticleComment) GetArticleChildComment(p *dto.GetArticleChildComment) (commentList *[]ArticleComment, err error) {
 	commentList = new([]ArticleComment)
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=?", []byte{0})
-	err = table.Where("pid=?", p.ID).Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).Order("create_time desc").Find(commentList).Error
+	err = table.Where("pid=?", p.ID).Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).Order("create_time asc").Find(commentList).Error
 	return
 }
