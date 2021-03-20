@@ -28,5 +28,5 @@ func SetUserCache(userId int, data interface{}, cacheKey string) {
 	if err != nil {
 		return
 	}
-	global.Rdb.Set(fmt.Sprintf("%s%d", cacheKey, userId), res, time.Duration(config.JwtConfig.Timeout) * time.Second)
+	global.Rdb.Set(fmt.Sprintf("%s%d", cacheKey, userId), res, time.Duration(config.JwtConfig.Timeout)*time.Second)
 }

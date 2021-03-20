@@ -11,7 +11,7 @@ type MarchFavour struct {
 func (e *MarchFavour) AddMarchFavour(p *dto.MarchFavourDto, userId int) (err error) {
 	marchFavour := new(models.MarchSoftFavour)
 	marchFavour.MarchsoftId = p.Id
-	marchFavour.Type = *p.Type
+	marchFavour.Type = p.Type
 	marchFavour.UpdateBy = uint(userId)
 	marchFavour.CreateBy = uint(userId)
 	err = marchFavour.AddMarchFavour(p)
