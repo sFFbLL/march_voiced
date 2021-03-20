@@ -132,38 +132,35 @@
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album'], //从相册选择
 					// 成功选择图片
-					success: function(res) {
+					success:  (res) => {
 						// 获取图片路径显示到页面
 						_this.info.avatarPath = res.tempFilePaths[0];
 						// 把图片上传到服务器
-						let temp = res.tempFilePaths[0]
+						let temp = res.tempFilePaths[0];
 						uni.uploadFile({
 							url: "http://linbolun.cn/api/file/uploadImage",
 							filePath: temp,
 							success: (res) => {
-								console.log(res.data)
-								if (res.data !== 0) {
+								let newRes = JSON.parse(res.data);
+								if (newRes.code != 0) {
 									_this.$refs.sTips.show({
 										title: res.data.message,
 										type: 'error',
 										duration: '2300',
 									});
-								} else {
-									avatarPath = res.data.full_path
-									return res.data.full_path
 								}
-
+								avatarPath = newRes.data.path
+								let params = {
+									avatarPath: avatarPath
+								}
+								// 调用修改信息接口
+								modInformation(params).then(res => {
+									_this.toptip()
+								})
+								
 							},
 						});
-
-
-						let params = {
-							avatarPath: avatarPath
-						}
-						// 调用修改信息接口
-						modInformation(avatarPath).then(res => {
-							_this.toptip()
-						})
+						
 					}
 
 				});

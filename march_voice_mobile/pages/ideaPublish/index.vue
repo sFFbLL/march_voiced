@@ -25,10 +25,10 @@
 		data() {
 			return {
 				ideaWords: "",
-				srcList:[],
+				srcList:[],//页面的图片路径
 				btnLoading:false,
 				uploadTaskProgress:0,
-				imgList:[],
+				imgList:[],//传给后端的服务器返回的图片路径
 			}
 		},
 
@@ -55,40 +55,26 @@
 			upImg(){
 				let _this =this;
 				uni.chooseImage({
-					    count: 6, //默认9
-					    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-					    sourceType: ['album'], //从相册选择
+					count: 6, //默认9
+					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album'], //从相册选择
 						// 成功选择图片
-					success(res) {
+					success:(res)=> {
+						var tempFilePaths =res.tempFilePaths;
 							// 获取图片路径显示到页面
 						for(let value of res.tempFilePaths){
 								_this.srcList.push(value);
+								// 图片上传到服务器
+								uni.uploadFile({
+									url:"http://linbolun.cn/api/file/uploadImage",
+									filePath:value,
+									success: (res) => {
+										
+										let newRes = JSON.parse(res.data);
+										_this.imgList.push(newRes.data.path);
+									}
+								});
 						}
-						// 把图片上传到服务器
-					
-						const tempFiles = res.tempFiles;
-							console.log(tempFiles)
-						 const uploadTask =uni.uploadFile({
-							url:"http://linbolun.cn/api/file/uploadImage",
-							file:tempFiles,
-							header: {
-								'Content-Type': 'multipart/form-data'
-							},
-							success: (res) => {
-								console.log(res.data.full_path)
-								this.imgList=res.data.full_path
-								return res.data.full_path
-							},
-							fail: (res) => {
-								return res
-							}
-						});
-						
-						// 监听上传的进度
-						  uploadTask.onProgressUpdate((res) => {
-							_this.uploadTaskProgress=res.progress;
-						console.log('上传进度' + _this.uploadTaskProgress);
-							});
 						}
 
 				});
@@ -121,13 +107,6 @@
 					    duration: 2000
 					});
 				}else{
-					let agree;
-					// 判断图片上传进度，>100才可以上传
-					let timeLimit=setInterval(() =>{
-						agree=_this.uploadTaskProgress>=100?true:false;
-						}, 1000);
-					if(agree){
-						clearInterval(timerId); 
 						let params={
 									content:this.ideaWords,
 									imageList:this.imgList,
@@ -135,11 +114,9 @@
 									}
 						// 调用发布接口,
 							publishIdea(params).then(res=>{
-							}).then(function(){
 								setTimeout(function() {
 									_this.btnLoading=false;
 								}, 2000);
-							}).then(function(){
 								setTimeout(function() {
 								uni.showToast({
 											title: '发布成功',
@@ -148,13 +125,11 @@
 											 duration: 2000
 											});
 								}, 2000);
-								
-							}).then(function(){
 								uni.navigateTo({
 									url:'../marchCircle/index'
 								})
 							})
-					}
+					
 						
 					
 						
