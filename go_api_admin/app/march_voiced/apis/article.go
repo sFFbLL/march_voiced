@@ -425,7 +425,7 @@ func ReprintArticleHandler(c *gin.Context) {
 	a := new(service.Article)
 	userMsg := new(api.UserMessage)
 	articleMsg := new(bo.ArticleDetailMsg)
-	var id []int
+	artRep := new(dto.ArticleReprint)
 	var signal int
 	var err error
 
@@ -438,7 +438,7 @@ func ReprintArticleHandler(c *gin.Context) {
 	}
 
 	// 参数绑定
-	err = c.ShouldBind(&id)
+	err = c.ShouldBindJSON(artRep)
 	if err != nil {
 		// 请求参数有误， 直接返回响应
 		zap.L().Error("ReprintArticleHandler params failed", zap.String("Username", userMsg.Username), zap.Error(err))
@@ -447,7 +447,7 @@ func ReprintArticleHandler(c *gin.Context) {
 	}
 
 	// 进入service层对数据操作
-	articleMsg, signal, err = a.ReprintArticle(id[0], userMsg.UserId)
+	articleMsg, signal, err = a.ReprintArticle(int(artRep.ID), userMsg.UserId)
 	if err != nil {
 		zap.L().Error("ReprintArticleHandler service failed", zap.String("Username", userMsg.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeInsertOperationFail)

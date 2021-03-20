@@ -57,3 +57,7 @@ type ArticleSearchPaginator struct {
 	Size       uint   `form:"size" binding:"lte=50"`
 	SearchWord string `form:"searchWord" binding:"required"`
 }
+
+type ArticleReprint struct {
+	ID uint `json:"id" binding:"required"`
+}

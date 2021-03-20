@@ -544,10 +544,13 @@ func goArticleMsg(articleCh *chan *bo.GoArticleMsg, wg *sync.WaitGroup, articleM
 	// 异常捕获
 	defer func() {
 		if err := recover(); err != nil {
-			*articleCh <- &articleMsg
-			wg.Done()
 			zap.L().Error("Call goArticleMsg defer recover", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.String("error", string(utils.Stack())))
 		}
+
+		// 管道放数据
+		*articleCh <- &articleMsg
+		wg.Done()
+		zap.L().Info("Call goArticleMsg Done", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)))
 	}()
 
 	articleCollect := new(models.ArticleCollect)
@@ -556,7 +559,7 @@ func goArticleMsg(articleCh *chan *bo.GoArticleMsg, wg *sync.WaitGroup, articleM
 	follow := new(models.Follow)
 	var err error
 
-	// 获取数据
+	// 获取文章收藏数
 	zap.L().Info("Call goArticleMsg ArticleCollectCount", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	articleCollect.ArticleId = articleMsg.ArticleId
 	articleMsg.CollectTotal, err = articleCollect.ArticleCollectCount()
@@ -564,6 +567,7 @@ func goArticleMsg(articleCh *chan *bo.GoArticleMsg, wg *sync.WaitGroup, articleM
 		zap.L().Error("goArticleMsg ArticleCollectCount failed", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	}
 
+	// 获取文章评论数
 	zap.L().Info("Call goArticleMsg ArticleCommentCount", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	articleComment.ArticleId = articleMsg.ArticleId
 	articleMsg.CommentTotal, err = articleComment.ArticleCommentCount()
@@ -571,6 +575,7 @@ func goArticleMsg(articleCh *chan *bo.GoArticleMsg, wg *sync.WaitGroup, articleM
 		zap.L().Error("goArticleMsg ArticleCommentCount failed", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	}
 
+	// 获取文章喜欢数
 	zap.L().Info("Call goArticleMsg ArticleFavourCount", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	articleFavour.ArticleId = articleMsg.ArticleId
 	articleMsg.FavourTotal, err = articleFavour.ArticleFavourCount()
@@ -590,10 +595,6 @@ func goArticleMsg(articleCh *chan *bo.GoArticleMsg, wg *sync.WaitGroup, articleM
 		}
 	}
 
-	// 管道放数据
-	*articleCh <- &articleMsg
-	wg.Done()
-	zap.L().Info("Call goArticleMsg Done", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 	return
 }
 

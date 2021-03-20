@@ -342,10 +342,13 @@ func goMarchMsg(marchCh *chan *bo.GoMarchMsg, wg *sync.WaitGroup, marchMsg bo.Go
 	// 异常捕获
 	defer func() {
 		if err := recover(); err != nil {
-			*marchCh <- &marchMsg
-			wg.Done()
 			zap.L().Error("Call goMarchMsg defer recover", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.String("error", string(utils.Stack())))
 		}
+
+		// 管道放数据
+		*marchCh <- &marchMsg
+		wg.Done()
+		zap.L().Info("Call goMarchMsg Done", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)))
 	}()
 
 	marchComment := new(models.MarchsoftComment)
@@ -355,7 +358,7 @@ func goMarchMsg(marchCh *chan *bo.GoMarchMsg, wg *sync.WaitGroup, marchMsg bo.Go
 	marchFavourTotal := new([]bo.MarchSoftFavourTotal)
 	var err error
 
-	// 获取数据
+	// 获取评论数
 	marchComment.MarchsoftId = marchMsg.MarchId
 	zap.L().Info("Call goMarchMsg GetMarchSoftCommentCount", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 	marchMsg.CommentTotal, err = marchComment.GetMarchSoftCommentCount()
@@ -363,6 +366,7 @@ func goMarchMsg(marchCh *chan *bo.GoMarchMsg, wg *sync.WaitGroup, marchMsg bo.Go
 		zap.L().Error("goMarchMsg GetMarchSoftCommentCount failed", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 	}
 
+	// 获取喜欢数
 	marchFavour.MarchsoftId = marchMsg.MarchId
 	zap.L().Info("Call goMarchMsg MarchFavourCountByType", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 	marchFavourTotal, err = marchFavour.MarchFavourCountByType()
@@ -404,9 +408,5 @@ func goMarchMsg(marchCh *chan *bo.GoMarchMsg, wg *sync.WaitGroup, marchMsg bo.Go
 		}
 	}
 
-	// 管道放数据
-	*marchCh <- &marchMsg
-	wg.Done()
-	zap.L().Info("Call goMarchMsg Done", zap.String("MarchId", utils.UIntToString(marchMsg.MarchId)), zap.String("UserID", utils.UIntToString(marchMsg.UserId)), zap.Error(err))
 	return
 }
