@@ -2,8 +2,8 @@
 	<view class="personal-center">
 		<!-- 头部用户信息 -->
 		<view class="header">
-			<attentionAndFansCell :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
-			 :isFollow="userInfo.isFollow" class="top-user-info">
+			<attentionAndFansCell :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath" :isFollow="userInfo.isFollow"
+			 class="top-user-info">
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
 			<view class="total">
@@ -129,7 +129,7 @@
 		},
 		onLoad(option) {
 			this.userId = Number(option.id);
-			
+
 		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求

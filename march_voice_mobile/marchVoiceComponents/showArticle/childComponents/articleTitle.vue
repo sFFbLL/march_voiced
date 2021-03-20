@@ -24,6 +24,10 @@
 			articleTitle: {
 				type: String,
 				default: ""
+			},
+			commentTotal: {
+				type: Number,
+				default: 0
 			}
 		},
 		components: {
@@ -34,7 +38,7 @@
 				// console.log(1)
 				// 跳转到编辑页面
 				uni.navigateTo({
-					url: '../articleDetails/index?id=' + this.articleId
+						url: '../ideaDetails/index?id=' + this.id + '&commentTotal=' + this.commentTotal
 				})
 			}
 		},

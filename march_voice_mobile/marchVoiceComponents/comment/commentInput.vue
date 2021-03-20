@@ -46,14 +46,14 @@
 		},
 
 		props: {
-			type: {
+			type: {//是从那个页面调用的，想法详情是1，文章详情是0，更多评论详情是3
 				type: Number,
 				default: null
 			},
-			addCommentArg: {
+			addCommentArg: {//需要在页面显示的新增评论的数据
 				type: Object
 			},
-			show: {
+			show: {//控制是否展示遮罩层
 				type: Boolean
 			}
 
@@ -70,7 +70,6 @@
 			},
 			// 新增评论
 			sendComment() {
-				console.log(this.value)
 				// 插入一条新的评论
 				// 判断是对文章评论
 				if (!this.addCommentArg.childComment) {

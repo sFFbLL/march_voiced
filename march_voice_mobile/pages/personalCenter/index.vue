@@ -202,7 +202,7 @@
 			getUserInfo() {
 				let _this = this;
 				let params = {
-					id: 1
+					id: 0
 				}
 				getUserInfo(params).then(res => {
 					_this.userInfo = res.data;

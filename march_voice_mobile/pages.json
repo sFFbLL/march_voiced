@@ -146,7 +146,7 @@
             "path" : "pages/moreComments/moreComments",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "评论详情",
                 "enablePullDownRefresh": false
             }
             
