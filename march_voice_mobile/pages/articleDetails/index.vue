@@ -26,7 +26,7 @@
 				<text>({{commentCount}})</text>
 			</view>
 			<view class="comment-list">
-				<comment :type="type" @getMore="getMore" :kidsCommentCount="kidsCommentCount" :commentList="commentList" @childFn="comment"></comment>
+				<comment :id="id" :type="type" @getMore="getMore" :kidsCommentCount="kidsCommentCount" :commentList="commentList" @childFn="comment"></comment>
 			</view>
 		</view>
 
@@ -125,6 +125,7 @@
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			this.id = Number(option.id); //打印出上个页面传递的参数。进行数据类型转换
 			this.commentCount = Number(option.commentTotal);
+			console.log(this.commentCount)
 			this.getArtile();
 			this.getComments();
 
@@ -148,7 +149,10 @@
 					this.likeColor = "#d81e06";
 					this.articleInfo.favourTotal++;
 					// 调用喜欢接口
-					favour(id).then(res => {
+					let params={
+						id:id
+					}
+					favour(params).then(res => {
 
 					})
 				} else {
@@ -165,7 +169,10 @@
 					this.collentIcon = "shoucang2";
 					this.articleInfo.collectTotal++;
 					// 调用收藏接口
-					collect(id).then(res => {
+					let params={
+						id:id
+					}
+					collect(params).then(res => {
 
 					})
 				} else {
@@ -176,7 +183,10 @@
 			},
 			transpond() {
 				let id = this.id;
-				reprint(id).then(res => {})
+				let params={
+					id:id
+				}
+				reprint(params).then(res => {})
 				// 提示转发成功
 				uni.showLoading({
 					title: '加载中'
@@ -220,13 +230,6 @@
 			parentFn(payload) {
 				this.isComment = false;
 			},
-			// 获取更多子评论接口
-			getMore(payload) {
-				let params = {
-					id: payload.id
-				}
-				getChildCommentList(params).then()
-			},
 			// 调用新增评论接口
 			newComment(params) {
 				// 文章评论发布接口
@@ -234,13 +237,7 @@
 			},
 			// 添加一条评论
 			addComment(payload) {
-				// let newid;
-				// // 判断评论列表是否有评论，没有就让id=1
-				// if (this.commentList[0]) {
-				// 	newid = this.commentList[0].id++;
-				// } else {
-				// 	newid = 1;
-				// }
+				
 				// 把数据添加到本地数组里
 				let newcomment = {
 					createByName: getUserName(),

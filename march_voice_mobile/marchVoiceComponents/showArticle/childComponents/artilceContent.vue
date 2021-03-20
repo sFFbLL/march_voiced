@@ -34,7 +34,7 @@
 				type: Boolean,
 				default: false
 			},
-			commentTotal:{
+			commentTotal: {
 				type: Number,
 				default: 0
 			}
@@ -45,14 +45,16 @@
 		methods: {
 			toDetails() {
 				if (this.isIdea) {
+
 					// 跳转详情页面
 					uni.navigateTo({
-						url: '../ideaDetails/index?id=' + this.id+'&commentTotal='+this.commentTotal
+						url: '../ideaDetails/index?id=' + this.id + '&commentTotal=' + this.commentTotal
 					})
 				} else {
-					// 跳转到编辑页面
+					
+					// 跳转到页面
 					uni.navigateTo({
-						url: '../articleDetails/index?id=' + this.id+'&commentTotal='+this.commentTotal
+						url: '../articleDetails/index?id=' + this.id + '&commentTotal=' + this.commentTotal
 					})
 				}
 			}

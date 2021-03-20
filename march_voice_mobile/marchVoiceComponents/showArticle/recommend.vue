@@ -3,7 +3,7 @@
 	<view class="recommend-component">
 		<!-- 文章标题 -->
 		<articleTitle :articleTitle="articleInfo.title"
-		 :articleId="articleInfo.id" />
+		 :articleId="articleInfo.id" :commentTotal="articleInfo.commentTotal"/>
 		<!-- 作者信息 -->
 		<attentionAndFansCell v-if="articleInfo.create_by"
 		 :aid="articleInfo.create_by"

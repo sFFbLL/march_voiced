@@ -1,7 +1,6 @@
 <template>
 	<view>
 		<view class="comment" v-for="(res, pindex) in commentList">
-
 			<view class="left">
 				<image :src="res.idAvatar?res.idAvatar:null" mode="aspectFill"></image>
 			</view>
@@ -9,11 +8,12 @@
 				<view class="top">
 					<view class="name">{{ res.createByName }}</view>
 				</view>
+				<text v-if="res.replyName" class="reply-name">@{{res.replyName}}</text>
 				<view class="content" @click="addComment(res.createBy,res.id,pindex,res.createByName)">{{ res.content }}</view>
 				<view class="bottom">
 					{{ format(res.createTime)}}
 				</view>
-				<view class="reply-box">
+				<view class="reply-box" v-if="showKids">
 					<!-- 子评论 -->
 					<view v-for="(item, index) in res.ChildComments">
 						<view class="item">
@@ -32,8 +32,8 @@
 					</view>
 					<!-- 获取初次传过来的子评论数量，固定只显示3条子评论，如果长度大于等于3展示更多回复，如果小于3不展示 -->
 
-					<view v-if="kidsCommentCount[pindex]>=3">
-						<view class="all-reply" @tap="toAllReply(res.id)">
+					<view v-if="res.ChildComments&&res.ChildComments.length>=3">
+						<view class="all-reply" @tap="toAllReply(pindex)">
 							{{text}}
 						</view>
 					</view>
@@ -55,17 +55,25 @@
 			};
 		},
 		props: {
-			commentList: {
-				type: Array,
-				default: []
-			},
-			kidsCommentCount: {
-				type: Array,
-				default: []
-			},
-			type: {
+			id:{//文章id
 				type: Number,
 				default: null
+			},
+			commentList: {//评论的列表
+				type: Array,
+				default: []
+			},
+			kidsCommentCount: {//子评论的数量
+				type: Array,
+				default: []
+			},
+			type: {//是从那个页面调用的，想法详情是1，文章详情是0，更多评论详情是3
+				type: Number,
+				default: null
+			},
+			showKids:{//是否展示子评论列表
+				type: Boolean,
+				default: true
 			}
 		},
 
@@ -77,9 +85,12 @@
 				return time;
 			},
 			// 跳转到全部回复
-			toAllReply(id) {
-				this.$emit('getMore', id);
+			toAllReply(pindex) {
+				// this.$emit('getMore', id);
 				this.text = "";
+				uni.navigateTo({
+					url:'../../pages/moreComments/moreComments?commentList'+this.commentList[pindex]+'&id='+this.id
+				})
 			},
 			// 添加评论（回复人id，父评论id，数据的index，被回复人姓名
 			addComment(replyId, follewId, index, replyName) {
