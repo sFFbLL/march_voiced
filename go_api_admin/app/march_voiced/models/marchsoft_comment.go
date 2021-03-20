@@ -56,7 +56,7 @@ func (co *MarchsoftComment) GetChildSum(id int) (sum int64, err error) {
 // GetChildCommentList 查询父评论下属的childSize个子评论
 func (co *MarchsoftComment) GetChildCommentList(marchsoftId uint, size uint, pid int) (commentList []*MarchsoftComment, err error) {
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=? AND marchsoft_id=?", []byte{0}, marchsoftId)
-	err = table.Where("pid=?", pid).Limit(int(size)).Order("create_time desc").Find(&commentList).Error
+	err = table.Where("pid=?", pid).Limit(int(size)).Order("create_time asc").Find(&commentList).Error
 	return
 }
 
@@ -79,7 +79,7 @@ func (co *MarchsoftComment) GetUserInfo(id uint) (userInfo *UserInfo, err error)
 func (co *MarchsoftComment) GetMarchsoftChildComment(p *dto.GetMarchsoftChildComment) (commentList *[]MarchsoftComment, err error) {
 	commentList = new([]MarchsoftComment)
 	table := global.Eloquent.Table(co.TableName()).Where("is_deleted=?", []byte{0})
-	err = table.Where("pid=?", p.ID).Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).Order("create_time desc").Find(commentList).Error
+	err = table.Where("pid=?", p.ID).Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).Order("create_time asc").Find(commentList).Error
 	return
 }
 
