@@ -11,8 +11,11 @@
 				<text v-if="res.replyName" class="reply-name">@{{res.replyName}}</text>
 				<view class="content" @click="addComment(res.createBy,res.id,pindex,res.createByName)">{{ res.content }}</view>
 				<view class="bottom">
+					
 					{{ format(res.createTime)}}
+					
 				</view>
+
 				<view class="reply-box" v-if="showKids">
 					<!-- 子评论 -->
 					<view v-for="(item, index) in res.ChildComments">
@@ -51,27 +54,23 @@
 	export default {
 		data() {
 			return {
-				text: "展开更多回复"
+				text: "展开更多回复>"
 			};
 		},
 		props: {
-			id:{//文章id
+			id: { //文章id
 				type: Number,
 				default: null
 			},
-			commentList: {//评论的列表
+			commentList: { //评论的列表
 				type: Array,
-				default: []
+				default: null
 			},
-			kidsCommentCount: {//子评论的数量
-				type: Array,
-				default: []
-			},
-			type: {//是从那个页面调用的，想法详情是1，文章详情是0，更多评论详情是3
+			type: { //是从那个页面调用的，想法详情是1，文章详情是0，更多评论详情是3
 				type: Number,
 				default: null
 			},
-			showKids:{//是否展示子评论列表
+			showKids: { //是否展示子评论列表
 				type: Boolean,
 				default: true
 			}
@@ -86,10 +85,9 @@
 			},
 			// 跳转到全部回复
 			toAllReply(pindex) {
-				// this.$emit('getMore', id);
-				this.text = "";
+				let parentComment = encodeURIComponent(JSON.stringify(this.commentList[pindex]));
 				uni.navigateTo({
-					url:'../../pages/moreComments/moreComments?commentList'+this.commentList[pindex]+'&id='+this.id
+					url: '../../pages/moreComments/moreComments?parentComment=' + parentComment + '&id=' + this.id+'&type='+this.type
 				})
 			},
 			// 添加评论（回复人id，父评论id，数据的index，被回复人姓名
@@ -110,6 +108,15 @@
 <style lang="scss" scoped>
 	.comment:last-child {
 		border: none;
+	}
+
+	.commentq {
+		position: absolute;
+		left: 650rpx;
+	}
+
+	.chat {
+		transform: rotateY(180deg);
 	}
 
 	.name {

@@ -75,9 +75,9 @@
 						console.log(res.data.token)
 						setToken(res.data.token)
 						// 跳转到首页
-						uni.navigateTo({
-							url: "../home/index"
-						})
+						uni.switchTab({
+							url: '../home/index'
+						});
 					})
 
 
@@ -131,7 +131,7 @@
 
 	/* 整个页面 */
 	.wrap {
-		height: 1300rpx;
+		height: 100vh;
 		width: 100vh;
 		background-image: url(../../static/img/loginbg1.jpeg);
 		background-repeat: no-repeat;

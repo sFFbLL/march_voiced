@@ -125,9 +125,9 @@
 											 duration: 2000
 											});
 								}, 2000);
-								uni.navigateTo({
-									url:'../marchCircle/index'
-								})
+								uni.switchTab({
+								    url: '../marchCircle/index'
+								});
 							})
 					
 						

@@ -39,7 +39,7 @@
 				<view v-for="(item,index) in ideaList" v-if="tabIndex === 1">
 					<view class="ideacontent item">
 						<!-- 用户头像公共组件 -->
-						<attentionAndFansCell :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
+						<attentionAndFansCell :notshow="notshow" :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
 						 :isFollow="userInfo.isFollow">
 							<view slot="underText">{{item.updateTime}}</view>
 						</attentionAndFansCell>
@@ -80,6 +80,7 @@
 	export default {
 		data() {
 			return {
+				notshow:false,
 				articleCurrent: 1, //文章当前页数，
 				ideaCurrent: 1, //想法当前页数
 				draftCurrent: 1, //草稿当前页数
