@@ -102,14 +102,14 @@
 
 		created() {
 
-			// if (!getToken()) {
-			// 	forLogin();
-			// 	this.recommend();
-			// 	this.follow();
-			// } else {
+			if (!getToken()) {
+				forLogin();
 				this.recommend();
 				this.follow();
-			// }
+			} else {
+			this.recommend();
+			this.follow();
+			}
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -211,18 +211,20 @@
 					size: this.size
 				}
 				getFollow(params).then(res => {
-					_this.followList = [..._this.followList, ...res.data.records];
-					if (res.data.records.length < _this.size) {
-						_this.loadStatus = "nomore";
-						_this.follLoadStatus = "nomore";
-					} else if (this.followCurrent === 1) {
-						_this.isLoadMore = false;
+					if (res.code === 0) {
 						_this.followList = [..._this.followList, ...res.data.records];
-					} else {
-						setTimeout(function() {
+						if (res.data.records.length < _this.size) {
+							_this.loadStatus = "nomore";
+							_this.follLoadStatus = "nomore";
+						} else if (this.followCurrent === 1) {
 							_this.isLoadMore = false;
 							_this.followList = [..._this.followList, ...res.data.records];
-						}, 3000);
+						} else {
+							setTimeout(function() {
+								_this.isLoadMore = false;
+								_this.followList = [..._this.followList, ...res.data.records];
+							}, 3000);
+						}
 					}
 				})
 			},
