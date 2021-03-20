@@ -49,6 +49,10 @@
 	import articleContent from '../../marchVoiceComponents/showArticle/childComponents/artilceContent.vue'
 	import comment from '../../marchVoiceComponents/comment/index.vue'
 	import commentInput from '../../marchVoiceComponents/comment/commentInput.vue'
+	import {
+		getUserName,
+		getAvatarPath
+	} from "../../utils/auth.js"
 	export default {
 		components: {
 			emojiControl,
@@ -78,7 +82,7 @@
 		},
 		onLoad(option) {
 			this.ideaId = Number(option.id);
-
+			this.commentCount = Number(option.commentTotal);
 		},
 		created() {
 			let id = this.ideaId;
@@ -144,11 +148,11 @@
 								this.kidsCommentCount.push(0)
 							}
 						}
-					
-						// if (res.data.length < _this.size) {
-						// 	_this.loadStatus = "nomore";
-						// 	_this.recommendLoadStatus = "nomore";
-						// } else 
+
+						if (res.data.length < this.commentCount) {
+							_this.loadStatus = "nomore";
+							_this.recommendLoadStatus = "nomore";
+						} else
 						if (this.current === 1) {
 							this.isLoadMore = false;
 							this.commentList = [...this.commentList, ...res.data.CommentSum];
@@ -196,15 +200,24 @@
 			},
 			// 添加一条评论
 			addComment(payload) {
-				this.commentList.unshift(payload);
+				// 把数据添加到本地数组里
+				let newcomment = {
+					createByName: getUserName(),
+					idAvatar: getAvatarPath(),
+					content: payload,
+					createTime: new Date(),
+					ChildComments: [],
+				}
+				this.commentList.unshift(newcomment);
 				this.showAddComment = false;
 				this.commentCount++;
 				let params = {
 					id: this.addCommentArg.id,
-					content: payload.content,
+					content: payload,
 					replyId: this.addCommentArg.replyId,
 					followId: this.addCommentArg.follewId,
 				}
+				console.log(params)
 				this.newComment(params);
 			},
 			// 添加一条子评论
@@ -212,11 +225,10 @@
 				let childs = this.commentList[payload.index].ChildComments;
 				// 判断子评论是否为空
 				if (!childs) {
-					this.commentList[payload.index].ChildComments= [];
+					this.commentList[payload.index].ChildComments = [];
 				}
 				// 把数据加到子评论
 				this.commentList[payload.index].ChildComments.push(payload);
-				this.commentCount++;
 				// 调用增加评论接口
 				let params = {
 					id: this.addCommentArg.id,
@@ -225,8 +237,15 @@
 					followId: this.addCommentArg.follewId,
 				}
 				this.newComment(params);
+				let id = this.ideaId;
+				this.addCommentArg = {
+					id: id,
+					replyId: 0,
+					follewId: 0,
+					childComment: false,
+				}
 			},
-		
+
 		}
 	}
 </script>

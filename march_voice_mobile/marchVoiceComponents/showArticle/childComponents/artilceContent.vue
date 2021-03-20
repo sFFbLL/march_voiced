@@ -33,6 +33,10 @@
 			isIdea: {
 				type: Boolean,
 				default: false
+			},
+			commentTotal:{
+				type: Number,
+				default: 0
 			}
 		},
 		components: {
@@ -43,12 +47,12 @@
 				if (this.isIdea) {
 					// 跳转详情页面
 					uni.navigateTo({
-						url: '../ideaDetails/index?id=' + this.id
+						url: '../ideaDetails/index?id=' + this.id+'&commentTotal='+this.commentTotal
 					})
 				} else {
 					// 跳转到编辑页面
 					uni.navigateTo({
-						url: '../articleDetails/index?id=' + this.id
+						url: '../articleDetails/index?id=' + this.id+'&commentTotal='+this.commentTotal
 					})
 				}
 			}

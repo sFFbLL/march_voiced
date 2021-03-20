@@ -11,17 +11,17 @@ export function getTags() {
  * @param {Object} params { 标题 文章内容 文章首图url 分类（1/文章 2/笔记） 文章标签 类型（1/转载 0原创） 文章状态 }
  */
 export function publishArticle(params) {
-	return Axios.post('/api/article', {
-		title: params.title,
-		content: params.content,
-		image: params.image,
-		tag: params.tag,
-		kind: params.kind,
-		type: params.type,
-		status: params.status,
-		word_count: params.word_count,
-		describe:params.describe
-	})
+	return Axios.post('/api/article', params
+		// title: params.title,
+		// content: params.content,
+		// image: params.image,
+		// tag: params.tag,
+		// kind: params.kind,
+		// type: params.type,
+		// status: params.status,
+		// word_count: params.word_count,
+		// describe:params.describe
+	)
 }
 
 /**
@@ -30,16 +30,16 @@ export function publishArticle(params) {
  */
 export function upDateArticle(params) {
 	return Axios.put('/api/article', {
-		id:params.id,
-		title:params.title,
-		content:params.content,
-		status:params.status,
-		kind:params.kind,
-		type:params.type,
-		tag:params.tag,
-		image:params.image,
-		wordCount:params.wordCount,
-		describe:params.describe
+		id: params.id,
+		title: params.title,
+		content: params.content,
+		status: params.status,
+		kind: params.kind,
+		type: params.type,
+		tag: params.tag,
+		image: params.image,
+		wordCount: params.wordCount,
+		describe: params.describe
 	})
 }
 
@@ -57,6 +57,5 @@ export function getArticleList(params) {
  * 文章详情接口
  */
 export function getArticleDetial(params) {
-	return Axios.get('/api/article/detail/'+params.id, {
-	})
+	return Axios.get('/api/article/detail/' + params.id, {})
 }

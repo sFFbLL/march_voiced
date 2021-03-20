@@ -4,7 +4,7 @@ import Axios from '@/utils/request.js'
  * @param {Object} params {文章id}
  */
 export function getArtileDetails(params) {
-	return Axios.get("/api/article/detail/"+params)
+	return Axios.get("/api/article/detail/" + params)
 }
 /**
  * 获取文章评论的接口
@@ -25,12 +25,9 @@ export function getArticleCommentList(params) {
  * @param {Object} params {id:文章id,current:页码,size:一页大小,childSize:子评论条数}
  */
 export function addArticleComment(params) {
-	return Axios.post('/api/comment/article', {
-		id: params.id,
-		content:params.content,
-		replyId:params.replyId,
-		follewId:params.follewId
-	})
+	return Axios.post('/api/comment/article',
+		params
+	)
 }
 
 /**
@@ -48,9 +45,7 @@ export function getChildCommentList(params) {
  * @param {Object} params {id:文章id,current:页码,size:一页大小,childSize:子评论条数}
  */
 export function favour(params) {
-	return Axios.post('/api/favour/article', {
-		id: params
-	})
+	return Axios.post('/api/favour/article', params)
 }
 
 /**
@@ -58,9 +53,7 @@ export function favour(params) {
  * @param {Object} params {id:文章id,current:页码,size:一页大小,childSize:子评论条数}
  */
 export function collect(params) {
-	return Axios.post('/api/collect/article', {
-		id: params
-	})
+	return Axios.post('/api/collect/article', params)
 }
 
 /**s
@@ -68,7 +61,5 @@ export function collect(params) {
  * @param {Object} params {id:文章id,current:页码,size:一页大小,childSize:子评论条数}
  */
 export function reprint(params) {
-	return Axios.post('/api/article/reprint', {
-		id: params
-	})
+	return Axios.post('/api/article/reprint', params)
 }

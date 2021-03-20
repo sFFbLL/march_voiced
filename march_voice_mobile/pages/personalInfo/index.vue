@@ -116,7 +116,7 @@
 				// console.log('picker发送选择改变，携带值为', e.target.value)
 				this.info.sex = e.target.value;
 				let params = {
-					sex:this.info.sex
+					sex: this.info.sex
 				}
 				modInformation(params).then(res => {
 					this.toptip();
@@ -136,31 +136,29 @@
 						// 获取图片路径显示到页面
 						_this.info.avatarPath = res.tempFilePaths[0];
 						// 把图片上传到服务器
-
-						const tempFiles = res.tempFiles;
-						const uploadTask = uni.uploadFile({
+						let temp = res.tempFilePaths[0]
+						uni.uploadFile({
 							url: "http://linbolun.cn/api/file/uploadImage",
-							file: tempFiles,
-							header: {
-								'Content-Type': 'multipart/form-data'
-							},
+							filePath: temp,
 							success: (res) => {
-								console.log(res.data.full_path)
-								avatarPath = res.data.full_path
-								return res.data.full_path
+								console.log(res.data)
+								if (res.data !== 0) {
+									_this.$refs.sTips.show({
+										title: res.data.message,
+										type: 'error',
+										duration: '2300',
+									});
+								} else {
+									avatarPath = res.data.full_path
+									return res.data.full_path
+								}
+
 							},
-							fail: (res) => {
-								return res
-							}
 						});
 
-						// 监听上传的进度
-						uploadTask.onProgressUpdate((res) => {
-							_this.uploadTaskProgress = res.progress;
-							console.log('上传进度' + _this.uploadTaskProgress);
-						});
+
 						let params = {
-							avatarPath:avatarPath
+							avatarPath: avatarPath
 						}
 						// 调用修改信息接口
 						modInformation(avatarPath).then(res => {
@@ -196,7 +194,7 @@
 					//true
 					this.info.nickname = value;
 					let params = {
-						nickname:this.info.nickname,
+						nickname: this.info.nickname,
 					}
 					modInformation(params).then(res => {
 						this.toptip()
@@ -224,7 +222,7 @@
 					//true
 					this.info.signature = value;
 					let params = {
-						signature:this.info.signature,
+						signature: this.info.signature,
 					}
 					modInformation(params).then(res => {
 						this.toptip()

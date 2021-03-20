@@ -5,7 +5,7 @@
 			<!-- 想法评论显示 -->
 			<view class="comment">
 				<view class="comment-view">
-					<textarea auto-height maxlength="-1" class="commentinput" @input="onkeyinput" placeholder="请输入评论"></textarea>
+					<textarea auto-height maxlength="-1" v-model="value" class="commentinput" @input="onkeyinput" placeholder="请输入评论"></textarea>
 				</view>
 				<button class="sendbtn" size="mini" :disabled="sendDisabled" @click="sendComment()">发布</button>
 			</view>
@@ -19,6 +19,7 @@
 				<button class="sendbtn" size="mini" :disabled="sendDisabled" @click="sendComment()">发布</button>
 			</view>
 		</u-popup>
+		<u-top-tips ref="sTips" :navbar-height="0"></u-top-tips>
 	</view>
 </template>
 
@@ -40,7 +41,7 @@
 		data() {
 			return {
 				sendDisabled: true,
-				comment: null,
+				value: ""
 			}
 		},
 
@@ -60,7 +61,7 @@
 		methods: {
 			// 获取输入内容
 			onkeyinput(event) {
-				this.comment = event.target.value;
+				this.value = event.detail.value;
 				this.sendDisabled = false;
 			},
 			// 关闭评论
@@ -69,34 +70,28 @@
 			},
 			// 新增评论
 			sendComment() {
+				console.log(this.value)
 				// 插入一条新的评论
 				// 判断是对文章评论
 				if (!this.addCommentArg.childComment) {
-					// 把数据传给父组件显示到页面
-					let newcomment = {
-						createByName: getUserName(),
-						idAvatar: getAvatarPath(),
-						content: this.comment,
-						createTime: new Date(),
-						commentKids: []
-					}
-					this.$emit("addComment", newcomment);
+					// 把评论内容传给父组件显示到页面
+					this.$emit("addComment", this.value);
 				} else {
-					// 判断是对评论评论
+					// 把数据添加到本地数组里
 					let newcomment = {
 						createByName: getUserName(),
 						idAvatar: getAvatarPath(),
-						content: this.comment,
+						content: this.value,
 						createTime: new Date(),
 						replyName: this.addCommentArg.replyName,
 						index: this.addCommentArg.index,
-						commentKids: []
+						ChildComments: []
 					}
 					this.$emit('addChildComment', newcomment);
 				}
 				this.close();
-
-
+				this.value = "";
+				this.sendDisabled = true;
 			},
 
 		}

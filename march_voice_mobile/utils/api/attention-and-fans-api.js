@@ -16,7 +16,5 @@ export function getFansnList(params) {
 
 //修改关注状态
 export function changeStatus(params) {
-	return Axios.post('/api/follow', {
-		id: params.id,
-	})
+	return Axios.post('/api/follow', params)
 }

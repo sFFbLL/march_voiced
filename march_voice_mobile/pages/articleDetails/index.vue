@@ -4,6 +4,7 @@
 			<view class="article-title">{{articleInfo.title}}</view>
 			<attentionAndFansCell :aid="articleInfo.create_by" :nickname="articleInfo.nickname" :avatarPath="articleInfo.avatarPath"
 			 :isFollow="articleInfo.isFollow" class="user-info"></attentionAndFansCell>
+
 			<view class="article-message">
 				<text class="word-num">
 					<text>字数</text>
@@ -76,6 +77,10 @@
 	import moment from 'moment';
 	import commentInput from '../../marchVoiceComponents/comment/commentInput.vue'
 	import {
+		getUserName,
+		getAvatarPath
+	} from "../../utils/auth.js"
+	import {
 		getArtileDetails,
 		getArticleCommentList,
 		addArticleComment,
@@ -118,7 +123,8 @@
 		},
 
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
-			this.id = Number(option.id) //打印出上个页面传递的参数。进行数据类型转换
+			this.id = Number(option.id); //打印出上个页面传递的参数。进行数据类型转换
+			this.commentCount = Number(option.commentTotal);
 			this.getArtile();
 			this.getComments();
 
@@ -137,7 +143,6 @@
 			like() {
 				// 如果是第一次点击喜欢，增加数据
 				if (!this.clickLike) {
-
 					let id = this.id;
 					this.likeIcon = "heart-fill";
 					this.likeColor = "#d81e06";
@@ -202,7 +207,7 @@
 						follewId: payload.follewId,
 						replyName: payload.replyName,
 					}
-				}else{
+				} else {
 					this.addCommentArg = {
 						id: this.id,
 						replyId: 0,
@@ -229,13 +234,29 @@
 			},
 			// 添加一条评论
 			addComment(payload) {
-				this.commentList.unshift(payload);
+				// let newid;
+				// // 判断评论列表是否有评论，没有就让id=1
+				// if (this.commentList[0]) {
+				// 	newid = this.commentList[0].id++;
+				// } else {
+				// 	newid = 1;
+				// }
+				// 把数据添加到本地数组里
+				let newcomment = {
+					createByName: getUserName(),
+					idAvatar: getAvatarPath(),
+					content: payload,
+					createTime: new Date(),
+					ChildComments: [],
+					// id: newid
+				}
+				this.commentList.unshift(newcomment);
 				this.isComment = false;
 				this.commentCount++;
-
+				// 把参数传给接口
 				let params = {
 					id: this.addCommentArg.id,
-					content: payload.content,
+					content: payload,
 					replyId: this.addCommentArg.replyId,
 					followId: this.addCommentArg.follewId,
 				}
@@ -244,14 +265,15 @@
 			},
 			// 添加一条子评论
 			addChildComment(payload) {
+				// 判断是否有子评论，如果没有把对象变为数组，
 				let childs = this.commentList[payload.index].ChildComments;
 				if (!childs) {
 					this.commentList[payload.index].ChildComments = [];
 				}
 				this.commentList[payload.index].ChildComments.push(payload);
-				
+
 				this.isComment = false;
-				this.commentCount++;
+				// 把参数传给接口
 				let params = {
 					id: this.addCommentArg.id,
 					content: payload.content,
@@ -289,10 +311,10 @@
 							}
 						}
 
-						// if (res.data.length < _this.size) {
-						// 	_this.loadStatus = "nomore";
-						// 	_this.recommendLoadStatus = "nomore";
-						// } else 
+						if (res.data.length < _this.commentCount) {
+							_this.loadStatus = "nomore";
+							_this.recommendLoadStatus = "nomore";
+						} else 
 						if (this.current === 1) {
 							this.isLoadMore = false;
 							this.commentList = [...this.commentList, ...res.data.CommentSum];
@@ -319,16 +341,7 @@
 				console.log(this.articleInfo)
 			}
 		},
-		// mounted() {
-		// 	let commentCount = this.articleInfo.commentTotal;
-		// 	this.commentList.forEach((comment) => {
-		// 		commentCount++;
-		// 		comment.commentKids.forEach(count => {
-		// 			commentCount++;
-		// 		})
-		// 	})
-		// 	this.commentCount = commentCount;
-		// },
+		
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true
@@ -376,9 +389,7 @@
 		margin-right: 0;
 	}
 
-	>>>.attention-cell .right-button {
-		background-color: #fff;
-	}
+
 
 	.article-message {
 		color: #999797;
