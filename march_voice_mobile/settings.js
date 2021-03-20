@@ -14,7 +14,7 @@ module.exports = {
 	/**
 	 * @description token key
 	 */
-	TokenKey: 'tokenKey',
+	TokenKey: 'token',
 	OpenKey: 'openId',
 	UserName: 'userName',
 	AvatarPath: 'avatarPath',
