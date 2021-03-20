@@ -21,7 +21,5 @@ import Axios from './request.js'
 // }
 
 export function unloadImage(params) {
-	return Axios.post('/api/file/uploadImage', {
-		file: params.file,
-	})
+	return Axios.post('/api/file/uploadImage', params)
 }

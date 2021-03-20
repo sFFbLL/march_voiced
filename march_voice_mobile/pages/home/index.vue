@@ -101,7 +101,6 @@
 		},
 
 		created() {
-
 			if (!getToken()) {
 				forLogin();
 				this.recommend();

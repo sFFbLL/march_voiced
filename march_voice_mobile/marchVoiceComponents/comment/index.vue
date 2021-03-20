@@ -9,7 +9,7 @@
 				<view class="top">
 					<view class="name">{{ res.createByName }}</view>
 				</view>
-				<view class="content" @click="addComment(res.id?res.id:0,res.id?res.id:0,pindex,res.createByName)">{{ res.content }}</view>
+				<view class="content" @click="addComment(res.createBy,res.id,pindex,res.createByName)">{{ res.content }}</view>
 				<view class="bottom">
 					{{ format(res.createTime)}}
 				</view>
@@ -22,8 +22,11 @@
 							</view>
 							<view class="right" @click="addComment(item.replyId,res.id,pindex,item.replyName)">
 								<view class="name">{{ item.createByName }}</view>
-								<text v-if="item.replyName" class="reply-name">@{{item.replyName}}</text>
+								<text class="reply-name">@{{item.replyName}}</text>
 								<text class="kid-content">{{ item.content }}</text>
+								<text class="bottom">
+									{{ format(item.createTime)}}
+								</text>
 							</view>
 						</view>
 					</view>
@@ -65,10 +68,7 @@
 				default: null
 			}
 		},
-		mounted() {
-			console.log(this.commentList)
-		},
-		
+
 		methods: {
 			// 把时间戳转换为正确格式
 			format(dateTime) {
@@ -83,7 +83,6 @@
 			},
 			// 添加评论（回复人id，父评论id，数据的index，被回复人姓名
 			addComment(replyId, follewId, index, replyName) {
-				
 				let data = {
 					childComment: true,
 					index: index,
@@ -91,7 +90,6 @@
 					follewId: follewId,
 					replyName: replyName,
 				}
-				console.log(data)
 				this.$emit('childFn', data);
 			}
 		}

@@ -12,7 +12,7 @@
 		 :isFollow="articleInfo.isFollow"></attentionAndFansCell>
 		<!-- 文章内容 -->
 		<articleContent :articleContent="articleInfo.describe"
-		 :articleImg="articleInfo.image"
+		 :articleImg="articleInfo.image" :commentTotal="articleInfo.commentTotal"
 		 :id="articleInfo.id" />
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal"

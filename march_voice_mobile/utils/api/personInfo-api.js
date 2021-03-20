@@ -10,10 +10,5 @@ export function information(params) {
 
 // 修改用户信息
 export function modInformation(params) {
-	return Axios.put('/api/user/modInformation', {
-		nickname: params.nickname,
-		sex: params.sex,
-		signature: params.signature,
-		avatarPath: params.avatarPath,
-	})
+	return Axios.put('/api/user/modInformation',params)
 }

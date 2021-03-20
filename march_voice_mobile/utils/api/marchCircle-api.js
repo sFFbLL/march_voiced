@@ -15,26 +15,18 @@ export function marchCircleList(params) {
 
 // 用户发布按钮
 export function publishIdea(params) {
-	return Axios.post('/api/march', {
-		content: params.content,
-		imageList: params.imageList,
-		image: params.image
-	})
+	return Axios.post('/api/march', params)
 }
 
 // 申请加入三月圈
 export function joinMarchCircle(params) {
-	return Axios.post('/api/apply/march', {
-		params: params,
-	})
+	return Axios.post('/api/apply/march',
+		params)
 }
 
 // 点赞表情
 export function changeFavour(params) {
-	return Axios.post('/api/favour/march', {
-		id: params.id,
-		type: params.type,
-	})
+	return Axios.post('/api/favour/march', params)
 }
 
 
@@ -53,14 +45,12 @@ export function ideaDetail(params) {
 
 // 三月圈详情页发布评论
 export function publishComment(params) {
-	return Axios.post('/api/comment/marchsoft', {
-		params: params,
-	})
+	return Axios.post('/api/comment/marchsoft', params)
 }
 
 // 三月圈详情页查询评论
-export function ideaCommentList(params){
-	return Axios.get('/api/comment/marchsoft',{
+export function ideaCommentList(params) {
+	return Axios.get('/api/comment/marchsoft', {
 		// id:params.id,
 		// current:params.current,
 		// size:params.size,
@@ -77,7 +67,7 @@ export function ideaCommentList(params){
 export function ideaChildCommentList(params) {
 	return Axios.get('/api/comment/children/article', {
 		id: params.id,
-		current:params.current,
-		size:params.size
+		current: params.current,
+		size: params.size
 	})
 }

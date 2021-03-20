@@ -162,7 +162,7 @@ export default {
 							header: this.header,
 							success: res => {
 								// 上传完成后处理
-							let newRes = JSON.parse(res.data)
+							let newRes = JSON.parse(res.data);
 								this.editorCtx.insertImage({
 									src: "http://linbolun.cn/api/file/download/" + newRes.data.path,  // 此处需要将图片地址切换成服务器返回的真实图片地址
 									alt: '图片',
