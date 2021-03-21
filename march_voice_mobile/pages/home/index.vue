@@ -175,14 +175,12 @@
 								_this.isLoadMore = false;
 							}, 3000);
 						}
-						if(res.data.length<=this.size){
+						if (res.data.length <= this.size) {
 							_this.getArticleList();
 						}
 						_this.recommendList = [..._this.recommendList, ...res.data];
-						console.log(_this.recommendList)
 					} else {
-						_this.loadStatus = "loading";
-						_this.isRecommend = false;
+						this.loadStatus = 'nomore';
 						_this.getArticleList();
 					}
 
@@ -206,9 +204,7 @@
 						}
 						_this.recommendList = [..._this.recommendList, ...res.data];
 					} else {
-						_this.loadStatus = "loading";
-						_this.recommendLoadStatus = "loading";
-						_this.isLoadMore = false;
+						this.loadStatus = 'nomore';
 					}
 
 				})
@@ -231,9 +227,7 @@
 						}
 						_this.followList = [..._this.followList, ...res.data.records];
 					} else {
-						_this.loadStatus = "loading";
-						_this.follLoadStatus = "loading";
-						_this.isLoadMore = false;
+						this.loadStatus = 'nomore';
 					}
 
 

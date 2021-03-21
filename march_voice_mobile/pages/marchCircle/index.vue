@@ -123,10 +123,10 @@
 				if (this.marchCircleInfo.is_march == 0) {
 					this.isjoin = '加入';
 				} else if (this.marchCircleInfo.is_march == 1) {
-					this.sanyueMumber = false;
+					this.isjoin = '已加入'
 				} else if (this.marchCircleInfo.is_march == 2) {
 					this.isjoin = '审核中'
-					this.disabledJoin=true;
+					this.disabledJoin = true;
 				}
 			})
 
@@ -137,7 +137,6 @@
 			// 获取三月圈列表
 			// 获取想法列表接口
 			getCircleList() {
-				let _this = this;
 				let params = {
 					current: this.current,
 					size: this.size
@@ -145,16 +144,16 @@
 				marchCircleList(params).then(res => {
 					if (res.data) {
 						if (this.current === 1) {
-							_this.isLoadMore = false;
+							this.isLoadMore = false;
 						} else {
 							setTimeout(function() {
-								_this.isLoadMore = false;
+								this.loadStatus = 'loading';
 							}, 2000);
+							this.isLoadMore = false;
 						}
-						_this.ideasList = [...this.ideasList, ...res.data];
+						this.ideasList = [...this.ideasList, ...res.data];
 					} else {
-						_this.loadStatus = 'loading';
-						_this.isLoadMore = false;
+						this.loadStatus = 'nomore';
 					}
 
 				})

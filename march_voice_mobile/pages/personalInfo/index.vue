@@ -39,7 +39,7 @@
 			<view class="base-info-gender">
 				<text clas="base-info-area">性别</text>
 				<view class="base-info-gender-change">
-					<picker @change="bindPickerChange" :value="info.sex" :range="array">
+					<picker @change="bindPickerChange" :value="info.sex-1" :range="array">
 						<text class="uni-input">{{array[info.sex]}}</text>
 					</picker>
 					<uni-icons style="margin-left: 10rpx;" type="arrowright" size="15"></uni-icons>
@@ -92,14 +92,12 @@
 		// 获取我的id
 		onLoad(option) {
 			this.id = Number(option.id);
-			// this.id = JSON.stringify(option).id
 		},
 		created() {
 			// 调用查询用户信息的接口
 			let id = this.id;
-			let _this = this;
 			information(id).then(res => {
-				_this.info = res.data;
+				this.info = res.data;
 			}).catch(err => {
 				console.log("infoerr")
 			})
@@ -121,8 +119,9 @@
 			bindPickerChange(e) {
 				// console.log('picker发送选择改变，携带值为', e.target.value)
 				this.info.sex = e.target.value;
+				// 男是1，女是2
 				let params = {
-					sex: this.info.sex
+					sex: this.info.sex + 1
 				}
 				modInformation(params).then(res => {
 					this.toptip();

@@ -3,7 +3,7 @@
 		<!-- 头部用户信息 -->
 		<view class="header">
 			<attentionAndFansCell :notTap="notTap" :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
-			  class="top-user-info">
+			 class="top-user-info">
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
 			<view class="total">
@@ -135,6 +135,7 @@
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true;
 				this.articleCurrent += 1;
+
 				this.getArticleList();
 			} else if (!this.isLoadMore && this.tabIndex === 1) {
 				this.isLoadMore = true;
@@ -211,7 +212,6 @@
 			},
 			// 获取想法列表
 			getIdeaList() {
-				let _this = this;
 				let params = {
 					id: 0,
 					current: this.ideaCurrent,
@@ -220,18 +220,18 @@
 				getUserIdeaList(params).then(res => {
 					if (res.data) {
 						if (this.ideaCurrent === 1) {
-							_this.isLoadMore = false;
+							this.isLoadMore = false;
 						} else {
 							setTimeout(function() {
-								_this.isLoadMore = false;
+								this.loadStatus = "nomore";
+
 							}, 2000);
+							this.isLoadMore = false;
 						}
 
-						_this.ideaList = [..._this.ideaList, ...res.data];
+						this.ideaList = [...this.ideaList, ...res.data];
 					} else {
-						_this.loadStatus = "loading";
-						_this.ideaLoadStatus = "loading";
-						_this.isLoadMore = false;
+						this.loadStatus = 'nomore';
 					}
 
 
@@ -240,57 +240,55 @@
 			},
 			// 获取草稿箱列表
 			getDraftList() {
-				let _this = this;
 				let params = {
 					id: 0,
-					current: this.ideaCurrent,
+					current: this.draftCurrent,
 					size: this.size,
 					kind: 1
 				}
 				getUserArticleList(params).then(res => {
 					if (res.data) {
 						if (this.draftCurrent === 1) {
-							_this.isLoadMore = false;
+							this.isLoadMore = false;
 						} else {
 							setTimeout(function() {
-								_this.isLoadMore = false;
+								this.loadStatus = "nomore";
+
 							}, 2000);
+							this.isLoadMore = false;
 						}
-						_this.draftList = [..._this.draftList, ...res.data];
+						this.draftList = [...this.draftList, ...res.data];
 					} else {
-						_this.loadStatus = "loading";
-						_this.draftLoadStatus = "loading";
-						_this.isLoadMore = false;
+						this.loadStatus = 'nomore';
 					}
 				})
 			},
 			// 获取文章列表
 			getArticleList() {
-				let _this = this;
 				let params = {
 					id: 0,
-					current: this.ideaCurrent,
+					current: this.articleCurrent,
 
 					size: this.size,
 					kind: 2
 				}
 				getUserArticleList(params).then(res => {
 					if (res.data) {
-							if (this.articleCurrent === 1) {
-								_this.isLoadMore = false;
-							} else {
-								setTimeout(function() {
-									_this.isLoadMore = false;
-								}, 2000);
-							}
-							_this.articleList = [..._this.articleList, ...res.data];
+						if (this.articleCurrent === 1) {
+							this.isLoadMore = false;
 						} else {
-							_this.loadStatus = "loading";
-							_this.articleLoadStatus = "loading";
-							_this.isLoadMore = false;
+							setTimeout(function() {
+								this.loadStatus = "nomore";
+
+							}, 2000);
+							this.isLoadMore = false;
 						}
-					})
-				
+						this.articleList = [...this.articleList, ...res.data];
+					} else {
+						this.loadStatus = 'nomore';
+					}
+				})
+
 			},
 			// 跳转编辑页面
 			goToEdit() {

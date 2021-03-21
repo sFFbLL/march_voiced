@@ -144,14 +144,13 @@
 							this.isLoadMore = false;
 						} else {
 							setTimeout(function() {
-							this.loadStatus = "nomore";
-							this.isLoadMore = false;
+								this.loadStatus = "nomore";
+								this.isLoadMore = false;
 							}, 1000);
 						}
 						this.commentList = [...this.commentList, ...res.data.CommentSum];
 					} else {
-						this.loadStatus = "nomore";
-						this.isLoadMore = false;
+						this.loadStatus = 'nomore';
 					}
 
 				})
@@ -176,7 +175,7 @@
 			parentFn(payload) {
 				this.showAddComment = false;
 			},
-			
+
 			// 调用新增评论接口
 			newComment(params) {
 				// 想法评论发布接口
@@ -219,7 +218,6 @@
 					replyId: this.addCommentArg.replyId,
 					followId: this.addCommentArg.follewId,
 				}
-				console.log(params)
 				this.newComment(params);
 				this.commentCount++;
 				let id = this.ideaId;

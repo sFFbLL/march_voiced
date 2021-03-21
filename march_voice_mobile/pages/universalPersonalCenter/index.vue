@@ -83,7 +83,7 @@
 				ideaCurrent: 1, //想法当前页数
 				draftCurrent: 1, //草稿当前页数
 				size: 10,
-				notTap:true,
+				notTap: true,
 				loadStatus: 'loading', //加载样式：more-加载前样式，loading-加载中样式，nomore-没有数据样式
 				articleLoadStatus: 'loading',
 				ideaLoadStatus: 'loading',
@@ -132,10 +132,28 @@
 			this.userId = Number(option.id);
 
 		},
+		// 下拉刷新
+		onPullDownRefresh() {
+			this.articleCurrent = 1; //文章当前页数，
+			this.ideaCurrent = 1; //想法当前页数
+			this.draftCurrent = 1; //草稿当前页数
+
+			let that = this;
+			that.articleList = [];
+			that.ideaList = [];
+			that.draftList = [];
+			this.getArticleList();
+			this.getIdeaList();
+			this.getDraftList();
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 2000);
+		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true;
 				this.articleCurrent += 1;
+
 				this.getArticleList();
 			} else if (!this.isLoadMore && this.tabIndex === 1) {
 				this.isLoadMore = true;
@@ -193,76 +211,85 @@
 					_this.userInfo = res.data;
 				})
 			},
+			// 获取想法列表
 			getIdeaList() {
-				let _this = this;
 				let params = {
-					id: _this.userId,
-					current: _this.ideaCurrent,
-					size: _this.size
+					id: 0,
+					current: this.ideaCurrent,
+					size: this.size
 				}
 				getUserIdeaList(params).then(res => {
-					_this.ideaList = [..._this.ideaList, ...res.data];
+					if (res.data) {
+						if (this.ideaCurrent === 1) {
+							this.isLoadMore = false;
+						} else {
+							setTimeout(function() {
+								this.loadStatus = "nomore";
+
+							}, 2000);
+							this.isLoadMore = false;
+						}
+
+						this.ideaList = [...this.ideaList, ...res.data];
+					} else {
+						this.loadStatus = 'nomore';
+					}
+
+
 				})
-				if (this.ideaList.length > 7) {
-					_this.loadStatus = "nomore";
-					_this.ideaLoadStatus = "nomore";
-				} else if (this.ideaCurrent === 1) {
-					_this.isLoadMore = false;
-					_this.ideaList = [..._this.ideaList, ..._this.ideaList];
-				} else {
-					setTimeout(function() {
-						_this.isLoadMore = false;
-						_this.ideaList = [..._this.ideaList, ..._this.ideaList];
-					}, 2000);
-				}
+
 			},
+			// 获取草稿箱列表
 			getDraftList() {
-				let _this = this;
 				let params = {
-					id: _this.userId,
-					current: _this.ideaCurrent,
-					size: _this.size,
+					id: 0,
+					current: this.draftCurrent,
+					size: this.size,
 					kind: 1
 				}
 				getUserArticleList(params).then(res => {
-					_this.draftList = [..._this.draftList, ...res.data];
+					if (res.data) {
+						if (this.draftCurrent === 1) {
+							this.isLoadMore = false;
+						} else {
+							setTimeout(function() {
+								this.loadStatus = "nomore";
+
+							}, 2000);
+							this.isLoadMore = false;
+						}
+						this.draftList = [...this.draftList, ...res.data];
+					} else {
+						this.loadStatus = 'nomore';
+					}
 				})
-				if (this.draftList.length > 10) {
-					_this.loadStatus = "nomore";
-					_this.draftLoadStatus = "nomore";
-				} else if (this.draftCurrent === 1) {
-					_this.isLoadMore = false;
-					_this.draftList = [..._this.draftList, ..._this.draftList];
-				} else {
-					setTimeout(function() {
-						_this.isLoadMore = false;
-						_this.draftList = [..._this.draftList, ..._this.draftList];
-					}, 2000);
-				}
 			},
+			// 获取文章列表
 			getArticleList() {
-				let _this = this;
 				let params = {
-					id: _this.userId,
-					current: _this.ideaCurrent,
-					size: _this.size,
+					id: 0,
+					current: this.articleCurrent,
+
+					size: this.size,
 					kind: 2
 				}
 				getUserArticleList(params).then(res => {
-					_this.articleList = [..._this.articleList, ...res.data];
+					if (res.data) {
+						if (this.articleCurrent === 1) {
+							this.isLoadMore = false;
+						} else {
+							setTimeout(function() {
+								this.loadStatus = "nomore";
+
+							}, 2000);
+							this.isLoadMore = false;
+						}
+						this.articleList = [...this.articleList, ...res.data];
+					} else {
+						this.loadStatus = 'nomore';
+					}
 				})
-				if (this.articleList.length > 10) {
-					_this.loadStatus = "nomore";
-					_this.articleLoadStatus = "nomore";
-				} else if (this.articleCurrent === 1) {
-					_this.isLoadMore = false;
-					_this.articleList = [..._this.articleList, ..._this.articleList];
-				} else {
-					setTimeout(function() {
-						_this.isLoadMore = false;
-						_this.articleList = [..._this.articleList, ..._this.articleList];
-					}, 2000);
-				}
+
 			},
 			goToEdit() {
 				uni.navigateTo({
