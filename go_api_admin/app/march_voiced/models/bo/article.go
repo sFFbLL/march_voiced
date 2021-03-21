@@ -24,6 +24,8 @@ type ArticleDetail struct {
 	ArticleDetailMsg
 	UserMsg
 	ArticleTotal
+	IsCollect int `json:"isCollect"`
+	IsFavour  int `json:"isFavour"`
 }
 
 type ArticleDetailMsg struct {

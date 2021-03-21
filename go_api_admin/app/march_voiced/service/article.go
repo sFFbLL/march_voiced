@@ -305,13 +305,32 @@ func (a *Article) ArticleDetail(id int, userId int) (articleMsg *bo.ArticleDetai
 
 	// 是否关注
 	if userId == int(articleMsg.CreateBy) {
-		articleMsg.IsFollow = 0
+		articleMsg.IsFollow = 3
 	} else {
 		zap.L().Info("Call ArticleDetail IsFollow", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 		articleMsg.IsFollow, err = follow.IsFollow(userId, int(articleMsg.CreateBy))
 		if err != nil {
 			zap.L().Error("ArticleDetail IsFollow failed", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 		}
+	}
+
+	// 文章是否收藏
+	zap.L().Info("Call ArticleDetail IsCollectByArticleId", zap.String("ArticleId", utils.IntToString(id)), zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
+	articleCollect.ArticleId = uint(id)
+	articleCollect.CreateBy = uint(userId)
+	articleMsg.IsCollect, err = articleCollect.IsCollectByArticleId()
+	if err != nil {
+		zap.L().Error("ArticleDetail IsCollectByArticleId failed", zap.String("ArticleId", utils.IntToString(id)), zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
+		return
+	}
+
+	// 文章是否喜欢
+	zap.L().Info("Call ArticleDetail IsFavourByArticleId", zap.String("ArticleId", utils.IntToString(id)), zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
+	articleFavour.ArticleId = uint(id)
+	articleFavour.CreateBy = uint(userId)
+	articleMsg.IsFavour, err = articleFavour.IsFavourByArticleId()
+	if err != nil {
+		zap.L().Error("ArticleDetail IsFavourByArticleId failed", zap.String("ArticleId", utils.IntToString(id)), zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	}
 
 	return
@@ -335,7 +354,7 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleDeta
 		return
 	}
 
-	// 判断文章是否
+	// 判断文章是否发布
 	if *article.Status != 1 {
 		signal = 1
 		return
@@ -585,7 +604,7 @@ func goArticleMsg(articleCh *chan *bo.GoArticleMsg, wg *sync.WaitGroup, articleM
 
 	// 是否关注
 	if articleMsg.UserId == articleMsg.ArticleUserId {
-		articleMsg.IsFollow = 0
+		articleMsg.IsFollow = 3
 	} else {
 		zap.L().Info("Call goArticleMsg IsFollow", zap.String("ArticleId", utils.UIntToString(articleMsg.ArticleId)), zap.String("UserID", utils.UIntToString(articleMsg.UserId)), zap.Error(err))
 		articleMsg.IsFollow, err = follow.IsFollow(int(articleMsg.UserId), int(articleMsg.ArticleUserId))
