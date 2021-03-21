@@ -120,8 +120,13 @@
 			// 获取三月基本信息接口
 			getMarchCircleInfo().then(res => {
 				this.marchCircleInfo = res.data;
-				if (this.marchCircleInfo.ismarch == 0) {
+				if (this.marchCircleInfo.is_march == 0) {
+					this.isjoin = '加入';
+				} else if (this.marchCircleInfo.is_march == 1) {
 					this.sanyueMumber = false;
+				} else if (this.marchCircleInfo.is_march == 2) {
+					this.isjoin = '审核中'
+					this.disabledJoin=true;
 				}
 			})
 
@@ -314,9 +319,9 @@
 	}
 
 	.join {
-		left: 143rpx;
+		left: 134rpx;
 		top: 30rpx;
-		width: 120rpx;
+		width: 144rpx;
 		height: 54rpx;
 
 		line-height: 55rpx;

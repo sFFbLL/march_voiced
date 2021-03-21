@@ -28,18 +28,16 @@
 			commentTotal: {
 				type: Number,
 				default: 0
-			}
-		},
-		components: {
-
+			},
+			
 		},
 		methods: {
 			articleDetails() {
-				// console.log(1)
-				// 跳转到编辑页面
-				uni.navigateTo({
-						url: '../ideaDetails/index?id=' + this.articleId + '&commentTotal=' + this.commentTotal
-				})
+					// 跳转到页面
+					uni.navigateTo({
+						url: '../articleDetails/index?id=' + this.articleId + '&commentTotal=' + this.commentTotal
+					})
+				
 			}
 		},
 		mounted() {

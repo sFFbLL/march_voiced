@@ -39,7 +39,7 @@
 				<view v-for="(item,index) in ideaList" v-if="tabIndex === 1">
 					<view class="ideacontent item">
 						<!-- 用户头像公共组件 -->
-						<attentionAndFansCell :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath" :isFollow="userInfo.isFollow">
+						<attentionAndFansCell :notTap="notTap" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath" :isFollow="userInfo.isFollow">
 							<view slot="underText">{{item.updateTime}}</view>
 						</attentionAndFansCell>
 						<!-- 想法的文字部分 -->
@@ -51,7 +51,7 @@
 						 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
 					</view>
 				</view>
-				<view v-for="(item,index) in draftList" v-if="tabIndex === 2&&userInfo.isMe===1">
+				<view v-for="(item,index) in draftList" v-if="userInfo.isMe===1">
 					<recommend :articleInfo="item" :isArticleInteract="false" class="arcitle-item item"></recommend>
 				</view>
 				<!-- 下拉加载更多 -->
@@ -83,6 +83,7 @@
 				ideaCurrent: 1, //想法当前页数
 				draftCurrent: 1, //草稿当前页数
 				size: 10,
+				notTap:true,
 				loadStatus: 'loading', //加载样式：more-加载前样式，loading-加载中样式，nomore-没有数据样式
 				articleLoadStatus: 'loading',
 				ideaLoadStatus: 'loading',

@@ -20,8 +20,7 @@ export function publishIdea(params) {
 
 // 申请加入三月圈
 export function joinMarchCircle(params) {
-	return Axios.post('/api/apply/march',
-		params)
+	return Axios.post('/api/apply/march')
 }
 
 // 点赞表情
