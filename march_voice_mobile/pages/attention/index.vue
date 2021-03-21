@@ -34,7 +34,7 @@
 			uniLoadMore
 		},
 		// 进入时加载
-		onLoad: function(options) {
+		onShow: function(options) {
 			uni.startPullDownRefresh();
 			// this.openid = getOpenId()
 			// console.log(this.openid,"ASDASDASDDASDADSDASASDSDSD")
@@ -61,10 +61,22 @@
 					size: this.size
 				}
 				getAttentionList(params).then(res => {
-					console.log(res)
-					if (res.data.follow.length > 0) {
+					// console.log(res)
+					if (res.data.follow != null) {
 						this.list.push.apply(this.list, res.data.follow)
 						this.current++;
+					}else{
+						uni.showModal({
+						    title: '提示',
+						    content: '您还没有关注对象哦',
+						    success: function (res) {
+						        if (res.confirm) {
+						            console.log('用户点击确定');
+						        } else if (res.cancel) {
+						            console.log('用户点击取消');
+						        }
+						    }
+						});
 					}
 				})
 			},

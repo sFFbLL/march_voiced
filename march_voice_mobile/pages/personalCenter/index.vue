@@ -214,7 +214,7 @@
 			getIdeaList() {
 				let _this = this;
 				let params = {
-					id: 1,
+					id: 0,
 					current: this.ideaCurrent,
 					size: this.size
 				}
@@ -243,7 +243,7 @@
 			getDraftList() {
 				let _this = this;
 				let params = {
-					id: 1,
+					id: 0,
 					current: this.ideaCurrent,
 					size: this.size,
 					kind: 1
@@ -270,7 +270,7 @@
 			getArticleList() {
 				let _this = this;
 				let params = {
-					id: 1,
+					id: 0,
 					current: this.ideaCurrent,
 					size: this.size,
 					kind: 2
