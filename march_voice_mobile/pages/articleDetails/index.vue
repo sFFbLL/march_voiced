@@ -316,6 +316,7 @@
 				let id = this.id;
 				// 获取文章详情内容
 				getArtileDetails(id).then(res => {
+					console.log(res)
 					if (res.code === 0) {
 						this.articleInfo = res.data;
 					}
