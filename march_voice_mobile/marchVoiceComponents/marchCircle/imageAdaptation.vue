@@ -1,14 +1,8 @@
 <template>
 	<view class="image-adaptation">
 		<view class="allImage">
-			<view class="images"
-			 v-for="(item,index) in imgList"
-			 :key="index">
-				<image @click="previewImg()"
-				 class="oneimg"
-				 :src="item"
-				 mode="aspectFill"
-				 :style="{width:imgWidth+'rpx',height:imgHeight+'rpx'}"></image>
+			<view class="images" v-for="(item,index) in imgList" :key="index">
+				<image @click="previewImg()" class="oneimg" :src="getImgUrl(item)" mode="aspectFill" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx'}"></image>
 			</view>
 		</view>
 	</view>
@@ -41,6 +35,10 @@
 			this.judgeImg();
 		},
 		methods: {
+			// 拼接头像url
+			getImgUrl(src) {
+				return settings.imgUrl + src;
+			},
 			// 预览图片
 			previewImg() {
 				uni.previewImage({

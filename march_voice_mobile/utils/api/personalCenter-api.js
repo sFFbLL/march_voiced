@@ -13,7 +13,7 @@ export function getUserInfo(params) {
  */
 export function getUserArticleList(params) {
 	return Axios.get('/api/article/user', {
-		params:params
+		params: params
 	})
 }
 
@@ -23,6 +23,12 @@ export function getUserArticleList(params) {
  */
 export function getUserIdeaList(params) {
 	return Axios.get('/api/march/user', {
+		params: params,
+	})
+}
+// 获取收藏列表
+export function collectArticle(params) {
+	return Axios.get('/api/collect/article', {
 		params: params,
 	})
 }

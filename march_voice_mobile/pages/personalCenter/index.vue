@@ -3,7 +3,7 @@
 		<!-- 头部用户信息 -->
 		<view class="header">
 			<attentionAndFansCell :mySelf="mySelf" :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
-			 :isFollow="userInfo.isFollow" class="top-user-info">
+			  class="top-user-info">
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
 			<view class="total">
