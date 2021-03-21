@@ -7,13 +7,14 @@
 			<attentionAndFansCell :aid="ideaInfoList.id" :nickname="ideaInfoList.nickname" :avatarPath="ideaInfoList.avatarPath"
 			 :isFollow="ideaInfoList.isFollow"></attentionAndFansCell>
 			<!-- 想法的文字部分 -->
-			<articleContent :articleContent="ideaInfoList.content"></articleContent>
+			<jinEdit :html="ideaInfoList.content" :readOnly="true"></jinEdit>
+			<!-- <articleContent :articleContent="ideaInfoList.content"></articleContent> -->
 			<!-- 想法的图片部分组件 -->
 			<imageAdaptation :imgList="ideaInfoList.imgList"></imageAdaptation>
 
 			<!-- 点赞表情组件 -->
 			<emojiControl :isShow="false" :faceTotals="ideaInfoList.faceTotal" :likeTotals="ideaInfoList.likeTotal"
-			 :favourTotals="ideaInfoList.favourTotal" :commentTotals="ideaInfoList.commentTotal" :id="ideaInfoList.id"></emojiControl>
+			 :favourTotals="ideaInfoList.favourTotal" :type="ideaInfoList.type" :commentTotals="ideaInfoList.commentTotal" :id="ideaInfoList.id"></emojiControl>
 		</view>
 		<!-- 评论列表 -->
 		<view class="comment-view">
@@ -22,14 +23,14 @@
 				<text>({{commentCount}})</text>
 			</view>
 			<view class="comment-list">
-				<comment  :id="ideaId" :type="type" @getMore="getMore"  :commentList="commentList" @childFn="comment"></comment>
+				<comment :id="ideaId" :type="type" @getMore="getMore" :commentList="commentList" @childFn="comment"></comment>
 			</view>
 		</view>
 
 		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment"
 		 @childFn="parentFn" :type="type" :addCommentArg="addCommentArg" />
 		<!-- 下拉加载更多 -->
-		<view v-show="isLoadMore">
+		<view v-if="isLoadMore">
 			<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
 		</view>
 
@@ -43,6 +44,7 @@
 		ideaCommentList,
 		ideaChildCommentList
 	} from '../../utils/api/marchCircle-api.js'
+	import jinEdit from '../../components/jin-edit/jin-edit.vue';
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
 	import emojiControl from '../../marchVoiceComponents/marchCircle/emojiControl.vue'
 	import imageAdaptation from '../../marchVoiceComponents/marchCircle/imageAdaptation.vue'
@@ -60,7 +62,8 @@
 			imageAdaptation,
 			articleContent,
 			commentInput,
-			comment
+			comment,
+			jinEdit
 		},
 		data() {
 			return {
@@ -97,10 +100,10 @@
 		// 下拉刷新
 		onPullDownRefresh() {
 			this.current = 1;
+			this.commentList = [];
 			this.getIdea();
 			this.getComments();
 			setTimeout(function() {
-
 				uni.stopPullDownRefresh();
 			}, 2000);
 		},
@@ -109,7 +112,6 @@
 				this.isLoadMore = true
 				this.current += 1;
 				this.getComments()
-
 			}
 		},
 		methods: {
@@ -136,21 +138,20 @@
 					childSize: this.childSize,
 				}
 				ideaCommentList(params).then(res => {
-					if (res.code === 0) {
-						this.commentList = [...this.commentList, ...res.data.CommentSum];
-						let comments = this.commentList
-						if (this.current * this.size >= this.commentCount) {
-							this.loadStatus = "nomore";
-						} else
+					if (res.data.CommentSum) {
 						if (this.current === 1) {
+							this.loadStatus = "nomore";
 							this.isLoadMore = false;
-							this.commentList = [...this.commentList, ...res.data.CommentSum];
 						} else {
 							setTimeout(function() {
-								this.isLoadMore = false;
-								this.commentList = [...this.commentList, ...res.data.CommentSum];
-							}, 3000);
+							this.loadStatus = "nomore";
+							this.isLoadMore = false;
+							}, 1000);
 						}
+						this.commentList = [...this.commentList, ...res.data.CommentSum];
+					} else {
+						this.loadStatus = "nomore";
+						this.isLoadMore = false;
 					}
 
 				})
@@ -175,13 +176,7 @@
 			parentFn(payload) {
 				this.showAddComment = false;
 			},
-			// 获取更多子评论接口
-			getMore(payload) {
-				let params = {
-					id: payload.id
-				}
-				ideaChildCommentList(params).then()
-			},
+			
 			// 调用新增评论接口
 			newComment(params) {
 				// 想法评论发布接口
@@ -206,14 +201,13 @@
 					replyId: this.addCommentArg.replyId,
 					followId: this.addCommentArg.follewId,
 				}
-				console.log(params)
 				this.newComment(params);
 			},
 			// 添加一条子评论
 			addChildComment(payload) {
-				let childs = this.commentList[payload.index].ChildComments;
+				let childs = this.commentList[payload.index];
 				// 判断子评论是否为空
-				if (!childs) {
+				if (!childs.ChildComments) {
 					this.commentList[payload.index].ChildComments = [];
 				}
 				// 把数据加到子评论
@@ -225,7 +219,9 @@
 					replyId: this.addCommentArg.replyId,
 					followId: this.addCommentArg.follewId,
 				}
+				console.log(params)
 				this.newComment(params);
+				this.commentCount++;
 				let id = this.ideaId;
 				this.addCommentArg = {
 					id: id,
@@ -258,5 +254,9 @@
 	/* 想法文字部分样式 */
 	.wordscontent {
 		margin-top: 20rpx;
+	}
+
+	.comment-list {
+		margin-bottom: 60px;
 	}
 </style>

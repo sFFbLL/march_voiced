@@ -7,20 +7,12 @@
 				<image class=" xiaoku" src="../../static/img/xiaoku.png" mode=""></image>
 				<span>{{faceTotal}}</span>
 			</view>
-			<view class="emoji"
-			 :class="{'clickEmoji':clickLike}"
-			 @click="clickAni('like')">
-				<image class="aixin"
-				 src="../../static/img/aixin.png"
-				 mode=""></image>
+			<view class="emoji" :class="{'clickEmoji':clickLike}" @click="clickAni('like')">
+				<image class="aixin" src="../../static/img/aixin.png" mode=""></image>
 				<span>{{likeTotal}}</span>
 			</view>
-			<view class="emoji"
-			 :class="{'clickEmoji':clickFavour,'isDisplay':favourDisplay}"
-			 @click="clickAni('favour')">
-				<image class="qingzhu"
-				 src="../../static/img/qingzhu.png"
-				 mode=""></image>
+			<view class="emoji" :class="{'clickEmoji':clickFavour,'isDisplay':favourDisplay}" @click="clickAni('favour')">
+				<image class="qingzhu" src="../../static/img/qingzhu.png" mode=""></image>
 				<span>{{favourTotal}}</span>
 			</view>
 			<!-- 添加表情 -->
@@ -37,12 +29,8 @@
 			</view>
 			<!-- 评论+评论数量 -->
 
-			<view class="comment"
-			 v-if="isShow" >
-				<u-icon name="chat"
-				 color="#999999"
-				 size="40"
-				 class="chat"></u-icon>
+			<view class="comment" v-if="isShow">
+				<u-icon name="chat" color="#999999" size="40" class="chat"></u-icon>
 				<span class="commentTotal">{{commentTotal}}</span>
 
 
@@ -52,7 +40,9 @@
 </template>
 
 <script>
-	import {changeFavour} from '../../utils/api/marchCircle-api.js'
+	import {
+		changeFavour
+	} from '../../utils/api/marchCircle-api.js'
 	export default {
 		props: {
 			id: {
@@ -69,6 +59,10 @@
 			},
 			commentTotals: {
 				type: Number
+			},
+			type: { //当前用户点击的表情
+				type: Number,
+				default: 0
 			},
 			// 只有详情页的时候才传false
 
@@ -108,6 +102,13 @@
 			else if (this.faceTotal > 0 || this.favourTotal > 0) {
 				this.emojiPosition01 = 85;
 			}
+			if (this.type === 1) {
+				this.clickFace = true;
+			} else if (this.type === 2) {
+				this.clickLike = true;
+			} else if (this.type === 3) {
+				this.clickFavour = true;
+			}
 		},
 		methods: {
 			// 控制展示三个表情的位置
@@ -132,8 +133,8 @@
 			// 调用接口对点赞状态改变
 			emjoiInterface(params) {
 				changeFavour(params).then(res => {
-					console.log("表情点赞状态改变")
-				}).catch(err=>{
+					console.log("表情点赞成功")
+				}).catch(err => {
 					console.log("err")
 				})
 			},
@@ -234,12 +235,12 @@
 
 					default:
 				}
+
 			},
 
 			// 添加表情事件处理
 			addAEmoji(emoji) {
 				this.clickAni(emoji);
-				this.addEmoji();
 			}
 		}
 	}

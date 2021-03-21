@@ -134,7 +134,7 @@
 		height: 100vh;
 		width: 100vh;
 		background-image: url(../../static/img/loginbg1.jpeg);
-		background-repeat: no-repeat;
-		background-position: 60% 30%;
+		/* background-repeat: no-repeat;
+		background-position: 100% 100%; */
 	}
 </style>

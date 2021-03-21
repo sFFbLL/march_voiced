@@ -48,9 +48,6 @@
 		},
 		methods: {
 
-		},
-		mounted() {
-			console.log(this.notshow)
 		}
 	}
 </script>

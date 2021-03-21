@@ -15,7 +15,8 @@
 				</text>
 			</view>
 			<view class="article-content">
-				<text v-html="articleInfo.content"></text>
+				<!-- <articleContent :articleContent="articleInfo.content"></articleContent> -->
+				<jinEdit :html="articleInfo.content" :readOnly="true"></jinEdit>
 			</view>
 		</view>
 
@@ -63,7 +64,7 @@
 		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment"
 		 @childFn="parentFn" :type="type" :addCommentArg="addCommentArg" />
 		<!-- 下拉加载更多 -->
-		<view v-show="isLoadMore">
+		<view v-if="isLoadMore">
 			<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
 		</view>
 	</view>
@@ -124,7 +125,6 @@
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			this.id = Number(option.id); //打印出上个页面传递的参数。进行数据类型转换
 			this.commentCount = Number(option.commentTotal);
-			console.log(this.commentCount)
 			this.getArtile();
 			this.getComments();
 
@@ -148,8 +148,8 @@
 					this.likeColor = "#d81e06";
 					this.articleInfo.favourTotal++;
 					// 调用喜欢接口
-					let params={
-						id:id
+					let params = {
+						id: id
 					}
 					favour(params).then(res => {
 
@@ -168,8 +168,8 @@
 					this.collentIcon = "shoucang2";
 					this.articleInfo.collectTotal++;
 					// 调用收藏接口
-					let params={
-						id:id
+					let params = {
+						id: id
 					}
 					collect(params).then(res => {
 
@@ -182,8 +182,8 @@
 			},
 			transpond() {
 				let id = this.id;
-				let params={
-					id:id
+				let params = {
+					id: id
 				}
 				reprint(params).then(res => {})
 				// 提示转发成功
@@ -236,7 +236,7 @@
 			},
 			// 添加一条评论
 			addComment(payload) {
-				
+
 				// 把数据添加到本地数组里
 				let newcomment = {
 					createByName: getUserName(),
@@ -256,7 +256,6 @@
 					replyId: this.addCommentArg.replyId,
 					followId: this.addCommentArg.follewId,
 				}
-				console.log(params)
 				this.newComment(params);
 			},
 			// 添加一条子评论
@@ -269,6 +268,7 @@
 				this.commentList[payload.index].ChildComments.push(payload);
 
 				this.isComment = false;
+				this.commentCount++;
 				// 把参数传给接口
 				let params = {
 					id: this.addCommentArg.id,
@@ -295,22 +295,19 @@
 					childSize: this.childSize,
 				}
 				getArticleCommentList(params).then(res => {
-					if (res.code === 0) {
-						this.commentList = [...this.commentList, ...res.data.CommentSum];
-						let comments = this.commentList;
-
-						if (this.current * this.size >= this.commentCount) {
-							this.loadStatus = "nomore";
-						} else 
+					if (res.data.CommentSum) {
 						if (this.current === 1) {
 							this.isLoadMore = false;
-							this.commentList = [...this.commentList, ...res.data.CommentSum];
 						} else {
 							setTimeout(function() {
 								this.isLoadMore = false;
-								this.commentList = [...this.commentList, ...res.data.CommentSum];
 							}, 3000);
 						}
+
+						this.commentList = [...this.commentList, ...res.data.CommentSum];
+					} else {
+						this.loadStatus = "nomore";
+						this.isLoadMore = false;
 					}
 				})
 			},
@@ -325,25 +322,23 @@
 				}).catch(err => {
 					console.log(err, "err login")
 				})
-				console.log(this.articleInfo)
 			}
 		},
-		
+
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true
 				this.current += 1;
-				this.getComments()
-
+				this.getComments();
 			}
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
 			this.current = 1;
+			this.commentList = [];
 			this.getArtile();
 			this.getComments();
 			setTimeout(function() {
-
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},
@@ -483,5 +478,6 @@
 	.comment-list {
 		padding: 0 30rpx;
 		background-color: #fff;
+		margin-bottom: 60px;
 	}
 </style>
