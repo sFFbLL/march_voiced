@@ -276,7 +276,6 @@
 					replyId: this.addCommentArg.replyId,
 					followId: this.addCommentArg.follewId,
 				}
-				console.log(params)
 				this.newComment(params);
 			},
 			// 把时间戳转换为正确格式
@@ -306,8 +305,7 @@
 
 						this.commentList = [...this.commentList, ...res.data.CommentSum];
 					} else {
-						this.loadStatus = "nomore";
-						this.isLoadMore = false;
+						this.loadStatus = 'nomore';
 					}
 				})
 			},
@@ -319,6 +317,12 @@
 					console.log(res)
 					if (res.code === 0) {
 						this.articleInfo = res.data;
+						if (res.data.isFavour == 1) { //已经点赞
+							this.likeIcon = "heart-fill";
+							this.likeColor = "#d81e06";
+						} else if (res.data.isCollect == 2) { //已经收藏
+							this.collentIcon = "shoucang2";
+						}
 					}
 				}).catch(err => {
 					console.log(err, "err login")

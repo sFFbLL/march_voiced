@@ -110,8 +110,7 @@
 
 							this.ChildCommentsList = [...this.ChildCommentsList, ...res.data.Comment];
 						} else {
-							this.loadStatus = "nomore";
-							this.isLoadMore = false;
+							this.loadStatus = 'nomore';
 						}
 					})
 				} else if (this.fromType == 1) {
@@ -129,8 +128,7 @@
 							}
 							this.ChildCommentsList = [...this.ChildCommentsList, ...res.data.Comment];
 						} else { //没有数据的话消除下拉刷新组件
-							this.loadStatus = "nomore";
-							this.isLoadMore = false;
+							this.loadStatus = 'nomore';
 						}
 					})
 				}
