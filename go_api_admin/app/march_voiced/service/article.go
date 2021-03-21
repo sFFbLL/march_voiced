@@ -625,15 +625,18 @@ func (a *Article) IsFavourCollectByArticleId(id int, userId int) (articleMsg *bo
 	articleFavour := new(models.ArticleFavour)
 	articleMsg = new(bo.IsFavourCollectByArticleId)
 
-	// 文章是收藏
+	// 文章是否收藏
+	zap.L().Info("Call IsFavourCollectByArticleId IsCollectByArticleId", zap.String("ArticleId", utils.IntToString(id)), zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	articleCollect.ArticleId = uint(id)
 	articleCollect.CreateBy = uint(userId)
 	articleMsg.IsCollect, err = articleCollect.IsCollectByArticleId()
 	if err != nil {
+		zap.L().Error("goArticleMsg IsFollow failed", zap.String("ArticleId", utils.IntToString(id)), zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 		return
 	}
 
-	// 文章是喜欢
+	// 文章是否喜欢
+	zap.L().Info("Call IsFavourCollectByArticleId IsFavourByArticleId", zap.String("ArticleId", utils.IntToString(id)), zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
 	articleFavour.ArticleId = uint(id)
 	articleFavour.CreateBy = uint(userId)
 	articleMsg.IsFavour, err = articleFavour.IsFavourByArticleId()
