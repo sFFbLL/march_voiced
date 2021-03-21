@@ -30,7 +30,7 @@ func (e *Message) GetMessageMe(getMessage *bo.GetMessage, p *dto.Paginator, user
 	err = global.Eloquent.Table(e.TableName()).
 		Select("sys_user.avatar_path, sys_user.nick_name, message.type , message.status, message.article_id, message.create_by, message.create_time, message.title, message.comment, message.content, message.image").
 		Joins("left join sys_user on sys_user.id = message.create_by").
-		Where("message.follow_id in (?) and sys_user.is_deleted=0", userId).Count(&getMessage.Total).
+		Where("message.follow_id=? and sys_user.is_deleted=0", userId).Count(&getMessage.Total).
 		Order("message.create_time desc").Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).
 		Find(getMessage.Records).Error
 	return
@@ -72,7 +72,7 @@ func (e *Message) UnReadCount() (count int64, err error) {
 func (e *Message) Add(articleId uint, userId uint) (err error) {
 	if e.Type == 0 {
 		article := new(Article)
-		err = global.Eloquent.Table("article").Where("id=? and is_deleted=0", articleId).Error
+		err = global.Eloquent.Table("article").Where("id=? and is_deleted=0", articleId).First(article).Error
 		if err != nil {
 			return
 		}
@@ -85,7 +85,7 @@ func (e *Message) Add(articleId uint, userId uint) (err error) {
 		e.UpdateBy = userId
 	} else if e.Type == 1 {
 		marchsoft := new(MarchSoft)
-		err = global.Eloquent.Table("marchsoft").Where("id=? and is_deleted=0", articleId).Error
+		err = global.Eloquent.Table("marchsoft").Where("id=? and is_deleted=0", articleId).First(marchsoft).Error
 		if err != nil {
 			return
 		}
