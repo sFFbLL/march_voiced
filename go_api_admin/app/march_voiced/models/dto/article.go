@@ -19,8 +19,8 @@ type InsertArticleDto struct {
 	Kind      uint8  `json:"kind" binding:"required"`
 	Status    *uint8 `json:"status" binding:"required"`
 	Type      *uint  `json:"type" binding:"required"`
+	WordCount *uint  `json:"word_count" binding:"required"`
 	Tag       uint   `json:"tag" binding:"required"`
-	WordCount uint   `json:"word_count" binding:"required"`
 }
 
 type UpdateArticleDto struct {

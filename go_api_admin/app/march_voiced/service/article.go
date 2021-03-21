@@ -168,16 +168,17 @@ func (a *Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (e
 	// 实例化要添加的文章
 	article := new(models.Article)
 	article = &models.Article{
-		CreateBy: uint(userId),
-		UpdateBy: uint(userId),
-		Title:    articleDto.Title,
-		Content:  articleDto.Content,
-		Describe: articleDto.Describe,
-		Image:    articleDto.Image,
-		Kind:     articleDto.Kind,
-		Tag:      articleDto.Tag,
-		Status:   articleDto.Status,
-		Type:     articleDto.Type,
+		CreateBy:  uint(userId),
+		UpdateBy:  uint(userId),
+		Title:     articleDto.Title,
+		Content:   articleDto.Content,
+		Describe:  articleDto.Describe,
+		Image:     articleDto.Image,
+		Kind:      articleDto.Kind,
+		Tag:       articleDto.Tag,
+		Status:    articleDto.Status,
+		Type:      articleDto.Type,
+		WordCount: *articleDto.WordCount,
 	}
 
 	// 调用dao方法
