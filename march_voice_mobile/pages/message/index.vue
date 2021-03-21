@@ -115,22 +115,28 @@
 					size: "1",
 					records:[]
 				},
-
+				isNextPage:true
 		}
 	},
 	//上拉触底函数
 	onReachBottom() {
 			if (!this.isLoadMore && this.tabIndex == 0) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true
-				this.interactCurrent += 1
+				if(this.isNextPage){// 防止返回数据为空页码+1的情况
+					this.interactCurrent += 1
+				}
 				this.interact();
 			} else if (!this.isLoadMore && this.tabIndex == 1) {
 				this.isLoadMore = true
-				this.attentionCurrent += 1
+				if(this.isNextPage){
+					this.attentionCurrent += 1
+				}
 				this.attention();
 			} else if (!this.isLoadMore && this.tabIndex == 2) {
 				this.isLoadMore = true
-				this.otherCurrent += 1
+				if(this.isNextPage){
+					this.otherCurrent += 1
+				}
 				this.other();
 			}
 		},
@@ -232,23 +238,38 @@
 					size:this.size
 				}
 				interactList(params).then(res => {
-					
-				_this.interactList.records = [..._this.interactList.records,...res.data.records];
-				if(res.data.length<=_this.size){
-					_this.loadStatus='nomore';
+				if (res.data.records != 0) {
+						if (this.interactCurrent === 1) {
+							this.isLoadMore = false;
+						} else {
+							setTimeout(function() {
+								_this.isLoadMore = false;
+							}, 1000);
+						}
+						
+					_this.interactList.records = [..._this.interactList.records,...res.data.records];
+					this.isNextPage = true
+				}else {
+					this.isLoadMore = false;
+					console.log(this.isLoadMore);
+					this.loadStatus = "nomore";
+					this.isNextPage = false;
 				}
+				// if(res.data.length<=_this.size){
+				// 	_this.loadStatus='nomore';
+				// }
 				})
 				// 如果长度大于总条数
-				if (this.interactList.length > 16) {
-					_this.loadStatus = "nomore";
-					_this.interactLoadStatus = "nomore";
-				} else if (this.interactCurrent === 1) {
-					_this.isLoadMore = false;
-				} else {
-					setTimeout(function() {
-						_this.isLoadMore = false;
-					}, 2000);
-				}
+				// if (this.interactList.length > 16) {
+				// 	_this.loadStatus = "nomore";
+				// 	_this.interactLoadStatus = "nomore";
+				// } else if (this.interactCurrent === 1) {
+				// 	_this.isLoadMore = false;
+				// } else {
+				// 	setTimeout(function() {
+				// 		_this.isLoadMore = false;
+				// 	}, 2000);
+				// }
 				// 数据已读
 				readMessage(1).then(res => {
 					
@@ -262,21 +283,36 @@
 					size:this.size
 				}
 				attentionList(params).then(res => {
-				_this.attentionList.records = [..._this.attentionList.records,...res.data.records];
-				if(res.data.length<=_this.size){
-					_this.loadStatus='nomore';
+				if(res.data.records){
+					if (this.attentionCurrent === 1) {
+							this.isLoadMore = false;
+						} else {
+							setTimeout(function() {
+								_this.isLoadMore = false;
+							}, 3000);
+						}
+					_this.attentionList.records = [..._this.attentionList.records,...res.data.records];
+					this.isNextPage = true
+				}else {
+					this.loadStatus = "nomore";
+					this.isLoadMore = false;
+					this.isNextPage = false;
 				}
+				
+				// if(res.data.length<=_this.size){
+				// 	_this.loadStatus='nomore';
+				// }
 				})
-				if (this.attentionList.length > 16) {
-					_this.loadStatus = "nomore";
-					_this.attentionLoadStatus = "nomore";
-				} else if (this.attentionCurrent === 1) {
-					_this.isLoadMore = false;
-				} else {
-					setTimeout(function() {
-						_this.isLoadMore = false;
-					}, 2000);
-				}
+				// if (this.attentionList.length > 16) {
+				// 	_this.loadStatus = "nomore";
+				// 	_this.attentionLoadStatus = "nomore";
+				// } else if (this.attentionCurrent === 1) {
+				// 	_this.isLoadMore = false;
+				// } else {
+				// 	setTimeout(function() {
+				// 		_this.isLoadMore = false;
+				// 	}, 2000);
+				// }
 				// 数据已读
 				readMessage(2).then(res => {
 					
@@ -290,21 +326,36 @@
 					size:this.size
 				}
 				otherList(params).then(res => {
-				_this.otherList.records = [..._this.otherList.records,...res.data.records];
-				if(res.data.length<=_this.size){
-					_this.loadStatus='nomore';
+				if(res.data.records){
+					if (this.otherCurrent === 1) {
+							this.isLoadMore = false;
+						} else {
+							setTimeout(function() {
+								_this.isLoadMore = false;
+							}, 3000);
+						}
+					_this.otherList.records = [..._this.otherList.records,...res.data.records];	
+					this.isNextPage = true;
+				}else {
+					this.loadStatus = "nomore";
+					this.isLoadMore = false;
+					this.isNextPage = false;
 				}
+				
+				// if(res.data.length<=_this.size){
+				// 	_this.loadStatus='nomore';
+				// }
 				})
-				if (this.otherList.length > 16) {
-					_this.loadStatus = "nomore";
-					_this.otherLoadStatus = "nomore";
-				} else if (this.otherCurrent === 1) {
-					_this.isLoadMore = false;
-				} else {
-					setTimeout(function() {
-						_this.isLoadMore = false;
-					}, 2000);
-				}
+				// if (this.otherList.length > 16) {
+				// 	_this.loadStatus = "nomore";
+				// 	_this.otherLoadStatus = "nomore";
+				// } else if (this.otherCurrent === 1) {
+				// 	_this.isLoadMore = false;
+				// } else {
+				// 	setTimeout(function() {
+				// 		_this.isLoadMore = false;
+				// 	}, 2000);
+				// }
 				// 数据已读
 				readMessage(3).then(res => {
 					

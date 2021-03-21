@@ -2,11 +2,11 @@
 	<view class="attention-cell">
 		<view class="flex-item">
 			<!-- 左侧头像盒子 -->
-			<a @click.stop="inToMine" class="left-img-box inner-box">
+			<a @click.stop="inToMineByImg" class="left-img-box inner-box">
 				<image class="inner-img" :src="getImgUrl(avatarPath)" mode="aspectFill"></image>
 			</a>
 			<!-- 中部文字 -->
-			<view class="middle-text-box inner-box" @click.stop="inToMine">
+			<view class="middle-text-box inner-box" @click.stop="inToMineByName">
 				<view class="inner-middle-box inner-box">
 					<!-- 昵称盒子 -->
 					<view class="inner-text-name">
@@ -70,12 +70,17 @@
 				type: Number,
 				default: null
 			},
+			isMine:{
+				type: Boolean,
+				default:false
+			}
 		},
 		
 		data() {
 			return {
 				isDisabled: false, // 是否禁用按钮点击
 				openid: null,
+				imgList:["http://linbolun.cn/api/file/download/e0f62477-fb78-4f8b-9052-670642e497a5.png"]
 			}
 		},
 		methods: {
@@ -104,11 +109,30 @@
 				})
 			},
 			// 进入个人信息页面
-			inToMine() {
+			inToMineByImg() {
+				// this.isMine = true
+				if(this.isMine){
+					console.log(this.avatarPath)
+					 uni.previewImage({
+								current : 0,
+					            urls : this.imgList,
+					        });
+					return;
+				}
 				uni.navigateTo({
 					url: '/pages/universalPersonalCenter/index?id=' + this.aid,
 				})
 
+			},
+			inToMineByName() {
+				// this.isMine = true
+				if(this.isMine === true){
+					return;
+				}
+				uni.navigateTo({
+					url: '/pages/universalPersonalCenter/index?id=' + this.aid,
+				})
+			
 			},
 			getImgUrl(src) {
 				return settings.imgUrl + src;
