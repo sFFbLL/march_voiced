@@ -44,7 +44,7 @@
 			<image src="https://oscimg.oschina.net/oscnet/fd2170a448e37826ae9f4d7088f287b8f24.jpg" />
 		</view>
 		<!-- 发布三月圈悬浮按钮 -->
-		<view @click="publish()" class="publishbtn">
+		<view v-if="!sanyueMumber" @click="publish()" class="publishbtn">
 			<uni-icons class="addicon" type="plusempty" size="43" color="white"></uni-icons>
 		</view>
 	</view>
@@ -102,23 +102,20 @@
 		//上拉触底函数
 		onReachBottom() {
 			if (!this.isLoadMore) { //此处判断，上锁，防止重复请求
-				this.isLoadMore = true
-				this.current += 1
+				this.isLoadMore = true;
+				this.current += 1;
 				this.getCircleList();
 			}
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
 			this.current = 1; //推荐当前页数，
-
-			let that = this;
-			that.ideasList = [];
-			
-			this.getCircleList();
+			this.ideasList = [];
 			setTimeout(function() {
-
 				uni.stopPullDownRefresh();
 			}, 2000);
+			this.getCircleList();
+			
 		},
 		created() {
 			// 获取三月基本信息接口
@@ -128,8 +125,6 @@
 			if (this.marchCircleInfo.ismarch == 0) {
 				this.sanyueMumber = false;
 			}
-
-
 			this.getCircleList();
 		},
 
@@ -144,22 +139,23 @@
 					size: this.size
 				}
 				marchCircleList(params).then(res => {
-					_this.ideasList = [...this.ideasList, ...res.data];
-					if (res.data.length <= _this.size) {
-						_this.loadStatus = 'nomore';
+					if (res.data) {
+						if (this.current === 1) {
+							_this.isLoadMore = false;
+						} else {
+							setTimeout(function() {
+								_this.isLoadMore = false;
+							}, 2000);
+						}
+						_this.ideasList = [...this.ideasList, ...res.data];
+					} else {
+						_this.loadStatus = 'loading';
+						_this.isLoadMore = false;
 					}
 
 				})
 
-				if (this.ideasList.length > 16) {
-					_this.loadStatus = "nomore";
-				} else if (this.current === 1) {
-					_this.isLoadMore = false;
-				} else {
-					setTimeout(function() {
-						_this.isLoadMore = false;
-					}, 2000);
-				}
+
 			},
 			// 调用微信接口分享内容
 			share() {

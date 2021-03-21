@@ -74,11 +74,11 @@
 		},
 		data() {
 			return {
-				notshow:true,
+				notshow: true,
 				recommendCurrent: 1, //推荐当前页数，
 				articleCurrent: 1, //普通文章页数
 				followCurrent: 1, //关注当前页数
-				size: 4,
+				size: 5,
 				tabIndex: '',
 				tablist: [{
 						index: 0,
@@ -100,18 +100,18 @@
 				isRecommend: true, //是否是推荐文章
 			}
 		},
-		onLoad() {
-			this.recommend();
-			this.follow();
-		},
+		// mounted() {
+		// 	this.recommend();
+		// 	this.follow();
+		// },
 		created() {
 			if (!getToken()) {
 				forLogin();
 				this.recommend();
 				this.follow();
 			} else {
-			this.recommend();
-			this.follow();
+				this.recommend();
+				this.follow();
 			}
 		},
 		// 下拉刷新
@@ -119,12 +119,11 @@
 			this.recommendCurrent = 1; //推荐当前页数，
 			this.articleCurrent = 1; //普通文章页数
 			this.followCurrent = 1; //关注当前页数
-			let that = this;
-			that.recommendList = [];
+			this.recommendList = [];
+			this.followList = [];
 			this.recommend();
 			this.follow();
 			setTimeout(function() {
-
 				uni.stopPullDownRefresh();
 			}, 2000);
 		},
@@ -168,20 +167,25 @@
 					size: this.size
 				}
 				getRecommend(params).then(res => {
-					_this.recommendList = [..._this.recommendList, ...res.data];
-					if (res.data.length < _this.size) {
-						_this.loadStatus = "nomore";
+					if (res.data) {
+						if (this.recommendCurrent === 1) {
+							_this.isLoadMore = false;
+						} else {
+							setTimeout(function() {
+								_this.isLoadMore = false;
+							}, 3000);
+						}
+						if(res.data.length<=this.size){
+							_this.getArticleList();
+						}
+						_this.recommendList = [..._this.recommendList, ...res.data];
+						console.log(_this.recommendList)
+					} else {
+						_this.loadStatus = "loading";
 						_this.isRecommend = false;
 						_this.getArticleList();
-					} else if (this.recommendCurrent === 1) {
-						_this.isLoadMore = false;
-						_this.recommendList = [..._this.recommendList, ...res.data];
-					} else {
-						setTimeout(function() {
-							_this.isLoadMore = false;
-							_this.recommendList = [..._this.recommendList, ...res.data];
-						}, 3000);
 					}
+
 				})
 			},
 			getArticleList() {
@@ -191,19 +195,22 @@
 					size: this.size
 				}
 				getArticleList(params).then(res => {
-					_this.recommendList = [..._this.recommendList, ...res.data];
-					if (res.data.length < _this.size) {
-						_this.loadStatus = "nomore";
-						_this.recommendLoadStatus = "nomore";
-					} else if (this.articleCurrent === 1) {
-						_this.isLoadMore = false;
+					if (res.data) {
+						if (this.articleCurrent === 1) {
+							_this.isLoadMore = false;
+
+						} else {
+							setTimeout(function() {
+								_this.isLoadMore = false;
+							}, 3000);
+						}
 						_this.recommendList = [..._this.recommendList, ...res.data];
 					} else {
-						setTimeout(function() {
-							_this.isLoadMore = false;
-							_this.recommendList = [..._this.recommendList, ...res.data];
-						}, 3000);
+						_this.loadStatus = "loading";
+						_this.recommendLoadStatus = "loading";
+						_this.isLoadMore = false;
 					}
+
 				})
 			},
 			// 关注
@@ -214,21 +221,22 @@
 					size: this.size
 				}
 				getFollow(params).then(res => {
-					if (res.code === 0) {
-						_this.followList = [..._this.followList, ...res.data.records];
-						if (res.data.records.length < _this.size) {
-							_this.loadStatus = "nomore";
-							_this.follLoadStatus = "nomore";
-						} else if (this.followCurrent === 1) {
+					if (res.data) {
+						if (this.followCurrent === 1) {
 							_this.isLoadMore = false;
-							_this.followList = [..._this.followList, ...res.data.records];
 						} else {
 							setTimeout(function() {
 								_this.isLoadMore = false;
-								_this.followList = [..._this.followList, ...res.data.records];
 							}, 3000);
 						}
+						_this.followList = [..._this.followList, ...res.data.records];
+					} else {
+						_this.loadStatus = "loading";
+						_this.follLoadStatus = "loading";
+						_this.isLoadMore = false;
 					}
+
+
 				})
 			},
 			search() {

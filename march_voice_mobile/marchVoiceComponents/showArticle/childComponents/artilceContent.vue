@@ -3,6 +3,7 @@
 	<view class="article-content" @click="toDetails">
 		<view>
 			<text class="article-text" v-html="textContent" ref="articleContent">{{textContent}}</text>
+
 		</view>
 		<view v-if="articleImg != ''" class="article-img">
 			<image :src="articleImg" mode="aspectFill"></image>
@@ -51,7 +52,7 @@
 						url: '../ideaDetails/index?id=' + this.id + '&commentTotal=' + this.commentTotal
 					})
 				} else {
-					
+
 					// 跳转到页面
 					uni.navigateTo({
 						url: '../articleDetails/index?id=' + this.id + '&commentTotal=' + this.commentTotal
@@ -90,7 +91,7 @@
 	.article-img {
 		display: inline-block;
 		/* margin-right: 30rpx; */
-		
+
 	}
 
 	.article-img image {

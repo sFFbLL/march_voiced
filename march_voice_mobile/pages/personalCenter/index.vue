@@ -2,8 +2,8 @@
 	<view class="personal-center">
 		<!-- 头部用户信息 -->
 		<view class="header">
-			<attentionAndFansCell :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath" :isFollow="userInfo.isFollow"
-			 class="top-user-info">
+			<attentionAndFansCell :mySelf="mySelf" :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
+			 :isFollow="userInfo.isFollow" class="top-user-info">
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
 			<view class="total">
@@ -56,7 +56,7 @@
 					<recommend :articleInfo="item" :isArticleInteract="false" class="arcitle-item item"></recommend>
 				</view>
 				<!-- 下拉加载更多 -->
-				<view v-show="isLoadMore">
+				<view v-if="isLoadMore">
 					<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
 				</view>
 			</view>
@@ -80,7 +80,7 @@
 	export default {
 		data() {
 			return {
-				notshow:false,
+				mySelf: true,
 				articleCurrent: 1, //文章当前页数，
 				ideaCurrent: 1, //想法当前页数
 				draftCurrent: 1, //草稿当前页数
@@ -95,6 +95,7 @@
 				articleList: [],
 				ideaList: [],
 				draftList: [],
+
 				emojiList: {
 					faceTotal: 0,
 					likeTotal: 6,
@@ -218,20 +219,25 @@
 					size: this.size
 				}
 				getUserIdeaList(params).then(res => {
-					_this.ideaList = [..._this.ideaList, ...res.data];
-				})
-				if (this.ideaList.length > 7) {
-					_this.loadStatus = "nomore";
-					_this.ideaLoadStatus = "nomore";
-				} else if (this.ideaCurrent === 1) {
-					_this.isLoadMore = false;
-					_this.ideaList = [..._this.ideaList, ..._this.ideaList];
-				} else {
-					setTimeout(function() {
+					if (res.data) {
+						if (this.ideaCurrent === 1) {
+							_this.isLoadMore = false;
+						} else {
+							setTimeout(function() {
+								_this.isLoadMore = false;
+							}, 2000);
+						}
+
+						_this.ideaList = [..._this.ideaList, ...res.data];
+					} else {
+						_this.loadStatus = "loading";
+						_this.ideaLoadStatus = "loading";
 						_this.isLoadMore = false;
-						_this.ideaList = [..._this.ideaList, ..._this.ideaList];
-					}, 2000);
-				}
+					}
+
+
+				})
+
 			},
 			// 获取草稿箱列表
 			getDraftList() {
@@ -243,20 +249,22 @@
 					kind: 1
 				}
 				getUserArticleList(params).then(res => {
+					if (res.data) {
+						if (this.draftCurrent === 1) {
+							_this.isLoadMore = false;
+						} else {
+							setTimeout(function() {
+								_this.isLoadMore = false;
+							}, 2000);
+						}
+						_this.draftList = [..._this.draftList, ...res.data];
+					} else {
+						_this.loadStatus = "loading";
+						_this.draftLoadStatus = "loading";
+						_this.isLoadMore = false;
+					}
 					_this.draftList = [..._this.draftList, ...res.data];
 				})
-				if (this.draftList.length > 10) {
-					_this.loadStatus = "nomore";
-					_this.draftLoadStatus = "nomore";
-				} else if (this.draftCurrent === 1) {
-					_this.isLoadMore = false;
-					_this.draftList = [..._this.draftList, ..._this.draftList];
-				} else {
-					setTimeout(function() {
-						_this.isLoadMore = false;
-						_this.draftList = [..._this.draftList, ..._this.draftList];
-					}, 2000);
-				}
 			},
 			// 获取文章列表
 			getArticleList() {
@@ -268,20 +276,22 @@
 					kind: 2
 				}
 				getUserArticleList(params).then(res => {
-					_this.articleList = [..._this.articleList, ...res.data];
-				})
-				if (this.articleList.length > 10) {
-					_this.loadStatus = "nomore";
-					_this.articleLoadStatus = "nomore";
-				} else if (this.articleCurrent === 1) {
-					_this.isLoadMore = false;
-					_this.articleList = [..._this.articleList, ..._this.articleList];
-				} else {
-					setTimeout(function() {
-						_this.isLoadMore = false;
-						_this.articleList = [..._this.articleList, ..._this.articleList];
-					}, 2000);
-				}
+					if (res.data) {
+							if (this.articleCurrent === 1) {
+								_this.isLoadMore = false;
+							} else {
+								setTimeout(function() {
+									_this.isLoadMore = false;
+								}, 2000);
+							}
+							_this.articleList = [..._this.articleList, ...res.data];
+						} else {
+							_this.loadStatus = "loading";
+							_this.articleLoadStatus = "loading";
+							_this.isLoadMore = false;
+						}
+					})
+				
 			},
 			// 跳转编辑页面
 			goToEdit() {

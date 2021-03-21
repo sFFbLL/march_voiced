@@ -77,17 +77,21 @@
 					this.$emit("addComment", this.value);
 				} else {
 					// 把数据添加到本地数组里
+					let index;
+					if(this.addCommentArg.index!=null){
+						index=this.addCommentArg.index;
+					}else{
+						index=null;
+					}
 					let newcomment = {
 						createByName: getUserName(),
 						idAvatar: getAvatarPath(),
 						content: this.value,
 						createTime: new Date(),
 						replyName: this.addCommentArg.replyName,
-						index: this.addCommentArg.index?this.addCommentArg.index:null,
+						index: index,
 						ChildComments: []
 					}
-					
-					console.log(44444444444)
 					this.$emit('addChildComment', newcomment);
 				}
 				this.close();

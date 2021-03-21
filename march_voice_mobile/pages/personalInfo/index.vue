@@ -9,7 +9,7 @@
 			<view class="base-info-head-img" style="height: 130rpx;">
 				<text clas="base-info-area">头像</text>
 				<view class="base-info-change-img">
-					<image style="width: 100rpx; height: 100rpx; border-radius: 50rpx;" mode="aspectFill" :src="info.avatarPath"
+					<image style="width: 100rpx; height: 100rpx; border-radius: 50rpx;" mode="aspectFill" :src=" getImgUrl(info.avatarPath)"
 					 @click="changeHeadImg()"></image>
 					<uni-icons style="margin-left: 10rpx;" type="arrowright" size="15"></uni-icons>
 				</view>
@@ -77,6 +77,7 @@
 		modInformation
 	} from "../../utils/api/personInfo-api.js"
 	import unloadImage from "../../utils/api.js"
+	import settings from '../../settings.js'
 	export default {
 		data() {
 			return {
@@ -105,6 +106,11 @@
 		},
 
 		methods: {
+			// 拼接头像url
+			getImgUrl(src) {
+				return settings.imgUrl + src;
+			},
+			// 操作提示
 			toptip() {
 				this.$refs.sTips.show({
 					title: '设置成功',
@@ -132,7 +138,7 @@
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album'], //从相册选择
 					// 成功选择图片
-					success:  (res) => {
+					success: (res) => {
 						// 获取图片路径显示到页面
 						_this.info.avatarPath = res.tempFilePaths[0];
 						// 把图片上传到服务器
@@ -157,10 +163,10 @@
 								modInformation(params).then(res => {
 									_this.toptip()
 								})
-								
+
 							},
 						});
-						
+
 					}
 
 				});

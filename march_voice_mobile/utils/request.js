@@ -21,7 +21,7 @@ Axios.defaults.timeout = 8000;
 Axios.interceptors.request.use(
 	// 在发送请求前要做的事儿
 	(config) => {
-		// setToken("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLorqnku5YiLCJleHAiOjE2MTk4NDk3NzQsImlzcyI6Im15LXByb2plY3QifQ.m8TNroph1_MdJp048MfD6mhtKSDDcHbINp-fYiu3V28")
+		// setToken("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLorqnku5YiLCJleHAiOjE2MTk4ODgyNzQsImlzcyI6Im15LXByb2plY3QifQ.4J14HdIwA2C_n-tA1j8vi5MUDjgsiQji5hrkl0FUSqM")
 		if (getToken()) {
 			config.headers['Authorization'] = getToken() //让每个请求携带自定义token
 		}

@@ -20,8 +20,7 @@
 			"path": "pages/message/index",
 			"style": {
 				"navigationBarTitleText": "消息",
-				"navigationStyle": "custom",
-				"enablePullDownRefresh": true
+				"navigationStyle": "custom"
 			}
 		}, {
 			"path": "pages/publish/index",
@@ -45,7 +44,8 @@
 		}, {
 			"path": "pages/articleDetails/index",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "详情"
 			}
 		}, {
 			"path": "pages/ideaDetails/index",
@@ -57,14 +57,14 @@
 			"path": "pages/personalInfo/index",
 			"style": {
 				"navigationBarTitleText": "个人信息",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
 			}
 		}, {
 			"path": "pages/fans/index",
 			"style": {
 				"navigationBarTitleText": "粉丝",
 				"navigationStyle": "custom",
-				"enablePullDownRefresh": true,
 				"onReachBottomDistance": 50
 			}
 		}, {
@@ -99,35 +99,39 @@
 		}, {
 			"path": "pages/pcPublish/pcPublish",
 			"style": {
-				"navigationBarTitleText": ""
-				// "enablePullDownRefresh": false
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/ideaPublish/index",
 			"style": {
 				"navigationBarTitleText": "编辑想法",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/search/index",
 			"style": {
 				"navigationBarTitleText": "搜索",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/search/searchUser",
 			"style": {
 				"navigationBarTitleText": "搜索",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
 			}
 		}, {
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "注册三月之声",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
 			}
 		}, {
 			"path": "pages/pastArticle/index",
@@ -141,18 +145,15 @@
 				"navigationBarTitleText": "个人信息",
 				"navigationStyle": "custom"
 			}
-		}
-	    ,{
-            "path" : "pages/moreComments/moreComments",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "评论详情",
-                "enablePullDownRefresh": false,
+		}, {
+			"path": "pages/moreComments/moreComments",
+			"style": {
+				"navigationBarTitleText": "评论详情",
 				"navigationStyle": "custom"
-            }
-            
-        }
-    ],
+			}
+
+		}
+	],
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式（list 的索引项）
 		"list": [{

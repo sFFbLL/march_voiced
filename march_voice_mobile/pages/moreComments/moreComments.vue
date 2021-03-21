@@ -5,8 +5,12 @@
 			<comment :showKids="showKids" :type="type" :commentList="commentList" @childFn="comment"></comment>
 			<!-- 间隔槽 -->
 			<u-gap height="30" bg-color="#f5f5f5"></u-gap>
-			<!-- 所有子评论 -->
-			<comment :showKids="showKids" :type="type" :commentList="ChildCommentsList" @childFn="comment"></comment>
+			<view>
+				<view class="reply">回复</view>
+				<!-- 所有子评论 -->
+				<comment :showKids="showKids" :type="type" :commentList="ChildCommentsList" @childFn="comment"></comment>
+			</view>
+
 			<!-- 评论输入组件 -->
 			<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment"
 			 @childFn="parentFn" :type="type" :addCommentArg="addCommentArg" />
@@ -70,10 +74,19 @@
 			this.addCommentArg = {
 				id: this.artilceId,
 				replyId: this.parentComment.createBy,
-				follewId: 0,
+				follewId: this.id,
 				childComment: true,
 				replyName: this.parentComment.createByName
 			}
+		},
+		// 下拉刷新
+		onPullDownRefresh() {
+			this.current = 1;
+			this.ChildCommentsList = [];
+			this.getMore()
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 1000);
 		},
 		methods: {
 			// 查询这个评论的所有子评论
@@ -86,40 +99,42 @@
 				if (this.fromType == 0) {
 					getChildCommentList(params).then(res => {
 						if (res.data.Comment) {
-							this.ChildCommentsList = [...this.ChildCommentsList, ...res.data.Comment];
-							if (this.current * this.size >= this.kidsCount) {
-								this.loadStatus = "nomore";
-							} else
+
 							if (this.current === 1) {
 								this.isLoadMore = false;
-								this.ChildCommentsList = [...this.ChildCommentsList, ...res.data.Comment];
 							} else {
 								setTimeout(function() {
 									this.isLoadMore = false;
-									this.ChildCommentsList = [...this.ChildCommentsList, ...res.data.Comment];
 								}, 3000);
 							}
+
+							this.ChildCommentsList = [...this.ChildCommentsList, ...res.data.Comment];
+						} else {
+							this.loadStatus = "nomore";
+							this.isLoadMore = false;
 						}
 					})
 				} else if (this.fromType == 1) {
 					ideaChildCommentList(params).then(res => {
+						// 查询是否还有数据
 						if (res.data.Comment) {
-							this.ChildCommentsList = [...this.ChildCommentsList, ...res.data.Comment];
-							if (this.current * this.size >= this.kidsCount) {
-								this.loadStatus = "nomore";
-							} else
+
 							if (this.current === 1) {
 								this.isLoadMore = false;
-								this.ChildCommentsList = [...this.ChildCommentsList, ...res.data.Comment];
+
 							} else {
 								setTimeout(function() {
 									this.isLoadMore = false;
-									this.ChildCommentsList = [...this.ChildCommentsList, ...res.data.Comment];
 								}, 3000);
 							}
+							this.ChildCommentsList = [...this.ChildCommentsList, ...res.data.Comment];
+						} else { //没有数据的话消除下拉刷新组件
+							this.loadStatus = "nomore";
+							this.isLoadMore = false;
 						}
 					})
 				}
+				console.log(this.ChildCommentsList)
 
 			},
 			// 控制评论弹出框的显示开
@@ -133,8 +148,8 @@
 						id: id,
 						index: payload.index,
 						replyId: payload.replyId,
-						follewId: this.parentComment.id,
-						replyName: payload.createByName,
+						follewId: payload.follewId,
+						replyName: payload.replyName,
 					}
 				}
 			},
@@ -144,14 +159,14 @@
 			},
 			// 调用新增评论接口
 			newComment(params) {
-				if(this.fromType==1){
+				if (this.fromType == 1) {
 					// 想法评论发布接口
 					publishComment(params).then(res => {});
-				}else if(this.fromType==0){
-						// 文章评论发布接口
+				} else if (this.fromType == 0) {
+					// 文章评论发布接口
 					addArticleComment(params).then(res => {});
 				}
-				
+
 			},
 			// 添加一条子评论
 			addChildComment(payload) {
@@ -183,5 +198,10 @@
 </script>
 
 <style>
-
+	.reply {
+		margin-left: 30rpx;
+		margin-top: 10rpx;
+		font-size: 30rpx;
+		color: #aaa5a3;
+	}
 </style>
