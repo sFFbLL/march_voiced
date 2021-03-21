@@ -2,7 +2,7 @@
 	<view class="personal-center">
 		<!-- 头部用户信息 -->
 		<view class="header">
-			<attentionAndFansCell :mySelf="mySelf" :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
+			<attentionAndFansCell :notTap="notTap" :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
 			  class="top-user-info">
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
@@ -39,7 +39,7 @@
 				<view v-for="(item,index) in ideaList" v-if="tabIndex === 1">
 					<view class="ideacontent item">
 						<!-- 用户头像公共组件 -->
-						<attentionAndFansCell :notshow="notshow" :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
+						<attentionAndFansCell :notTap="notTap" :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
 						 :isFollow="userInfo.isFollow">
 							<view slot="underText">{{item.updateTime}}</view>
 						</attentionAndFansCell>
@@ -80,7 +80,7 @@
 	export default {
 		data() {
 			return {
-				mySelf: true,
+				notTap: true,
 				articleCurrent: 1, //文章当前页数，
 				ideaCurrent: 1, //想法当前页数
 				draftCurrent: 1, //草稿当前页数
@@ -160,7 +160,6 @@
 			this.getIdeaList();
 			this.getDraftList();
 			setTimeout(function() {
-
 				uni.stopPullDownRefresh();
 			}, 2000);
 		},
@@ -263,7 +262,6 @@
 						_this.draftLoadStatus = "loading";
 						_this.isLoadMore = false;
 					}
-					_this.draftList = [..._this.draftList, ...res.data];
 				})
 			},
 			// 获取文章列表
@@ -272,6 +270,7 @@
 				let params = {
 					id: 0,
 					current: this.ideaCurrent,
+
 					size: this.size,
 					kind: 2
 				}

@@ -46,7 +46,6 @@
 		methods: {
 			toDetails() {
 				if (this.isIdea) {
-
 					// 跳转详情页面
 					uni.navigateTo({
 						url: '../ideaDetails/index?id=' + this.id + '&commentTotal=' + this.commentTotal
