@@ -26,11 +26,17 @@ func marchRouter(v1 *gin.RouterGroup) {
 
 	mr := v1.Group("/march")
 	{
+		// 三月圈基本信息
 		mr.GET("/msg", apis.GetMarchMsg)
+		// 发布三月圈
 		mr.POST("", apis.InsertMarchSoft)
+		// 删除三月圈
 		mr.DELETE(":id", apis.DeleteMarchHandler)
+		// 三月圈列表页
 		mr.GET("", apis.SelectMarchList)
+		// 用户三月圈列表页
 		mr.GET("/user", apis.SelectMarchListById)
+		// 三月圈详情页
 		mr.GET("/detail/:id", apis.MarchDetail)
 	}
 }

@@ -44,7 +44,7 @@ func (a *Article) ArticleCollectByUserId(data *bo.ArticleCollectByUserId, p *dto
 		Select("article.id, article.title, article.describe, article.image, article.word_count, article.type, article.create_by, article.create_time, sys_user.nick_name").
 		Joins("left join article on article_collect.article_id = article.id").
 		Joins("left join sys_user on article.create_by = sys_user.id").
-		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article_collect.is_deleted=0 and article.status=1").Count(&data.Total).
+		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article_collect.create_by=? and article_collect.is_deleted=0 and article.status=1", userId).Count(&data.Total).
 		Order("article.create_time desc").Limit(int(p.Size)).Offset(int((p.Current - 1) * p.Size)).
 		Find(data.Records).Error
 }
