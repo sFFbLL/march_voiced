@@ -12,7 +12,6 @@
 				<image @click="share()" class="wxlogo" src="../../static/img/wxlogo.png"></image>
 				<button v-if="sanyueMumber" class="join" :disabled="disabledJoin" :style="{fontSize:fontSize+'rpx'}" @click="join()">{{isjoin}}</button>
 				<u-toast ref="uToast" />
-
 			</view>
 
 
@@ -115,21 +114,21 @@
 				uni.stopPullDownRefresh();
 			}, 2000);
 			this.getCircleList();
-			
+			this.getMarchCircleInfo()
 		},
 		created() {
 			// 获取三月基本信息接口
 			getMarchCircleInfo().then(res => {
 				this.marchCircleInfo = res.data;
+				if (this.marchCircleInfo.ismarch == 0) {
+					this.sanyueMumber = false;
+				}
 			})
-			if (this.marchCircleInfo.ismarch == 0) {
-				this.sanyueMumber = false;
-			}
+
 			this.getCircleList();
 		},
 
 		methods: {
-
 			// 获取三月圈列表
 			// 获取想法列表接口
 			getCircleList() {
