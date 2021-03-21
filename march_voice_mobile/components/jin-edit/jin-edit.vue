@@ -123,6 +123,12 @@ export default {
 	components: {
 		jinIcon
 	},
+	watch: {
+		// 如果 `html` 发生改变，这个函数就会运行
+		html: function () {
+		  this.reLoadEditor()
+		}
+	},
 	methods: {
 		onEditorReady(d) {
 			uni.createSelectorQuery()
@@ -259,6 +265,7 @@ export default {
 			if(params){
 				this.html = params.html
 				this.textLength = params.textLength
+				console.log(params,"jaitao")
 			}
 			this.onEditorReady()
 		},
