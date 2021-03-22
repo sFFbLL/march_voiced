@@ -102,7 +102,6 @@
 				console.log("infoerr")
 			})
 		},
-
 		methods: {
 			// 拼接头像url
 			getImgUrl(src) {
@@ -138,8 +137,7 @@
 					sourceType: ['album'], //从相册选择
 					// 成功选择图片
 					success: (res) => {
-						// 获取图片路径显示到页面
-						_this.info.avatarPath = res.tempFilePaths[0];
+
 						// 把图片上传到服务器
 						let temp = res.tempFilePaths[0];
 						uni.uploadFile({
@@ -158,6 +156,9 @@
 								let params = {
 									avatarPath: avatarPath
 								}
+								// 获取图片路径显示到页面
+								_this.info.avatarPath = avatarPath;
+
 								// 调用修改信息接口
 								modInformation(params).then(res => {
 									_this.toptip()

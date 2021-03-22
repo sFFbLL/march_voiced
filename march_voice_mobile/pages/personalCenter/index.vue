@@ -3,7 +3,7 @@
 		<!-- 头部用户信息 -->
 		<view class="header">
 			<attentionAndFansCell :notTap="notTap" :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
-			  :isMine="true" class="top-user-info">
+			 :isMine="true" class="top-user-info">
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
 			<view class="total">
@@ -118,7 +118,7 @@
 						isActive: false
 					}
 				],
-				isNextPage:true
+				isNextPage: true
 			}
 		},
 		components: {
@@ -135,20 +135,19 @@
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && this.tabIndex === 0) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true;
-				if(this.isNextPage){// 防止返回数据为空页码+1的情况
+				if (this.isNextPage) { // 防止返回数据为空页码+1的情况
 					this.articleCurrent += 1;
 				}
-				console.log(this.articleCurrent)
 				this.getArticleList();
 			} else if (!this.isLoadMore && this.tabIndex === 1) {
 				this.isLoadMore = true;
-				if(this.isNextPage){
+				if (this.isNextPage) {
 					this.ideaCurrent += 1;
 				}
 				this.getIdeaList();
 			} else if (!this.isLoadMore && this.tabIndex === 2) {
 				this.isLoadMore = true
-				if(this.isNextPage){
+				if (this.isNextPage) {
 					this.draftCurrent += 1
 				}
 				this.getDraftList();
@@ -214,6 +213,7 @@
 					id: 0
 				}
 				getUserInfo(params).then(res => {
+					console.log(res.data)
 					_this.userInfo = res.data;
 				})
 			},
@@ -290,22 +290,22 @@
 				// console.log(params.current);
 				getUserArticleList(params).then(res => {
 					if (res.data) {
-							if (this.articleCurrent === 1) {
-								this.isLoadMore = false;
-							} else {
-								setTimeout(function() {
-									this.isLoadMore = false;
-								}, 2000);
-							}
-							this.articleList = [...this.articleList, ...res.data];
-							this.isNextPage = true
-						} else {
-							this.loadStatus = "loading";
-							this.articleLoadStatus = "loading";
+						if (this.articleCurrent === 1) {
 							this.isLoadMore = false;
-							this.isNextPage = false;
+						} else {
+							setTimeout(function() {
+								this.isLoadMore = false;
+							}, 2000);
 						}
-						
+						this.articleList = [...this.articleList, ...res.data];
+						this.isNextPage = true
+					} else {
+						this.loadStatus = "loading";
+						this.articleLoadStatus = "loading";
+						this.isLoadMore = false;
+						this.isNextPage = false;
+					}
+
 				})
 
 			},
@@ -317,11 +317,15 @@
 				})
 			}
 		},
+		onShow(){
+			this.getUserInfo();
+		},
 		created() {
 			this.getUserInfo();
 			this.getArticleList();
 			this.getIdeaList();
 			this.getDraftList();
+
 		}
 	}
 </script>
