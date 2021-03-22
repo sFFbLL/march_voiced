@@ -29,8 +29,8 @@ type UpdateArticleDto struct {
 	Describe  string `json:"describe" binding:"required,max=20"`
 	Image     string `json:"image"`
 	ID        uint   `json:"id"  binding:"required"`
-	WordCount uint   `json:"word_count" binding:"required"`
 	Tag       uint   `json:"tag"`
+	WordCount *uint  `json:"word_count" binding:"required"`
 	Type      *uint  `json:"type"`
 	Status    *uint8 `json:"status" binding:"required,lte=1"`
 	Kind      uint8  `json:"kind"`
