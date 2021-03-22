@@ -45,14 +45,14 @@
 				<view class="attention-icon like" @click="like()">
 					<view class="attention-item">
 						<u-icon :name="likeIcon" :color="likeColor"></u-icon>
-						<text class="attention-num">{{articleInfo.favourTotal}}</text>
+						<text class="attention-num">{{articleInfo.favourTotal>0?articleInfo.favourTotal:""}}</text>
 					</view>
 				</view>
 				<!-- 收藏图标 -->
 				<view class="attention-icon collect" @click="collent()">
 					<view class="attention-item">
 						<u-icon :name="collentIcon" custom-prefix="custom-icon"></u-icon>
-						<text class="attention-num">{{articleInfo.collectTotal}}</text>
+						<text class="attention-num">{{articleInfo.collectTotal>0?articleInfo.collectTotal:""}}</text>
 					</view>
 				</view>
 				<!-- 转发 -->
