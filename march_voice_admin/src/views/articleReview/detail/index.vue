@@ -1,6 +1,7 @@
 <template>
   <!-- eladmin自带的布局方式 -->
   <div v-loading="loading" class="app-container">
+    <!-- <meta name="”referrer”" content="”no-referrer”" /> -->
     <!-- 头部盒子 -->
     <!-- <el-row> -->
     <!-- <el-col :span="10"> -->
@@ -43,7 +44,12 @@
               <span>{{ title }}</span>
             </div>
             <!-- 获奖成果标题 -->
-            <span class="ql-editor" v-html="showKeyWord(contents)" />
+            <!-- <span id="Content" class="ql-editor" v-html="contents" /> -->
+            <span
+              id="Content"
+              class="ql-editor"
+              v-html="showKeyWord(contents)"
+            />
           </div>
         </div>
       </div>
@@ -74,7 +80,7 @@ export default {
       loading: false,
       showReject: true,
       contents: null,
-      Sensitive1: [],
+      // Sensitive1: [],
       arrnew: []
     }
   },
@@ -94,6 +100,8 @@ export default {
           if (this.arrnew && this.arrnew != null) {
             this.nois = true
           }
+          console.log(2222)
+          console.log(this.arrnew)
         }
       }
     )
@@ -111,6 +119,8 @@ export default {
       }
       // 1.传入关键词数组keyWordArr
       const keyWordArr = this.arrnew
+      // console.log(11111)
+      // console.log(keyWordArr)
       let str = val
 
       if (keyWordArr && keyWordArr != '') {
@@ -140,4 +150,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "@/assets/styles/detail.scss";
+#Content >>> img {
+  width: 100%;
+}
 </style>
