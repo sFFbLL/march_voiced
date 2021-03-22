@@ -28,7 +28,7 @@
 					<!-- 想法的文字部分 -->
 					<articleContent :articleContent="item.content" :isIdea="true" :id="item.id"></articleContent>
 					<!-- 想法的图片部分组件 -->
-					<imageAdaptation :imgList="item.imgList"></imageAdaptation>
+					<imageAdaptation :imgList="item.imageList"></imageAdaptation>
 					<!-- 点赞表情组件+评论 -->
 					<emojiControl :faceTotals="item.faceTotal" :likeTotals="item.likeTotal" :favourTotals="item.favourTotal"
 					 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
@@ -89,7 +89,7 @@
 		},
 		computed: {
 			reverseIdeaList() {
-				return this.ideasList.reverse();
+				return this.ideasList;
 			}
 		},
 		components: {
@@ -255,6 +255,9 @@
 		padding: 26rpx;
 
 	}
+	>>>.article-content{
+		min-height: 40rpx;
+		}
 
 	.idea {
 		/* margin-top: 20rpx; */

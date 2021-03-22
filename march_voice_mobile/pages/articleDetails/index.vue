@@ -294,7 +294,7 @@
 					childSize: this.childSize,
 				}
 				getArticleCommentList(params).then(res => {
-					if (res.data.CommentSum) {
+					if (res?.data?.CommentSum) {
 						if (this.current === 1) {
 							this.isLoadMore = false;
 						} else {
@@ -314,7 +314,6 @@
 				let id = this.id;
 				// 获取文章详情内容
 				getArtileDetails(id).then(res => {
-					console.log(res)
 					if (res.code === 0) {
 						this.articleInfo = res.data;
 						if (res.data.isFavour == 1) { //已经点赞
