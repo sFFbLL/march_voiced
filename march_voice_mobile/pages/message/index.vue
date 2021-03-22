@@ -248,7 +248,7 @@
 					size: this.size
 				}
 				interactList(params).then(res => {
-					if (res.data.records != 0) {
+				if (res.data.records != 0) { // 数据为空records不为null，为 [] 
 						if (this.interactCurrent === 1) {
 							this.isLoadMore = false;
 						} else {
