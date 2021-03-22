@@ -166,8 +166,7 @@ func (a *Article) ArticlePass(p *dto.ArticlePass, userId int) (err error) {
 // 添加文章
 func (a *Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (err error) {
 	// 实例化要添加的文章
-	article := new(models.Article)
-	article = &models.Article{
+	article := &models.Article{
 		CreateBy:  uint(userId),
 		UpdateBy:  uint(userId),
 		Title:     articleDto.Title,
@@ -178,7 +177,7 @@ func (a *Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (e
 		Tag:       articleDto.Tag,
 		Status:    articleDto.Status,
 		Type:      articleDto.Type,
-		WordCount: *articleDto.WordCount,
+		WordCount: articleDto.WordCount,
 	}
 
 	// 调用dao方法
@@ -220,6 +219,7 @@ func (a *Article) UpdateArticle(articleDto *dto.UpdateArticleDto, userId int) (e
 		Tag:         articleDto.Tag,
 		Status:      articleDto.Status,
 		Type:        articleDto.Type,
+		WordCount:   articleDto.WordCount,
 		BaseModel: models.BaseModel{
 			ID: int(articleDto.ID),
 		},
@@ -394,7 +394,7 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleDeta
 		Content:    article.Content,
 		Tag:        tag,
 		Kind:       article.Kind,
-		WordCount:  article.WordCount,
+		WordCount:  *article.WordCount,
 		Status:     *article.Status,
 		Type:       *article.Type,
 		UpdateBy:   article.UpdateBy,
@@ -404,7 +404,7 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleDeta
 	}
 
 	zap.L().Info("Call ReprintArticle AddMessage", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
-	go models.AddMessage(0, 1, uint(id), uint(userId), "")
+	go models.AddMessage(0, 3, uint(id), uint(userId), "")
 	return
 }
 
