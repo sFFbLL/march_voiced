@@ -3,7 +3,11 @@
 		<!-- 头部用户信息 -->
 		<view class="header">
 			<attentionAndFansCell :notTap="notTap" :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
+<<<<<<< Updated upstream
 			 class="top-user-info">
+=======
+			  :isMine="true" class="top-user-info">
+>>>>>>> Stashed changes
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
 			<view class="total">
@@ -90,7 +94,7 @@
 				ideaLoadStatus: 'loading',
 				draftLoadStatus: 'loading',
 				isLoadMore: false, //是否加载中
-				tabIndex: '',
+				tabIndex: 0,
 				userInfo: {},
 				articleList: [],
 				ideaList: [],
@@ -118,6 +122,7 @@
 						isActive: false
 					}
 				],
+				isNextPage:true
 			}
 		},
 		components: {
@@ -132,18 +137,29 @@
 		},
 
 		onReachBottom() { //上拉触底函数
-			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
+			if (!this.isLoadMore && this.tabIndex === 0) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true;
+<<<<<<< Updated upstream
 				this.articleCurrent += 1;
 
+=======
+				if(this.isNextPage){// 防止返回数据为空页码+1的情况
+					this.articleCurrent += 1;
+				}
+				console.log(this.articleCurrent)
+>>>>>>> Stashed changes
 				this.getArticleList();
 			} else if (!this.isLoadMore && this.tabIndex === 1) {
 				this.isLoadMore = true;
-				this.ideaCurrent += 1;
+				if(this.isNextPage){
+					this.ideaCurrent += 1;
+				}
 				this.getIdeaList();
 			} else if (!this.isLoadMore && this.tabIndex === 2) {
 				this.isLoadMore = true
-				this.draftCurrent += 1
+				if(this.isNextPage){
+					this.draftCurrent += 1
+				}
 				this.getDraftList();
 			}
 		},
@@ -229,9 +245,19 @@
 							this.isLoadMore = false;
 						}
 
+<<<<<<< Updated upstream
 						this.ideaList = [...this.ideaList, ...res.data];
 					} else {
 						this.loadStatus = 'nomore';
+=======
+						_this.ideaList = [..._this.ideaList, ...res.data];
+						this.isNextPage = true
+					} else {
+						_this.loadStatus = "loading";
+						_this.ideaLoadStatus = "loading";
+						_this.isLoadMore = false;
+						_this.isNextPage = false;
+>>>>>>> Stashed changes
 					}
 
 
@@ -257,9 +283,19 @@
 							}, 2000);
 							this.isLoadMore = false;
 						}
+<<<<<<< Updated upstream
 						this.draftList = [...this.draftList, ...res.data];
 					} else {
 						this.loadStatus = 'nomore';
+=======
+						_this.draftList = [..._this.draftList, ...res.data];
+						this.isNextPage = true
+					} else {
+						_this.loadStatus = "loading";
+						_this.draftLoadStatus = "loading";
+						_this.isLoadMore = false;
+						_this.isNextPage = false;
+>>>>>>> Stashed changes
 					}
 				})
 			},
@@ -272,8 +308,10 @@
 					size: this.size,
 					kind: 2
 				}
+				// console.log(params.current);
 				getUserArticleList(params).then(res => {
 					if (res.data) {
+<<<<<<< Updated upstream
 						if (this.articleCurrent === 1) {
 							this.isLoadMore = false;
 						} else {
@@ -282,6 +320,22 @@
 
 							}, 2000);
 							this.isLoadMore = false;
+=======
+							if (this.articleCurrent === 1) {
+								_this.isLoadMore = false;
+							} else {
+								setTimeout(function() {
+									_this.isLoadMore = false;
+								}, 2000);
+							}
+							_this.articleList = [..._this.articleList, ...res.data];
+							this.isNextPage = true
+						} else {
+							_this.loadStatus = "loading";
+							_this.articleLoadStatus = "loading";
+							_this.isLoadMore = false;
+							_this.isNextPage = false;
+>>>>>>> Stashed changes
 						}
 						this.articleList = [...this.articleList, ...res.data];
 					} else {

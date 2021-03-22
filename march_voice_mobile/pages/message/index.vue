@@ -101,12 +101,21 @@
 
 				//关注消息
 				attentionList: {
+<<<<<<< Updated upstream
 					pages: "22",
 					total: "100",
 					current: "1",
 					size: "1",
 					records: []
 				},
+=======
+						pages: "22",
+						total: "100",
+						current: "1",
+						size: "1",
+						records: []
+					},
+>>>>>>> Stashed changes
 
 				//其他消息
 				otherList: {
@@ -248,7 +257,11 @@
 					size: this.size
 				}
 				interactList(params).then(res => {
+<<<<<<< Updated upstream
 					if (res.data.records != 0) {
+=======
+				if (res.data.records != 0) { // 数据为空records不为null，为 [] 
+>>>>>>> Stashed changes
 						if (this.interactCurrent === 1) {
 							this.isLoadMore = false;
 						} else {

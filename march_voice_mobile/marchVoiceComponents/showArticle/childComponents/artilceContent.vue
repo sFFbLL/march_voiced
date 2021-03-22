@@ -76,6 +76,7 @@
 		font-size: 28rpx;
 		font-family: PingFangSC;
 		color: #404040;
+		min-height: 160rpx;
 	}
 
 	.article-text {
