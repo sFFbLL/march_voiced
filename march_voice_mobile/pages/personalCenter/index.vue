@@ -3,11 +3,7 @@
 		<!-- 头部用户信息 -->
 		<view class="header">
 			<attentionAndFansCell :notTap="notTap" :id="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
-<<<<<<< Updated upstream
-			 class="top-user-info">
-=======
 			  :isMine="true" class="top-user-info">
->>>>>>> Stashed changes
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
 			<view class="total">
@@ -139,15 +135,10 @@
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && this.tabIndex === 0) { //此处判断，上锁，防止重复请求
 				this.isLoadMore = true;
-<<<<<<< Updated upstream
-				this.articleCurrent += 1;
-
-=======
 				if(this.isNextPage){// 防止返回数据为空页码+1的情况
 					this.articleCurrent += 1;
 				}
 				console.log(this.articleCurrent)
->>>>>>> Stashed changes
 				this.getArticleList();
 			} else if (!this.isLoadMore && this.tabIndex === 1) {
 				this.isLoadMore = true;
@@ -245,11 +236,6 @@
 							this.isLoadMore = false;
 						}
 
-<<<<<<< Updated upstream
-						this.ideaList = [...this.ideaList, ...res.data];
-					} else {
-						this.loadStatus = 'nomore';
-=======
 						_this.ideaList = [..._this.ideaList, ...res.data];
 						this.isNextPage = true
 					} else {
@@ -257,7 +243,6 @@
 						_this.ideaLoadStatus = "loading";
 						_this.isLoadMore = false;
 						_this.isNextPage = false;
->>>>>>> Stashed changes
 					}
 
 
@@ -283,11 +268,6 @@
 							}, 2000);
 							this.isLoadMore = false;
 						}
-<<<<<<< Updated upstream
-						this.draftList = [...this.draftList, ...res.data];
-					} else {
-						this.loadStatus = 'nomore';
-=======
 						_this.draftList = [..._this.draftList, ...res.data];
 						this.isNextPage = true
 					} else {
@@ -295,7 +275,6 @@
 						_this.draftLoadStatus = "loading";
 						_this.isLoadMore = false;
 						_this.isNextPage = false;
->>>>>>> Stashed changes
 					}
 				})
 			},
@@ -311,16 +290,6 @@
 				// console.log(params.current);
 				getUserArticleList(params).then(res => {
 					if (res.data) {
-<<<<<<< Updated upstream
-						if (this.articleCurrent === 1) {
-							this.isLoadMore = false;
-						} else {
-							setTimeout(function() {
-								this.loadStatus = "nomore";
-
-							}, 2000);
-							this.isLoadMore = false;
-=======
 							if (this.articleCurrent === 1) {
 								_this.isLoadMore = false;
 							} else {
@@ -335,7 +304,6 @@
 							_this.articleLoadStatus = "loading";
 							_this.isLoadMore = false;
 							_this.isNextPage = false;
->>>>>>> Stashed changes
 						}
 						this.articleList = [...this.articleList, ...res.data];
 					} else {
