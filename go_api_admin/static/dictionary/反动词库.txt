@@ -48,7 +48,6 @@ zf大楼
 9风
 十七大
 十7大
-17da
 九学
 9学
 四风
@@ -96,7 +95,6 @@ min主
 民竹
 民珠
 民猪
-chinesedemocracy
 大赦国际
 国际特赦
 da选
@@ -109,13 +107,11 @@ da选
 昝爱宗
 宪章
 08宪
-08xz
 抿主
 敏主
 人拳
 人木又
 人quan
-renquan
 中国人权
 中国新民党
 群体事件
@@ -131,7 +127,6 @@ renquan
 万人骚动
 截访
 上访
-shangfang
 信访
 访民
 集合
@@ -146,7 +141,6 @@ jing坐
 you行
 油行
 游xing
-youxing
 官逼民反
 反party
 反共
@@ -157,16 +151,12 @@ youxing
 底制
 di制
 抵zhi
-dizhi
-boycott
 血书
 焚烧中国国旗
-baoluan
 流血冲突
 出现暴动
 发生暴动
 引起暴动
-baodong
 灭共
 杀毙
 罢工
@@ -192,14 +182,12 @@ ba课
 五毛们
 5毛党
 戒严
-jieyan
 jie严
 戒yan
 8的平方事件
 知道64
 八九年
 贰拾年
-2o年
 20和谐年
 贰拾周年
 六四
@@ -208,8 +196,6 @@ jie严
 六和谐四
 陆四
 陆肆
-198964
-5月35
 89年春夏之交
 64惨案
 64时期
@@ -219,7 +205,6 @@ jie严
 北京风波
 学潮
 学chao
-xuechao
 学百度潮
 门安天
 天按门
@@ -257,7 +242,6 @@ xuechao
 关闭所有论坛
 网络封锁
 金盾工程
-gfw
 无界浏览
 无界网络
 自由门
@@ -274,9 +258,6 @@ bbc中文网
 东森新闻网
 东森电视
 星岛日报
-wikipedia
-youtube
-googleblogger
 美国广播公司
 英国金融时报
 自由亚洲
@@ -296,14 +277,10 @@ googleblogger
 步qiang
 bao炸
 爆zha
-baozha
 zha药
 zha弹
 炸dan
 炸yao
-zhadan
-zhayao
-hmtd
 三硝基甲苯
 六氟化铀
 炸药配方
@@ -339,7 +316,6 @@ hmtd
 印尼事件
 蒋公纪念歌
 马英九
-mayingjiu
 李天羽
 苏贞昌
 林文漪
@@ -352,7 +328,6 @@ a扁
 台百度湾
 台完
 台wan
-taiwan
 台弯
 湾台
 台湾国
@@ -361,8 +336,6 @@ taiwan
 台独
 台毒
 台du
-taidu
-twdl
 一中一台
 打台湾
 两岸战争
@@ -393,8 +366,6 @@ x民党
 民进党
 青天白日
 闹独立
-duli
-fenlie
 日本万岁
 小泽一郎
 劣等民族
@@ -429,7 +400,6 @@ dl喇嘛
 臧独
 藏毒
 藏du
-zangdu
 支持zd
 藏暴乱
 藏青会
@@ -439,7 +409,6 @@ zangdu
 啦沙
 啦撒
 拉sa
-lasa
 la萨
 西藏
 藏西
