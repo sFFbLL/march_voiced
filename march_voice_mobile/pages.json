@@ -179,8 +179,8 @@
 		"selectedColor": "#1296db",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"height": "50px",
-		"fontSize": "10px",
+		"height": "60px",
+		"fontSize": "15px",
 		"iconWidth": "24px",
 		"spacing": "3px",
 		"list": [{

@@ -22,7 +22,7 @@
 					default:null
 				},
 				icon:{
-					type:String,
+					type:Number,
 					default:null
 				}
 			},

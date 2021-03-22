@@ -107,8 +107,12 @@
 		created() {
 			if (!getToken()) {
 				forLogin();
-				this.recommend();
-				this.follow();
+				let that = this;
+				setTimeout(function() {
+					console.log("延时输出")
+					that.recommend();
+					that.follow();
+				}, 2000);
 			} else {
 				this.recommend();
 				this.follow();
