@@ -236,13 +236,13 @@
 							this.isLoadMore = false;
 						}
 
-						_this.ideaList = [..._this.ideaList, ...res.data];
+						this.ideaList = [...this.ideaList, ...res.data];
 						this.isNextPage = true
 					} else {
-						_this.loadStatus = "loading";
-						_this.ideaLoadStatus = "loading";
-						_this.isLoadMore = false;
-						_this.isNextPage = false;
+						this.loadStatus = "loading";
+						this.ideaLoadStatus = "loading";
+						this.isLoadMore = false;
+						this.isNextPage = false;
 					}
 
 
@@ -268,13 +268,13 @@
 							}, 2000);
 							this.isLoadMore = false;
 						}
-						_this.draftList = [..._this.draftList, ...res.data];
+						this.draftList = [...this.draftList, ...res.data];
 						this.isNextPage = true
 					} else {
-						_this.loadStatus = "loading";
-						_this.draftLoadStatus = "loading";
-						_this.isLoadMore = false;
-						_this.isNextPage = false;
+						this.loadStatus = "loading";
+						this.draftLoadStatus = "loading";
+						this.isLoadMore = false;
+						this.isNextPage = false;
 					}
 				})
 			},
@@ -291,24 +291,21 @@
 				getUserArticleList(params).then(res => {
 					if (res.data) {
 							if (this.articleCurrent === 1) {
-								_this.isLoadMore = false;
+								this.isLoadMore = false;
 							} else {
 								setTimeout(function() {
-									_this.isLoadMore = false;
+									this.isLoadMore = false;
 								}, 2000);
 							}
-							_this.articleList = [..._this.articleList, ...res.data];
+							this.articleList = [...this.articleList, ...res.data];
 							this.isNextPage = true
 						} else {
-							_this.loadStatus = "loading";
-							_this.articleLoadStatus = "loading";
-							_this.isLoadMore = false;
-							_this.isNextPage = false;
+							this.loadStatus = "loading";
+							this.articleLoadStatus = "loading";
+							this.isLoadMore = false;
+							this.isNextPage = false;
 						}
-						this.articleList = [...this.articleList, ...res.data];
-					} else {
-						this.loadStatus = 'nomore';
-					}
+						
 				})
 
 			},
