@@ -73,7 +73,7 @@
 		margin-top: 18rpx;
 		display: flex;
 		justify-content: space-between;
-		font-size: 28rpx;
+		font-size: 32rpx;
 		font-family: PingFangSC;
 		color: #404040;
 		min-height: 140rpx;

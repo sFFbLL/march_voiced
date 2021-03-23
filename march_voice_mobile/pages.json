@@ -181,8 +181,8 @@
 		"selectedColor": "#1296db",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"height": "60px",
-		"fontSize": "15px",
+		"height": "45px",
+		"fontSize": "10px",
 		"iconWidth": "24px",
 		"spacing": "3px",
 		"list": [{
