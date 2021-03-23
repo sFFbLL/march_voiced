@@ -517,9 +517,14 @@ func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser, user
 
 	// 取出要返回文章信息
 	zap.L().Info("Call SelectArticleListByUserId SelectArticleListByUserId", zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
-	articleArray, err := article.SelectArticleListByUserId(paging)
+	articleArray, err := article.SelectArticleListByUserId(paging, userId)
 	if err != nil {
 		zap.L().Error("SelectArticleListByUserId Select ArticleList filed", zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
+		return
+	}
+	// 当数据为空时直接返回
+	if articleArray == nil {
+		zap.L().Info("SelectArticleListByUserId Select ArticleList No Data", zap.String("UserID", utils.UIntToString(userId)), zap.Error(err))
 		return
 	}
 
