@@ -20,7 +20,7 @@ func (co *ArticleComment) AddArticleComment(userId uint, p *dto.AddArticleCommen
 	comment.UpdateBy = userId
 	comment.CreateBy = userId
 	err = comment.AddArticleComment()
-	go comment.AddArticleCommentMessage(userId)
+	go comment.AddArticleCommentMessage(userId, p.ID)
 	return
 }
 
