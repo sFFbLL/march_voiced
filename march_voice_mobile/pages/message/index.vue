@@ -73,6 +73,9 @@
 				attentionRead: false,
 				otherRead: false,
 				interactRead: false,
+				attentionClick: false,
+				otherionClick: false,
+				interactClick: false,
 				tablist: [{
 						index: 0,
 						value: '互动消息',
@@ -220,20 +223,40 @@
 				if (tabIndex == 0) {
 					this.loadStatus = this.interactLoadStatus;
 					if (this.interactCurrent === 1) {
-						this.interactList.records = [];
-						this.interact();
+						while(!this.interactClick){
+							this.interactClick = true;
+							this.interactList.records = [];
+							this.interact();
+							setTimeout(() => {
+								this.interactClick = false;
+							}, 500)
+						}
+						
 					}
 				} else if (tabIndex == 1) {
 					this.loadStatus = this.attentionLoadStatus;
 					if (this.attentionCurrent === 1) {
-						this.attentionList.records = [];
-						this.attention();
+						while(!this.attentionClick){
+							this.attentionList.records = [];
+							this.attentionClick = true;
+							this.attention();
+							setTimeout(() => {
+								this.attentionClick = false;
+							}, 500)
+						}
 					}
 				} else {
 					this.loadStatus = this.otherLoadStatus;
 					if (this.otherCurrent === 1) {
-						this.otherList.records = [];
-						this.other();
+						while(!this.otherClick){
+							this.otherClick = true;
+							this.otherList.records = [];
+							this.other();
+							setTimeout(() => {
+								this.otherClick = false;
+							}, 500)
+						}
+						
 					}
 				}
 				this.tabIndex = tabIndex;
@@ -261,7 +284,6 @@
 						this.isNextPage = true
 					} else {
 						this.isLoadMore = false;
-						console.log(this.isLoadMore);
 						this.loadStatus = "nomore";
 						this.isNextPage = false;
 					}
