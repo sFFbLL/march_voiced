@@ -60,7 +60,7 @@
 					</uni-popup>
 
 					<uni-popup ref="popup1Up" type="dialog">
-						<uni-popup-dialog mode="base" type="error" title="警告" content="请输入2-15个字符" :duration="2000" :before-close="true"
+						<uni-popup-dialog mode="base" type="error" title="警告" content="请输入2-50个字符" :duration="2000" :before-close="true"
 						 @close="close" @confirm="close"></uni-popup-dialog>
 					</uni-popup>
 					<uni-icons style="margin-left: 10rpx;" type="arrowright" size="15" @click="changeInfoOpen()"></uni-icons>

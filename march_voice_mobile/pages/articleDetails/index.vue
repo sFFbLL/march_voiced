@@ -319,8 +319,10 @@
 						if (res.data.isFavour == 1) { //已经点赞
 							this.likeIcon = "heart-fill";
 							this.likeColor = "#d81e06";
-						} else if (res.data.isCollect == 2) { //已经收藏
+							this.clickLike=true;
+						} else if (res.data.isCollect == 1) { //已经收藏
 							this.collentIcon = "shoucang2";
+							this.clickCollect=true;
 						}
 					}
 				}).catch(err => {
