@@ -50,11 +50,8 @@
 					word_count:res.textLength,
 					describe:describe
 				}
-				console.log(params)
 				publishArticle(params).then(res => {
-					if(res.code === 200){
 						console.log("发布成功")
-					}
 				})
 				
 				// console.log(this.title)

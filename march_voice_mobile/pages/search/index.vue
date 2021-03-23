@@ -90,6 +90,7 @@
 		},
 		methods: {
 			search() {
+				this.articleList = [];
 				this.getArticleList();
 				this.getUserList();
 			},
