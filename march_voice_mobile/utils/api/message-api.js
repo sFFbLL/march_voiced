@@ -21,10 +21,10 @@ export function otherList(params) {
 	})
 }
 
-// 查询是否有未读消息，每次路由跳转查
+// 查询是否有未读消息
 export function unreadMessage(params) {
 	return Axios.get('/api/message/user/unread-count', {
-		params: params,
+		type: params,
 	})
 }
 

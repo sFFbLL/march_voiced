@@ -241,6 +241,10 @@
 		margin-top: 17rpx;
 	}
 
+	>>>.ql-container{
+		min-height: 40rpx;
+	}
+
 	/* 想法大模块 */
 	.ideacontent {
 		background-color: #FFFFFF;

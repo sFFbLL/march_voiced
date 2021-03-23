@@ -26,14 +26,16 @@
 			"path": "pages/publish/index",
 			"style": {
 				"navigationBarTitleText": "编辑",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/publish/richTextEditor",
 			"style": {
 				"navigationBarTitleText": "富文本编辑器",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
 			}
 		}, {
 			"path": "pages/personalCenter/index",

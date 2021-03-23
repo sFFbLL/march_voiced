@@ -100,28 +100,36 @@
 				isRecommend: true, //是否是推荐文章
 			}
 		},
-		// mounted() {
-		// 	this.recommend();
-		// 	this.follow();
-		// },
+		onShow() {
+			this.recommendList = [];
+			this.recommendCurrent = 1; //推荐当前页数
+			this.recommend();
+
+		},
 		created() {
+			let that = this;
 			if (!getToken()) {
-				forLogin();
-				let that = this;
-				setTimeout(function() {
-					console.log("延时输出")
+				async function f() {
+					await forLogin();
 					that.recommend();
 					that.follow();
-				}, 2000);
+				}
+				f();
+				// forLogin();
+				// let that = this;
+				// setTimeout(function() {
+				// 	console.log("延时输出")
+				// 	that.recommend();
+				// 	that.follow();
+				// }, 2000);
 			} else {
-				this.recommend();
 				this.follow();
 			}
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
 			this.recommendCurrent = 1; //推荐当前页数，
-			this.articleCurrent = 1; //普通文章页数
+			this.articleCurrent = 0; //普通文章页数
 			this.followCurrent = 1; //关注当前页数
 			this.recommendList = [];
 			this.followList = [];
@@ -133,14 +141,9 @@
 		},
 		onReachBottom() { //上拉触底函数
 			if (!this.isLoadMore && !this.tabIndex) { //此处判断，上锁，防止重复请求
-				this.isLoadMore = true
-				if (this.isRecommend) {
-					this.recommendCurrent += 1;
-					this.recommend();
-				} else {
-					this.articleCurrent += 1;
-					this.getArticleList();
-				}
+				this.isLoadMore = true;
+				this.recommendCurrent += 1;
+				this.recommend();
 
 			} else if (!this.isLoadMore && this.tabIndex) {
 				this.isLoadMore = true
@@ -184,7 +187,8 @@
 						}
 						_this.recommendList = [..._this.recommendList, ...res.data];
 					} else {
-						this.loadStatus = 'nomore';
+						this.loadStatus = 'loading';
+						this.articleCurrent++;
 						_this.getArticleList();
 					}
 

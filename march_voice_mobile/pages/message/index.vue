@@ -24,7 +24,7 @@
 				<!-- 其他消息组件 -->
 				<otherMessage :otherList="item"></otherMessage>
 				<!-- 间隔槽 -->
-				<u-gap height="2" bg-color="#f5f5f5"></u-gap>
+				<u-gap height="1" bg-color="#f5f5f5"></u-gap>
 			</view>
 		</view>
 		<view v-show="isLoadMore">
@@ -193,9 +193,7 @@
 		created() {
 			// 互动消息已读
 			this.$store.commit('changeInteract', 1);
-			readMessage(1).then(res => {
-
-			})
+			readMessage(1).then(res => {})
 
 			// 查询所有互动消息
 			this.interact()
@@ -203,6 +201,7 @@
 			unreadMessage(2).then(res => {
 				if (res.data.count > 0) {
 					// 增加红点
+					
 					this.$store.commit('changeAttention', 0);
 				}
 			})
