@@ -648,6 +648,7 @@ func SelectArticleListByUserId(c *gin.Context) {
 		return
 	}
 
+	// 参数矫正
 	if paging.Current == 0 && paging.Size == 0 {
 		paging.Current = 1
 		paging.Current = 10
@@ -656,13 +657,9 @@ func SelectArticleListByUserId(c *gin.Context) {
 		paging.Current = 1
 	}
 
+	// 查看权限
 	if paging.ID == 0 {
 		paging.ID = uint(userMsg.UserId)
-	}
-
-	// 判断是否能查看草稿箱
-	if paging.ID != uint(userMsg.UserId) {
-		paging.Kind = 1
 	}
 
 	// 进入service层对数据操作

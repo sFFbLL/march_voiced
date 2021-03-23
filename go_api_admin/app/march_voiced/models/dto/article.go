@@ -43,8 +43,8 @@ type Paging struct {
 
 type SelectArticleByUser struct {
 	Paging
-	ID   uint  `form:"id"`
-	Kind uint8 `form:"kind" binding:"required,lte=2"`
+	ID     uint  `form:"id"`
+	Status uint8 `form:"status" binding:"required,lte=2"`
 }
 
 type ArticlePass struct {
