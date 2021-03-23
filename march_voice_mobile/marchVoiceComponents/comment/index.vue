@@ -2,7 +2,7 @@
 	<view>
 		<view class="comment" v-for="(res, pindex) in commentList">
 			<view class="left">
-				<image :src="res.idAvatar?res.idAvatar:null" mode="aspectFill"></image>
+				<image :src="'http://linbolun.cn/api/file/download/' + res.idAvatar" mode="aspectFill"></image>
 			</view>
 			<view class="right">
 				<view class="top">
@@ -21,7 +21,7 @@
 					<view v-for="(item, index) in res.ChildComments">
 						<view class="item">
 							<view class="left">
-								<image :src="item.idAvatar" mode="aspectFill"></image>
+								<image :src="'http://linbolun.cn/api/file/download/' + res.idAvatar" mode="aspectFill"></image>
 							</view>
 							<view class="right" @click="addComment(item.replyId,res.id,pindex,item.replyName)">
 								<view class="name">{{ item.createByName }}</view>

@@ -20,22 +20,22 @@
 		<!-- 三月圈内容 -->
 		<view class="wrap">
 			<!-- 间隔槽 -->
-			<view v-for="item in reverseIdeaList">
+			<view v-for="item in ideasList">
 				<u-gap height="30" bg-color="#f5f5f5"></u-gap>
 				<view class="ideacontent">
 					<!-- 用户头像公共组件 -->
 					<attentionAndFansCell :aid="item.create_by" :nickname="item.nickname" :avatarPath="item.avatarPath" :isFollow="item.isFollow"></attentionAndFansCell>
 					<!-- 想法的文字部分 -->
-					<articleContent :articleContent="item.content" :isIdea="true" :id="item.id"></articleContent>
+					<articleContent :articleContent="item.content" :commentTotal="item.commentTotal" :isIdea="true" :id="item.id"></articleContent>
 					<!-- 想法的图片部分组件 -->
-					<imageAdaptation :imgList="item.imgList"></imageAdaptation>
+					<imageAdaptation :imgList="item.imageList"></imageAdaptation>
 					<!-- 点赞表情组件+评论 -->
 					<emojiControl :faceTotals="item.faceTotal" :likeTotals="item.likeTotal" :favourTotals="item.favourTotal"
 					 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
 				</view>
 			</view>
 		</view>
-		<view v-show="isLoadMore">
+		<view v-if="isLoadMore">
 			<uni-load-more :status="loadStatus"></uni-load-more>
 		</view>
 		<!-- 微信分享遮罩层 -->
@@ -87,10 +87,14 @@
 
 			}
 		},
+		onShow() {
+			this.ideasList = [];
+			this.current = 1; //推荐当前页数
+			this.getCircleList();
+
+		},
 		computed: {
-			reverseIdeaList() {
-				return this.ideasList.reverse();
-			}
+
 		},
 		components: {
 			emojiControl,
@@ -152,6 +156,7 @@
 							this.isLoadMore = false;
 						}
 						this.ideasList = [...this.ideasList, ...res.data];
+						console.log(this.ideasList)
 					} else {
 						this.loadStatus = 'nomore';
 					}
@@ -254,6 +259,10 @@
 		background-color: #FFFFFF;
 		padding: 26rpx;
 
+	}
+
+	>>>.article-content {
+		min-height: 40rpx;
 	}
 
 	.idea {

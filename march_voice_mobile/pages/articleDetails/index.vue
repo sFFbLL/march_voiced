@@ -45,14 +45,14 @@
 				<view class="attention-icon like" @click="like()">
 					<view class="attention-item">
 						<u-icon :name="likeIcon" :color="likeColor"></u-icon>
-						<text class="attention-num">{{articleInfo.favourTotal}}</text>
+						<text class="attention-num">{{articleInfo.favourTotal>0?articleInfo.favourTotal:""}}</text>
 					</view>
 				</view>
 				<!-- 收藏图标 -->
 				<view class="attention-icon collect" @click="collent()">
 					<view class="attention-item">
 						<u-icon :name="collentIcon" custom-prefix="custom-icon"></u-icon>
-						<text class="attention-num">{{articleInfo.collectTotal}}</text>
+						<text class="attention-num">{{articleInfo.collectTotal>0?articleInfo.collectTotal:""}}</text>
 					</view>
 				</view>
 				<!-- 转发 -->
@@ -294,7 +294,7 @@
 					childSize: this.childSize,
 				}
 				getArticleCommentList(params).then(res => {
-					if (res.data.CommentSum) {
+					if (res?.data?.CommentSum) {
 						if (this.current === 1) {
 							this.isLoadMore = false;
 						} else {
@@ -314,14 +314,15 @@
 				let id = this.id;
 				// 获取文章详情内容
 				getArtileDetails(id).then(res => {
-					console.log(res)
 					if (res.code === 0) {
 						this.articleInfo = res.data;
 						if (res.data.isFavour == 1) { //已经点赞
 							this.likeIcon = "heart-fill";
 							this.likeColor = "#d81e06";
-						} else if (res.data.isCollect == 2) { //已经收藏
+							this.clickLike=true;
+						} else if (res.data.isCollect == 1) { //已经收藏
 							this.collentIcon = "shoucang2";
+							this.clickCollect=true;
 						}
 					}
 				}).catch(err => {

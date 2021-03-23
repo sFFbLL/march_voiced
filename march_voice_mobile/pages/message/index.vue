@@ -24,7 +24,7 @@
 				<!-- 其他消息组件 -->
 				<otherMessage :otherList="item"></otherMessage>
 				<!-- 间隔槽 -->
-				<u-gap height="2" bg-color="#f5f5f5"></u-gap>
+				<u-gap height="1" bg-color="#f5f5f5"></u-gap>
 			</view>
 		</view>
 		<view v-show="isLoadMore">
@@ -73,6 +73,9 @@
 				attentionRead: false,
 				otherRead: false,
 				interactRead: false,
+				attentionClick: false,
+				otherionClick: false,
+				interactClick: false,
 				tablist: [{
 						index: 0,
 						value: '互动消息',
@@ -190,9 +193,7 @@
 		created() {
 			// 互动消息已读
 			this.$store.commit('changeInteract', 1);
-			readMessage(1).then(res => {
-
-			})
+			readMessage(1).then(res => {})
 
 			// 查询所有互动消息
 			this.interact()
@@ -200,6 +201,7 @@
 			unreadMessage(2).then(res => {
 				if (res.data.count > 0) {
 					// 增加红点
+					
 					this.$store.commit('changeAttention', 0);
 				}
 			})
@@ -220,20 +222,40 @@
 				if (tabIndex == 0) {
 					this.loadStatus = this.interactLoadStatus;
 					if (this.interactCurrent === 1) {
-						this.interactList.records = [];
-						this.interact();
+						while(!this.interactClick){
+							this.interactClick = true;
+							this.interactList.records = [];
+							this.interact();
+							setTimeout(() => {
+								this.interactClick = false;
+							}, 500)
+						}
+						
 					}
 				} else if (tabIndex == 1) {
 					this.loadStatus = this.attentionLoadStatus;
 					if (this.attentionCurrent === 1) {
-						this.attentionList.records = [];
-						this.attention();
+						while(!this.attentionClick){
+							this.attentionList.records = [];
+							this.attentionClick = true;
+							this.attention();
+							setTimeout(() => {
+								this.attentionClick = false;
+							}, 500)
+						}
 					}
 				} else {
 					this.loadStatus = this.otherLoadStatus;
 					if (this.otherCurrent === 1) {
-						this.otherList.records = [];
-						this.other();
+						while(!this.otherClick){
+							this.otherClick = true;
+							this.otherList.records = [];
+							this.other();
+							setTimeout(() => {
+								this.otherClick = false;
+							}, 500)
+						}
+						
 					}
 				}
 				this.tabIndex = tabIndex;
@@ -248,7 +270,7 @@
 					size: this.size
 				}
 				interactList(params).then(res => {
-					if (res.data.records != 0) {
+				if (res.data.records != 0) { // 数据为空records不为null，为 [] 
 						if (this.interactCurrent === 1) {
 							this.isLoadMore = false;
 						} else {
@@ -261,7 +283,6 @@
 						this.isNextPage = true
 					} else {
 						this.isLoadMore = false;
-						console.log(this.isLoadMore);
 						this.loadStatus = "nomore";
 						this.isNextPage = false;
 					}

@@ -9,6 +9,7 @@
 </template>
 
 <script>
+	import settings from '../../settings.js'
 	export default {
 		props: {
 			imgList: {
@@ -41,11 +42,14 @@
 			},
 			// 预览图片
 			previewImg() {
+				let imgs=[];
+				for (let img of this.imgList) {
+					imgs.push(this.getImgUrl(img))
+				}
 				uni.previewImage({
-					urls: this.imgList,
+					urls: imgs,
 					longPressActions: {
 						itemList: ['保存图片'],
-
 					}
 				})
 			},

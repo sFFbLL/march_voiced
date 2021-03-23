@@ -76,6 +76,7 @@
 		font-size: 28rpx;
 		font-family: PingFangSC;
 		color: #404040;
+		min-height: 140rpx;
 	}
 
 	.article-text {
@@ -94,8 +95,8 @@
 	}
 
 	.article-img image {
-		width: 200rpx;
-		height: 160rpx;
+		width: 180rpx;
+		height: 140rpx;
 		background-color: rgba(238, 238, 238, 1);
 		border-radius: 4px;
 	}

@@ -10,7 +10,7 @@
 			<jinEdit :html="ideaInfoList.content" :readOnly="true"></jinEdit>
 			<!-- <articleContent :articleContent="ideaInfoList.content"></articleContent> -->
 			<!-- 想法的图片部分组件 -->
-			<imageAdaptation :imgList="ideaInfoList.imgList"></imageAdaptation>
+			<imageAdaptation :imgList="ideaInfoList.imageList"></imageAdaptation>
 
 			<!-- 点赞表情组件 -->
 			<emojiControl :isShow="false" :faceTotals="ideaInfoList.faceTotal" :likeTotals="ideaInfoList.likeTotal"
@@ -239,6 +239,10 @@
 		border: none;
 		padding: 0;
 		margin-top: 17rpx;
+	}
+
+	>>>.ql-container{
+		min-height: 40rpx;
 	}
 
 	/* 想法大模块 */

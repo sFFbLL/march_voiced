@@ -18,8 +18,8 @@ type Article struct {
 	Status           *uint8 `json:"status" gorm:"size:2;"`
 	IsRecommend      *uint8 `json:"is_recommend" gorm:"size:1;DEFAULT:0;"`
 	Type             *uint  `json:"type" gorm:""`
+	WordCount        *uint  `json:"word_count"`
 	Tag              uint   `json:"tag" gorm:""`
-	WordCount        uint   `json:"word_count"`
 	CreateBy         uint   `json:"create_by" gorm:""`
 	UpdateBy         uint   `json:"update_by" gorm:""`
 	StatusUpdateTime int64  `json:"status_update_time" gorm:"autoCreateTime:milli"`
@@ -139,18 +139,35 @@ func (a *Article) ArticleList(paging dto.Paging, IsRecommend int) (articleArray 
 	return
 }
 
-func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser) (articleArray *[]bo.ArticleMsg, err error) {
+func (a *Article) SelectArticleListByUserId(paging dto.SelectArticleByUser, userId uint) (articleArray *[]bo.ArticleMsg, err error) {
 	articleArray = new([]bo.ArticleMsg)
-	if paging.Kind == 1 {
-		err = global.Eloquent.Table(a.TableName()).
-			Where("create_by = ? AND status = ? AND is_deleted = 0", paging.ID, paging.Kind).
-			Order("article.id desc").
-			Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(articleArray).Error
-		return
+	switch paging.Status {
+	case 0:
+		if paging.ID == userId {
+			err = global.Eloquent.Table(a.TableName()).
+				Where("create_by = ? AND status = ? AND is_deleted = 0", paging.ID, paging.Status).
+				Order("article.id desc").
+				Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(articleArray).Error
+		}
+	case 1:
+		if paging.ID != userId {
+			err = global.Eloquent.Table(a.TableName()).
+				Where("create_by = ? AND status = ? AND is_deleted = 0", paging.ID, paging.Status).
+				Order("article.id desc").
+				Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(articleArray).Error
+		} else {
+			err = global.Eloquent.Table(a.TableName()).
+				Where("create_by = ? AND status != 0 AND is_deleted = 0", paging.ID).
+				Order("article.id desc").
+				Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(articleArray).Error
+		}
+	case 2:
+		if paging.ID == userId {
+			err = global.Eloquent.Table(a.TableName()).
+				Where("create_by = ? AND is_deleted = 0", paging.ID).
+				Order("article.id desc").
+				Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(articleArray).Error
+		}
 	}
-	err = global.Eloquent.Table(a.TableName()).
-		Where("create_by = ? AND is_deleted = 0", paging.ID).
-		Order("article.id desc").
-		Limit(int(paging.Size)).Offset(int((paging.Current - 1) * paging.Size)).Find(articleArray).Error
 	return
 }

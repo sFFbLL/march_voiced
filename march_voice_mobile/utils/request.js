@@ -11,7 +11,9 @@ import {
 	login,
 	creatNewUser
 } from "./login.js"
-import {forLogin} from "./silentLogin.js"
+import {
+	forLogin
+} from "./silentLogin.js"
 import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据，某些请求会用得到
 
 Axios.defaults.baseURL = "http://linbolun.cn";
@@ -22,9 +24,9 @@ Axios.interceptors.request.use(
 	// 在发送请求前要做的事儿
 	(config) => {
 
-		// setToken("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNjE5OTE1Njk4LCJpc3MiOiJteS1wcm9qZWN0In0.mTeGQRGogtb07VHcqnJIZI8n5XA7a7IUdADtXSLKAXo")
-
-
+		// setToken(
+		// 	"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLku5nlhL8iLCJleHAiOjE2MjAwNjYzMDcsImlzcyI6Im15LXByb2plY3QifQ.2WSI0kWSmQaO4Vtz4sz_vUs1FKzwkI51f-sXjykQMdo"
+		// )
 		if (getToken()) {
 			config.headers['Authorization'] = getToken() //让每个请求携带自定义token
 		}

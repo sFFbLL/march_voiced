@@ -110,15 +110,16 @@
 			},
 			// 进入个人信息页面
 			inToMineByImg() {
-				// this.isMine = true
+				console.log(this.isMine)
 				if(this.isMine){
-					console.log(this.avatarPath)
+					console.log("ASDASDSASSDSDASD")
 					 uni.previewImage({
 								current : 0,
 					            urls : this.imgList,
 					        });
 					return;
 				}
+				
 				uni.navigateTo({
 					url: '/pages/universalPersonalCenter/index?id=' + this.aid,
 				})

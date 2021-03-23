@@ -11,7 +11,7 @@
       @click="doAdopt()"
     >通过</el-button>
     <el-button
-      v-if="content.status == '1' && content.recommend == 1"
+      v-if="content.status == '1' && content.recommend == 0"
       :class="{ active: disabled }"
       size="mini"
       type="warning"
@@ -19,7 +19,7 @@
       @click="recommendText()"
     >推荐</el-button>
     <el-button
-      v-if="content.status == '1' && content.recommend == 0"
+      v-if="content.status == '1' && content.recommend == 1"
       size="mini"
       type="warning"
       :class="{ active: disabled }"
@@ -108,7 +108,7 @@ export default {
                 message: '成功推荐',
                 type: 'success'
               })
-              this.content.recommend = 0
+              this.content.recommend = 1
             })
             .catch(() => {
               this.$message({
@@ -138,7 +138,7 @@ export default {
                 message: '推荐取消成功',
                 type: 'success'
               })
-              this.content.recommend = 1
+              this.content.recommend = 0
             })
             .catch(() => {
               this.$message({

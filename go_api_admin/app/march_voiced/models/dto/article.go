@@ -29,8 +29,8 @@ type UpdateArticleDto struct {
 	Describe  string `json:"describe" binding:"required,max=20"`
 	Image     string `json:"image"`
 	ID        uint   `json:"id"  binding:"required"`
-	WordCount uint   `json:"word_count" binding:"required"`
 	Tag       uint   `json:"tag"`
+	WordCount *uint  `json:"word_count" binding:"required"`
 	Type      *uint  `json:"type"`
 	Status    *uint8 `json:"status" binding:"required,lte=1"`
 	Kind      uint8  `json:"kind"`
@@ -43,8 +43,8 @@ type Paging struct {
 
 type SelectArticleByUser struct {
 	Paging
-	ID   uint  `form:"id"`
-	Kind uint8 `form:"kind" binding:"required,lte=2"`
+	ID     uint  `form:"id"`
+	Status uint8 `form:"status" binding:"required,lte=2"`
 }
 
 type ArticlePass struct {

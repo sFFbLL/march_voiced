@@ -31,7 +31,7 @@
 		<!-- 文章内容 -->
 		<articleContent :articleContent="articleInfo.describe"
 		 :articleImg="articleInfo.image"
-		 :id="articleInfo.articleId" />
+		 :id="articleInfo.articleId"/>
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal"
 		 :commentTotal="articleInfo.commentTotal"
