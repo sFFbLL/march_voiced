@@ -100,17 +100,13 @@
 				isRecommend: true, //是否是推荐文章
 			}
 		},
-		onShow() {
-			this.recommendList = [];
-			this.recommendCurrent = 1; //推荐当前页数
-			this.recommend();
-
-		},
 		created() {
 			let that = this;
 			if (!getToken()) {
 				async function f() {
-					await forLogin();
+					await new Promise(function(resolve,reject){
+						forLogin();
+					})
 					that.recommend();
 					that.follow();
 				}
@@ -168,6 +164,7 @@
 			},
 			// 推荐
 			recommend() {
+				console.log(11111111111111111)
 				let _this = this;
 				let params = {
 					current: this.recommendCurrent,

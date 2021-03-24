@@ -147,41 +147,46 @@
 			// 点击喜欢按钮
 			like() {
 				// 如果是第一次点击喜欢，增加数据
-				if (!this.clickLike) {
+				// 调用喜欢接口
+				
 					let id = this.id;
+				let params = {
+					id: id
+				}
+				if (!this.clickLike) {
 					this.likeIcon = "heart-fill";
 					this.likeColor = "#d81e06";
 					this.articleInfo.favourTotal++;
-					// 调用喜欢接口
-					let params = {
-						id: id
-					}
-					favour(params).then(res => {
 
-					})
+					favour(params).then(res => {})
 				} else {
 					this.articleInfo.favourTotal--;
 					this.likeIcon = "heart";
 					this.likeColor = "#080100";
+					favour(params).then(res => {})
+
+					console.log(666666666666)
 				}
 				this.clickLike = !this.clickLike;
 			},
 			// 点击收藏按钮
 			collent() {
-				if (!this.clickCollect) {
+				// 调用收藏接口
+				
 					let id = this.id;
+				let params = {
+					id: id
+				}
+				if (!this.clickCollect) {
 					this.collentIcon = "shoucang2";
 					this.articleInfo.collectTotal++;
-					// 调用收藏接口
-					let params = {
-						id: id
-					}
-					collect(params).then(res => {
 
-					})
+					collect(params).then(res => {})
 				} else {
 					this.collentIcon = "shoucang1";
 					this.articleInfo.collectTotal--;
+					collect(params).then(res => {});
+					console.log(444444444444)
 				}
 				this.clickCollect = !this.clickCollect
 			},
@@ -324,10 +329,10 @@
 						if (res.data.isFavour == 1) { //已经点赞
 							this.likeIcon = "heart-fill";
 							this.likeColor = "#d81e06";
-							this.clickLike=true;
-						} else if (res.data.isCollect == 1) { //已经收藏
+							this.clickLike = true;
+						} if (res.data.isCollect == 1) { //已经收藏
 							this.collentIcon = "shoucang2";
-							this.clickCollect=true;
+							this.clickCollect = true;
 						}
 					}
 				}).catch(err => {

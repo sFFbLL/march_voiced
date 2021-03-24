@@ -249,6 +249,11 @@
 	>>>.ql-container{
 		min-height: 40rpx;
 	}
+	.comment-view {
+		padding: 0 30rpx;
+		background-color: #fff;
+		margin-bottom: 60px;
+	}
 
 	/* 想法大模块 */
 	.ideacontent {
