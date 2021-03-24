@@ -255,7 +255,7 @@
 					id: 0,
 					current: this.draftCurrent,
 					size: this.size,
-					kind: 1
+					status: 0
 				}
 				getUserArticleList(params).then(res => {
 					if (res.data) {
@@ -285,7 +285,7 @@
 					current: this.articleCurrent,
 
 					size: this.size,
-					kind: 2
+					status: 2
 				}
 				// console.log(params.current);
 				getUserArticleList(params).then(res => {
