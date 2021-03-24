@@ -212,7 +212,6 @@ func (a *Article) UpdateArticle(articleDto *dto.UpdateArticleDto, userId int) (e
 		UpdateBy:    uint(userId),
 		Title:       articleDto.Title,
 		Content:     articleDto.Content,
-		Describe:    articleDto.Describe,
 		Image:       articleDto.Image,
 		IsRecommend: &isRecommend,
 		Kind:        articleDto.Kind,

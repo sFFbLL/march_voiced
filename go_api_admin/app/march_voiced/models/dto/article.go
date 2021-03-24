@@ -26,7 +26,6 @@ type InsertArticleDto struct {
 type UpdateArticleDto struct {
 	Title     string `json:"title" binding:"required"`
 	Content   string `json:"content" binding:"required"`
-	Describe  string `json:"describe" binding:"required,max=20"`
 	Image     string `json:"image"`
 	ID        uint   `json:"id"  binding:"required"`
 	Tag       uint   `json:"tag"`
