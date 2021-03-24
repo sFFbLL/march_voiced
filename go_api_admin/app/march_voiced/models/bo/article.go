@@ -71,6 +71,7 @@ type GoArticleMsg struct {
 	UserId        uint
 	ArticleId     uint
 	ArticleUserId uint
+	MessageId     uint
 }
 
 type ArticleUser struct {

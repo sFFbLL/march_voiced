@@ -11,6 +11,7 @@ type GetMessage struct {
 type GetMessageData struct {
 	Type       uint8  `json:"type"`                                 //消息类型（0 文章 / 1 三月圈）
 	Status     uint8  `json:"status"`                               //消息状态 文章：0发布、1评论、2收藏、3转 载、4赞 三月圈：0发布、1评论、2，3，4三种赞 不返回收藏和评论
+	Id         uint   `json:"id"`                                   // 消息id
 	ArticleId  uint   `json:"articleId" gorm:"column:article_id"`   //文章id/三月圈id
 	UserId     uint   `json:"userId" gorm:"column:create_by"`       //用户id
 	CreateTime int64  `json:"createTime"`                           //创建时间

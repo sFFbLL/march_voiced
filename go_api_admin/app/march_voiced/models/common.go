@@ -1,5 +1,11 @@
 package models
 
+import (
+	"project/utils"
+
+	"go.uber.org/zap"
+)
+
 // AddMessage
 /*
 t=0文章 t=1三月圈
@@ -10,6 +16,12 @@ status 消息状态 文章：0发布、1评论、2收藏、3转载、4赞 三月
 comment 如果是评论需要传评论内容
 */
 func AddMessage(t uint8, status uint8, articleId uint, userId uint, comment string)  {
+	defer func() {
+		if err := recover(); err != nil {
+			zap.L().Error("Call add message defer recover", zap.String("ArticleId", utils.UIntToString(articleId)), zap.String("UserID", utils.UIntToString(userId)), zap.String("error", string(utils.Stack())))
+		}
+	}()
+
 	message := new(Message)
 	message.Type = t
 	message.Status = status
@@ -23,9 +35,16 @@ t=0文章 t=1三月圈
 status 0驳回 1通过 2待审核
 */
 func AddSysMessage(t uint8, status uint8, userId uint, followId uint)  {
+	defer func() {
+		if err := recover(); err != nil {
+			zap.L().Error("Call add system message defer recover", zap.String("UserID", utils.UIntToString(userId)), zap.String("error", string(utils.Stack())))
+		}
+	}()
+
 	sysMessage := new(SysMessage)
 	sysMessage.Type = t
 	sysMessage.Status = status
+	//todo 创建者应该是申请人
 	sysMessage.CreateBy = userId
 	sysMessage.UpdateBy = userId
 	sysMessage.FollowId = followId
@@ -34,6 +53,12 @@ func AddSysMessage(t uint8, status uint8, userId uint, followId uint)  {
 
 // AddFollowMessage 新增关注消息
 func AddFollowMessage(userId uint, followId uint)  {
+	defer func() {
+		if err := recover(); err != nil {
+			zap.L().Error("Call add follow message defer recover", zap.String("UserID", utils.UIntToString(userId)), zap.String("error", string(utils.Stack())))
+		}
+	}()
+
 	followMessage := new(FollowMessage)
 	followMessage.CreateBy = userId
 	followMessage.UpdateBy = userId

@@ -30,17 +30,14 @@ func (e *Message) GetMessage(p *dto.Paginator, userId int) (data *bo.GetMessage,
 	records2 := new([]bo.GetMessageData)
 
 	var goArticle bo.GoArticleMsg
-	var keys []uint
 	data.Records = records1
 	err = message.GetMessage(data, p, userId)
 	data.Pages = utils.PagesCount(int(data.Total), int(p.Size))
 
 	articleMapList := make(map[uint]*bo.GetMessageData, len(*data.Records))
 	for _, i := range *data.Records {
-		var articleBo bo.GetMessageData
-		articleBo = i
-		articleMapList[i.ArticleId] = &articleBo
-		keys = append(keys, i.ArticleId)
+		var articleBo = i
+		articleMapList[i.Id] = &articleBo
 	}
 	// 数据拼接
 	var wg sync.WaitGroup
@@ -50,19 +47,18 @@ func (e *Message) GetMessage(p *dto.Paginator, userId int) (data *bo.GetMessage,
 		goArticle.ArticleId = v.ArticleId
 		goArticle.ArticleUserId = v.UserId
 		goArticle.UserId = v.UserId
+		goArticle.MessageId = v.Id
 		go goArticleMsg(&articleCh, &wg, goArticle)
 	}
 	wg.Wait()
 	close(articleCh)
 
-	//articleMap 排序 遍历
 	for i := range articleCh {
-		goArticle = *i
-		articleMapList[goArticle.ArticleId].ArticleTotal = goArticle.ArticleTotal
+		articleMapList[i.MessageId].ArticleTotal = goArticle.ArticleTotal
 	}
 
 	for _, i := range *data.Records {
-		*records2 = append(*records2, *articleMapList[i.ArticleId])
+		*records2 = append(*records2, *articleMapList[i.Id])
 	}
 	data.Records = records2
 	return
