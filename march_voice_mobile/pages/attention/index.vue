@@ -1,16 +1,23 @@
 <template>
-	<uni-list class="list-item">
-		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" :aid="item.id"
-		 :id="item.id" :nickname="item.nickname" :isFollow="item.isFollow" :avatarPath="item.avatarPath">
-			<span slot="middleText">
-				<span class="inner-text">关注 {{item.followTotal}}</span>
-				<span class="inner-text">粉丝 {{item.fansTotal}}</span>
-				<span class="inner-text">文章 {{item.articleTotal}}</span>
-			</span>
-			<span slot="underText">{{item.signature}}</span>
-		</attentionAndFansCell>
-		<uniLoadMore></uniLoadMore>
-	</uni-list>
+	<view class="">
+		<uni-list class="list-item">
+			<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" :aid="item.id"
+			 :id="item.id" :nickname="item.nickname" :isFollow="item.isFollow" :avatarPath="item.avatarPath">
+				<span slot="middleText">
+					<span class="inner-text">关注 {{item.followTotal}}</span>
+					<span class="inner-text">粉丝 {{item.fansTotal}}</span>
+					<span class="inner-text">文章 {{item.articleTotal}}</span>
+				</span>
+				<span slot="underText">{{item.signature}}</span>
+			</attentionAndFansCell>
+		</uni-list>
+		<view v-if="list.length < 1">
+			<u-empty text="没有数据"
+			 mode="search"
+			 class="nodate"></u-empty>
+		</view>
+	</view>
+	
 </template>
 
 <script>
@@ -94,5 +101,9 @@
 	}
 	/deep/.uni-list--border-bottom{
 		height:0 !important;
+	}
+	.nodate {
+		background-color: #fff;
+		min-height: 800rpx;
 	}
 </style>

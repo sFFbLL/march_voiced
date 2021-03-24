@@ -2,7 +2,7 @@
 	<view class="image-adaptation">
 		<view class="allImage">
 			<view class="images" v-for="(item,index) in imgList" :key="index">
-				<image @click="previewImg()" class="oneimg" :src="getImgUrl(item)" mode="aspectFill" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx'}"></image>
+				<image @click="previewImg(index)" class="oneimg" :src="getImgUrl(item)" mode="aspectFill" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx'}"></image>
 			</view>
 		</view>
 	</view>
@@ -41,16 +41,17 @@
 				return settings.imgUrl + src;
 			},
 			// 预览图片
-			previewImg() {
+			previewImg(index) {
 				let imgs=[];
 				for (let img of this.imgList) {
 					imgs.push(this.getImgUrl(img))
 				}
 				uni.previewImage({
 					urls: imgs,
+					current: index,
 					longPressActions: {
 						itemList: ['保存图片'],
-					}
+					},
 				})
 			},
 

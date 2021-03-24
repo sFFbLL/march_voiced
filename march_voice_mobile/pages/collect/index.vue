@@ -11,6 +11,11 @@
 			</view>
 			
 		</view>
+		<view v-if="correntList.length < 1">
+			<u-empty text="没有数据"
+			 mode="search"
+			 class="nodate"></u-empty>
+		</view>
 	</view>
 </template>
 
@@ -129,5 +134,9 @@
 		height: 30rpx !important;
 		width: 30rpx !important;
 	}
+	
+	.nodate {
+		background-color: #fff;
+		min-height: 800rpx;
+	}
 </style>
-style>
