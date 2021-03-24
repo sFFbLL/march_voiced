@@ -42,7 +42,8 @@
 		},
 		// 进入时加载
 		onShow: function(options) {
-			uni.startPullDownRefresh();
+			this.getList();
+			// uni.startPullDownRefresh();
 			// this.openid = getOpenId()
 			// console.log(this.openid,"ASDASDASDDASDADSDASASDSDSD")
 		},

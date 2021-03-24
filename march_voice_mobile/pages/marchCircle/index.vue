@@ -87,15 +87,6 @@
 
 			}
 		},
-		onShow() {
-			this.ideasList = [];
-			this.current = 1; //推荐当前页数
-			this.getCircleList();
-
-		},
-		computed: {
-
-		},
 		components: {
 			emojiControl,
 			attentionAndFansCell,

@@ -103,21 +103,20 @@
 		created() {
 			let that = this;
 			if (!getToken()) {
-				async function f() {
-					await new Promise(function(resolve,reject){
-						forLogin();
-					})
-					that.recommend();
-					that.follow();
-				}
-				f();
-				// forLogin();
-				// let that = this;
-				// setTimeout(function() {
-				// 	console.log("延时输出")
+				// async function f() {
+				// 	await new Promise(function(resolve,reject){
+				// 		forLogin();
+				// 	})
 				// 	that.recommend();
 				// 	that.follow();
-				// }, 2000);
+				// }
+				// f();
+				forLogin();
+				setTimeout(function() {
+					console.log("延时输出")
+					that.recommend();
+					that.follow();
+				}, 2000);
 			} else {
 				this.follow();
 			}
