@@ -20,7 +20,7 @@ func (mc *MarchsoftComment) AddMarchsoftComment(userId uint, p *dto.AddMarchsoft
 	comment.UpdateBy = userId
 	comment.CreateBy = userId
 	err = comment.AddMarchsoftComment()
-	go comment.AddMarchsoftCommentMessage(int(userId))
+	go comment.AddMarchsoftCommentMessage(userId, p.ID)
 	return
 }
 

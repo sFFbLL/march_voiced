@@ -26,8 +26,10 @@ func (co *MarchsoftComment) AddMarchsoftComment() (err error) {
 }
 
 // AddMarchsoftCommentMessage 新增评论消息
-func (co *MarchsoftComment) AddMarchsoftCommentMessage(id int) {
-	AddMessage(0, 1, co.MarchsoftId, uint(id), co.Content)
+func (co *MarchsoftComment) AddMarchsoftCommentMessage(SubjectId uint, objectId uint) {
+	if SubjectId != objectId {
+		AddMessage(0, 1, co.MarchsoftId, SubjectId, co.Content)
+	}
 }
 
 // DeleteMarchsoftComment 删除详情页的评论
