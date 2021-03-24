@@ -22,6 +22,11 @@
 				<text>评论</text>
 				<text>({{commentCount}})</text>
 			</view>
+			<view v-if="commentCount === 0 || commentCount === 'NaN'">
+				<u-empty text="没有数据"
+				 mode="search"
+				 class="nodate"></u-empty>
+			</view>
 			<view class="comment-list">
 				<comment :id="ideaId" :type="type" @getMore="getMore" :commentList="commentList" @childFn="comment"></comment>
 			</view>
@@ -260,5 +265,10 @@
 
 	.comment-list {
 		margin-bottom: 60px;
+	}
+	
+	.nodate {
+		background-color: #fff;
+		min-height: 800rpx;
 	}
 </style>

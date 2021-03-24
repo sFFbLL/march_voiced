@@ -1,10 +1,16 @@
 <template>
-	<uni-list class="list-item">
-		<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" :aid="item.id"
-		 :nickname="item.nickname" :isFollow="item.isFollow" :avatarPath="item.avatarPath">
-		</attentionAndFansCell>
-		<uniLoadMore></uniLoadMore>
-	</uni-list>
+	<view class="">
+		<uni-list class="list-item">
+			<attentionAndFansCell class="item" v-for="(item, index) in list" :key="index" :aid="item.id"
+			 :nickname="item.nickname" :isFollow="item.isFollow" :avatarPath="item.avatarPath">
+			</attentionAndFansCell>
+		</uni-list>
+		<view v-if="list.length < 1">
+			<u-empty text="没有数据"
+			 mode="search"
+			 class="nodate"></u-empty>
+		</view>
+	</view>
 </template>
 
 <script>
@@ -85,5 +91,9 @@ import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCel
 		margin-right: 10rpx;
 		padding-right: 10rpx;
 		border-right: 1rpx solid #969696;
+	}
+	.nodate {
+		background-color: #fff;
+		min-height: 800rpx;
 	}
 </style>
