@@ -86,7 +86,7 @@ type IsFavourCollectByArticleId struct {
 
 type ArticleTagList struct {
 	ID          int    `json:"id"`
-	Icon        int    `json:"icon"`
+	Icon        string `json:"icon"`
 	Tag         string `json:"tag"`
 	Description string `json:"description"`
 }
