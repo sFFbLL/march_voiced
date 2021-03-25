@@ -33,13 +33,14 @@ import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCel
 			uniLoadMore
 		},
 		// 进入时加载
-		onShow: function(options) {
+		created: function(options) {
 			// let that = this;
 			// this.list = [];
 			// setTimeout(function() {
 			// 	that.list.push.apply(that.list, that.list1)
 			// }, 1000);
-			uni.startPullDownRefresh();
+			// uni.startPullDownRefresh();
+			that.getList()
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
