@@ -26,7 +26,7 @@
 				<text>评论</text>
 				<text>({{commentCount}})</text>
 			</view>
-			<view v-if="commentCount !='NaN'">
+			<view v-if="commentCount === 'NaN' || commentCount === 0 ">
 				<u-empty text="没有数据"
 				 mode="search"
 				 class="nodate"></u-empty>

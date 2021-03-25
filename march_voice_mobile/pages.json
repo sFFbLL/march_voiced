@@ -181,9 +181,9 @@
 		"selectedColor": "#1296db",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"height": "45px",
+		"height": "47px",
 		"fontSize": "10px",
-		"iconWidth": "24px",
+		"iconWidth": "25px",
 		"spacing": "3px",
 		"list": [{
 				"pagePath": "pages/home/index",

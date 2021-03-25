@@ -23,9 +23,12 @@ Axios.defaults.timeout = 8000;
 Axios.interceptors.request.use(
 	// 在发送请求前要做的事儿
 	(config) => {
-		setToken(
-			"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLku5nlhL8iLCJleHAiOjE2MjAxODkxNjYsImlzcyI6Im15LXByb2plY3QifQ.jQoB0zzxK6nHwksJAIypjQiXJ1B88zlvYuHg2od0yZA"
-		)
+
+
+		// setToken(
+		// 	"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLku5nlhL8iLCJleHAiOjE2MjAxMDE5NzksImlzcyI6Im15LXByb2plY3QifQ.lu-kYyvfxmFsYhGWIrDVsJl--Loe4HLZVXoXyICJDGk"
+		// )
+
 		if (getToken()) {
 			config.headers['Authorization'] = getToken() //让每个请求携带自定义token
 		}
@@ -50,7 +53,6 @@ Axios.interceptors.response.use(
 		return response.data;
 	},
 	(err) => {
-		console.log("error33333");
 		if (err && err.response) {
 			switch (err.response.status) {
 				case 400:

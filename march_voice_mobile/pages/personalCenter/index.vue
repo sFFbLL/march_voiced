@@ -32,29 +32,53 @@
 			</view>
 			<view class="kind-article-list">
 				<!-- 文章列表 -->
-				<view v-for="(item,index) in articleList" v-if="!tabIndex">
-					<recommend :articleInfo="item" class="arcitle-item item"></recommend>
-				</view>
-				<!-- 想法列表 -->
-				<view v-for="(item,index) in ideaList" v-if="tabIndex === 1">
-					<view class="ideacontent item">
-						<!-- 用户头像公共组件 -->
-						<attentionAndFansCell :notTap="notTap" :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
-						 :isFollow="userInfo.isFollow">
-							<view slot="underText">{{item.updateTime}}</view>
-						</attentionAndFansCell>
-						<!-- 想法的文字部分 -->
-						<articleContent :articleContent="item.content" :isIdea="true" :id="item.id"></articleContent>
-						<!-- 想法的图片部分组件 -->
-						<imageAdaptation :imgList="item.imgList"></imageAdaptation>
-						<!-- 点赞表情组件+评论 -->
-						<emojiControl class="emoji-control" :faceTotals="item.faceTotal" :likeTotals="item.likeTotal" :favourTotals="item.favourTotal"
-						 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
+				<view>
+					<view v-for="(item,index) in articleList" v-if="!tabIndex">
+						<recommend :articleInfo="item" class="arcitle-item item"></recommend>
+					</view>
+					<view v-if="articleList.length <= 1">
+						<u-empty text="没有数据"
+						 mode="search"
+						 class="nodate"></u-empty>
 					</view>
 				</view>
-				<view v-for="(item,index) in draftList" v-if="tabIndex === 2">
-					<recommend :articleInfo="item" :isArticleInteract="false" class="arcitle-item item"></recommend>
+				
+				<!-- 想法列表 -->
+				<view v-if="tabIndex === 1">
+					<view v-for="(item,index) in ideaList" >
+						<view class="ideacontent item">
+							<!-- 用户头像公共组件 -->
+							<attentionAndFansCell :notTap="notTap" :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
+							 :isFollow="userInfo.isFollow">
+								<view slot="underText">{{item.updateTime}}</view>
+							</attentionAndFansCell>
+							<!-- 想法的文字部分 -->
+							<articleContent :articleContent="item.content" :isIdea="true" :id="item.id"></articleContent>
+							<!-- 想法的图片部分组件 -->
+							<imageAdaptation :imgList="item.imgList"></imageAdaptation>
+							<!-- 点赞表情组件+评论 -->
+							<emojiControl class="emoji-control" :faceTotals="item.faceTotal" :likeTotals="item.likeTotal" :favourTotals="item.favourTotal"
+							 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
+						</view>
+					</view>
+					<view v-if="ideaList.length < 1">
+						<u-empty text="没有数据"
+						 mode="search"
+						 class="nodate"></u-empty>
+					</view>
 				</view>
+				
+				<view v-if="tabIndex === 2">
+					<view v-for="(item,index) in draftList" >
+						<recommend :articleInfo="item" :isArticleInteract="false" class="arcitle-item item"></recommend>
+					</view>
+					<view v-if="draftList.length <= 1">
+						<u-empty text="没有数据"
+						 mode="search"
+						 class="nodate"></u-empty>
+					</view>
+				</view>
+				
 				<!-- 下拉加载更多 -->
 				<view v-if="isLoadMore">
 					<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
@@ -458,5 +482,10 @@
 
 	.emoji-control {
 		margin-bottom: 30rpx;
+	}
+	
+	.nodate {
+		background-color: #fff;
+		min-height: 800rpx;
 	}
 </style>

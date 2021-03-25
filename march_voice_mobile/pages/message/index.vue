@@ -5,27 +5,51 @@
 		</view>
 		<view class="content">
 			<!-- 互动消息 -->
-			<view v-if="tabIndex==0" v-for="item in interactList.records">
-				<!-- 单个消息组件 -->
-				<singleMessage :messageInfo="item"></singleMessage>
+			<view v-if="tabIndex==0">
+				<view  v-for="item in interactList.records">
+					<!-- 单个消息组件 -->
+					<singleMessage :messageInfo="item"></singleMessage>
+				</view>
+				<view v-if="interactList.records.length < 1">
+					<u-empty text="没有数据"
+					 mode="search"
+					 class="nodate"></u-empty>
+				</view>
 			</view>
+			
 			<!-- 关注消息 -->
-			<view v-if="tabIndex==1" v-for="item in attentionList.records">
-				<attentionAndFansCell class="attention" :aid="item.userId" :nickname="item.nickname" :avatarPath="item.avatarPath"
-				 :isFollow="item.isFollow">
-					<template v-slot:afterNicknameText>
-						<text class="slot">关注了你
-						</text>
-					</template>
-				</attentionAndFansCell>
+			<view v-if="tabIndex==1">
+				<view v-for="item in attentionList.records">
+					<attentionAndFansCell class="attention" :aid="item.userId" :nickname="item.nickname" :avatarPath="item.avatarPath"
+					 :isFollow="item.isFollow">
+						<template v-slot:afterNicknameText>
+							<text class="slot">关注了你
+							</text>
+						</template>
+					</attentionAndFansCell>
+				</view>
+				<view v-if="attentionList.records.length < 1">
+					<u-empty text="没有数据"
+					 mode="search"
+					 class="nodate"></u-empty>
+				</view>
 			</view>
+			
 			<!-- 系统消息 -->
-			<view v-if="tabIndex==2" v-for="item in otherList.records">
-				<!-- 其他消息组件 -->
-				<otherMessage :otherList="item"></otherMessage>
-				<!-- 间隔槽 -->
-				<u-gap height="1" bg-color="#f5f5f5"></u-gap>
+			<view v-if="tabIndex==2">
+				<view v-for="item in otherList.records">
+					<!-- 其他消息组件 -->
+					<otherMessage :otherList="item"></otherMessage>
+					<!-- 间隔槽 -->
+					<u-gap height="1" bg-color="#f5f5f5"></u-gap>
+				</view>
+				<view v-if="otherList.records.length < 1">
+					<u-empty text="没有数据"
+					 mode="search"
+					 class="nodate"></u-empty>
+				</view>
 			</view>
+			
 		</view>
 		<view v-show="isLoadMore">
 			<uni-load-more :status="loadStatus"></uni-load-more>
@@ -518,5 +542,10 @@
 	.content {
 		padding-left: 10rpx;
 		margin-top: 80rpx;
+	}
+	
+	.nodate {
+		background-color: #fff;
+		min-height: 800rpx;
 	}
 </style>

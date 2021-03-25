@@ -80,7 +80,7 @@
 			return {
 				isDisabled: false, // 是否禁用按钮点击
 				openid: null,
-				imgList:["http://linbolun.cn/api/file/download/e0f62477-fb78-4f8b-9052-670642e497a5.png"]
+				imgList:[]
 			}
 		},
 		methods: {
@@ -110,9 +110,9 @@
 			},
 			// 进入个人信息页面
 			inToMineByImg() {
-				console.log(this.isMine)
 				if(this.isMine){
-					console.log("ASDASDSASSDSDASD")
+					this.imgList.push(settings.imgUrl + this.avatarPath)
+					console.log(this.imgList)
 					 uni.previewImage({
 								current : 0,
 					            urls : this.imgList,

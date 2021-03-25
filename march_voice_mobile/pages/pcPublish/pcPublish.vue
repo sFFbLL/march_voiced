@@ -294,19 +294,19 @@
 					}
 				}
 				console.log(this.isUpdate)
-				var params = {
-					title: this.title,
-					content: res.html,
-					image: url,
-					kind: 1,
-					tag: this.tagsId[this.index],
-					type: 0,
-					status: res.isPublic,
-					word_count: res.textLength,
-					describe:describe
-				}
 				switch(this.isUpdate){
 					case false: 
+						var params = {
+							title: this.title,
+							content: res.html,
+							image: url,
+							kind: 1,
+							tag: this.tagsId[this.index],
+							type: 0,
+							status: res.isPublic,
+							word_count: res.textLength,
+							describe:describe
+						}
 						publishArticle(params).then( _res => {
 							// if (_res.code === 200) {
 								console.log("发布成功")
@@ -314,6 +314,16 @@
 						})
 						break;
 					case true:
+						var params = {
+							title: this.title,
+							content: res.html,
+							image: url,
+							kind: 1,
+							tag: this.tagsId[this.index],
+							type: 0,
+							status: res.isPublic,
+							word_count: res.textLength,
+						}
 						upDateArticle(params).then( _res => {
 							// if(_res.code === 200){
 								console.log("保存成功")
