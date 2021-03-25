@@ -51,7 +51,9 @@
 					describe:describe
 				}
 				publishArticle(params).then(res => {
-						console.log("发布成功")
+					uni.switchTab({
+						url:'/pages/personalCenter/index'
+					})
 				})
 				
 				// console.log(this.title)

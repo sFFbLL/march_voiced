@@ -8,9 +8,10 @@
 				<slot name="describe"></slot>
 			</view>
 		</view>
-		<view class="item-img-box">
-			<u-image class="inner-img" :src="icon" height="60rpx" width="60rpx" :fade="fade" shape="circle"></u-image>
-		</view>
+		<!-- <view class="item-img-box"> -->
+			<!-- <i class="el-icon-delete"></i> -->
+			<u-icon size="40" name="chat"></u-icon>
+		<!-- </view> -->
 	</view>
 </template>
 

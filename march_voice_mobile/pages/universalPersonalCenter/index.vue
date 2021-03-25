@@ -2,7 +2,7 @@
 	<view class="personal-center">
 		<!-- 头部用户信息 -->
 		<view class="header">
-			<attentionAndFansCell :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath" :isFollow="userInfo.isFollow"
+			<attentionAndFansCell :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath" :isFollow="userInfo.isFollow" :isMine="true"
 			 class="top-user-info">
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
