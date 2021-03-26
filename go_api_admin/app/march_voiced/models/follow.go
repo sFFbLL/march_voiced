@@ -28,12 +28,12 @@ func (fo *Follow) IsFollow(userId, followId int) (int, error) {
 	err = global.Eloquent.Table(fo.TableName()).Where("follow_id = ? AND create_by = ? AND is_deleted = 0", followId, userId).Count(&count).Error
 	if err != nil {
 		zap.L().Error("IsFollow Select failed", zap.Error(err))
-		return 0, err
+		return 2, err
 	}
 	if count > 0 {
 		return 1, err
 	}
-	return 0, err
+	return 2, err
 }
 
 // GetFollowList 查询关注列表信息的数据持久层
