@@ -46,6 +46,7 @@
 			</view>
 
 		</view>
+			
 	</view>
 </template>
 

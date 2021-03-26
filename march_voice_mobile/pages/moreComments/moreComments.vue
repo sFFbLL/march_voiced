@@ -2,10 +2,10 @@
 	<view>
 		<view class="comment-list">
 			<!-- 父评论 -->
-			<comment :showKids="showKids" :type="type" :commentList="commentList" @childFn="comment"></comment>
+			<comment style="   padding: 0 12px;" :showKids="showKids" :type="type" :commentList="commentList" @childFn="comment"></comment>
 			<!-- 间隔槽 -->
-			<u-gap height="30" bg-color="#f5f5f5"></u-gap>
-			<view>
+			<u-gap height="20" bg-color="#f5f5f5"></u-gap>
+			<view style="padding: 0 12px;">
 				<view class="reply">回复</view>
 				<!-- 所有子评论 -->
 				<comment :showKids="showKids" :type="type" :commentList="ChildCommentsList" @childFn="comment"></comment>
@@ -202,4 +202,10 @@
 		font-size: 30rpx;
 		color: #aaa5a3;
 	}
+
+	/* .comment-list{
+		    padding: 0 12px;
+		    background-color: #fff;
+		    margin-bottom: 60px;
+	} */
 </style>

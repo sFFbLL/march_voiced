@@ -158,7 +158,6 @@
 			},
 			// 推荐
 			recommend() {
-				console.log(11111111111111111)
 				let _this = this;
 				let params = {
 					current: this.recommendCurrent,

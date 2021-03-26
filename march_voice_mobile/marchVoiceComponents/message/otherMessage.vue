@@ -29,7 +29,6 @@
 		},
 
 		created() {
-			console.log(this.otherList)
 			if (this.otherList.type == 0) {
 				this.url = "../../pages/articleDetails/index?id=" + this.otherList.articleId;
 				if (this.otherList.status == 0) {
