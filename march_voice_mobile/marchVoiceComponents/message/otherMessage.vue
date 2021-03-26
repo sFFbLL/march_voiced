@@ -1,24 +1,24 @@
 <template>
-	<view class="wrap">
-		<image v-if="otherList.status==0" style="width:30rpx; height: 30rpx;margin: 0 10rpx;" src="../../static/img/success.png"
-		 mode="scaleToFill"></image>
-		<image v-if="otherList.status==1" style="width:30rpx; height: 30rpx;margin: 0 10rpx;" src="../../static/img/fail.png"
-		 mode="scaleToFill"></image>
-		<text v-if="otherList.type==0">您的文章</text>
-		<navigator :url="url" v-if="otherList.type==0" style="color: #007AFF;display: inline-block;">《{{otherList.title}}》</navigator>
-		<text class="tipWords">{{tipWords}}</text>
-		<view class="time"> <text>{{format(otherList.createTime)}}</text></view>
-
+	<view>
+		<view class="wrap" v-for="(item,index) in otherList">
+			<image v-if="item.status==0" style="width:30rpx; height: 30rpx;margin: 0 10rpx;" src="../../static/img/success.png"
+			 mode="scaleToFill"></image>
+			<image v-if="item.status==1" style="width:30rpx; height: 30rpx;margin: 0 10rpx;" src="../../static/img/fail.png"
+			 mode="scaleToFill"></image>
+			<text v-if="item.type==0">您的文章</text>
+			<navigator :url="url" v-if="item.type==0" style="color: #007AFF;display: inline-block;">《{{otherList.title}}》</navigator>
+			<text class="tipWords">{{tipWords}}</text>
+			<view class="time"> <text>{{format(item.createTime)}}</text></view>
+		</view>
 	</view>
 </template>
 
 <script>
-	
-		import moment from 'moment';
+	import moment from 'moment';
 	export default {
 		props: {
 			otherList: {
-				type: Object
+				type: Array
 			}
 		},
 		data() {
@@ -27,8 +27,9 @@
 				url: "../../pages/articleDetails/index?id="
 			}
 		},
-		
+
 		created() {
+			console.log(this.otherList)
 			if (this.otherList.type == 0) {
 				this.url = "../../pages/articleDetails/index?id=" + this.otherList.articleId;
 				if (this.otherList.status == 0) {
@@ -45,7 +46,7 @@
 				}
 			}
 		},
-		methods:{
+		methods: {
 			// 把时间戳转换为正确格式
 			format(dateTime) {
 				let stamp = new Date(dateTime);

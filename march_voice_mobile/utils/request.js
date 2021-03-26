@@ -25,9 +25,9 @@ Axios.interceptors.request.use(
 	(config) => {
 
 
-		// setToken(
-		// 	"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLku5nlhL8iLCJleHAiOjE2MjAxMDE5NzksImlzcyI6Im15LXByb2plY3QifQ.lu-kYyvfxmFsYhGWIrDVsJl--Loe4HLZVXoXyICJDGk"
-		// )
+		setToken(
+			"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLku5nlhL8iLCJleHAiOjE2MjAzNDMyNzksImlzcyI6Im15LXByb2plY3QifQ.ijtfPkzH7QmoztBR3rsznQqDZfmVEqqOxYFfIVIJ-4s"
+		)
 
 		if (getToken()) {
 			config.headers['Authorization'] = getToken() //让每个请求携带自定义token

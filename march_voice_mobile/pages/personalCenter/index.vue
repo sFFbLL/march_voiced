@@ -19,6 +19,10 @@
 					<text class="number">{{userInfo.collectTotal}}</text>
 					<text class="text">收藏</text>
 				</view>
+				<view class="collect-total" @click="toDraft ">
+					<text class="number">草稿箱数量</text>
+					<text class="text">草稿箱</text>
+				</view>
 			</view>
 			<view class="edit-user">
 				<button :plain="true" @click="goToEdit()">编辑个人信息</button>
@@ -33,10 +37,10 @@
 			<view class="kind-article-list">
 				<!-- 文章列表 -->
 				<view>
-					<view v-for="(item,index) in articleList" v-if="!tabIndex">
+					<view v-for="(item,index) in articleListCopy" v-if="!tabIndex">
 						<recommend :articleInfo="item" class="arcitle-item item"></recommend>
 					</view>
-					<view v-if="articleList.length <= 1">
+					<view v-if="articleListCopy.length <= 1">
 						<u-empty text="没有数据"
 						 mode="search"
 						 class="nodate"></u-empty>
@@ -45,7 +49,7 @@
 				
 				<!-- 想法列表 -->
 				<view v-if="tabIndex === 1">
-					<view v-for="(item,index) in ideaList" >
+					<view v-for="(item,index) in ideaListCopy" >
 						<view class="ideacontent item">
 							<!-- 用户头像公共组件 -->
 							<attentionAndFansCell :notTap="notTap" :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath"
@@ -61,7 +65,7 @@
 							 :commentTotals="item.commentTotal" :id="item.id"></emojiControl>
 						</view>
 					</view>
-					<view v-if="ideaList.length < 1">
+					<view v-if="ideaListCopy.length < 1">
 						<u-empty text="没有数据"
 						 mode="search"
 						 class="nodate"></u-empty>
@@ -107,19 +111,18 @@
 				notTap: true,
 				articleCurrent: 1, //文章当前页数，
 				ideaCurrent: 1, //想法当前页数
-				draftCurrent: 1, //草稿当前页数
+				isLoadMore: false, //是否加载中
 				size: 10,
 				loadStatus: 'loading', //加载样式：more-加载前样式，loading-加载中样式，nomore-没有数据样式
 				articleLoadStatus: 'loading',
 				ideaLoadStatus: 'loading',
-				draftLoadStatus: 'loading',
-				isLoadMore: false, //是否加载中
 				tabIndex: 0,
 				userInfo: {},
 				articleList: [],
 				ideaList: [],
-				draftList: [],
-
+				articleListCopy: [],
+				ideaListCopy: [],
+				
 				emojiList: {
 					faceTotal: 0,
 					likeTotal: 6,
@@ -134,11 +137,6 @@
 					{
 						index: 1,
 						value: '想法',
-						isActive: false
-					},
-					{
-						index: 2,
-						value: '草稿箱',
 						isActive: false
 					}
 				],
@@ -169,27 +167,16 @@
 					this.ideaCurrent += 1;
 				}
 				this.getIdeaList();
-			} else if (!this.isLoadMore && this.tabIndex === 2) {
-				this.isLoadMore = true
-				if (this.isNextPage) {
-					this.draftCurrent += 1
-				}
-				this.getDraftList();
-			}
+			} 
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
 			this.articleCurrent = 1; //文章当前页数，
 			this.ideaCurrent = 1; //想法当前页数
-			this.draftCurrent = 1; //草稿当前页数
-
-			let that = this;
-			that.articleList = [];
-			that.ideaList = [];
-			that.draftList = [];
+			this.articleList = [];
+			this.ideaList = [];
 			this.getArticleList();
 			this.getIdeaList();
-			this.getDraftList();
 			setTimeout(function() {
 				uni.stopPullDownRefresh();
 			}, 2000);
@@ -213,6 +200,12 @@
 					url: '../collect/index'
 				})
 			},
+			// 跳转草稿箱
+			toDraft(){
+				uni.navigateTo({
+					url: '../drafts/drafts'
+				})
+				},
 			/* 切换选项卡选项 */
 			tabActive(tabIndex) {
 				this.tabs.map((value, index) => {
@@ -224,9 +217,6 @@
 				} else if (tabIndex === 1) {
 					this.isLoadMore = false;
 					this.loadStatus = this.ideaLoadStatus;
-				} else if (tabIndex === 2) {
-					this.isLoadMore = false;
-					this.loadStatus = this.draftLoadStatus;
 				}
 				this.tabIndex = tabIndex;
 			},
@@ -237,7 +227,6 @@
 					id: 0
 				}
 				getUserInfo(params).then(res => {
-					console.log(res.data)
 					_this.userInfo = res.data;
 				})
 			},
@@ -261,6 +250,7 @@
 						}
 
 						this.ideaList = [...this.ideaList, ...res.data];
+						this.ideaListCopy=this.ideaList;
 						this.isNextPage = true
 					} else {
 						this.loadStatus = "loading";
@@ -273,45 +263,15 @@
 				})
 
 			},
-			// 获取草稿箱列表
-			getDraftList() {
-				let params = {
-					id: 0,
-					current: this.draftCurrent,
-					size: this.size,
-					status: 0
-				}
-				getUserArticleList(params).then(res => {
-					if (res.data) {
-						if (this.draftCurrent === 1) {
-							this.isLoadMore = false;
-						} else {
-							setTimeout(function() {
-								this.loadStatus = "nomore";
-
-							}, 2000);
-							this.isLoadMore = false;
-						}
-						this.draftList = [...this.draftList, ...res.data];
-						this.isNextPage = true
-					} else {
-						this.loadStatus = "loading";
-						this.draftLoadStatus = "loading";
-						this.isLoadMore = false;
-						this.isNextPage = false;
-					}
-				})
-			},
+			
 			// 获取文章列表
 			getArticleList() {
 				let params = {
 					id: 0,
 					current: this.articleCurrent,
-
 					size: this.size,
-					status: 2
+					status: 1
 				}
-				// console.log(params.current);
 				getUserArticleList(params).then(res => {
 					if (res.data) {
 						if (this.articleCurrent === 1) {
@@ -322,6 +282,7 @@
 							}, 2000);
 						}
 						this.articleList = [...this.articleList, ...res.data];
+						this.articleListCopy=this.articleList;
 						this.isNextPage = true
 					} else {
 						this.loadStatus = "loading";
@@ -348,7 +309,6 @@
 			this.getUserInfo();
 			this.getArticleList();
 			this.getIdeaList();
-			this.getDraftList();
 
 		}
 	}

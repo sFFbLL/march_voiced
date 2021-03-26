@@ -124,7 +124,7 @@
 	.thecontent {
 		margin-left: 110rpx;
 		width: 600rpx;
-		height: 140rpx;
+		/* height: 140rpx; */
 		background-color: #f1f1f1;
 		border-radius: 8rpx;
 		display: flex;
