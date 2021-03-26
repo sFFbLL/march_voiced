@@ -6,20 +6,18 @@
 		<view class="content">
 			<!-- 互动消息 -->
 			<view v-if="tabIndex==0">
-				<view  v-for="item in interactList.records">
+				<view v-for="item in interactListCopy">
 					<!-- 单个消息组件 -->
 					<singleMessage :messageInfo="item"></singleMessage>
 				</view>
-				<view v-if="interactList.records.length < 1">
-					<u-empty text="没有数据"
-					 mode="search"
-					 class="nodate"></u-empty>
+				<view v-if="interactListCopy.length < 1">
+					<u-empty text="没有数据" mode="search" class="nodate"></u-empty>
 				</view>
 			</view>
-			
+
 			<!-- 关注消息 -->
 			<view v-if="tabIndex==1">
-				<view v-for="item in attentionList.records">
+				<view v-for="item in attentionListCopy">
 					<attentionAndFansCell class="attention" :aid="item.userId" :nickname="item.nickname" :avatarPath="item.avatarPath"
 					 :isFollow="item.isFollow">
 						<template v-slot:afterNicknameText>
@@ -28,28 +26,24 @@
 						</template>
 					</attentionAndFansCell>
 				</view>
-				<view v-if="attentionList.records.length < 1">
-					<u-empty text="没有数据"
-					 mode="search"
-					 class="nodate"></u-empty>
+				<view v-if="attentionListCopy.length < 1">
+					<u-empty text="没有数据" mode="search" class="nodate"></u-empty>
 				</view>
 			</view>
-			
+
 			<!-- 系统消息 -->
 			<view v-if="tabIndex==2">
-				<view v-for="item in otherList.records">
+				<view v-for="item in otherListCopy">
 					<!-- 其他消息组件 -->
-					<otherMessage :otherList="item"></otherMessage>
+					<otherMessage :otherList="otherListCopy"></otherMessage>
 					<!-- 间隔槽 -->
 					<u-gap height="1" bg-color="#f5f5f5"></u-gap>
 				</view>
-				<view v-if="otherList.records.length < 1">
-					<u-empty text="没有数据"
-					 mode="search"
-					 class="nodate"></u-empty>
+				<view v-if="otherListCopy.length < 1">
+					<u-empty text="没有数据" mode="search" class="nodate"></u-empty>
 				</view>
 			</view>
-			
+
 		</view>
 		<view v-show="isLoadMore">
 			<uni-load-more :status="loadStatus"></uni-load-more>
@@ -124,7 +118,7 @@
 					size: "1",
 					records: [],
 				},
-
+				interactListCopy: [],
 
 				//关注消息
 				attentionList: {
@@ -134,7 +128,7 @@
 					size: "1",
 					records: []
 				},
-
+				attentionListCopy: [],
 				//其他消息
 				otherList: {
 					pages: "22",
@@ -143,6 +137,7 @@
 					size: "1",
 					records: []
 				},
+				otherListCopy: [],
 				isNextPage: true
 			}
 		},
@@ -170,6 +165,32 @@
 		},
 		// 下拉刷新获取最新数据
 		onPullDownRefresh() {
+
+			// 关闭下拉刷新
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 2000);
+			if (this.tabIndex == 0) {
+				this.interactCurrent = 1, //互动当前页数，
+					this.interactList = [];
+				// 获取最新消息数据
+				this.interact();
+				// 消除当前tab红点
+				this.$store.commit('changeInteract', 1);
+
+			} else if (this.tabIndex == 1) {
+				this.attentionCurrent = 1, //关注当前页数
+					this.attentionList = [];
+				this.attention();
+				this.$store.commit('changeAttention', 1);
+
+			} else if (this.tabIndex == 2) {
+				this.otherCurrent = 1, //其他消息当前页数,
+					this.otherList = [];
+				this.other();
+				this.$store.commit('changeOther', 1);
+
+			}
 			// 查询是否有未读消息
 			unreadMessage(1).then(res => {
 				if (res.data.count > 0) {
@@ -186,24 +207,6 @@
 					this.$store.commit('changeOther', 0);
 				}
 			})
-			if (this.tabIndex == 0) {
-				// 获取最新消息数据
-				this.interact();
-				// 消除当前tab红点
-				this.$store.commit('changeInteract', 1);
-
-			} else if (this.tabIndex == 1) {
-				// this.attention();
-				this.$store.commit('changeAttention', 1);
-
-			} else if (this.tabIndex == 2) {
-				// this.other();
-				this.$store.commit('changeOther', 1);
-
-			}
-			setTimeout(function() {
-				uni.stopPullDownRefresh();
-			}, 1000);
 		},
 		onShow() {
 			uni.hideTabBarRedDot({
@@ -225,7 +228,7 @@
 			unreadMessage(2).then(res => {
 				if (res.data.count > 0) {
 					// 增加红点
-					
+
 					this.$store.commit('changeAttention', 0);
 				}
 			})
@@ -246,7 +249,7 @@
 				if (tabIndex == 0) {
 					this.loadStatus = this.interactLoadStatus;
 					if (this.interactCurrent === 1) {
-						while(!this.interactClick){
+						while (!this.interactClick) {
 							this.interactClick = true;
 							this.interactList.records = [];
 							this.interact();
@@ -254,12 +257,12 @@
 								this.interactClick = false;
 							}, 500)
 						}
-						
+
 					}
 				} else if (tabIndex == 1) {
 					this.loadStatus = this.attentionLoadStatus;
 					if (this.attentionCurrent === 1) {
-						while(!this.attentionClick){
+						while (!this.attentionClick) {
 							this.attentionList.records = [];
 							this.attentionClick = true;
 							this.attention();
@@ -271,7 +274,7 @@
 				} else {
 					this.loadStatus = this.otherLoadStatus;
 					if (this.otherCurrent === 1) {
-						while(!this.otherClick){
+						while (!this.otherClick) {
 							this.otherClick = true;
 							this.otherList.records = [];
 							this.other();
@@ -279,7 +282,7 @@
 								this.otherClick = false;
 							}, 500)
 						}
-						
+
 					}
 				}
 				this.tabIndex = tabIndex;
@@ -294,7 +297,7 @@
 					size: this.size
 				}
 				interactList(params).then(res => {
-				if (res.data.records != 0) { // 数据为空records不为null，为 [] 
+					if (res.data.records != 0) { // 数据为空records不为null，为 [] 
 						if (this.interactCurrent === 1) {
 							this.isLoadMore = false;
 						} else {
@@ -304,27 +307,16 @@
 						}
 
 						this.interactList.records = [...this.interactList.records, ...res.data.records];
+						this.interactListCopy=this.interactList.records;
 						this.isNextPage = true
 					} else {
 						this.isLoadMore = false;
 						this.loadStatus = "nomore";
 						this.isNextPage = false;
 					}
-					// if(res.data.length<=_this.size){
-					// 	_this.loadStatus='nomore';
-					// }
+
 				})
-				// 如果长度大于总条数
-				// if (this.interactList.length > 16) {
-				// 	_this.loadStatus = "nomore";
-				// 	_this.interactLoadStatus = "nomore";
-				// } else if (this.interactCurrent === 1) {
-				// 	_this.isLoadMore = false;
-				// } else {
-				// 	setTimeout(function() {
-				// 		_this.isLoadMore = false;
-				// 	}, 2000);
-				// }
+
 				// 数据已读
 				readMessage(1).then(res => {
 
@@ -347,6 +339,7 @@
 							}, 3000);
 						}
 						this.attentionList.records = [...this.attentionList.records, ...res.data.records];
+						this.attentionListCopy=this.attentionList.records;
 						this.isNextPage = true
 					} else {
 						this.loadStatus = "nomore";
@@ -354,20 +347,8 @@
 						this.isNextPage = false;
 					}
 
-					// if(res.data.length<=_this.size){
-					// 	_this.loadStatus='nomore';
-					// }
 				})
-				// if (this.attentionList.length > 16) {
-				// 	_this.loadStatus = "nomore";
-				// 	_this.attentionLoadStatus = "nomore";
-				// } else if (this.attentionCurrent === 1) {
-				// 	_this.isLoadMore = false;
-				// } else {
-				// 	setTimeout(function() {
-				// 		_this.isLoadMore = false;
-				// 	}, 2000);
-				// }
+
 				// 数据已读
 				readMessage(2).then(res => {
 
@@ -390,6 +371,7 @@
 							}, 3000);
 						}
 						this.otherList.records = [...this.otherList.records, ...res.data.records];
+						this.otherListCopy=this.otherList.records;
 						this.isNextPage = true;
 					} else {
 						this.loadStatus = "nomore";
@@ -397,20 +379,8 @@
 						this.isNextPage = false;
 					}
 
-					// if(res.data.length<=_this.size){
-					// 	_this.loadStatus='nomore';
-					// }
 				})
-				// if (this.otherList.length > 16) {
-				// 	_this.loadStatus = "nomore";
-				// 	_this.otherLoadStatus = "nomore";
-				// } else if (this.otherCurrent === 1) {
-				// 	_this.isLoadMore = false;
-				// } else {
-				// 	setTimeout(function() {
-				// 		_this.isLoadMore = false;
-				// 	}, 2000);
-				// }
+
 				// 数据已读
 				readMessage(3).then(res => {
 
@@ -543,7 +513,7 @@
 		padding-left: 10rpx;
 		margin-top: 80rpx;
 	}
-	
+
 	.nodate {
 		background-color: #fff;
 		min-height: 800rpx;

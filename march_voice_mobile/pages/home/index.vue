@@ -14,13 +14,13 @@
 		<view class="content">
 			<!-- 推荐 -->
 			<view v-if="!tabIndex">
-				<view v-for="(item,index) in recommendList">
-					<recommend v-if="recommendList.length" :notshow="notshow" :articleInfo="item" />
+				<view v-for="(item,index) in recommendListCopy">
+					<recommend v-if="recommendListCopy.length" :notshow="notshow" :articleInfo="item" />
 				</view>
 			</view>
 			<!-- 关注 -->
 			<view v-if="tabIndex">
-				<view v-for="(item,index) in followList" :key="index">
+				<view v-for="(item,index) in followListCopy" :key="index">
 					<follow :articleInfo="item" />
 				</view>
 			</view>
@@ -93,6 +93,8 @@
 				],
 				recommendList: [],
 				followList: [],
+				recommendListCopy: [],
+				followListCopy: [],
 				loadStatus: 'loading', //加载样式：more-加载前样式，loading-加载中样式，nomore-没有数据样式
 				recommendLoadStatus: 'loading',
 				followLoadStatus: 'loading',
@@ -103,14 +105,6 @@
 		created() {
 			let that = this;
 			if (!getToken()) {
-				// async function f() {
-				// 	await new Promise(function(resolve,reject){
-				// 		forLogin();
-				// 	})
-				// 	that.recommend();
-				// 	that.follow();
-				// }
-				// f();
 				forLogin();
 				setTimeout(function() {
 					console.log("延时输出")
@@ -118,6 +112,7 @@
 					that.follow();
 				}, 2000);
 			} else {
+				that.recommend();
 				this.follow();
 			}
 		},
@@ -182,6 +177,7 @@
 							_this.getArticleList();
 						}
 						_this.recommendList = [..._this.recommendList, ...res.data];
+						this.recommendListCopy=this.recommendList;
 					} else {
 						this.loadStatus = 'loading';
 						this.articleCurrent++;
@@ -207,6 +203,7 @@
 							}, 3000);
 						}
 						_this.recommendList = [..._this.recommendList, ...res.data];
+						this.recommendListCopy.push(_this.recommendList);
 					} else {
 						this.loadStatus = 'nomore';
 					}
@@ -230,6 +227,7 @@
 							}, 3000);
 						}
 						_this.followList = [..._this.followList, ...res.data.records];
+						this.followListCopy=_this.followList;
 					} else {
 						this.loadStatus = 'nomore';
 					}

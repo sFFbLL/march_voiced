@@ -20,7 +20,7 @@
 		<!-- 三月圈内容 -->
 		<view class="wrap">
 			<!-- 间隔槽 -->
-			<view v-for="item in ideasList">
+			<view v-for="item in ideasListCopy">
 				<u-gap height="30" bg-color="#f5f5f5"></u-gap>
 				<view class="ideacontent">
 					<!-- 用户头像公共组件 -->
@@ -84,7 +84,8 @@
 				},
 				marchCircleInfo: {},
 				ideasList: [],
-
+				ideasListCopy: [],
+				pullDownRefresh:false
 			}
 		},
 		components: {
@@ -147,7 +148,7 @@
 							this.isLoadMore = false;
 						}
 						this.ideasList = [...this.ideasList, ...res.data];
-						console.log(this.ideasList)
+						this.ideasListCopy=this.ideasList;
 					} else {
 						this.loadStatus = 'nomore';
 					}

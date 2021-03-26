@@ -2,10 +2,10 @@
 	<!-- 推荐页面文章展示组件 -->
 	<view class="recommend-component">
 		<!-- 文章标题 -->
-		<articleTitle :articleTitle="articleInfo.title" :articleId="articleInfo.id" :commentTotal="articleInfo.commentTotal" />
+		<articleTitle :articleTitle="articleInfo.title" :articleStatus="articleInfo.status" :articleId="articleInfo.id" :commentTotal="articleInfo.commentTotal" />
 		<!-- 作者信息 -->
-		<attentionAndFansCell v-if="notshow" :aid="articleInfo.create_by" :nickname="articleInfo.nickname"
-		 :avatarPath="articleInfo.avatarPath" :isFollow="articleInfo.isFollow"></attentionAndFansCell>
+		<attentionAndFansCell v-if="notshow" :aid="articleInfo.create_by" :nickname="articleInfo.nickname" :avatarPath="articleInfo.avatarPath"
+		 :isFollow="articleInfo.isFollow"></attentionAndFansCell>
 		<!-- 文章内容 -->
 		<articleContent :articleContent="articleInfo.describe" :articleImg="articleInfo.image" :commentTotal="articleInfo.commentTotal"
 		 :id="articleInfo.id" />
@@ -35,7 +35,7 @@
 				type: Boolean,
 				default: true
 			},
-			notshow:{
+			notshow: {
 				type: Boolean,
 				default: false
 			}

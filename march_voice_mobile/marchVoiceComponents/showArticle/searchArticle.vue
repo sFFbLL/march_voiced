@@ -1,21 +1,16 @@
 <template>
 	<view class="search-article-item">
-		<articleTitle :articleTitle="articleInfo.title"
-		 :articleId="articleInfo.articleId"></articleTitle>
+		<articleTitle :articleTitle="articleInfo.title" :articleId="articleInfo.articleId"></articleTitle>
 
-		<articleContent :articleContent="articleInfo.content"
-		 :id="articleInfo.id"></articleContent>
+		<articleContent :articleContent="articleInfo.describe" :id="articleInfo.id" :articleImg="articleInfo.image"></articleContent>
 
 		<!-- 文章互动数量-->
-		<articleInteract :favourTotal="articleInfo.favourTotal"
-		 :commentTotal="articleInfo.commentTotal">
-			<text class="nickname"
-			 slot="before">
+		<articleInteract :favourTotal="articleInfo.favourTotal" :commentTotal="articleInfo.commentTotal">
+			<text class="nickname" slot="before">
 				{{articleInfo.nickname}}
 			</text>
-			<text class="time"
-			 slot="after">
-				{{articleInfo.createTime}}
+			<text class="time" slot="after">
+				{{format(articleInfo.create_time)}}
 			</text>
 		</articleInteract>
 	</view>
@@ -25,6 +20,7 @@
 	import articleTitle from "./childComponents/articleTitle.vue"
 	import articleContent from "./childComponents/artilceContent.vue"
 	import articleInteract from "./childComponents/articleInteract.vue"
+	import moment from 'moment';
 	export default {
 		data() {
 			return {
@@ -43,7 +39,12 @@
 			articleInteract
 		},
 		methods: {
-
+			// 把时间戳转换为正确格式
+			format(dateTime) {
+				let stamp = new Date(dateTime);
+				let time = moment(stamp).format('YYYY-MM-DD HH:mm:ss');
+				return time;
+			}
 		},
 		mounted() {
 
@@ -96,8 +97,8 @@
 		white-space: nowrap;
 		line-height: 100%;
 	}
-	
-	.time{
+
+	.time {
 		float: right;
 		margin-right: 20rpx;
 	}

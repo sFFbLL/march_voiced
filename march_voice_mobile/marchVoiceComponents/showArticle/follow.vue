@@ -28,8 +28,9 @@
 		<!-- 文章标题 -->
 		<articleTitle :articleTitle="articleInfo.title"
 		 :articleId="articleInfo.articleId" />
+		 
 		<!-- 文章内容 -->
-		<articleContent :articleContent="articleInfo.describe"
+		<articleContent :articleContent="articleInfo.content"
 		 :articleImg="articleInfo.image"
 		 :id="articleInfo.articleId"/>
 		<!-- 文章互动数量-->
