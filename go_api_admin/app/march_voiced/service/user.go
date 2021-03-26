@@ -49,6 +49,13 @@ func (u *User) SelectUserInfo(id int, me int) (res *bo.SelectUserInfo, err error
 		zap.L().Error("GetUserCollect failed", zap.Error(err))
 		return
 	}
+
+	craftTotal, err := a.GetCraftTotal(uint(id))
+	if err != nil {
+		zap.L().Error("GetCraftTotal failed", zap.Error(err))
+		return
+	}
+
 	info := &bo.UserIn{
 		Id:         userIn.Id,
 		AvatarPath: userIn.AvatarPath,
@@ -61,6 +68,7 @@ func (u *User) SelectUserInfo(id int, me int) (res *bo.SelectUserInfo, err error
 		FansTotal:    fansTotal,
 		ArticleTotal: articleTotal,
 		CollectTotal: collectTotal,
+		CraftTotal:   craftTotal,
 		UserIn:       *info,
 		IsMe:         isMe,
 	}

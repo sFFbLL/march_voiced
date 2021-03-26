@@ -5,7 +5,3 @@ type GetFollowList struct {
 	Current uint `form:"current"`
 	Size    uint `form:"size"`
 }
-
-type UpdateStatus struct {
-	Id uint `json:"id"`
-}

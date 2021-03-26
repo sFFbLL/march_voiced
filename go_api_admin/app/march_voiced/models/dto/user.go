@@ -1,12 +1,13 @@
 package dto
 
 type WxTokenMessages struct {
-	Ticket string	`json:"Ticket"`
-	Url string		`json:"url"`
-	Strdata string   `json:"strdata"`
-	Errmsg string `json:"errmsg"`
-	Errcode int	`json:"errcode"`
+	Ticket  string `json:"Ticket"`
+	Url     string `json:"url"`
+	Strdata string `json:"strdata"`
+	Errmsg  string `json:"errmsg"`
+	Errcode int    `json:"errcode"`
 }
+
 //InsertUserDto 新增用户
 type InsertUserDto struct {
 	//DeptId   int    `json:"deptid" binding:"required"`   //部门
@@ -25,14 +26,14 @@ type InsertUserDto struct {
 
 //modInformation 修改用户信息
 type ModInformationDto struct {
-	NickName string `json:"nickname"`
-	Sex int `json:"sex"`
-	Signature string `json:"signature"`
+	NickName   string `json:"nickname"`
+	Sex        int    `json:"sex"`
+	Signature  string `json:"signature"`
 	AvatarPath string `json:"avatarPath"`
 }
 
-
-
-
-
-
+// SelectUserInfo 获取个人主页上半页数据
+type SelectUserInfo struct {
+	Id     uint `json:"id"`
+	Status uint `json:"status" validate:"lte=6"` // 1是关注2是取消关注
+}

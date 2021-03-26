@@ -28,12 +28,12 @@ func (fo *Follow) IsFollow(userId, followId int) (int, error) {
 	err = global.Eloquent.Table(fo.TableName()).Where("follow_id = ? AND create_by = ? AND is_deleted = 0", followId, userId).Count(&count).Error
 	if err != nil {
 		zap.L().Error("IsFollow Select failed", zap.Error(err))
-		return 2, err
+		return 0, err
 	}
 	if count > 0 {
 		return 1, err
 	}
-	return 2, err
+	return 0, err
 }
 
 // GetFollowList 查询关注列表信息的数据持久层
@@ -89,8 +89,16 @@ func (fo *Follow) GetFollowStatus(id int, me int) (err error) {
 	return nil
 }
 
-// UpdateStatus 修改关注状态
-func (fo *Follow) UpdateStatus(id int, me int) (err error) {
+func (fo *Follow) UpdateStatus(id int, me int, status int) (err error) {
+	// UpdateStatus 修改关注状态
+
+	if status == 2 {
+		err = global.Eloquent.Table(fo.TableName()).Where("is_deleted=? AND create_by=? AND follow_id=?", 0, me, id).Update("is_deleted", 1).Error
+		if err != nil {
+			return errors.New("修改失败")
+		}
+		return nil
+	}
 	err = fo.GetFollowStatus(id, me)
 	if err != nil {
 		fo.CreateBy = uint(me)
@@ -98,16 +106,9 @@ func (fo *Follow) UpdateStatus(id int, me int) (err error) {
 		fo.FollowId = uint(id)
 		err = global.Eloquent.Table(fo.TableName()).Create(fo).Error
 		if err != nil {
-			return err
-		}
-		go AddFollowMessage(uint(me), uint(id))
-		return nil
-	} else {
-		// 已关注的情况(要改为未关注):
-		err = global.Eloquent.Table(fo.TableName()).Where("is_deleted=? AND create_by=? AND follow_id=?", 0, me, id).Update("is_deleted", 1).Error
-		if err != nil {
 			return errors.New("修改失败")
 		}
+		go AddFollowMessage(uint(me), uint(id))
 	}
 	return nil
 }
