@@ -2,7 +2,8 @@
 	<!-- 推荐页面文章展示组件 -->
 	<view class="recommend-component">
 		<!-- 文章标题 -->
-		<articleTitle :articleTitle="articleInfo.title" :articleStatus="articleInfo.status" :articleId="articleInfo.id" :commentTotal="articleInfo.commentTotal" />
+		<articleTitle :articleTitle="articleInfo.title" :articleStatus="articleInfo.status" :articleId="articleInfo.id"
+		 :commentTotal="articleInfo.commentTotal" />
 		<!-- 作者信息 -->
 		<attentionAndFansCell v-if="notshow" :aid="articleInfo.create_by" :nickname="articleInfo.nickname" :avatarPath="articleInfo.avatarPath"
 		 :isFollow="articleInfo.isFollow"></attentionAndFansCell>
@@ -12,6 +13,7 @@
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal" :commentTotal="articleInfo.commentTotal" :collectTotal="articleInfo.collectTotal"
 		 v-if="isArticleInteract"></articleInteract>
+		<view v-if="draftsCreatime">{{format(draftsCreatime)}}</view>
 	</view>
 </template>
 
@@ -20,6 +22,8 @@
 	import articleContent from "./childComponents/artilceContent.vue"
 	import articleInteract from "./childComponents/articleInteract.vue"
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
+
+	import moment from 'moment';
 	export default {
 		data() {
 			return {
@@ -38,8 +42,13 @@
 			notshow: {
 				type: Boolean,
 				default: false
+			},
+			draftsCreatime: {
+				type: Number,
+
 			}
 		},
+		
 		components: {
 			articleTitle,
 			articleContent,
@@ -47,7 +56,12 @@
 			attentionAndFansCell
 		},
 		methods: {
-
+			// 把时间戳转换为正确格式
+			format(dateTime) {
+				let stamp = new Date(dateTime);
+				let time = moment(stamp).format('YYYY-MM-DD HH:mm:ss');
+				return time;
+			}
 		}
 	}
 </script>

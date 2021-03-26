@@ -28,7 +28,7 @@
 				 class="nodate"></u-empty>
 			</view>
 			<view class="comment-list">
-				<comment :id="ideaId" :type="type" @getMore="getMore" :commentList="commentList" @childFn="comment"></comment>
+				<comment :id="ideaId" :type="type" @getMore="getMore" :commentList="commentListCopy" @childFn="comment"></comment>
 			</view>
 		</view>
 
@@ -76,6 +76,7 @@
 				loadStatus: 'loading',
 				ideaInfoList: {},
 				commentList: [],
+				commentListCopy: [],
 				commentCount: 0,
 				current: 1,
 				size: 5,
@@ -154,6 +155,7 @@
 							}, 1000);
 						}
 						this.commentList = [...this.commentList, ...res.data.CommentSum];
+						this.commentListCopy=this.commentList;
 					} else {
 						this.loadStatus = 'nomore';
 					}
@@ -196,7 +198,7 @@
 					createTime: new Date(),
 					ChildComments: [],
 				}
-				this.commentList.unshift(newcomment);
+				this.commentListCopy.unshift(newcomment);
 				this.showAddComment = false;
 				this.commentCount++;
 				let params = {
@@ -209,13 +211,13 @@
 			},
 			// 添加一条子评论
 			addChildComment(payload) {
-				let childs = this.commentList[payload.index];
+				let childs = this.commentListCopy[payload.index];
 				// 判断子评论是否为空
 				if (!childs.ChildComments) {
-					this.commentList[payload.index].ChildComments = [];
+					this.commentListCopy[payload.index].ChildComments = [];
 				}
 				// 把数据加到子评论
-				this.commentList[payload.index].ChildComments.push(payload);
+				this.commentListCopy[payload.index].ChildComments.push(payload);
 				// 调用增加评论接口
 				let params = {
 					id: this.addCommentArg.id,

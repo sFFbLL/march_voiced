@@ -3,7 +3,6 @@
 	<view class="article-content" @click="toDetails">
 		<view>
 			<text class="article-text" v-html="textContent" ref="articleContent">{{textContent}}</text>
-
 		</view>
 		<view v-if="articleImg != ''" class="article-img">
 			<image :src="articleImg" mode="aspectFill"></image>
@@ -38,10 +37,8 @@
 			commentTotal: {
 				type: Number,
 				default: 0
-			}
-		},
-		components: {
-
+			},
+			
 		},
 		methods: {
 			toDetails() {

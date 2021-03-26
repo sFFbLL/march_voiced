@@ -72,16 +72,7 @@
 					</view>
 				</view>
 				
-				<view v-if="tabIndex === 2">
-					<view v-for="(item,index) in draftList" >
-						<recommend :articleInfo="item" :isArticleInteract="false" class="arcitle-item item"></recommend>
-					</view>
-					<view v-if="draftList.length <= 1">
-						<u-empty text="没有数据"
-						 mode="search"
-						 class="nodate"></u-empty>
-					</view>
-				</view>
+				
 				
 				<!-- 下拉加载更多 -->
 				<view v-if="isLoadMore">
@@ -122,7 +113,6 @@
 				ideaList: [],
 				articleListCopy: [],
 				ideaListCopy: [],
-				
 				emojiList: {
 					faceTotal: 0,
 					likeTotal: 6,
@@ -203,7 +193,7 @@
 			// 跳转草稿箱
 			toDraft(){
 				uni.navigateTo({
-					url: '../drafts/drafts'
+					url: '../drafts/drafts?id='+this.userInfo.id
 				})
 				},
 			/* 切换选项卡选项 */

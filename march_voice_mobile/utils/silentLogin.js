@@ -48,6 +48,7 @@ export function forLogin() {
 					information().then(res => {
 						setUserName(res.data.nickname);
 						setAvatarPath(res.data.avatarPath);
+						
 					})
 
 				}

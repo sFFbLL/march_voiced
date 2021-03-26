@@ -15,7 +15,7 @@ export function getOpenId() {
 	return Cookies.get(OpenKey)
 }
 export function getUserName() {
-	return Cookies.get(UserName)
+	return Cookies.get(URLDecoder.decode(UserName, "UTF-8"));
 }
 export function getAvatarPath() {
 	return Cookies.get(AvatarPath)
@@ -31,11 +31,13 @@ export function setToken(token) {
 export function setOpenId(OpenId) {
 	return Cookies.set(OpenKey, OpenId)
 }
-export function setUserName(userName) {
+export function setUserName(name) {
+	let userName = URLEncodor.encode(name, "UTF-8");
 	return Cookies.set(UserName, userName)
 
 }
-export function setAvatarPath(avatarPath) {
+export function setAvatarPath(path) {
+	let avatarPath=Config.imgUrl +path;
 	return Cookies.set(AvatarPath, avatarPath)
 
 }

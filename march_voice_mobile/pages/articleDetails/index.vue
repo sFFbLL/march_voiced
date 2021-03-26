@@ -21,7 +21,7 @@
 		</view>
 
 		<!-- 评论列表 -->
-		<view class="comment-view">
+		<view class="comment-view" v-if="articleInfo.status!=2">
 			<view class="top-title">
 				<text>评论</text>
 				<text>({{commentCount}})</text>
@@ -32,12 +32,12 @@
 				 class="nodate"></u-empty>
 			</view>
 			<view class="comment-list">
-				<comment :id="id" :type="type" @getMore="getMore" :commentList="commentList" @childFn="comment"></comment>
+				<comment :id="id" :type="type" @getMore="getMore" :commentList="commentListCopy" @childFn="comment"></comment>
 			</view>
 		</view>
 
 		<!-- 底部导航 -->
-		<view class="bottom-nav">
+		<view class="bottom-nav" v-if="articleInfo.status!=2">
 			<view class="bottom-nav-centre">
 				<!-- 评论图标 -->
 				<view class="attention-icon comment">
@@ -69,7 +69,7 @@
 		<commentInput :show="showAddComment" v-if="isComment" @addComment="addComment" @addChildComment="addChildComment"
 		 @childFn="parentFn" :type="type" :addCommentArg="addCommentArg" />
 		<!-- 下拉加载更多 -->
-		<view v-if="isLoadMore">
+		<view v-if="isLoadMore" >
 			<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
 		</view>
 	</view>
@@ -108,6 +108,7 @@
 				articleInfo: {},
 				commentCount: 0,
 				commentList: [],
+				commentListCopy: [],
 				isComment: false,
 				type: 0,
 				addCommentArg: {},
@@ -256,7 +257,7 @@
 					ChildComments: [],
 					// id: newid
 				}
-				this.commentList.unshift(newcomment);
+				this.commentListCopy.unshift(newcomment);
 				this.isComment = false;
 				this.commentCount++;
 				// 把参数传给接口
@@ -271,11 +272,11 @@
 			// 添加一条子评论
 			addChildComment(payload) {
 				// 判断是否有子评论，如果没有把对象变为数组，
-				let childs = this.commentList[payload.index].ChildComments;
+				let childs = this.commentListCopy[payload.index].ChildComments;
 				if (!childs) {
-					this.commentList[payload.index].ChildComments = [];
+					this.commentListCopy[payload.index].ChildComments = [];
 				}
-				this.commentList[payload.index].ChildComments.push(payload);
+				this.commentListCopy[payload.index].ChildComments.push(payload);
 
 				this.isComment = false;
 				this.commentCount++;
@@ -314,6 +315,7 @@
 						}
 
 						this.commentList = [...this.commentList, ...res.data.CommentSum];
+						this.commentListCopy=this.commentList;
 					} else {
 						this.loadStatus = 'nomore';
 					}
