@@ -102,7 +102,7 @@
 			},
 			moreUser() {
 				uni.navigateTo({
-					url: '../search/searchUser'
+					url: '../search/searchUser?searchText=' + this.searchText
 				})
 			},
 			getArticleList() {
@@ -125,8 +125,8 @@
 					size: this.articleSize
 				}
 				searchUser(params).then(res => {
-					// _this.userList = res.data.userList;
-					console.log(res);
+					_this.userList = res.data;
+					// console.log(res);
 				})
 			}
 

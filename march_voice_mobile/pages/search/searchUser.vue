@@ -35,86 +35,89 @@
 				isLoadMore: false, //是否加载中
 				userCurrent: 1, //当前页数
 				size: 11,
+				searchText:"",
 				userList: [],
-				userList1: [{
-						id: 1,
-						nickname: "张三",
-						signature: "我只是我，我没有个性签名，你凑活着看吧",
-						avatarPath: require('../../static/img/1.jpg'),
-						isFollow: 1
-					},
-					{
-						id: 2,
-						nickname: "张三",
-						signature: "我只是我，我没有个性签名，你凑活着看吧",
-						avatarPath: require('../../static/img/1.jpg'),
-						isFollow: 1
-					}, {
-						id: 3,
-						nickname: "张三",
-						signature: "我只是我，我没有个性签名，你凑活着看吧",
-						avatarPath: require('../../static/img/2.jpg'),
-						isFollow: 1
-					}, {
-						id: 4,
-						nickname: "张三",
-						signature: "我只是我，我没有个性签名，你凑活着看吧",
-						avatarPath: require('../../static/img/1.jpg'),
-						isFollow: 0
-					}, {
-						id: 5,
-						nickname: "张三",
-						signature: "我只是我，我没有个性签名，你凑活着看吧",
-						avatarPath: require('../../static/img/2.jpg'),
-						isFollow: 0
-					}, {
-						id: 6,
-						nickname: "张三",
-						signature: "我只是我，我没有个性签名，你凑活着看吧",
-						avatarPath: require('../../static/img/2.jpg'),
-						isFollow: 1
-					}, {
-						id: 7,
-						nickname: "张三",
-						signature: "我只是我，我没有个性签名，你凑活着看吧",
-						avatarPath: require('../../static/img/2.jpg'),
-						isFollow: 1
-					}, {
-						id: 8,
-						nickname: "张三",
-						signature: "我只是我，我没有个性签名，你凑活着看吧",
-						avatarPath: require('../../static/img/1.jpg'),
-						isFollow: 0
-					}, {
-						id: 9,
-						nickname: "张三",
-						signature: "我只是我，我没有个性签名，你凑活着看吧",
-						avatarPath: require('../../static/img/2.jpg'),
-						isFollow: 1
-					}, {
-						id: 10,
-						nickname: "张三",
-						signature: "我只是我，我没有个性签名，你凑活着看吧",
-						avatarPath: require('../../static/img/2.jpg'),
-						isFollow: 1
-					}, {
-						id: 11,
-						nickname: "张三",
-						signature: "我只是我，我没有个性签名，你凑活着看吧",
-						avatarPath: require('../../static/img/1.jpg'),
-						isFollow: 0
-					}
+				userList1: [
+					// {
+					// 	id: 1,
+					// 	nickname: "张三",
+					// 	signature: "我只是我，我没有个性签名，你凑活着看吧",
+					// 	avatarPath: require('../../static/img/1.jpg'),
+					// 	isFollow: 1
+					// },
+					// {
+					// 	id: 2,
+					// 	nickname: "张三",
+					// 	signature: "我只是我，我没有个性签名，你凑活着看吧",
+					// 	avatarPath: require('../../static/img/1.jpg'),
+					// 	isFollow: 1
+					// }, {
+					// 	id: 3,
+					// 	nickname: "张三",
+					// 	signature: "我只是我，我没有个性签名，你凑活着看吧",
+					// 	avatarPath: require('../../static/img/2.jpg'),
+					// 	isFollow: 1
+					// }, {
+					// 	id: 4,
+					// 	nickname: "张三",
+					// 	signature: "我只是我，我没有个性签名，你凑活着看吧",
+					// 	avatarPath: require('../../static/img/1.jpg'),
+					// 	isFollow: 0
+					// }, {
+					// 	id: 5,
+					// 	nickname: "张三",
+					// 	signature: "我只是我，我没有个性签名，你凑活着看吧",
+					// 	avatarPath: require('../../static/img/2.jpg'),
+					// 	isFollow: 0
+					// }, {
+					// 	id: 6,
+					// 	nickname: "张三",
+					// 	signature: "我只是我，我没有个性签名，你凑活着看吧",
+					// 	avatarPath: require('../../static/img/2.jpg'),
+					// 	isFollow: 1
+					// }, {
+					// 	id: 7,
+					// 	nickname: "张三",
+					// 	signature: "我只是我，我没有个性签名，你凑活着看吧",
+					// 	avatarPath: require('../../static/img/2.jpg'),
+					// 	isFollow: 1
+					// }, {
+					// 	id: 8,
+					// 	nickname: "张三",
+					// 	signature: "我只是我，我没有个性签名，你凑活着看吧",
+					// 	avatarPath: require('../../static/img/1.jpg'),
+					// 	isFollow: 0
+					// }, {
+					// 	id: 9,
+					// 	nickname: "张三",
+					// 	signature: "我只是我，我没有个性签名，你凑活着看吧",
+					// 	avatarPath: require('../../static/img/2.jpg'),
+					// 	isFollow: 1
+					// }, {
+					// 	id: 10,
+					// 	nickname: "张三",
+					// 	signature: "我只是我，我没有个性签名，你凑活着看吧",
+					// 	avatarPath: require('../../static/img/2.jpg'),
+					// 	isFollow: 1
+					// }, {
+					// 	id: 11,
+					// 	nickname: "张三",
+					// 	signature: "我只是我，我没有个性签名，你凑活着看吧",
+					// 	avatarPath: require('../../static/img/1.jpg'),
+					// 	isFollow: 0
+					// }
 				]
 			};
 		},
 		props: {
-
 		},
 		components: {
 			attentionAndFansCell
 		},
-		onLoad() {
+		onLoad(option) {
 			this.getSearchUserList();
+			this.searchText = option.searchText
+			console.log(this.searchText)
 		},
 
 		onReachBottom() { //上拉触底函数
@@ -132,7 +135,7 @@
 				} else {
 					setTimeout(function () {
 						_this.isLoadMore = false;
-						// _this.getUserList();
+						_this.getUserList();
 						_this.userList = [..._this.userList, ..._this.userList1];
 					}, 2000);
 				}
@@ -140,11 +143,13 @@
 			getUserList() {
 				let _this = this;
 				let params = {
-					searchText: this.searchText,
-					size: this.userSize
+					searchWord: this.searchText,
+					size: this.size,
+					current:this.userCurrent
 				}
-				searchUser().then(res => {
-					_this.userList = [..._this.userList, ...res.data.userList];
+				console.log(params)
+				searchUser(params).then(res => {
+					_this.userList = [..._this.userList, ...res.data];
 				})
 			}
 		},

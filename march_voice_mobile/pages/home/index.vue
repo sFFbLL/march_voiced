@@ -17,11 +17,21 @@
 				<view v-for="(item,index) in recommendListCopy">
 					<recommend v-if="recommendListCopy.length" :notshow="notshow" :articleInfo="item" />
 				</view>
+				<view v-if="recommendList.length < 1">
+					<u-empty text="没有数据"
+					 mode="search"
+					 class="nodate"></u-empty>
+				</view>
 			</view>
 			<!-- 关注 -->
 			<view v-if="tabIndex">
 				<view v-for="(item,index) in followListCopy" :key="index">
 					<follow :articleInfo="item" />
+				</view>
+				<view v-if="followList.length < 1">
+					<u-empty text="没有数据"
+					 mode="search"
+					 class="nodate"></u-empty>
 				</view>
 			</view>
 			<!-- 下拉加载更多 -->
@@ -217,7 +227,7 @@
 					size: this.size
 				}
 				getFollow(params).then(res => {
-					if (res.data) {
+					if (res.data.records) {
 						if (this.followCurrent === 1) {
 							_this.isLoadMore = false;
 						} else {
@@ -292,5 +302,10 @@
 	>>>.uni-load-more .uni-load-more__img {
 		height: 30rpx !important;
 		width: 30rpx !important;
+	}
+	
+	.nodate {
+		background-color: #fff;
+		min-height: 800rpx;
 	}
 </style>

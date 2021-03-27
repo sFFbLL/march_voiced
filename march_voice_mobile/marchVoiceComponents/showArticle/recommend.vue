@@ -8,7 +8,7 @@
 		<attentionAndFansCell v-if="notshow" :aid="articleInfo.create_by" :nickname="articleInfo.nickname" :avatarPath="articleInfo.avatarPath"
 		 :isFollow="articleInfo.isFollow"></attentionAndFansCell>
 		<!-- 文章内容 -->
-		<articleContent :articleContent="articleInfo.describe" :articleImg="articleInfo.image" :commentTotal="articleInfo.commentTotal"
+		<articleContent :type="type" :articleContent="articleInfo.describe" :articleImg="articleInfo.image" :commentTotal="articleInfo.commentTotal"
 		 :id="articleInfo.id" />
 		<!-- 文章互动数量-->
 		<articleInteract :favourTotal="articleInfo.favourTotal" :commentTotal="articleInfo.commentTotal" :collectTotal="articleInfo.collectTotal"
@@ -27,7 +27,7 @@
 	export default {
 		data() {
 			return {
-
+				
 			};
 		},
 		props: {
@@ -45,7 +45,10 @@
 			},
 			draftsCreatime: {
 				type: Number,
-
+            },
+			type:{
+				type:String,
+				default:null
 			}
 		},
 		

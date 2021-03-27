@@ -21,9 +21,9 @@
 					<attentionAndFansCell class="attention" :aid="item.userId" :nickname="item.nickname" :avatarPath="item.avatarPath"
 					 :isFollow="item.isFollow">
 						<template v-slot:afterNicknameText>
-							<text class="slot">关注了你
-							</text>
+							<text class="slot">关注了你</text>
 						</template>
+						<template v-slot:underText>{{format(item.createTime)}}</template>
 					</attentionAndFansCell>
 				</view>
 				<view v-if="attentionListCopy.length < 1">
@@ -57,6 +57,7 @@
 	import singleMessage from "../../marchVoiceComponents/message/singleMessage.vue"
 	import otherMessage from "../../marchVoiceComponents/message/otherMessage.vue"
 	import attentionAndFansCell from '../../marchVoiceComponents/attentionAndFansCell.vue'
+	import moment from 'moment';
 	import {
 		interactList,
 		attentionList,
@@ -255,7 +256,7 @@
 							this.interact();
 							setTimeout(() => {
 								this.interactClick = false;
-							}, 500)
+							}, 1000)
 						}
 
 					}
@@ -268,7 +269,7 @@
 							this.attention();
 							setTimeout(() => {
 								this.attentionClick = false;
-							}, 500)
+							}, 1000)
 						}
 					}
 				} else {
@@ -280,7 +281,7 @@
 							this.other();
 							setTimeout(() => {
 								this.otherClick = false;
-							}, 500)
+							}, 1000)
 						}
 
 					}
@@ -301,9 +302,10 @@
 						if (this.interactCurrent === 1) {
 							this.isLoadMore = false;
 						} else {
-							setTimeout(function() {
+							// 此处加上setTimeout会有逻辑错误，去掉不影响显示加载中
+							// setTimeout(function() {
 								this.isLoadMore = false;
-							}, 1000);
+							// }, 1000);
 						}
 
 						this.interactList.records = [...this.interactList.records, ...res.data.records];
@@ -334,9 +336,10 @@
 						if (this.attentionCurrent === 1) {
 							this.isLoadMore = false;
 						} else {
-							setTimeout(function() {
+							// 此处加上setTimeout会有逻辑错误，去掉不影响显示加载中
+							// setTimeout(function() {
 								this.isLoadMore = false;
-							}, 3000);
+							// }, 3000);
 						}
 						this.attentionList.records = [...this.attentionList.records, ...res.data.records];
 						this.attentionListCopy=this.attentionList.records;
@@ -366,9 +369,10 @@
 						if (this.otherCurrent === 1) {
 							this.isLoadMore = false;
 						} else {
-							setTimeout(function() {
+							// 此处加上setTimeout会有逻辑错误，去掉不影响显示加载中
+							// setTimeout(function() {
 								this.isLoadMore = false;
-							}, 3000);
+							// }, 2000);
 						}
 						this.otherList.records = [...this.otherList.records, ...res.data.records];
 						this.otherListCopy=this.otherList.records;
@@ -385,6 +389,12 @@
 				readMessage(3).then(res => {
 
 				})
+			},
+			// 把时间戳转换为正确格式
+			format(dateTime) {
+				let stamp = new Date(dateTime);
+				let time = moment(stamp).format('YYYY-MM-DD HH:mm:ss');
+				return time;
 			}
 		},
 
@@ -421,7 +431,11 @@
 	>>>.tab-card .head-nav .head-nav-bottom {
 		width: 70%;
 	}
-
+	
+	>>>.head-nav .head-nav-item .center{
+		top: 10rpx;
+	}
+	
 	.flex-item {
 		display: flex;
 		flex-wrap: wrap;
@@ -511,7 +525,7 @@
 
 	.content {
 		padding-left: 10rpx;
-		margin-top: 80rpx;
+		margin-top: 90rpx;
 	}
 
 	.nodate {

@@ -44,6 +44,7 @@ export function searchArticle(params) {
  * @param {Object} params {搜索关键字 页码 页大小}
  */
 export function searchUser(params) {
+	console.log(params)
 	return Axios.get('/api/base/searchUser', {
 		params: params
 	})

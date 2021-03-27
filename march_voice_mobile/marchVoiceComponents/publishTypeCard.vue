@@ -8,10 +8,9 @@
 				<slot name="describe"></slot>
 			</view>
 		</view>
-		<!-- <view class="item-img-box"> -->
-			<!-- <i class="el-icon-delete"></i> -->
-			<u-icon size="40" name="chat"></u-icon>
-		<!-- </view> -->
+		<view class="item-img-box">
+			<i :class="iconName"></i>
+		</view>
 	</view>
 </template>
 
@@ -23,18 +22,18 @@
 					default:null
 				},
 				icon:{
-					type:Number,
-					default:null
+					type:String,
+					default:"icon"
 				}
 			},
 			data() {
 				return {
 					fade:false,
+					iconName:"el-icon-"+this.icon
 				}
 			},
 			methods:{
 				toPublishPage(){
-					console.log(typeof(this.tag),"类型")
 					uni.navigateTo({
 						url:"richTextEditor?tag="+this.tag,
 					})
@@ -84,11 +83,16 @@
 		flex: 2;
 		display: flex;
 		align-items: center;
+		justify-content: flex-end;
 	}
 	
 	::v-deep .inner-img{
 		position: absolute;
 		right: 46rpx;
+	}
+	
+	.item-img-box i{
+		font-size: 50rpx;
 	}
 </style>
 

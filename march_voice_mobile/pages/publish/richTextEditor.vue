@@ -10,23 +10,39 @@
 
 <script>
 	import jinEdit from '../../components/jin-edit/jin-edit.vue';
-	import {
-		publishArticle
-	} from '@/utils/api/publish-api.js'
+	import { publishArticle,upDateArticle } from '@/utils/api/publish-api.js';
+	import { getArtileDetails } from '../../utils/api/articleDetails-api.js';
 	export default {
 		data() {
 			return {
 				option:null,
 				title:null,
-				html:'' // 编辑时候跳过来绑定的html内容
+				html:'' ,// 编辑时候跳过来绑定的html内容
+				draftInfo:{},
+				isUpdateArticle:false,
 			}
 		},
 		components: {
 			jinEdit
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
-			console.log(option)
 			this.option = option //打印出上个页面传递的参数。
+		},
+		created() {
+			if(this.option.type === "draft"){
+				let id = this.option.id;
+				// 获取文章详情内容
+				getArtileDetails(id).then(res => {
+						this.draftInfo = res.data
+						this.html = this.draftInfo.content
+						this.title = this.draftInfo.title
+						// this.option.tag = this.draftInfo.tag
+						this.option.tag = 1
+						this.isUpdateArticle = true
+				}).catch(err => {
+					console.log(err, "err login")
+				})
+			}
 		},
 		methods: {
 			// 点击发布
@@ -50,11 +66,25 @@
 					word_count:res.textLength,
 					describe:describe
 				}
-				publishArticle(params).then(res => {
-					uni.switchTab({
-						url:'/pages/personalCenter/index'
-					})
-				})
+				switch (this.isUpdateArticle){
+					case false:
+						publishArticle(params).then(res => {
+							uni.switchTab({
+								url:'/pages/publish/index'
+							})
+						})
+						break;
+					case true:
+						params.id = parseInt(this.option.id)
+						upDateArticle(params).then(res =>{
+							uni.switchTab({
+								url:'/pages/publish/index'
+							})
+						})
+					default:
+						break;
+				}
+				
 				
 				// console.log(this.title)
 				// console.log(res.html)
