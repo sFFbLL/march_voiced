@@ -85,7 +85,7 @@
 				marchCircleInfo: {},
 				ideasList: [],
 				ideasListCopy: [],
-				pullDownRefresh:false
+				pullDownRefresh: false
 			}
 		},
 		components: {
@@ -115,15 +115,19 @@
 		created() {
 			// 获取三月基本信息接口
 			getMarchCircleInfo().then(res => {
-				this.marchCircleInfo = res.data;
-				if (this.marchCircleInfo.is_march == 0) {
-					this.isjoin = '加入';
-				} else if (this.marchCircleInfo.is_march == 1) {
-					this.isjoin = '已加入'
-				} else if (this.marchCircleInfo.is_march == 2) {
-					this.isjoin = '审核中'
-					this.disabledJoin = true;
+				if (res.data) {
+					this.marchCircleInfo = res.data;
+					if (this.marchCircleInfo.is_march == 0) {
+						this.isjoin = '加入';
+					} else if (this.marchCircleInfo.is_march == 1) {
+						this.sanyueMumber = false;
+						this.isjoin = '已加入'
+					} else if (this.marchCircleInfo.is_march == 2) {
+						this.isjoin = '审核中'
+						this.disabledJoin = true;
+					}
 				}
+
 			})
 
 			this.getCircleList();
@@ -148,7 +152,7 @@
 							this.isLoadMore = false;
 						}
 						this.ideasList = [...this.ideasList, ...res.data];
-						this.ideasListCopy=this.ideasList;
+						this.ideasListCopy = this.ideasList;
 					} else {
 						this.loadStatus = 'nomore';
 					}
