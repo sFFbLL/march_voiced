@@ -168,7 +168,7 @@ func UpdateStatus(c *gin.Context) {
 		app.ResponseError(c, app.CodeParamIsInvalid)
 		return
 	}
-	err = fo.UpdateStatus(int(selectUserInfo.Id), user.UserId, selectUserInfo.Status)
+	err = fo.UpdateStatus(int(selectUserInfo.Id), user.UserId, int(selectUserInfo.Status))
 	if err != nil {
 		zap.L().Error("UpdateStatus failed", zap.String("username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeUpdateOperationFail)
