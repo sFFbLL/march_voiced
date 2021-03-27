@@ -19,7 +19,7 @@ type Article struct {
 	IsRecommend      *uint8 `json:"is_recommend" gorm:"size:1;DEFAULT:0;"`
 	Type             *uint  `json:"type" gorm:""`
 	WordCount        *uint  `json:"word_count"`
-	Tag              uint   `json:"tag" gorm:""`
+	Tag              uint   `json:"tag_id" gorm:""`
 	CreateBy         uint   `json:"create_by" gorm:""`
 	UpdateBy         uint   `json:"update_by" gorm:""`
 	StatusUpdateTime int64  `json:"status_update_time" gorm:"autoCreateTime:milli"`
@@ -86,14 +86,14 @@ func (a *Article) GetApplyArticle(applyArticleList *bo.ApplyArticleList, p *dto.
 	table := global.Eloquent.Table(a.TableName()).
 		Select("article.id, article.title, article.is_recommend, article.status, article.status_update_time, article_tag.tag, sys_user.nick_name").
 		Joins("left join sys_user on sys_user.id = article.create_by").
-		Joins("left join article_tag on article_tag.id = article.tag").
+		Joins("left join article_tag on article_tag.id = article.tag_id").
 		Where("sys_user.is_deleted=0 and article.is_deleted=0 and article.status!=0").
 		Where("sys_user.nick_name like ? and article.title like ?", nickname, title)
 	if p.Status != 0 && p.Status < 3 {
 		table = table.Where("article.status = ?", p.Status)
 	}
 	if p.Tag != 0 {
-		table = table.Where("article.tag = ?", p.Tag)
+		table = table.Where("article.tag_id = ?", p.Tag)
 	}
 	if p.EndTime != 0 && p.StartTime != 0 {
 		table = table.Where("article.status_update_time > ? AND article.status_update_time < ?", p.StartTime, p.EndTime)
@@ -129,9 +129,9 @@ func (a *Article) ArticleDetail() (articleMsg *bo.ArticleDetail, err error) {
 	articleMsg = new(bo.ArticleDetail)
 	// 获取文章信息
 	err = global.Eloquent.Table(a.TableName()).
-		Select("article.id, article.title, article.content, article.image, article.word_count,article.status, article.kind, article.type, article.create_time, article.create_by, article.update_by, article.update_time, article_tag.tag, sys_user.nick_name, sys_user.avatar_path").
+		Select("article.id, article.title, article.content, article.image, article.word_count,article.status, article.kind, article.type, article.create_time, article.create_by, article.update_by, article.update_time, article.tag_id, article_tag.tag, sys_user.nick_name, sys_user.avatar_path").
 		Joins("JOIN sys_user ON article.create_by = sys_user.id").
-		Joins("JOIN article_tag ON article.tag = article_tag.id").
+		Joins("JOIN article_tag ON article.tag_id = article_tag.id").
 		Where("article.id = ? AND article.is_deleted = 0", a.ID).
 		First(articleMsg).Error
 	return
@@ -140,7 +140,7 @@ func (a *Article) ArticleDetail() (articleMsg *bo.ArticleDetail, err error) {
 func (a *Article) ArticleList(paging dto.Paging, IsRecommend int) (articleArray *[]bo.Article, err error) {
 	articleArray = new([]bo.Article)
 	err = global.Eloquent.Table(a.TableName()).
-		Select("article.id, article.title, article.describe, article.image, article.status, article.tag, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.nick_name, sys_user.avatar_path").
+		Select("article.id, article.title, article.describe, article.image, article.status, article.tag_id, article.type, article.create_time, article.create_by, article.update_by, article.update_time, sys_user.nick_name, sys_user.avatar_path").
 		Joins("JOIN sys_user ON article.create_by = sys_user.id").
 		Where("article.is_recommend = ? AND article.is_deleted = 0 AND article.status = 1", IsRecommend).
 		Order("article.id desc").
