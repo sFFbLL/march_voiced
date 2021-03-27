@@ -130,7 +130,6 @@
 		},
 		onLoad(option) {
 			this.userId = Number(option.id);
-
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -214,7 +213,7 @@
 			// 获取想法列表
 			getIdeaList() {
 				let params = {
-					id: 0,
+					id: this.userId,
 					current: this.ideaCurrent,
 					size: this.size
 				}
@@ -242,7 +241,7 @@
 			// 获取草稿箱列表
 			getDraftList() {
 				let params = {
-					id: 0,
+					id: this.userId,
 					current: this.draftCurrent,
 					size: this.size,
 					kind: 1
@@ -267,7 +266,7 @@
 			// 获取文章列表
 			getArticleList() {
 				let params = {
-					id: 0,
+					id: this.userId,
 					current: this.articleCurrent,
 
 					size: this.size,
@@ -302,7 +301,7 @@
 			this.getArticleList();
 			this.getIdeaList();
 			this.getDraftList();
-		}
+		},
 	}
 </script>
 

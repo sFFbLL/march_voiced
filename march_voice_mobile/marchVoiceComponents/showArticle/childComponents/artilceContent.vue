@@ -38,23 +38,34 @@
 				type: Number,
 				default: 0
 			},
-			
+			type:{
+				type: String,
+				default:null
+			}
+		},
+		components: {
+
 		},
 		methods: {
 			toDetails() {
+				if(this.type === "draft"){
+					uni.navigateTo({
+						url: '../../pages/publish/richTextEditor?type=draft&id=' + this.id + '&commentTotal=' + this.commentTotal,
+					})
+					return;
+				}
 				if (this.isIdea) {
 					// 跳转详情页面
 					uni.navigateTo({
 						url: '../ideaDetails/index?id=' + this.id + '&commentTotal=' + this.commentTotal
 					})
 				} else {
-
 					// 跳转到页面
 					uni.navigateTo({
 						url: '../articleDetails/index?id=' + this.id + '&commentTotal=' + this.commentTotal
 					})
 				}
-			}
+			},
 		},
 		created() {
 			this.textContent = this.articleContent;

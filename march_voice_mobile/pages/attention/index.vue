@@ -107,4 +107,5 @@
 		background-color: #fff;
 		min-height: 800rpx;
 	}
+	
 </style>

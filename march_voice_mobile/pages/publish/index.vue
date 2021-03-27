@@ -36,7 +36,6 @@
  	onLoad() {
 		// 获取文章标签
 		getTags().then(res => {
-			console.log(res)
 			this.list = res.data
 		})
 	},
