@@ -12,7 +12,7 @@ type ArticleMsg struct {
 	Describe   string `json:"describe"`
 	Image      string `json:"image"`
 	Status     uint8  `json:"status"`
-	Tag        uint   `json:"tag"`
+	Tag        uint   `json:"tag_id"`
 	Type       uint   `json:"type"`
 	UpdateBy   uint   `json:"update_by"`
 	CreateBy   uint   `json:"create_by"`
@@ -36,6 +36,7 @@ type ArticleDetailMsg struct {
 	Tag        string `json:"tag"`
 	Kind       uint8  `json:"kind"`
 	Status     uint8  `json:"status"`
+	TagId      uint   `json:"tag_id"`
 	WordCount  uint   `json:"word_count"`
 	Type       uint   `json:"type"`
 	UpdateBy   uint   `json:"update_by"`

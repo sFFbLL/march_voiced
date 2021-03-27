@@ -391,6 +391,7 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleDeta
 		ID:         article.ID,
 		Title:      article.Title,
 		Content:    article.Content,
+		TagId:      article.Tag,
 		Tag:        tag,
 		Kind:       article.Kind,
 		WordCount:  *article.WordCount,
