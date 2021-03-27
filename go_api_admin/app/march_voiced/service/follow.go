@@ -100,8 +100,8 @@ func (fo *Follow) GetFollowStatus(id int, me int) (err error) {
 }
 
 // UpdateStatus 更新关注状态
-func (fo *Follow) UpdateStatus(id int, me int) (err error) {
+func (fo *Follow) UpdateStatus(id int, me int, status int) (err error) {
 	follow := new(models.Follow)
-	err = follow.UpdateStatus(id, me)
+	err = follow.UpdateStatus(id, me, status)
 	return
 }

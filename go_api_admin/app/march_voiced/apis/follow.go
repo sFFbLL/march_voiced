@@ -156,19 +156,19 @@ func GetStatus(c *gin.Context) {
 // @Router /api/follow/center [put]
 func UpdateStatus(c *gin.Context) {
 	// 获取上下文信息
-	id := new(dto.UpdateStatus)
+	selectUserInfo := new(dto.SelectUserInfo)
 	user, err := api.GetUserMessage(c)
 	if err != nil {
 		zap.L().Error("GetUserMessage failed", zap.Error(err))
 		app.ResponseError(c, app.CodeNoUser)
 		return
 	}
-	if err = c.ShouldBindJSON(id); err != nil || id.Id == 0 || id.Id == uint(user.UserId) {
+	if err = c.ShouldBindJSON(selectUserInfo); err != nil || selectUserInfo.Id == 0 || selectUserInfo.Id == uint(user.UserId) {
 		zap.L().Error("UpdateStatus failed", zap.String("username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeParamIsInvalid)
 		return
 	}
-	err = fo.UpdateStatus(int(id.Id), int(user.UserId))
+	err = fo.UpdateStatus(int(selectUserInfo.Id), user.UserId, selectUserInfo.Status)
 	if err != nil {
 		zap.L().Error("UpdateStatus failed", zap.String("username", user.Username), zap.Error(err))
 		app.ResponseError(c, app.CodeUpdateOperationFail)
