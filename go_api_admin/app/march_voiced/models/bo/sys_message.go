@@ -9,7 +9,8 @@ type GetSysMessage struct {
 }
 
 type GetSysMessageData struct {
-	Type       uint8 `json:"type"`       //0文章审核/1三月圈申请
-	Status     uint8 `json:"status"`     //0同意/1驳回
-	CreateTime int64 `json:"createTime"` //创建时间
+	Type       uint8  `json:"type"`       //0文章审核/1三月圈申请
+	Status     uint8  `json:"status"`     //0同意/1驳回
+	CreateTime int64  `json:"createTime"` //创建时间
+	Title      string `json:"title"`      //如果是文章则是标题
 }
