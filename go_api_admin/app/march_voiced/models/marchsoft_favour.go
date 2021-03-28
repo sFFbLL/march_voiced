@@ -54,7 +54,7 @@ func (e *MarchSoftFavour) AddMarchFavourMessage(s uint8, userId uint) {
 	if err != nil || count > 0 {
 		return
 	}
-	AddMessage(0, s+2, e.MarchsoftId, userId, "")
+	AddMessage(1, s+2, e.MarchsoftId, userId, "")
 }
 
 func (e *MarchSoftFavour) MarchFavourCount() (count int64, err error) {
