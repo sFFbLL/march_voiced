@@ -14,8 +14,8 @@
 		<view class="content">
 			<!-- 推荐 -->
 			<view v-if="!tabIndex">
-				<view v-for="(item,index) in recommendListCopy">
-					<recommend v-if="recommendListCopy.length" :notshow="notshow" :articleInfo="item" />
+				<view v-for="(item,index) in recommendListCopy" :key="index">
+					<recommend v-if="recommendListCopy.length" :notshow="notshow" :articleInfo="recommendListCopy[index]" />
 				</view>
 				<view v-if="recommendList.length < 1">
 					<u-empty text="没有数据"
@@ -212,7 +212,8 @@
 							}, 3000);
 						}
 						_this.recommendList = [..._this.recommendList, ...res.data];
-						this.recommendListCopy.push(_this.recommendList);
+						this.recommendListCopy=[...this.recommendListCopy,..._this.recommendList]
+						
 					} else {
 						this.loadStatus = 'nomore';
 					}

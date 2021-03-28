@@ -51,7 +51,6 @@
 				default:null
 			}
 		},
-		
 		components: {
 			articleTitle,
 			articleContent,

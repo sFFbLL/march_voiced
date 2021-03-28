@@ -182,7 +182,6 @@
 				this.disabledJoin = true;
 				// 调申请加入三月圈接口
 				joinMarchCircle().then(res => {
-					console.log(res)
 				})
 			},
 			publish() {
