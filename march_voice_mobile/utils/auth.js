@@ -32,6 +32,8 @@ export function setOpenId(OpenId) {
 	return Cookies.set(OpenKey, OpenId)
 }
 export function setUserName(userName) {
+	
+	console.log(userName)
 	return Cookies.set(UserName, userName)
 
 }

@@ -92,6 +92,7 @@
 						index: index,
 						ChildComments: []
 					}
+					console.log( getAvatarPath());
 					this.$emit('addChildComment', newcomment);
 				}
 				this.close();

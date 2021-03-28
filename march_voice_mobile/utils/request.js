@@ -23,10 +23,8 @@ Axios.defaults.timeout = 8000;
 Axios.interceptors.request.use(
 	// 在发送请求前要做的事儿
 	(config) => {
-
-
 		// setToken(
-		// 	"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLku5nlhL8iLCJleHAiOjE2MjA0OTYzMjAsImlzcyI6Im15LXByb2plY3QifQ.BN2fgqsLbseV_jVefPn_ZO2wjFtbCPAoDU-CExxQZqI"
+		// 	"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLku5nlhL8iLCJleHAiOjE2MjA1MjIzNzksImlzcyI6Im15LXByb2plY3QifQ.ujsNeI2HYDowxA5eqsUK22kIypzBYM06OoLfjC1JzEk"
 		// )
 
 		if (getToken()) {

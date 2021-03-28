@@ -257,7 +257,10 @@
 					ChildComments: [],
 					// id: newid
 				}
+				console.log( getUserName())
 				this.commentListCopy.unshift(newcomment);
+				
+				console.log(this.commentListCopy)
 				this.isComment = false;
 				this.commentCount++;
 				// 把参数传给接口
@@ -271,13 +274,14 @@
 			},
 			// 添加一条子评论
 			addChildComment(payload) {
+				console.log(payload)
 				// 判断是否有子评论，如果没有把对象变为数组，
 				let childs = this.commentListCopy[payload.index].ChildComments;
 				if (!childs) {
 					this.commentListCopy[payload.index].ChildComments = [];
 				}
 				this.commentListCopy[payload.index].ChildComments.push(payload);
-
+				console.log(this.commentListCopy)
 				this.isComment = false;
 				this.commentCount++;
 				// 把参数传给接口

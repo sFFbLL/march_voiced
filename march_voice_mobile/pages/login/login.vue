@@ -27,9 +27,12 @@
 		getWxCode
 	} from "../../utils/wxcode.js"
 	import {
+		getToken,
 		setToken,
+		setOpenId,
 		getOpenId,
-		getToken
+		setUserName,
+		setAvatarPath,
 	} from "../../utils/auth.js"
 	export default {
 		data() {
@@ -38,10 +41,6 @@
 				nameValue: "",
 				passwordValue: "",
 			}
-		},
-		created() {
-
-
 		},
 		methods: {
 			// 获取用户名和密码
@@ -72,8 +71,12 @@
 					}
 					// 调用补全信息的接口获得用户的token
 					creatNewUser(params).then(res => {
-						console.log(res.data.token)
-						setToken(res.data.token)
+						setToken(res.data.token);
+						information().then(res => {
+							setUserName(res.data.nickname);
+							setAvatarPath(res.data.avatarPath);
+							
+						})
 						// 跳转到首页
 						uni.switchTab({
 							url: '../home/index'
