@@ -32,10 +32,20 @@
 				type: Number,
 				default: 0
 			},
+			type:{
+				type: String,
+				default:null
+			}
 
 		},
 		methods: {
 			articleDetails() {
+				if(this.type === "draft"){
+					uni.navigateTo({
+						url: '../../pages/publish/richTextEditor?type=draft&id=' + this.articleId + '&commentTotal=' + this.commentTotal,
+					})
+					return;
+				}
 				// 跳转到页面
 				uni.navigateTo({
 					url: '../articleDetails/index?id=' + this.articleId + '&commentTotal=' + this.commentTotal

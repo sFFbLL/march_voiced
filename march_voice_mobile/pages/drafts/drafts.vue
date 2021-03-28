@@ -2,7 +2,7 @@
 	<view>
 		<view>
 			<view v-for="(item,index) in draftListCopy">
-				<recommend :draftsCreatime="item.create_time" :articleInfo="item" :isArticleInteract="false" class="arcitle-item item"></recommend>
+				<recommend type="draft" :draftsCreatime="item.create_time" :articleInfo="item" :isArticleInteract="false" class="arcitle-item item"></recommend>
 			
 			</view>
 			<view v-if="draftListCopy.length <= 1">
