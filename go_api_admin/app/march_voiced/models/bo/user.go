@@ -6,7 +6,7 @@ type SelectUserInfo struct {
 	FansTotal    int64  `json:"fansTotal"`
 	ArticleTotal int64  `json:"articleTotal"`
 	CollectTotal int64  `json:"collectTotal"`
-	CraftTotal   int64  `json:"craftTotal"`
+	DraftTotal   int64  `json:"draftTotal"`
 	IsMe         int    `json:"isMe"`
 	UserIn
 }

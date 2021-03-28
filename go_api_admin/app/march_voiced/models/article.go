@@ -63,7 +63,7 @@ func (a *Article) ArticleCountByUserId(id int) (count int64, err error) {
 }
 
 // GetCraftTotal 查询一个人的草稿箱草稿数量
-func (a *Article) GetCraftTotal(id uint) (craftTotal int64, err error) {
+func (a *Article) GetDraftTotal(id uint) (craftTotal int64, err error) {
 	err = global.Eloquent.Table(a.TableName()).Where("is_deleted=? AND create_by=? AND status=?", []byte{0}, id, 0).Count(&craftTotal).Error
 	if err != nil {
 		return 0, err

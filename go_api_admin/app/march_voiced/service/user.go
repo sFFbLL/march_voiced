@@ -50,7 +50,7 @@ func (u *User) SelectUserInfo(id int, me int) (res *bo.SelectUserInfo, err error
 		return
 	}
 
-	craftTotal, err := a.GetCraftTotal(uint(id))
+	draftTotal, err := a.GetDraftTotal(uint(id))
 	if err != nil {
 		zap.L().Error("GetCraftTotal failed", zap.Error(err))
 		return
@@ -68,7 +68,7 @@ func (u *User) SelectUserInfo(id int, me int) (res *bo.SelectUserInfo, err error
 		FansTotal:    fansTotal,
 		ArticleTotal: articleTotal,
 		CollectTotal: collectTotal,
-		CraftTotal:   craftTotal,
+		DraftTotal:   draftTotal,
 		UserIn:       *info,
 		IsMe:         isMe,
 	}
