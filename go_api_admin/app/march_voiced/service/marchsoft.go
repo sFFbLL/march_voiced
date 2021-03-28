@@ -48,7 +48,7 @@ func (e *Marchsoft) ApplyMarch(userId int) (err error) {
 		return
 	}
 
-	go models.AddSysMessage(1, i, uint(userId), uint(userId))
+	go models.AddSysMessage(1, i, uint(userId), uint(userId), "")
 	return
 }
 
@@ -68,7 +68,7 @@ func (e *Marchsoft) MarchPass(p *dto.MarchPass, userId int) (err error) {
 	if err != nil {
 		return
 	}
-	go models.AddSysMessage(1, *p.Status, uint(userId), p.Id)
+	go models.AddSysMessage(1, *p.Status, uint(userId), p.Id, "")
 	return
 }
 
