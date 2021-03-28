@@ -377,6 +377,10 @@ func SelectMarchListById(c *gin.Context) {
 		paging.Current = 1
 	}
 
+	if paging.ID == 0 {
+		paging.ID = uint(userMsg.UserId)
+	}
+
 	// 进入service层对数据操作
 	MarchList, err = m.SelectMarchListById(paging, uint(userMsg.UserId))
 	if err != nil {
