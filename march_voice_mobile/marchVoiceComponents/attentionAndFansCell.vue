@@ -88,12 +88,19 @@
 			changeBtn() {
 				this.isDisabled = true
 				let that = this;
+				let status;
 				setTimeout(function() {
 					that.isDisabled = false
 				}, 1000);
-
+				
+				if(this.isFollow == 0){
+					status = 1
+				}else{
+					status = 2
+				}
 				let params = {
-					id: this.aid
+					id: this.aid,
+					status: status,
 				}
 
 				changeStatus(params).then(res => {

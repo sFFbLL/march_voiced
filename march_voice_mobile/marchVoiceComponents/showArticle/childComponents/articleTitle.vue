@@ -3,7 +3,7 @@
 	<view class="article-title" @click="articleDetails">
 		<view style="display: flex;">
 			<text class="article-text" v-html="articleTitle"></text>
-			<text v-if="articleStatus==2" style="width: 51px; color: gray; ">审核中</text>
+			<text v-if="articleStatus==2" style="width: 102rpx; color: gray; ">审核中</text>
 		</view>
 	</view>
 </template>
@@ -32,10 +32,20 @@
 				type: Number,
 				default: 0
 			},
+			type:{
+				type: String,
+				default:null
+			}
 
 		},
 		methods: {
 			articleDetails() {
+				if(this.type === "draft"){
+					uni.navigateTo({
+						url: '../../pages/publish/richTextEditor?type=draft&id=' + this.articleId + '&commentTotal=' + this.commentTotal,
+					})
+					return;
+				}
 				// 跳转到页面
 				uni.navigateTo({
 					url: '../articleDetails/index?id=' + this.articleId + '&commentTotal=' + this.commentTotal
