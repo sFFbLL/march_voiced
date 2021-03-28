@@ -26,7 +26,7 @@ Axios.interceptors.request.use(
 
 
 		// setToken(
-		// 	"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLku5nlhL8iLCJleHAiOjE2MjA0NTA2NzcsImlzcyI6Im15LXByb2plY3QifQ.xnZr_CTHx-Elp4tnEW9_agS7wntz555Uz3HRd_eTXSg"
+		// 	"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwidXNlcm5hbWUiOiLku5nlhL8iLCJleHAiOjE2MjA0OTYzMjAsImlzcyI6Im15LXByb2plY3QifQ.BN2fgqsLbseV_jVefPn_ZO2wjFtbCPAoDU-CExxQZqI"
 		// )
 
 		if (getToken()) {

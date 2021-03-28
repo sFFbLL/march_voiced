@@ -71,17 +71,7 @@
 						 class="nodate"></u-empty>
 					</view>
 				</view>
-				
-				<view v-if="tabIndex === 2">
-					<view v-for="(item,index) in draftList" >
-						<recommend type="draft" :articleInfo="item" :isArticleInteract="false" class="arcitle-item item"></recommend>
-					</view>
-					<view v-if="draftList.length <= 1">
-						<u-empty text="没有数据"
-						 mode="search"
-						 class="nodate"></u-empty>
-					</view>
-				</view>
+			
 				
 				<!-- 下拉加载更多 -->
 				<view v-if="isLoadMore">

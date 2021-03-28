@@ -3,7 +3,7 @@
 	<view class="article-title" @click="articleDetails">
 		<view style="display: flex;">
 			<text class="article-text" v-html="articleTitle"></text>
-			<text v-if="articleStatus==2" style="width: 40px; color: gray;">审核中</text>
+			<text v-if="articleStatus==2" style="width: 51px; color: gray; ">审核中</text>
 		</view>
 	</view>
 </template>
