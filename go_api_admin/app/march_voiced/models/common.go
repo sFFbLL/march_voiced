@@ -44,7 +44,6 @@ func AddSysMessage(t uint8, status uint8, userId uint, followId uint)  {
 	sysMessage := new(SysMessage)
 	sysMessage.Type = t
 	sysMessage.Status = status
-	//todo 创建者应该是申请人
 	sysMessage.CreateBy = userId
 	sysMessage.UpdateBy = userId
 	sysMessage.FollowId = followId
