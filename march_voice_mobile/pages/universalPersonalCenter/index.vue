@@ -2,8 +2,8 @@
 	<view class="personal-center">
 		<!-- 头部用户信息 -->
 		<view class="header">
-			<attentionAndFansCell :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath" :isFollow="userInfo.isFollow" :isMine="true"
-			 class="top-user-info">
+			<attentionAndFansCell :aid="userInfo.id" :nickname="userInfo.nickname" :avatarPath="userInfo.avatarPath" :isFollow="userInfo.isFollow"
+			 :isMine="true" class="top-user-info">
 				<view slot="underText" class="user-signature">{{userInfo.signature}}</view>
 			</attentionAndFansCell>
 			<view class="total">
@@ -41,6 +41,9 @@
 						 mode="search"
 						 class="nodate"></u-empty>
 					</view>
+				<view v-for="(item,index) in articleListCopy" v-if="!tabIndex">
+					<recommend :articleInfo="item" class="arcitle-item item"></recommend>
+
 				</view>
 				
 				<!-- 想法列表 -->
@@ -66,10 +69,7 @@
 						 class="nodate"></u-empty>
 					</view>
 				</view>
-				
-				<view v-for="(item,index) in draftList" v-if="userInfo.isMe===1">
-					<recommend :articleInfo="item" :isArticleInteract="false" class="arcitle-item item"></recommend>
-				</view>
+
 				<!-- 下拉加载更多 -->
 				<view v-show="isLoadMore">
 					<uni-load-more class="loading" :status="loadStatus" iconType="circle"></uni-load-more>
@@ -110,7 +110,8 @@
 				userId: 0,
 				articleList: [],
 				ideaList: [],
-				draftList: [],
+				articleListCopy: [],
+				ideaListCopy: [],
 				emojiList: {
 					faceTotal: 0,
 					likeTotal: 6,
@@ -125,11 +126,6 @@
 					{
 						index: 1,
 						value: '想法',
-						isActive: false
-					},
-					{
-						index: 2,
-						value: '草稿箱',
 						isActive: false
 					}
 				],
@@ -151,15 +147,11 @@
 		onPullDownRefresh() {
 			this.articleCurrent = 1; //文章当前页数，
 			this.ideaCurrent = 1; //想法当前页数
-			this.draftCurrent = 1; //草稿当前页数
-
 			let that = this;
 			that.articleList = [];
 			that.ideaList = [];
-			that.draftList = [];
 			this.getArticleList();
 			this.getIdeaList();
-			this.getDraftList();
 			setTimeout(function() {
 				uni.stopPullDownRefresh();
 			}, 2000);
@@ -174,10 +166,6 @@
 				this.isLoadMore = true;
 				this.ideaCurrent += 1;
 				this.getIdeaList();
-			} else if (!this.isLoadMore && this.tabIndex === 2) {
-				this.isLoadMore = true
-				this.draftCurrent += 1
-				this.getDraftList();
 			}
 		},
 		methods: {
@@ -211,9 +199,6 @@
 				} else if (tabIndex === 1) {
 					this.isLoadMore = false;
 					this.loadStatus = this.ideaLoadStatus;
-				} else if (tabIndex === 2) {
-					this.isLoadMore = false;
-					this.loadStatus = this.draftLoadStatus;
 				}
 				this.tabIndex = tabIndex;
 			},
@@ -254,31 +239,6 @@
 				})
 
 			},
-			// 获取草稿箱列表
-			getDraftList() {
-				let params = {
-					id: this.userId,
-					current: this.draftCurrent,
-					size: this.size,
-					kind: 1
-				}
-				getUserArticleList(params).then(res => {
-					if (res.data) {
-						if (this.draftCurrent === 1) {
-							this.isLoadMore = false;
-						} else {
-							setTimeout(function() {
-								this.loadStatus = "nomore";
-
-							}, 2000);
-							this.isLoadMore = false;
-						}
-						this.draftList = [...this.draftList, ...res.data];
-					} else {
-						this.loadStatus = 'nomore';
-					}
-				})
-			},
 			// 获取文章列表
 			getArticleList() {
 				let params = {
@@ -300,6 +260,7 @@
 							this.isLoadMore = false;
 						}
 						this.articleList = [...this.articleList, ...res.data];
+						this.articleListCopy = this.articleList;
 					} else {
 						this.loadStatus = 'nomore';
 					}
@@ -316,7 +277,6 @@
 			this.getUserInfo();
 			this.getArticleList();
 			this.getIdeaList();
-			this.getDraftList();
 		},
 	}
 </script>
@@ -369,6 +329,11 @@
 
 	.total view {
 		margin-right: 54rpx;
+	}
+
+	.nodate {
+		background-color: #fff;
+		min-height: 800rpx;
 	}
 
 	.total .number {

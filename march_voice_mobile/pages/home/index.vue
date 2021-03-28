@@ -115,13 +115,25 @@
 		created() {
 			let that = this;
 			if (!getToken()) {
+				uni.showLoading({
+				    title: '加载中'
+				});
 				forLogin();
+				
 				setTimeout(function() {
 					console.log("延时输出")
 					that.recommend();
 					that.follow();
-				}, 2000);
+					 uni.hideLoading();
+				}, 1000);
 			} else {
+				uni.showLoading({
+				    title: '加载中'
+				});
+				
+				setTimeout(function() {
+					 uni.hideLoading();
+				}, 1000);
 				that.recommend();
 				this.follow();
 			}

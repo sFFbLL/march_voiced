@@ -20,7 +20,7 @@
 					<text class="text">收藏</text>
 				</view>
 				<view class="collect-total" @click="toDraft ">
-					<text class="number">草稿箱数量</text>
+					<text class="number">{{userInfo.draftTotal}}</text>
 					<text class="text">草稿箱</text>
 				</view>
 			</view>
