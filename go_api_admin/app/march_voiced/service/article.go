@@ -156,9 +156,9 @@ func (a *Article) ArticlePass(p *dto.ArticlePass, userId int) (err error) {
 	article.Status = p.Status
 	article.UpdateTime = utils.NowUnix()
 	err = article.UpdateArticle()
-	go models.AddSysMessage(0, *p.Status, uint(userId), article.CreateBy)
+	go models.AddSysMessage(0, *p.Status, uint(userId), article.CreateBy, article.Title)
 	if *p.Status == 1 {
-		go models.AddMessage(0, 0, uint(article.ID), uint(userId), "")
+		go models.AddMessage(0, 0, uint(article.ID), article.CreateBy, "")
 	}
 	return
 }

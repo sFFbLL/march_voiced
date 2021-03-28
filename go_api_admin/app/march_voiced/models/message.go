@@ -73,7 +73,7 @@ func (e *Message) Add(articleId uint, userId uint) (err error) {
 	if e.Type == 0 {
 		article := new(Article)
 		err = global.Eloquent.Table("article").Where("id=? and is_deleted=0", articleId).First(article).Error
-		if err != nil || article.CreateBy == userId {
+		if err != nil || (e.Status!=0 && article.CreateBy == userId) {
 			return
 		}
 		e.ArticleId = uint(article.ID)
@@ -86,7 +86,7 @@ func (e *Message) Add(articleId uint, userId uint) (err error) {
 	} else if e.Type == 1 {
 		marchsoft := new(MarchSoft)
 		err = global.Eloquent.Table("marchsoft").Where("id=? and is_deleted=0", articleId).First(marchsoft).Error
-		if err != nil || marchsoft.CreateBy == userId {
+		if err != nil || (e.Status!=0 && marchsoft.CreateBy == userId) {
 			return
 		}
 		e.ArticleId = uint(marchsoft.ID)

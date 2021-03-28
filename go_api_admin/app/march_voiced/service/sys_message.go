@@ -22,6 +22,7 @@ func (e *SysMessage) GetSysMessage(p *dto.Paginator, userId int) (getSysMessage 
 			Type:       i.Type,
 			Status:     i.Status,
 			CreateTime: i.CreateTime,
+			Title:      i.Title,
 		})
 	}
 	getSysMessage = new(bo.GetSysMessage)
