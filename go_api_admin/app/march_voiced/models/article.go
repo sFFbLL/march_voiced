@@ -19,7 +19,7 @@ type Article struct {
 	IsRecommend      *uint8 `json:"is_recommend" gorm:"size:1;DEFAULT:0;"`
 	Type             *uint  `json:"type" gorm:""`
 	WordCount        *uint  `json:"word_count"`
-	Tag              uint   `json:"tag_id" gorm:""`
+	TagId            uint   `json:"tag_id" gorm:""`
 	CreateBy         uint   `json:"create_by" gorm:""`
 	UpdateBy         uint   `json:"update_by" gorm:""`
 	StatusUpdateTime int64  `json:"status_update_time" gorm:"autoCreateTime:milli"`

@@ -174,7 +174,7 @@ func (a *Article) InsertArticle(articleDto *dto.InsertArticleDto, userId int) (e
 		Describe:  articleDto.Describe,
 		Image:     articleDto.Image,
 		Kind:      articleDto.Kind,
-		Tag:       articleDto.Tag,
+		TagId:     articleDto.Tag,
 		Status:    articleDto.Status,
 		Type:      articleDto.Type,
 		WordCount: articleDto.WordCount,
@@ -215,7 +215,7 @@ func (a *Article) UpdateArticle(articleDto *dto.UpdateArticleDto, userId int) (e
 		Image:       articleDto.Image,
 		IsRecommend: &isRecommend,
 		Kind:        articleDto.Kind,
-		Tag:         articleDto.Tag,
+		TagId:       articleDto.Tag,
 		Status:      articleDto.Status,
 		Type:        articleDto.Type,
 		WordCount:   articleDto.WordCount,
@@ -362,7 +362,7 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleDeta
 
 	// 获取文章tag
 	zap.L().Info("Call ReprintArticle GetTagById", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
-	articleTag.ID = int(article.Tag)
+	articleTag.ID = int(article.TagId)
 	tag, err = articleTag.GetTagById()
 	if err != nil {
 		zap.L().Error("ReprintArticle GetTagById Failed ", zap.String("UserID", utils.IntToString(userId)), zap.Error(err))
@@ -391,7 +391,7 @@ func (a *Article) ReprintArticle(id int, userId int) (articleMsg *bo.ArticleDeta
 		ID:         article.ID,
 		Title:      article.Title,
 		Content:    article.Content,
-		TagId:      article.Tag,
+		TagId:      article.TagId,
 		Tag:        tag,
 		Kind:       article.Kind,
 		WordCount:  *article.WordCount,
