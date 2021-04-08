@@ -33,6 +33,6 @@ module.exports = {
 	// appId:'wxa346375168174534',
 	// serveName:"http://paky.hist.edu.cn",
 	imgUrl: 'http://linbolun.cn/api/file/download/'
-
+	// test4/8
 
 };
