@@ -322,6 +322,12 @@ var doc = `{
                         "in": "query"
                     },
                     {
+                        "type": "integer",
+                        "description": "标签",
+                        "name": "tag",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
                         "name": "title",
                         "in": "query"
@@ -367,7 +373,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._IsFavourCollectByArticleId"
+                            "$ref": "#/definitions/models._ResponseIsFavourCollectByArticleId"
                         }
                     }
                 }
@@ -407,7 +413,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._Article"
+                            "$ref": "#/definitions/models._ResponseArticleList"
                         }
                     }
                 }
@@ -484,7 +490,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._ArticleReprint"
+                            "$ref": "#/definitions/models._ResponseArticleReprint"
                         }
                     }
                 }
@@ -512,7 +518,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._ArticleTagList"
+                            "$ref": "#/definitions/models._ResponseArticleTagList"
                         }
                     }
                 }
@@ -552,7 +558,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._ResponseTopArticleListHandler"
+                            "$ref": "#/definitions/models._ResponseArticleList"
                         }
                     }
                 }
@@ -585,18 +591,16 @@ var doc = `{
                     {
                         "type": "integer",
                         "name": "id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "name": "kind",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
                         "in": "query"
                     }
                 ],
@@ -604,7 +608,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._ArticleUser"
+                            "$ref": "#/definitions/models._ResponseArticleListByUserId"
                         }
                     }
                 }
@@ -676,7 +680,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._ResponseSuccess"
+                            "$ref": "#/definitions/models._ResponseArticleDetail"
                         }
                     }
                 }
@@ -2287,7 +2291,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._march"
+                            "$ref": "#/definitions/models._ResponseMarch"
                         }
                     }
                 }
@@ -2351,13 +2355,47 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models._ResponseApplyMarchUser"
+                            "$ref": "#/definitions/models._ResponseSoftInfo"
                         }
                     }
                 }
             }
         },
         "/api/march/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Author：Lbl 2021/02/17 获得身份令牌",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "三月圈 marchsoft Controller"
+                ],
+                "summary": "三月圈文章详情页",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "修改参数",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models._ResponseMarch"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "security": [
                     {
@@ -2846,7 +2884,7 @@ var doc = `{
                     }
                 }
             },
-            "post": {
+            "put": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -3728,14 +3766,14 @@ var doc = `{
                 "commentTotal": {
                     "type": "integer"
                 },
-                "content": {
-                    "type": "string"
-                },
                 "create_by": {
                     "type": "integer"
                 },
                 "create_time": {
                     "type": "integer"
+                },
+                "describe": {
+                    "type": "string"
                 },
                 "favourTotal": {
                     "type": "integer"
@@ -3749,13 +3787,13 @@ var doc = `{
                 "isFollow": {
                     "type": "integer"
                 },
-                "kind": {
-                    "type": "integer"
-                },
                 "nickname": {
                     "type": "string"
                 },
-                "tag": {
+                "status": {
+                    "type": "integer"
+                },
+                "tag_id": {
                     "type": "integer"
                 },
                 "title": {
@@ -3768,9 +3806,6 @@ var doc = `{
                     "type": "integer"
                 },
                 "update_time": {
-                    "type": "integer"
-                },
-                "word_count": {
                     "type": "integer"
                 }
             }
@@ -3809,90 +3844,35 @@ var doc = `{
                 "content": {
                     "type": "string"
                 },
-                "create_by": {
+                "createBy": {
                     "type": "integer"
                 },
-                "create_by_name": {
+                "createByName": {
                     "type": "string"
                 },
-                "create_time": {
+                "createTime": {
                     "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "id_avatar": {
+                "idAvatar": {
                     "type": "string"
                 },
-                "reply_id": {
+                "replyId": {
                     "type": "integer"
                 },
-                "reply_name": {
-                    "type": "string"
-                }
-            }
-        },
-        "bo.ArticleMsg": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "create_by": {
-                    "type": "integer"
-                },
-                "create_time": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "kind": {
-                    "type": "integer"
-                },
-                "tag": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "integer"
-                },
-                "update_by": {
-                    "type": "integer"
-                },
-                "update_time": {
-                    "type": "integer"
-                },
-                "word_count": {
-                    "type": "integer"
-                }
-            }
-        },
-        "bo.ArticleTagList": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "icon": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "tag": {
+                "replyName": {
                     "type": "string"
                 }
             }
         },
-        "bo.ArticleUser": {
+        "bo.ArticleDetail": {
             "type": "object",
             "properties": {
+                "avatarPath": {
+                    "type": "string"
+                },
                 "collectTotal": {
                     "type": "integer"
                 },
@@ -3917,13 +3897,28 @@ var doc = `{
                 "image": {
                     "type": "string"
                 },
+                "isCollect": {
+                    "type": "integer"
+                },
+                "isFavour": {
+                    "type": "integer"
+                },
                 "isFollow": {
                     "type": "integer"
                 },
                 "kind": {
                     "type": "integer"
                 },
+                "nickname": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
                 "tag": {
+                    "type": "string"
+                },
+                "tag_id": {
                     "type": "integer"
                 },
                 "title": {
@@ -3943,9 +3938,120 @@ var doc = `{
                 }
             }
         },
+        "bo.ArticleMsg": {
+            "type": "object",
+            "properties": {
+                "create_by": {
+                    "type": "integer"
+                },
+                "create_time": {
+                    "type": "integer"
+                },
+                "describe": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "tag_id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "update_by": {
+                    "type": "integer"
+                },
+                "update_time": {
+                    "type": "integer"
+                }
+            }
+        },
+        "bo.ArticleTagList": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "tag": {
+                    "type": "string"
+                }
+            }
+        },
+        "bo.ArticleUser": {
+            "type": "object",
+            "properties": {
+                "collectTotal": {
+                    "type": "integer"
+                },
+                "commentTotal": {
+                    "type": "integer"
+                },
+                "create_by": {
+                    "type": "integer"
+                },
+                "create_time": {
+                    "type": "integer"
+                },
+                "describe": {
+                    "type": "string"
+                },
+                "favourTotal": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "isFollow": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "tag_id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "update_by": {
+                    "type": "integer"
+                },
+                "update_time": {
+                    "type": "integer"
+                }
+            }
+        },
         "bo.Children": {
             "type": "object",
             "properties": {
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/bo.Children"
+                    }
+                },
                 "component": {
                     "type": "string"
                 },
@@ -4000,18 +4106,26 @@ var doc = `{
         "bo.FollowInfo": {
             "type": "object",
             "properties": {
-                "avatar_path": {
+                "articleTotal": {
+                    "description": "文章数",
+                    "type": "integer"
+                },
+                "avatarPath": {
                     "type": "string"
                 },
-                "fans_total": {
+                "fansTotal": {
                     "description": "粉丝数",
                     "type": "integer"
                 },
-                "follow_total": {
+                "followTotal": {
                     "description": "关注数",
                     "type": "integer"
                 },
                 "id": {
+                    "type": "integer"
+                },
+                "isFollow": {
+                    "description": "是否关注",
                     "type": "integer"
                 },
                 "nickname": {
@@ -4131,9 +4245,15 @@ var doc = `{
                     "description": "头像",
                     "type": "string"
                 },
+                "collectTotal": {
+                    "type": "integer"
+                },
                 "comment": {
                     "description": "评论",
                     "type": "string"
+                },
+                "commentTotal": {
+                    "type": "integer"
                 },
                 "content": {
                     "description": "内容",
@@ -4143,9 +4263,19 @@ var doc = `{
                     "description": "创建时间",
                     "type": "integer"
                 },
+                "favourTotal": {
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "消息id",
+                    "type": "integer"
+                },
                 "image": {
                     "description": "首图url",
                     "type": "string"
+                },
+                "isFollow": {
+                    "type": "integer"
                 },
                 "nickname": {
                     "description": "昵称",
@@ -4207,6 +4337,10 @@ var doc = `{
                 "status": {
                     "description": "0同意/1驳回",
                     "type": "integer"
+                },
+                "title": {
+                    "description": "如果是文章则是标题",
+                    "type": "string"
                 },
                 "type": {
                     "description": "0文章审核/1三月圈申请",
@@ -4272,6 +4406,9 @@ var doc = `{
                         "type": "string"
                     }
                 },
+                "isFollow": {
+                    "type": "integer"
+                },
                 "likeTotal": {
                     "type": "integer"
                 },
@@ -4289,31 +4426,51 @@ var doc = `{
                 }
             }
         },
+        "bo.MarchSoftInfo": {
+            "type": "object",
+            "properties": {
+                "articleTotal": {
+                    "type": "integer"
+                },
+                "brief": {
+                    "type": "string"
+                },
+                "is_march": {
+                    "type": "integer"
+                },
+                "personTotal": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "bo.MarchsoftComment": {
             "type": "object",
             "properties": {
                 "content": {
                     "type": "string"
                 },
-                "create_by": {
+                "createBy": {
                     "type": "integer"
                 },
-                "create_by_name": {
+                "createByName": {
                     "type": "string"
                 },
-                "create_time": {
+                "createTime": {
                     "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "id_avatar": {
+                "idAvatar": {
                     "type": "string"
                 },
-                "reply_id": {
+                "replyId": {
                     "type": "integer"
                 },
-                "reply_name": {
+                "replyName": {
                     "type": "string"
                 }
             }
@@ -4674,25 +4831,25 @@ var doc = `{
                 "content": {
                     "type": "string"
                 },
-                "create_by": {
+                "createBy": {
                     "type": "integer"
                 },
-                "create_by_name": {
+                "createByName": {
                     "type": "string"
                 },
-                "create_time": {
+                "createTime": {
                     "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "id_avatar": {
+                "idAvatar": {
                     "type": "string"
                 },
-                "reply_id": {
+                "replyId": {
                     "type": "integer"
                 },
-                "reply_name": {
+                "replyName": {
                     "type": "string"
                 }
             }
@@ -4709,25 +4866,25 @@ var doc = `{
                 "content": {
                     "type": "string"
                 },
-                "create_by": {
+                "createBy": {
                     "type": "integer"
                 },
-                "create_by_name": {
+                "createByName": {
                     "type": "string"
                 },
-                "create_time": {
+                "createTime": {
                     "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "id_avatar": {
+                "idAvatar": {
                     "type": "string"
                 },
-                "reply_id": {
+                "replyId": {
                     "type": "integer"
                 },
-                "reply_name": {
+                "replyName": {
                     "type": "string"
                 }
             }
@@ -4738,7 +4895,7 @@ var doc = `{
                 "dataScopes": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "integer"
                     }
                 },
                 "roles": {
@@ -4816,15 +4973,15 @@ var doc = `{
                     "description": "评论内容",
                     "type": "string"
                 },
+                "followId": {
+                    "description": "父评论id",
+                    "type": "integer"
+                },
                 "id": {
                     "description": "文章id",
                     "type": "integer"
                 },
-                "pid": {
-                    "description": "父评论id",
-                    "type": "integer"
-                },
-                "reply_id": {
+                "replyId": {
                     "description": "回复人id",
                     "type": "integer"
                 }
@@ -4863,15 +5020,15 @@ var doc = `{
                     "description": "评论内容",
                     "type": "string"
                 },
+                "followId": {
+                    "description": "父评论id",
+                    "type": "integer"
+                },
                 "id": {
                     "description": "文章id",
                     "type": "integer"
                 },
-                "pid": {
-                    "description": "父评论id",
-                    "type": "integer"
-                },
-                "reply_id": {
+                "replyId": {
                     "description": "回复人id",
                     "type": "integer"
                 }
@@ -4899,6 +5056,10 @@ var doc = `{
                 },
                 "status": {
                     "description": "1通过 2审核中",
+                    "type": "integer"
+                },
+                "tag": {
+                    "description": "标签",
                     "type": "integer"
                 },
                 "title": {
@@ -5168,6 +5329,7 @@ var doc = `{
             "type": "object",
             "required": [
                 "content",
+                "describe",
                 "kind",
                 "status",
                 "tag",
@@ -5177,6 +5339,9 @@ var doc = `{
             ],
             "properties": {
                 "content": {
+                    "type": "string"
+                },
+                "describe": {
                     "type": "string"
                 },
                 "image": {
@@ -5362,10 +5527,6 @@ var doc = `{
         },
         "dto.SelectArticleByUser": {
             "type": "object",
-            "required": [
-                "id",
-                "kind"
-            ],
             "properties": {
                 "current": {
                     "type": "integer"
@@ -5373,10 +5534,10 @@ var doc = `{
                 "id": {
                     "type": "integer"
                 },
-                "kind": {
+                "size": {
                     "type": "integer"
                 },
-                "size": {
+                "status": {
                     "type": "integer"
                 }
             }
@@ -5689,7 +5850,7 @@ var doc = `{
                 },
                 "enabled": {
                     "description": "是否激活",
-                    "type": "string"
+                    "type": "boolean"
                 },
                 "gender": {
                     "description": "性别",
@@ -5730,7 +5891,8 @@ var doc = `{
         "dto.UpdateUserPassDto": {
             "type": "object",
             "required": [
-                "newPass"
+                "newPass",
+                "oldPass"
             ],
             "properties": {
                 "newPass": {
@@ -5795,96 +5957,6 @@ var doc = `{
                 }
             }
         },
-        "models._Article": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "description": "业务响应状态码",
-                    "type": "integer"
-                },
-                "data": {
-                    "description": "数据",
-                    "type": "object",
-                    "$ref": "#/definitions/bo.Article"
-                },
-                "message": {
-                    "description": "提示信息",
-                    "type": "string"
-                }
-            }
-        },
-        "models._ArticleReprint": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "description": "业务响应状态码",
-                    "type": "integer"
-                },
-                "data": {
-                    "description": "数据",
-                    "type": "object",
-                    "$ref": "#/definitions/bo.ArticleMsg"
-                },
-                "message": {
-                    "description": "提示信息",
-                    "type": "string"
-                }
-            }
-        },
-        "models._ArticleTagList": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "description": "业务响应状态码",
-                    "type": "integer"
-                },
-                "data": {
-                    "description": "数据",
-                    "type": "object",
-                    "$ref": "#/definitions/bo.ArticleTagList"
-                },
-                "message": {
-                    "description": "提示信息",
-                    "type": "string"
-                }
-            }
-        },
-        "models._ArticleUser": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "description": "业务响应状态码",
-                    "type": "integer"
-                },
-                "data": {
-                    "description": "数据",
-                    "type": "object",
-                    "$ref": "#/definitions/bo.ArticleUser"
-                },
-                "message": {
-                    "description": "提示信息",
-                    "type": "string"
-                }
-            }
-        },
-        "models._IsFavourCollectByArticleId": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "description": "业务响应状态码",
-                    "type": "integer"
-                },
-                "data": {
-                    "description": "数据",
-                    "type": "object",
-                    "$ref": "#/definitions/bo.IsFavourCollectByArticleId"
-                },
-                "message": {
-                    "description": "提示信息",
-                    "type": "string"
-                }
-            }
-        },
         "models._ResponseApplyArticleList": {
             "type": "object",
             "properties": {
@@ -5914,6 +5986,98 @@ var doc = `{
                     "description": "数据",
                     "type": "object",
                     "$ref": "#/definitions/bo.ApplyMarchUser"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ResponseArticleDetail": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.ArticleDetail"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ResponseArticleList": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/bo.Article"
+                    }
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ResponseArticleListByUserId": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.ArticleUser"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ResponseArticleReprint": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.ArticleMsg"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ResponseArticleTagList": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.ArticleTagList"
                 },
                 "message": {
                     "description": "提示信息",
@@ -6199,6 +6363,24 @@ var doc = `{
                 }
             }
         },
+        "models._ResponseIsFavourCollectByArticleId": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.IsFavourCollectByArticleId"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
         "models._ResponseLogin": {
             "type": "object",
             "properties": {
@@ -6215,6 +6397,24 @@ var doc = `{
                             "type": "string"
                         }
                     }
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ResponseMarch": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "$ref": "#/definitions/bo.March"
                 },
                 "message": {
                     "description": "提示信息",
@@ -6388,20 +6588,7 @@ var doc = `{
                 }
             }
         },
-        "models._ResponseSuccess": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "description": "业务响应状态码",
-                    "type": "integer"
-                },
-                "message": {
-                    "description": "提示信息",
-                    "type": "string"
-                }
-            }
-        },
-        "models._ResponseTopArticleListHandler": {
+        "models._ResponseSoftInfo": {
             "type": "object",
             "properties": {
                 "code": {
@@ -6410,10 +6597,21 @@ var doc = `{
                 },
                 "data": {
                     "description": "数据",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/bo.Article"
-                    }
+                    "type": "object",
+                    "$ref": "#/definitions/bo.MarchSoftInfo"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                }
+            }
+        },
+        "models._ResponseSuccess": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务响应状态码",
+                    "type": "integer"
                 },
                 "message": {
                     "description": "提示信息",
@@ -6459,24 +6657,6 @@ var doc = `{
                     "type": "string"
                 }
             }
-        },
-        "models._march": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "description": "业务响应状态码",
-                    "type": "integer"
-                },
-                "data": {
-                    "description": "数据",
-                    "type": "object",
-                    "$ref": "#/definitions/bo.March"
-                },
-                "message": {
-                    "description": "提示信息",
-                    "type": "string"
-                }
-            }
         }
     },
     "securityDefinitions": {
@@ -6500,7 +6680,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "0.1.0",
-	Host:        "127.0.0.1:8000",
+	Host:        "linbolun.cn",
 	BasePath:    "",
 	Schemes:     []string{},
 	Title:       "go-sword项目接口文档",
