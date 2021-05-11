@@ -28,7 +28,7 @@ import (
 // @in header
 // @name Authorization
 
-// @host 127.0.0.1:8000
+// @host linbolun.cn
 // @BasePath
 func main() {
 	var configName string

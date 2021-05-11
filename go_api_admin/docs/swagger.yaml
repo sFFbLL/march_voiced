@@ -783,6 +783,31 @@ definitions:
       updatedBy:
         type: integer
     type: object
+  bo.SelectUserInfo:
+    properties:
+      articleTotal:
+        type: integer
+      avatarPath:
+        type: string
+      collectTotal:
+        type: integer
+      draftTotal:
+        type: integer
+      fansTotal:
+        type: integer
+      followTotal:
+        type: integer
+      id:
+        type: integer
+      isFollow:
+        type: integer
+      isMe:
+        type: integer
+      nickname:
+        type: string
+      signature:
+        type: string
+    type: object
   bo.SensitiveWord:
     properties:
       indexes:
@@ -839,20 +864,6 @@ definitions:
         type: integer
       replyName:
         type: string
-    type: object
-  bo.UserCenterInfoBo:
-    properties:
-      dataScopes:
-        items:
-          type: integer
-        type: array
-      roles:
-        items:
-          type: string
-        type: array
-      user:
-        $ref: '#/definitions/bo.RecordUser'
-        type: object
     type: object
   bo.UserInfoListBo:
     properties:
@@ -1998,10 +2009,7 @@ definitions:
   models._ResponseSelectUserInfo:
     properties:
       code:
-        description: 业务响应状态码
-        type: integer
-      data:
-        $ref: '#/definitions/bo.UserCenterInfoBo'
+        $ref: '#/definitions/bo.SelectUserInfo'
         description: 数据
         type: object
       message:
@@ -2088,7 +2096,7 @@ definitions:
         description: 文件类型
         type: string
     type: object
-host: 127.0.0.1:8000
+host: linbolun.cn
 info:
   contact:
     name: marchsoft@golang
