@@ -4802,6 +4802,44 @@ var doc = `{
                 }
             }
         },
+        "bo.SelectUserInfo": {
+            "type": "object",
+            "properties": {
+                "articleTotal": {
+                    "type": "integer"
+                },
+                "avatarPath": {
+                    "type": "string"
+                },
+                "collectTotal": {
+                    "type": "integer"
+                },
+                "draftTotal": {
+                    "type": "integer"
+                },
+                "fansTotal": {
+                    "type": "integer"
+                },
+                "followTotal": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isFollow": {
+                    "type": "integer"
+                },
+                "isMe": {
+                    "type": "integer"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "signature": {
+                    "type": "string"
+                }
+            }
+        },
         "bo.SensitiveWord": {
             "type": "object",
             "properties": {
@@ -4886,27 +4924,6 @@ var doc = `{
                 },
                 "replyName": {
                     "type": "string"
-                }
-            }
-        },
-        "bo.UserCenterInfoBo": {
-            "type": "object",
-            "properties": {
-                "dataScopes": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "roles": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "user": {
-                    "type": "object",
-                    "$ref": "#/definitions/bo.RecordUser"
                 }
             }
         },
@@ -6556,13 +6573,9 @@ var doc = `{
             "type": "object",
             "properties": {
                 "code": {
-                    "description": "业务响应状态码",
-                    "type": "integer"
-                },
-                "data": {
                     "description": "数据",
                     "type": "object",
-                    "$ref": "#/definitions/bo.UserCenterInfoBo"
+                    "$ref": "#/definitions/bo.SelectUserInfo"
                 },
                 "message": {
                     "description": "提示信息",
@@ -6660,7 +6673,7 @@ var doc = `{
         }
     },
     "securityDefinitions": {
-        "Bearer": {
+        "ApiKeyAuth": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"

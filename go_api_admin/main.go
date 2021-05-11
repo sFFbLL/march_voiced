@@ -24,7 +24,7 @@ import (
 // @contact.name marchsoft@golang
 // @contact.url http://marchsoft.cn/
 
-// @securityDefinitions.apikey Bearer
+// @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
 
