@@ -10,7 +10,7 @@
         "license": {},
         "version": "0.1.0"
     },
-    "host": "linbolun.cn",
+    "host": "127.0.0.1:8000",
     "paths": {
         "/api/apply/article": {
             "put": {
@@ -6644,7 +6644,7 @@
         }
     },
     "securityDefinitions": {
-        "Bearer": {
+        "ApiKeyAuth": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"

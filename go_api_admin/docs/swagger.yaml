@@ -2088,7 +2088,7 @@ definitions:
         description: 文件类型
         type: string
     type: object
-host: linbolun.cn
+host: 127.0.0.1:8000
 info:
   contact:
     name: marchsoft@golang
@@ -4314,7 +4314,7 @@ paths:
       tags:
       - 系统：用户管理 User Controller
 securityDefinitions:
-  Bearer:
+  ApiKeyAuth:
     in: header
     name: Authorization
     type: apiKey

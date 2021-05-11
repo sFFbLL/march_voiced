@@ -24,11 +24,11 @@ import (
 // @contact.name marchsoft@golang
 // @contact.url http://marchsoft.cn/
 
-// @securityDefinitions.apikey Bearer
+// @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
 
-// @host linbolun.cn
+// @host 127.0.0.1:8000
 // @BasePath
 func main() {
 	var configName string
