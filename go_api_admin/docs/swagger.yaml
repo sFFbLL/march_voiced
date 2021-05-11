@@ -88,12 +88,12 @@ definitions:
         type: integer
       commentTotal:
         type: integer
-      content:
-        type: string
       create_by:
         type: integer
       create_time:
         type: integer
+      describe:
+        type: string
       favourTotal:
         type: integer
       id:
@@ -102,11 +102,11 @@ definitions:
         type: string
       isFollow:
         type: integer
-      kind:
-        type: integer
       nickname:
         type: string
-      tag:
+      status:
+        type: integer
+      tag_id:
         type: integer
       title:
         type: string
@@ -115,8 +115,6 @@ definitions:
       update_by:
         type: integer
       update_time:
-        type: integer
-      word_count:
         type: integer
     type: object
   bo.ArticleCollectByUserId:
@@ -143,61 +141,25 @@ definitions:
     properties:
       content:
         type: string
-      create_by:
+      createBy:
         type: integer
-      create_by_name:
+      createByName:
         type: string
-      create_time:
+      createTime:
         type: integer
       id:
         type: integer
-      id_avatar:
+      idAvatar:
         type: string
-      reply_id:
+      replyId:
         type: integer
-      reply_name:
-        type: string
-    type: object
-  bo.ArticleMsg:
-    properties:
-      content:
-        type: string
-      create_by:
-        type: integer
-      create_time:
-        type: integer
-      id:
-        type: integer
-      image:
-        type: string
-      kind:
-        type: integer
-      tag:
-        type: integer
-      title:
-        type: string
-      type:
-        type: integer
-      update_by:
-        type: integer
-      update_time:
-        type: integer
-      word_count:
-        type: integer
-    type: object
-  bo.ArticleTagList:
-    properties:
-      description:
-        type: string
-      icon:
-        type: integer
-      id:
-        type: integer
-      tag:
+      replyName:
         type: string
     type: object
-  bo.ArticleUser:
+  bo.ArticleDetail:
     properties:
+      avatarPath:
+        type: string
       collectTotal:
         type: integer
       commentTotal:
@@ -214,11 +176,21 @@ definitions:
         type: integer
       image:
         type: string
+      isCollect:
+        type: integer
+      isFavour:
+        type: integer
       isFollow:
         type: integer
       kind:
         type: integer
+      nickname:
+        type: string
+      status:
+        type: integer
       tag:
+        type: string
+      tag_id:
         type: integer
       title:
         type: string
@@ -231,8 +203,81 @@ definitions:
       word_count:
         type: integer
     type: object
+  bo.ArticleMsg:
+    properties:
+      create_by:
+        type: integer
+      create_time:
+        type: integer
+      describe:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      status:
+        type: integer
+      tag_id:
+        type: integer
+      title:
+        type: string
+      type:
+        type: integer
+      update_by:
+        type: integer
+      update_time:
+        type: integer
+    type: object
+  bo.ArticleTagList:
+    properties:
+      description:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      tag:
+        type: string
+    type: object
+  bo.ArticleUser:
+    properties:
+      collectTotal:
+        type: integer
+      commentTotal:
+        type: integer
+      create_by:
+        type: integer
+      create_time:
+        type: integer
+      describe:
+        type: string
+      favourTotal:
+        type: integer
+      id:
+        type: integer
+      image:
+        type: string
+      isFollow:
+        type: integer
+      status:
+        type: integer
+      tag_id:
+        type: integer
+      title:
+        type: string
+      type:
+        type: integer
+      update_by:
+        type: integer
+      update_time:
+        type: integer
+    type: object
   bo.Children:
     properties:
+      children:
+        items:
+          $ref: '#/definitions/bo.Children'
+        type: array
       component:
         type: string
       hidden:
@@ -268,15 +313,21 @@ definitions:
     type: object
   bo.FollowInfo:
     properties:
-      avatar_path:
+      articleTotal:
+        description: 文章数
+        type: integer
+      avatarPath:
         type: string
-      fans_total:
+      fansTotal:
         description: 粉丝数
         type: integer
-      follow_total:
+      followTotal:
         description: 关注数
         type: integer
       id:
+        type: integer
+      isFollow:
+        description: 是否关注
         type: integer
       nickname:
         type: string
@@ -359,18 +410,29 @@ definitions:
       avatarPath:
         description: 头像
         type: string
+      collectTotal:
+        type: integer
       comment:
         description: 评论
         type: string
+      commentTotal:
+        type: integer
       content:
         description: 内容
         type: string
       createTime:
         description: 创建时间
         type: integer
+      favourTotal:
+        type: integer
+      id:
+        description: 消息id
+        type: integer
       image:
         description: 首图url
         type: string
+      isFollow:
+        type: integer
       nickname:
         description: 昵称
         type: string
@@ -415,6 +477,9 @@ definitions:
       status:
         description: 0同意/1驳回
         type: integer
+      title:
+        description: 如果是文章则是标题
+        type: string
       type:
         description: 0文章审核/1三月圈申请
         type: integer
@@ -457,6 +522,8 @@ definitions:
         items:
           type: string
         type: array
+      isFollow:
+        type: integer
       likeTotal:
         type: integer
       nickname:
@@ -468,23 +535,36 @@ definitions:
       update_time:
         type: integer
     type: object
+  bo.MarchSoftInfo:
+    properties:
+      articleTotal:
+        type: integer
+      brief:
+        type: string
+      is_march:
+        type: integer
+      personTotal:
+        type: integer
+      title:
+        type: string
+    type: object
   bo.MarchsoftComment:
     properties:
       content:
         type: string
-      create_by:
+      createBy:
         type: integer
-      create_by_name:
+      createByName:
         type: string
-      create_time:
+      createTime:
         type: integer
       id:
         type: integer
-      id_avatar:
+      idAvatar:
         type: string
-      reply_id:
+      replyId:
         type: integer
-      reply_name:
+      replyName:
         type: string
     type: object
   bo.Meta:
@@ -722,19 +802,19 @@ definitions:
         type: array
       content:
         type: string
-      create_by:
+      createBy:
         type: integer
-      create_by_name:
+      createByName:
         type: string
-      create_time:
+      createTime:
         type: integer
       id:
         type: integer
-      id_avatar:
+      idAvatar:
         type: string
-      reply_id:
+      replyId:
         type: integer
-      reply_name:
+      replyName:
         type: string
     type: object
   bo.SignalMarchsoftComment:
@@ -745,26 +825,26 @@ definitions:
         type: array
       content:
         type: string
-      create_by:
+      createBy:
         type: integer
-      create_by_name:
+      createByName:
         type: string
-      create_time:
+      createTime:
         type: integer
       id:
         type: integer
-      id_avatar:
+      idAvatar:
         type: string
-      reply_id:
+      replyId:
         type: integer
-      reply_name:
+      replyName:
         type: string
     type: object
   bo.UserCenterInfoBo:
     properties:
       dataScopes:
         items:
-          type: string
+          type: integer
         type: array
       roles:
         items:
@@ -816,13 +896,13 @@ definitions:
       content:
         description: 评论内容
         type: string
+      followId:
+        description: 父评论id
+        type: integer
       id:
         description: 文章id
         type: integer
-      pid:
-        description: 父评论id
-        type: integer
-      reply_id:
+      replyId:
         description: 回复人id
         type: integer
     type: object
@@ -850,13 +930,13 @@ definitions:
       content:
         description: 评论内容
         type: string
+      followId:
+        description: 父评论id
+        type: integer
       id:
         description: 文章id
         type: integer
-      pid:
-        description: 父评论id
-        type: integer
-      reply_id:
+      replyId:
         description: 回复人id
         type: integer
     type: object
@@ -876,6 +956,9 @@ definitions:
         type: integer
       status:
         description: 1通过 2审核中
+        type: integer
+      tag:
+        description: 标签
         type: integer
       title:
         type: string
@@ -1063,6 +1146,8 @@ definitions:
     properties:
       content:
         type: string
+      describe:
+        type: string
       image:
         type: string
       kind:
@@ -1079,6 +1164,7 @@ definitions:
         type: integer
     required:
     - content
+    - describe
     - kind
     - status
     - tag
@@ -1199,13 +1285,10 @@ definitions:
         type: integer
       id:
         type: integer
-      kind:
-        type: integer
       size:
         type: integer
-    required:
-    - id
-    - kind
+      status:
+        type: integer
     type: object
   dto.SelectChildIdDto:
     properties:
@@ -1422,7 +1505,7 @@ definitions:
         type: string
       enabled:
         description: 是否激活
-        type: string
+        type: boolean
       gender:
         description: 性别
         type: string
@@ -1465,6 +1548,7 @@ definitions:
         type: string
     required:
     - newPass
+    - oldPass
     type: object
   dto.UserLoginDto:
     properties:
@@ -1486,71 +1570,6 @@ definitions:
     - username
     - uuid
     type: object
-  models._Article:
-    properties:
-      code:
-        description: 业务响应状态码
-        type: integer
-      data:
-        $ref: '#/definitions/bo.Article'
-        description: 数据
-        type: object
-      message:
-        description: 提示信息
-        type: string
-    type: object
-  models._ArticleReprint:
-    properties:
-      code:
-        description: 业务响应状态码
-        type: integer
-      data:
-        $ref: '#/definitions/bo.ArticleMsg'
-        description: 数据
-        type: object
-      message:
-        description: 提示信息
-        type: string
-    type: object
-  models._ArticleTagList:
-    properties:
-      code:
-        description: 业务响应状态码
-        type: integer
-      data:
-        $ref: '#/definitions/bo.ArticleTagList'
-        description: 数据
-        type: object
-      message:
-        description: 提示信息
-        type: string
-    type: object
-  models._ArticleUser:
-    properties:
-      code:
-        description: 业务响应状态码
-        type: integer
-      data:
-        $ref: '#/definitions/bo.ArticleUser'
-        description: 数据
-        type: object
-      message:
-        description: 提示信息
-        type: string
-    type: object
-  models._IsFavourCollectByArticleId:
-    properties:
-      code:
-        description: 业务响应状态码
-        type: integer
-      data:
-        $ref: '#/definitions/bo.IsFavourCollectByArticleId'
-        description: 数据
-        type: object
-      message:
-        description: 提示信息
-        type: string
-    type: object
   models._ResponseApplyArticleList:
     properties:
       code:
@@ -1571,6 +1590,72 @@ definitions:
         type: integer
       data:
         $ref: '#/definitions/bo.ApplyMarchUser'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models._ResponseArticleDetail:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.ArticleDetail'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models._ResponseArticleList:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        description: 数据
+        items:
+          $ref: '#/definitions/bo.Article'
+        type: array
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models._ResponseArticleListByUserId:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.ArticleUser'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models._ResponseArticleReprint:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.ArticleMsg'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models._ResponseArticleTagList:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.ArticleTagList'
         description: 数据
         type: object
       message:
@@ -1775,6 +1860,19 @@ definitions:
         description: 提示信息
         type: string
     type: object
+  models._ResponseIsFavourCollectByArticleId:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.IsFavourCollectByArticleId'
+        description: 数据
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
   models._ResponseLogin:
     properties:
       code:
@@ -1786,6 +1884,19 @@ definitions:
           token:
             description: 授权令牌
             type: string
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models._ResponseMarch:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        $ref: '#/definitions/bo.March'
+        description: 数据
         type: object
       message:
         description: 提示信息
@@ -1910,25 +2021,24 @@ definitions:
         description: 提示信息
         type: string
     type: object
-  models._ResponseSuccess:
-    properties:
-      code:
-        description: 业务响应状态码
-        type: integer
-      message:
-        description: 提示信息
-        type: string
-    type: object
-  models._ResponseTopArticleListHandler:
+  models._ResponseSoftInfo:
     properties:
       code:
         description: 业务响应状态码
         type: integer
       data:
+        $ref: '#/definitions/bo.MarchSoftInfo'
         description: 数据
-        items:
-          $ref: '#/definitions/bo.Article'
-        type: array
+        type: object
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models._ResponseSuccess:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
       message:
         description: 提示信息
         type: string
@@ -1960,19 +2070,6 @@ definitions:
         description: 提示信息
         type: string
     type: object
-  models._march:
-    properties:
-      code:
-        description: 业务响应状态码
-        type: integer
-      data:
-        $ref: '#/definitions/bo.March'
-        description: 数据
-        type: object
-      message:
-        description: 提示信息
-        type: string
-    type: object
   models.FileResponse:
     properties:
       full_path:
@@ -1991,7 +2088,7 @@ definitions:
         description: 文件类型
         type: string
     type: object
-host: 127.0.0.1:8000
+host: linbolun.cn
 info:
   contact:
     name: marchsoft@golang
@@ -2185,7 +2282,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._ResponseSuccess'
+            $ref: '#/definitions/models._ResponseArticleDetail'
       security:
       - ApiKeyAuth: []
       summary: 文章详情
@@ -2218,6 +2315,10 @@ paths:
         in: query
         name: status
         type: integer
+      - description: 标签
+        in: query
+        name: tag
+        type: integer
       - in: query
         name: title
         type: string
@@ -2249,7 +2350,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._IsFavourCollectByArticleId'
+            $ref: '#/definitions/models._ResponseIsFavourCollectByArticleId'
       security:
       - ApiKeyAuth: []
       summary: 文章是否点赞收藏
@@ -2273,7 +2374,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._Article'
+            $ref: '#/definitions/models._ResponseArticleList'
       security:
       - ApiKeyAuth: []
       summary: 文章列表
@@ -2320,7 +2421,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._ArticleReprint'
+            $ref: '#/definitions/models._ResponseArticleReprint'
       security:
       - ApiKeyAuth: []
       summary: 文章转载
@@ -2337,7 +2438,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._ArticleTagList'
+            $ref: '#/definitions/models._ResponseArticleTagList'
       security:
       - ApiKeyAuth: []
       summary: 文章标签
@@ -2361,7 +2462,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._ResponseTopArticleListHandler'
+            $ref: '#/definitions/models._ResponseArticleList'
       security:
       - ApiKeyAuth: []
       summary: 推荐文章列表
@@ -2378,14 +2479,12 @@ paths:
         type: integer
       - in: query
         name: id
-        required: true
-        type: integer
-      - in: query
-        name: kind
-        required: true
         type: integer
       - in: query
         name: size
+        type: integer
+      - in: query
+        name: status
         type: integer
       produces:
       - application/json
@@ -2393,7 +2492,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._ArticleUser'
+            $ref: '#/definitions/models._ResponseArticleListByUserId'
       security:
       - ApiKeyAuth: []
       summary: 用户文章列表
@@ -3392,7 +3491,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._march'
+            $ref: '#/definitions/models._ResponseMarch'
       security:
       - ApiKeyAuth: []
       summary: 用户三月圈文章列表
@@ -3442,6 +3541,27 @@ paths:
       summary: 删除三月圈
       tags:
       - 应用：文章管理 Article Controller
+    get:
+      consumes:
+      - application/json
+      description: Author：Lbl 2021/02/17 获得身份令牌
+      parameters:
+      - description: 修改参数
+        in: path
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models._ResponseMarch'
+      security:
+      - ApiKeyAuth: []
+      summary: 三月圈文章详情页
+      tags:
+      - 三月圈 marchsoft Controller
   /api/march/msg:
     get:
       consumes:
@@ -3453,7 +3573,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models._ResponseApplyMarchUser'
+            $ref: '#/definitions/models._ResponseSoftInfo'
       security:
       - ApiKeyAuth: []
       summary: 三月圈条数与成员数与是否为三月
@@ -3734,7 +3854,7 @@ paths:
       summary: 我的消息
       tags:
       - 消息 message Controller
-    post:
+    put:
       consumes:
       - application/json
       description: Author：JiaKun Li 2021/02/18
