@@ -284,6 +284,7 @@ func (u *User) RedisUserMessage(c *gin.Context, l *bo.LoginData, token string) (
 func (u *User) InsertUser(p *dto.InsertUserDto, userID int) (err error) {
 	//设置默认密码123456
 	defaultPass := "123456"
+	var march uint8 = 0
 	pass := utils.EncodeMD5(defaultPass)
 	//初始化 user数据
 	user := &models.SysUser{
@@ -299,6 +300,7 @@ func (u *User) InsertUser(p *dto.InsertUserDto, userID int) (err error) {
 		IsAdmin:      []byte{0},
 		Password:     pass,
 		PwdResetTime: utils.GetCurrentTimeUnix(),
+		IsMarch:      &march,
 	}
 	jobs := p.Jobs
 	roles := p.Roles
