@@ -161,7 +161,7 @@ func CheckUpdateLevel(operatorId int, operatorRoles []models.SysRole, byOperator
 	}
 	//验证是否有权利修改目标用户
 	changeToRoles := make([]models.SysRole, 0)
-	global.Eloquent.Table("sys_role").Where("id in (?) AND is_delete = ?", byOperator.Roles, []byte{0}).Find(changeToRoles)
+	global.Eloquent.Table("sys_role").Where("id in (?) AND is_delete = ?", byOperator.Roles, []byte{0}).Find(&changeToRoles)
 	changeToRolesMaxLevel := math.MaxInt64
 	for _, role := range changeToRoles {
 		if role.Level < changeToRolesMaxLevel {
