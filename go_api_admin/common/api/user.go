@@ -180,7 +180,7 @@ func CheckInsertLevel(operatorRoles []models.SysRole, byOperatorRoleId []int) bo
 		}
 	}
 	byOperatorRoles := make([]models.SysRole, 0)
-	global.Eloquent.Table("sys_role").Where("id in (?) AND is_delete = ?", byOperatorRoleId, []byte{0}).Find(byOperatorRoles)
+	global.Eloquent.Table("sys_role").Where("id in (?) AND is_deleted = ?", byOperatorRoleId, []byte{0}).Find(byOperatorRoles)
 	byOperatorMaxLevel := math.MaxInt64
 	for _, role := range byOperatorRoles {
 		if role.Level < byOperatorMaxLevel {

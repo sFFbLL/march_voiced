@@ -286,6 +286,7 @@ func (u *User) InsertUser(p *dto.InsertUserDto, userID int) (err error) {
 	defaultPass := "123456"
 	pass := utils.EncodeMD5(defaultPass)
 	//初始化 user数据
+	var march uint8 = 0
 	user := &models.SysUser{
 		DeptId:       p.DeptId,
 		Email:        p.Email,
@@ -299,6 +300,7 @@ func (u *User) InsertUser(p *dto.InsertUserDto, userID int) (err error) {
 		IsAdmin:      []byte{0},
 		Password:     pass,
 		PwdResetTime: utils.GetCurrentTimeUnix(),
+		IsMarch:      &march,
 	}
 	jobs := p.Jobs
 	roles := p.Roles
