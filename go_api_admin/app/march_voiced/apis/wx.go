@@ -19,16 +19,18 @@ func WxGetTicket(c *gin.Context) {
 	server := global.Wx.GetServer(c.Request, c.Writer)
 	server.SetMessageHandler(func(msg message.MixMessage) *message.Reply {
 		//TODO 对接收到的消息以及处理
-		text := message.NewText("欢迎来到三月之声")
+
+		//text := message.NewText("欢迎来到三月之声")
 		if msg.Event == "SCAN" {
-			text = message.NewText("欢迎来到三月之声")
+			//text = message.NewText("欢迎来到三月之声")
 			_, err := global.Rdb.Set(fmt.Sprintf("%v", msg.EventKey), fmt.Sprintf("%v", msg.FromUserName), 300*time.Second).Result()
 			if err != nil {
 				zap.L().Error("Wx scan message failed", zap.Error(err))
 				return &message.Reply{MsgType: message.MsgTypeText}
 			}
 		}
-		return &message.Reply{MsgType: message.MsgTypeText, MsgData: text}
+		return &message.Reply{MsgType: message.MsgTypeText}
+		//return &message.Reply{MsgType: message.MsgTypeText, MsgData: text}
 	})
 	//处理消息接收以及回复
 	err := server.Serve()
